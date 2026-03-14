@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz — Schrödinger Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
+      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
+      --accent2:#c8a96e;--border:#e0ddd6;
+      --green:#27ae60;--red:#c0392b;
+      --serif:'DM Serif Display',serif;
+      --sans:'DM Sans',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 4rem;background:rgba(248,247,244,0.95);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+    }
+    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
+    .nav-logo span{color:var(--accent2);}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+
+    .page-header{padding:8rem 4rem 4rem;background:var(--cream);border-bottom:1px solid var(--border);}
+    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
+    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
+    .page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;}
+
+    /* Quiz selector */
+    .quiz-selector{padding:3rem 4rem;border-bottom:1px solid var(--border);}
+    .selector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+    .sel-card{
+      background:var(--white);border:1.5px solid var(--border);border-radius:4px;
+      padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:left;
+    }
+    .sel-card:hover,.sel-card.selected{border-color:var(--accent);background:rgba(26,58,92,0.04);}
+    .sel-card h4{font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem;}
+    .sel-card p{font-size:0.78rem;color:var(--muted);}
+    .sel-count{
+      font-family:var(--mono);font-size:0.68rem;color:var(--accent2);
+      margin-top:0.6rem;
+    }
+
+    /* Quiz area */
+    .quiz-area{padding:3rem 4rem 5rem;display:none;}
+    .quiz-area.active{display:block;}
+
+    .quiz-header{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:2rem;flex-wrap:wrap;gap:1rem;
+    }
+    .quiz-title{font-family:var(--serif);font-size:1.6rem;}
+    .quiz-progress-bar{
+      width:100%;background:var(--border);border-radius:2px;height:4px;margin-bottom:2rem;
+    }
+    .quiz-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s;}
+
+    .question-card{
+      background:var(--cream);border:1px solid var(--border);
+      border-radius:6px;padding:2.5rem;margin-bottom:1.5rem;
+      max-width:780px;
+    }
+    .q-num{
+      font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);margin-bottom:0.8rem;
+    }
+    .q-text{font-family:var(--serif);font-size:1.2rem;line-height:1.5;margin-bottom:1.8rem;}
+
+    .options{display:flex;flex-direction:column;gap:0.75rem;}
+    .option-btn{
+      background:var(--white);border:1.5px solid var(--border);
+      border-radius:4px;padding:1rem 1.2rem;
+      text-align:left;font-family:var(--sans);font-size:0.9rem;
+      cursor:pointer;transition:all 0.2s;
+      display:flex;align-items:center;gap:0.8rem;
+    }
+    .option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(26,58,92,0.04);}
+    .option-btn.correct{background:rgba(39,174,96,0.08);border-color:var(--green);color:var(--green);}
+    .option-btn.wrong{background:rgba(192,57,43,0.08);border-color:var(--red);color:var(--red);}
+    .option-btn:disabled{cursor:default;}
+    .option-letter{
+      width:28px;height:28px;border-radius:50%;
+      background:var(--cream);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;
+    }
+    .option-btn.correct .option-letter{background:var(--green);color:white;border-color:var(--green);}
+    .option-btn.wrong .option-letter{background:var(--red);color:white;border-color:var(--red);}
+
+    .explanation{
+      margin-top:1.2rem;padding:1rem 1.2rem;
+      background:rgba(26,58,92,0.05);border-left:3px solid var(--accent);
+      border-radius:0 4px 4px 0;font-size:0.875rem;color:var(--ink);
+      display:none;line-height:1.65;
+    }
+    .explanation.show{display:block;}
+
+    .quiz-nav{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-top:1.5rem;max-width:780px;
+    }
+    .btn-nav{
+      padding:0.75rem 1.8rem;border-radius:3px;
+      font-family:var(--sans);font-size:0.875rem;font-weight:600;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .btn-next{background:var(--accent);color:white;border:none;}
+    .btn-next:hover{background:var(--accent2);color:var(--ink);}
+    .btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
+    .btn-back:hover{border-color:var(--accent);color:var(--accent);}
+
+    /* Score screen */
+    .score-screen{
+      display:none;text-align:center;padding:4rem 2rem;max-width:500px;margin:0 auto;
+    }
+    .score-screen.show{display:block;}
+    .score-circle{
+      width:120px;height:120px;border-radius:50%;
+      background:var(--cream);border:3px solid var(--border);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      margin:0 auto 2rem;
+    }
+    .score-num{font-family:var(--serif);font-size:2.5rem;color:var(--accent);}
+    .score-total{font-size:0.75rem;color:var(--muted);}
+    .score-screen h2{font-family:var(--serif);font-size:2rem;margin-bottom:0.5rem;}
+    .score-screen p{color:var(--muted);margin-bottom:2rem;}
+    .score-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+    @media(max-width:900px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      .page-header,.quiz-selector,.quiz-area{padding-left:1.5rem;padding-right:1.5rem;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html">Notes</a>
+    <a href="videos.html">Videos</a>
+    <a href="quiz.html" class="active">Quiz</a>
+    <a href="test.html">Tests</a>
+    <a href="simulation.html">Simulations</a>
+    <a href="login.html" class="nav-cta">Login</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-label">Practice</div>
+  <div class="page-title">Topic Quizzes</div>
+  <p class="page-sub">Instant MCQ practice with explanations. Pick a topic to start.</p>
+</div>
+
+<!-- QUIZ SELECTOR -->
+<div class="quiz-selector" id="selector">
+  <div class="selector-grid" id="selectorGrid"></div>
+</div>
+
+<!-- QUIZ AREA -->
+<div class="quiz-area" id="quizArea">
+  <div class="quiz-header">
+    <div class="quiz-title" id="quizTitle"></div>
+    <span id="qCounter" style="font-family:var(--mono);font-size:0.8rem;color:var(--muted);"></span>
+  </div>
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill"></div></div>
+  <div id="questionContainer"></div>
+  <div class="quiz-nav">
+    <button class="btn-nav btn-back" onclick="backToSelector()">← All Quizzes</button>
+    <button class="btn-nav btn-next" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+  </div>
+</div>
+
+<!-- SCORE SCREEN -->
+<div class="quiz-area" id="scoreArea">
+  <div class="score-screen show">
+    <div class="score-circle">
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-total" id="scoreTot">/ 0</div>
+    </div>
+    <h2 id="scoreMsg"></h2>
+    <p id="scoreDetail"></p>
+    <div class="score-actions">
+      <button class="btn-nav btn-next" onclick="retryQuiz()">Retry Quiz</button>
+      <button class="btn-nav btn-back" onclick="backToSelector()">All Quizzes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// QUIZ DATA — Add more questions here!
+// ══════════════════════════════════════════════════
+const QUIZZES = [
+  {
+    id: 'kinematics', title: "Kinematics", course: "11",
+    desc: "1D & 2D motion, graphs, projectile", count: 5,
+    questions: [
+      {
+        q: "A ball is thrown vertically upward with velocity 20 m/s. How high does it go? (g = 10 m/s²)",
+        options: ["10 m", "20 m", "40 m", "5 m"],
+        ans: 1, // 0-indexed
+        explanation: "Using v² = u² - 2gh, at max height v=0. So h = u²/2g = 400/20 = 20 m."
+      },
+      {
+        q: "The slope of a velocity-time graph gives:",
+        options: ["Displacement", "Speed", "Acceleration", "Distance"],
+        ans: 2,
+        explanation: "Slope of v-t graph = Δv/Δt = acceleration."
+      },
+      {
+        q: "A projectile is launched at 45° for maximum range. If initial speed is u, range R is:",
+        options: ["u²/g", "u²/2g", "2u²/g", "u/g"],
+        ans: 0,
+        explanation: "Range R = u²sin(2θ)/g. At θ=45°, sin90°=1. So R = u²/g."
+      },
+      {
+        q: "An object moves 4 m East and 3 m North. Its displacement is:",
+        options: ["7 m", "1 m", "5 m", "12 m"],
+        ans: 2,
+        explanation: "Displacement = √(4² + 3²) = √(16+9) = √25 = 5 m."
+      },
+      {
+        q: "If a car decelerates from 20 m/s to rest in 4 seconds, retardation is:",
+        options: ["80 m/s²", "5 m/s²", "4 m/s²", "10 m/s²"],
+        ans: 1,
+        explanation: "a = (v-u)/t = (0-20)/4 = -5 m/s². Retardation = 5 m/s²."
+      }
+    ]
+  },
+  {
+    id: 'newtons-laws', title: "Newton's Laws", course: "11",
+    desc: "Forces, friction, dynamics", count: 4,
+    questions: [
+      {
+        q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:",
+        options: ["100 m/s²", "0.25 m/s²", "4 m/s²", "25 m/s²"],
+        ans: 2,
+        explanation: "F = ma → a = F/m = 20/5 = 4 m/s²"
+      },
+      {
+        q: "Newton's First Law is also called:",
+        options: ["Law of Gravitation", "Law of Inertia", "Law of Action-Reaction", "Law of Conservation"],
+        ans: 1,
+        explanation: "Newton's First Law states an object remains in its state unless acted upon by external force — this is the definition of inertia."
+      },
+      {
+        q: "A book rests on a table. The reaction to the weight of the book acts on:",
+        options: ["The table surface", "The Earth", "The book itself", "The air above"],
+        ans: 1,
+        explanation: "By Newton's 3rd law, book pulls Earth upward with same force as Earth pulls book down."
+      },
+      {
+        q: "Coefficient of static friction is always ___ kinetic friction.",
+        options: ["Less than", "Equal to", "Greater than", "Cannot compare"],
+        ans: 2,
+        explanation: "Static friction is always greater than kinetic friction. More force is needed to start motion than to maintain it."
+      }
+    ]
+  },
+  {
+    id: 'electrostatics', title: "Electrostatics", course: "12",
+    desc: "Coulomb's law, field, potential", count: 4,
+    questions: [
+      {
+        q: "Coulomb's law gives force F ∝ q₁q₂/r². If distance is doubled, force becomes:",
+        options: ["F/4", "F/2", "4F", "2F"],
+        ans: 0,
+        explanation: "F ∝ 1/r². If r→2r, then F ∝ 1/4r², so force becomes F/4."
+      },
+      {
+        q: "Electric field lines always point from:",
+        options: ["Negative to positive charge", "Positive to negative charge", "South to North pole", "Inside conductor to outside"],
+        ans: 1,
+        explanation: "Electric field lines originate from positive charges and terminate at negative charges."
+      },
+      {
+        q: "Inside a conductor in electrostatic equilibrium, the electric field is:",
+        options: ["Maximum", "Minimum", "Zero", "Depends on shape"],
+        ans: 2,
+        explanation: "Inside a conductor, free charges redistribute until the net electric field is exactly zero."
+      },
+      {
+        q: "Gauss's law states that net flux through a closed surface equals:",
+        options: ["Q_enc / ε₀", "Q_enc × ε₀", "ε₀ / Q_enc", "Q_enc²/ ε₀"],
+        ans: 0,
+        explanation: "Gauss's law: Φ = Q_enc/ε₀. The total electric flux through any closed surface equals the net charge enclosed divided by permittivity of free space."
+      }
+    ]
+  },
+  {
+    id: 'optics', title: "Ray Optics", course: "12",
+    desc: "Mirrors, lenses, refraction", count: 4,
+    questions: [
+      {
+        q: "The mirror formula is: 1/v + 1/u = ?",
+        options: ["1/f", "f", "2/R", "1/R"],
+        ans: 0,
+        explanation: "Mirror formula: 1/f = 1/v + 1/u, where f = focal length, v = image distance, u = object distance."
+      },
+      {
+        q: "A convex lens has focal length 20 cm. Its power is:",
+        options: ["0.2 D", "5 D", "20 D", "0.05 D"],
+        ans: 1,
+        explanation: "Power P = 1/f(in metres) = 1/0.20 = 5 Dioptre."
+      },
+      {
+        q: "Total internal reflection occurs when light travels from:",
+        options: ["Rarer to denser medium", "Denser to rarer medium", "Any medium", "In vacuum"],
+        ans: 1,
+        explanation: "TIR occurs when light travels from denser to rarer medium at an angle greater than or equal to the critical angle."
+      },
+      {
+        q: "Rainbow is formed due to:",
+        options: ["Reflection", "Refraction only", "Dispersion and TIR", "Diffraction"],
+        ans: 2,
+        explanation: "Rainbow is formed by a combination of refraction (at entry/exit) and total internal reflection inside water droplets, causing dispersion of white light."
+      }
+    ]
+  }
+];
+
+let currentQuiz = null, currentQ = 0, score = 0, answered = false;
+
+// Build selector cards
+function buildSelector() {
+  const grid = document.getElementById('selectorGrid');
+  grid.innerHTML = QUIZZES.map(q => `
+    <button class="sel-card" onclick="startQuiz('${q.id}')">
+      <h4>${q.title}</h4>
+      <p>${q.desc}</p>
+      <div class="sel-count">${q.count} Questions · Class ${q.course}</div>
+    </button>
+  `).join('');
+}
+
+function startQuiz(id) {
+  currentQuiz = QUIZZES.find(q => q.id === id);
+  currentQ = 0; score = 0;
+  document.getElementById('selector').style.display = 'none';
+  document.getElementById('scoreArea').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizArea').classList.add('active');
+  document.getElementById('quizTitle').textContent = currentQuiz.title + ' Quiz';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const total = currentQuiz.questions.length;
+  const q = currentQuiz.questions[currentQ];
+  answered = false;
+
+  document.getElementById('qCounter').textContent = `Q ${currentQ+1} of ${total}`;
+  document.getElementById('progressFill').style.width = ((currentQ/total)*100)+'%';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = currentQ < total-1 ? 'Next →' : 'See Results';
+
+  document.getElementById('questionContainer').innerHTML = `
+    <div class="question-card">
+      <div class="q-num">Question ${currentQ+1}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectAnswer(${i})" id="opt${i}">
+            <span class="option-letter">${String.fromCharCode(65+i)}</span>
+            ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <div class="explanation" id="explanation">${q.explanation}</div>
+    </div>
+  `;
+}
+
+function selectAnswer(selected) {
+  if (answered) return;
+  answered = true;
+  const q = currentQuiz.questions[currentQ];
+  if (selected === q.ans) score++;
+
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById('opt'+i);
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === selected) btn.classList.add('wrong');
+  });
+
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQ() {
+  currentQ++;
+  if (currentQ >= currentQuiz.questions.length) {
+    showScore();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showScore() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('scoreArea').style.display = 'block';
+  const total = currentQuiz.questions.length;
+  const pct = Math.round((score/total)*100);
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreTot').textContent = '/ '+total;
+  document.getElementById('scoreMsg').textContent =
+    pct >= 80 ? 'Excellent! 🎉' : pct >= 60 ? 'Good Work! 👍' : 'Keep Practising! 💪';
+  document.getElementById('scoreDetail').textContent =
+    `You scored ${score} out of ${total} (${pct}%) in ${currentQuiz.title}.`;
+}
+
+function retryQuiz() {
+  document.getElementById('scoreArea').style.display = 'none';
+  startQuiz(currentQuiz.id);
+}
+
+function backToSelector() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('scoreArea').style.display = 'none';
+  document.getElementById('selector').style.display = 'block';
+  currentQuiz = null;
+}
+
+buildSelector();
+</script>
+</body>
+</html>

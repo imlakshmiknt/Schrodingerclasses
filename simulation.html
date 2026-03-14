@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulations — Schrödinger Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
+      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
+      --accent2:#c8a96e;--border:#e0ddd6;
+      --serif:'DM Serif Display',serif;
+      --sans:'DM Sans',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 4rem;background:rgba(248,247,244,0.95);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+    }
+    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
+    .nav-logo span{color:var(--accent2);}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+
+    .page-header{padding:8rem 4rem 4rem;background:var(--accent);color:var(--white);}
+    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
+    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
+    .page-sub{font-size:0.95rem;color:rgba(255,255,255,0.55);margin-top:0.6rem;}
+
+    /* Sim cards grid */
+    .sims-section{padding:3rem 4rem 5rem;}
+    .sims-section h2{font-family:var(--serif);font-size:1.5rem;margin-bottom:0.3rem;}
+    .sims-section .desc{font-size:0.85rem;color:var(--muted);margin-bottom:2rem;}
+    .sims-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;}
+    .sim-card{
+      background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .sim-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.07);}
+    .sim-preview{
+      height:180px;background:var(--ink);position:relative;overflow:hidden;
+      cursor:pointer;
+    }
+    .sim-preview canvas{display:block;width:100%;height:100%;}
+    .sim-overlay{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.3);
+      font-size:2rem;pointer-events:none;
+      opacity:0;transition:opacity 0.2s;
+    }
+    .sim-card:hover .sim-overlay{opacity:1;}
+    .sim-body{padding:1.5rem;}
+    .sim-tag{
+      font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);background:rgba(200,169,110,0.1);
+      padding:0.2rem 0.55rem;border-radius:2px;display:inline-block;margin-bottom:0.8rem;
+    }
+    .sim-body h4{font-family:var(--serif);font-size:1.1rem;margin-bottom:0.4rem;}
+    .sim-body p{font-size:0.82rem;color:var(--muted);line-height:1.65;}
+    .sim-open{
+      display:inline-block;margin-top:1rem;padding:0.55rem 1.2rem;
+      background:var(--accent);color:white;border:none;border-radius:3px;
+      font-family:var(--sans);font-size:0.82rem;font-weight:600;cursor:pointer;
+      transition:background 0.2s;text-decoration:none;
+    }
+    .sim-open:hover{background:var(--accent2);color:var(--ink);}
+
+    /* MODAL for full simulation */
+    .sim-modal{
+      position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;
+      display:none;flex-direction:column;
+    }
+    .sim-modal.open{display:flex;}
+    .sim-modal-header{
+      background:var(--ink);padding:1rem 1.5rem;
+      display:flex;justify-content:space-between;align-items:center;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+    .sim-modal-header h3{font-family:var(--serif);color:white;font-size:1.1rem;}
+    .sim-modal-close{
+      background:rgba(255,255,255,0.1);border:none;color:white;
+      width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;
+    }
+    .sim-modal-body{flex:1;display:flex;align-items:stretch;}
+    .sim-canvas-wrap{flex:1;position:relative;}
+    .sim-canvas-wrap canvas{display:block;width:100%;height:100%;}
+    .sim-controls{
+      width:240px;background:var(--ink);padding:1.5rem;overflow-y:auto;
+      border-left:1px solid rgba(255,255,255,0.07);
+    }
+    .ctrl-group{margin-bottom:1.5rem;}
+    .ctrl-label{
+      font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);margin-bottom:0.6rem;display:block;
+    }
+    .ctrl-value{
+      font-family:var(--mono);font-size:0.9rem;color:white;margin-bottom:0.3rem;
+    }
+    input[type=range]{width:100%;accent-color:var(--accent2);}
+    .ctrl-btn{
+      width:100%;padding:0.6rem;margin-top:0.5rem;
+      background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+      color:white;border-radius:3px;font-family:var(--sans);font-size:0.82rem;cursor:pointer;
+      transition:background 0.2s;
+    }
+    .ctrl-btn:hover{background:rgba(255,255,255,0.15);}
+    .data-display{
+      background:rgba(255,255,255,0.05);border-radius:4px;padding:1rem;
+      font-family:var(--mono);font-size:0.78rem;color:rgba(255,255,255,0.7);
+      line-height:1.8;
+    }
+
+    @media(max-width:900px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      .page-header,.sims-section{padding-left:1.5rem;padding-right:1.5rem;}
+      .sims-grid{grid-template-columns:1fr;}
+      .sim-controls{display:none;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html">Notes</a>
+    <a href="videos.html">Videos</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="test.html">Tests</a>
+    <a href="simulation.html" class="active">Simulations</a>
+    <a href="login.html" class="nav-cta">Login</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-label">Virtual Physics Lab</div>
+  <div class="page-title">See Physics<br>in Motion.</div>
+  <p class="page-sub">Interactive simulations — visualise concepts that textbooks can only describe.</p>
+</div>
+
+<div class="sims-section">
+  <h2>Available Simulations</h2>
+  <p class="desc">Click any simulation to open in full interactive mode with adjustable parameters.</p>
+  <div class="sims-grid">
+
+    <div class="sim-card">
+      <div class="sim-preview" onclick="openSim('pendulum')">
+        <canvas id="prevPendulum" width="300" height="180"></canvas>
+        <div class="sim-overlay">🔬 Open</div>
+      </div>
+      <div class="sim-body">
+        <span class="sim-tag">Oscillations · Class 11</span>
+        <h4>Simple Pendulum</h4>
+        <p>Explore how length and gravity affect oscillation period. Visualise SHM in real time.</p>
+        <button class="sim-open" onclick="openSim('pendulum')">Launch Simulation →</button>
+      </div>
+    </div>
+
+    <div class="sim-card">
+      <div class="sim-preview" onclick="openSim('wave')">
+        <canvas id="prevWave" width="300" height="180"></canvas>
+        <div class="sim-overlay">🔬 Open</div>
+      </div>
+      <div class="sim-body">
+        <span class="sim-tag">Waves · Class 11</span>
+        <h4>Transverse Wave</h4>
+        <p>Adjust amplitude, frequency, and wavelength. See how wave parameters interact.</p>
+        <button class="sim-open" onclick="openSim('wave')">Launch Simulation →</button>
+      </div>
+    </div>
+
+    <div class="sim-card">
+      <div class="sim-preview" onclick="openSim('projectile')">
+        <canvas id="prevProjectile" width="300" height="180"></canvas>
+        <div class="sim-overlay">🔬 Open</div>
+      </div>
+      <div class="sim-body">
+        <span class="sim-tag">Mechanics · Class 11</span>
+        <h4>Projectile Motion</h4>
+        <p>Launch a projectile at any angle and speed. Watch range, height, and trajectory live.</p>
+        <button class="sim-open" onclick="openSim('projectile')">Launch Simulation →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SIMULATION MODAL -->
+<div class="sim-modal" id="simModal">
+  <div class="sim-modal-header">
+    <h3 id="simTitle">Simulation</h3>
+    <button class="sim-modal-close" onclick="closeSim()">✕</button>
+  </div>
+  <div class="sim-modal-body">
+    <div class="sim-canvas-wrap">
+      <canvas id="simCanvas"></canvas>
+    </div>
+    <div class="sim-controls" id="simControls"></div>
+  </div>
+</div>
+
+<script>
+let animId = null;
+let currentSim = null;
+
+// ════════ PREVIEW ANIMATIONS ════════
+function previewPendulum() {
+  const c = document.getElementById('prevPendulum');
+  if(!c) return;
+  const ctx = c.getContext('2d'); let a = Math.PI/6, v=0, t=0;
+  function draw(){
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,300,180);
+    a += v; v += (-0.015 * Math.sin(a)); v *= 0.999; t++;
+    const cx=150, py=20, len=120;
+    const bx=cx+len*Math.sin(a), by=py+len*Math.cos(a);
+    ctx.strokeStyle='rgba(200,169,110,0.6)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx,py); ctx.lineTo(bx,by); ctx.stroke();
+    ctx.fillStyle='#c8a96e'; ctx.beginPath(); ctx.arc(bx,by,12,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.arc(cx,py,4,0,Math.PI*2); ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+function previewWave() {
+  const c = document.getElementById('prevWave');
+  if(!c) return;
+  const ctx = c.getContext('2d'); let t=0;
+  function draw(){
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,300,180);
+    ctx.strokeStyle='rgba(26,58,92,0.9)'; ctx.lineWidth=2;
+    ctx.beginPath();
+    for(let x=0;x<300;x++){
+      const y=90+30*Math.sin((x/30)-(t*0.08));
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.strokeStyle='rgba(200,169,110,0.5)'; ctx.lineWidth=1;
+    ctx.beginPath();
+    for(let x=0;x<300;x++){
+      const y=90+30*Math.sin((x/30)-(t*0.08)+Math.PI*0.5);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    t++; requestAnimationFrame(draw);
+  }
+  draw();
+}
+function previewProjectile() {
+  const c = document.getElementById('prevProjectile');
+  if(!c) return;
+  const ctx = c.getContext('2d'); let t=0;
+  function draw(){
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,300,180);
+    ctx.strokeStyle='rgba(200,169,110,0.4)'; ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath();
+    for(let i=0;i<300;i++){
+      const ti=i/18, x=i, y=160-(ti*22-(0.5*0.9*ti*ti));
+      if(y<0||y>180) continue;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    const tf=(t%120)/18, bx=tf*18, by=160-(tf*22-(0.5*0.9*tf*tf));
+    if(by>=0 && by<=180){
+      ctx.fillStyle='#c8a96e'; ctx.beginPath(); ctx.arc(bx,by,8,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.fillRect(0,158,300,4);
+    t++; requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+previewPendulum(); previewWave(); previewProjectile();
+
+// ════════ FULL SIMULATIONS ════════
+const SIMS = {
+  pendulum: {
+    title: 'Simple Pendulum',
+    params: { length: 1.2, gravity: 9.8, damping: 0.999, angle: 30 },
+    controls(p, onChange) {
+      return `
+        <div class="ctrl-group">
+          <span class="ctrl-label">Length (m)</span>
+          <div class="ctrl-value" id="cv_length">${p.length} m</div>
+          <input type="range" min="0.3" max="3" step="0.1" value="${p.length}"
+            oninput="document.getElementById('cv_length').textContent=this.value+' m';updateParam('length',+this.value)"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Gravity (m/s²)</span>
+          <div class="ctrl-value" id="cv_gravity">${p.gravity}</div>
+          <input type="range" min="1" max="25" step="0.1" value="${p.gravity}"
+            oninput="document.getElementById('cv_gravity').textContent=this.value;updateParam('gravity',+this.value)"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Initial Angle (°)</span>
+          <div class="ctrl-value" id="cv_angle">${p.angle}°</div>
+          <input type="range" min="5" max="80" step="1" value="${p.angle}"
+            oninput="document.getElementById('cv_angle').textContent=this.value+'°';updateParam('angle',+this.value);resetSim()"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Live Data</span>
+          <div class="data-display" id="simData">Period: calculating...</div>
+        </div>
+        <button class="ctrl-btn" onclick="resetSim()">↺ Reset</button>
+      `;
+    },
+    init(canvas, p) {
+      const ctx=canvas.getContext('2d');
+      let angle=p.angle*Math.PI/180, vel=0;
+      const L=()=>p.length;
+      return function loop(){
+        const W=canvas.width, H=canvas.height;
+        ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
+        const g=()=>p.gravity;
+        vel += -(g()/L()) * Math.sin(angle) * 0.016;
+        vel *= p.damping; angle += vel;
+        const px=W/2, py=60, len=Math.min(H-80,L()*120);
+        const bx=px+len*Math.sin(angle), by=py+len*Math.cos(angle);
+        // Rod
+        ctx.strokeStyle='rgba(200,169,110,0.7)'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(bx,by); ctx.stroke();
+        // Bob
+        ctx.fillStyle='#c8a96e'; ctx.strokeStyle='rgba(200,169,110,0.3)'; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.arc(bx,by,18,0,Math.PI*2); ctx.fill(); ctx.stroke();
+        // Pivot
+        ctx.fillStyle='white'; ctx.beginPath(); ctx.arc(px,py,5,0,Math.PI*2); ctx.fill();
+        // ceiling
+        ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.fillRect(px-40,py-4,80,4);
+        // Data
+        const period=(2*Math.PI*Math.sqrt(L()/p.gravity)).toFixed(2);
+        const angleDeg=(angle*180/Math.PI).toFixed(1);
+        document.getElementById('simData').innerHTML =
+          `Period T: ${period} s\nAngle θ: ${angleDeg}°\nAngular vel: ${vel.toFixed(3)} r/s\nT = 2π√(L/g)`;
+      };
+    }
+  },
+  wave: {
+    title: 'Transverse Wave',
+    params: { amplitude: 50, frequency: 1, wavelength: 100, phase: 0 },
+    controls(p) {
+      return `
+        <div class="ctrl-group">
+          <span class="ctrl-label">Amplitude (px)</span>
+          <div class="ctrl-value" id="cv_amp">${p.amplitude}</div>
+          <input type="range" min="10" max="120" step="5" value="${p.amplitude}"
+            oninput="document.getElementById('cv_amp').textContent=this.value;updateParam('amplitude',+this.value)"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Frequency</span>
+          <div class="ctrl-value" id="cv_freq">${p.frequency}</div>
+          <input type="range" min="0.3" max="4" step="0.1" value="${p.frequency}"
+            oninput="document.getElementById('cv_freq').textContent=this.value;updateParam('frequency',+this.value)"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Wavelength (px)</span>
+          <div class="ctrl-value" id="cv_wave">${p.wavelength}</div>
+          <input type="range" min="40" max="300" step="10" value="${p.wavelength}"
+            oninput="document.getElementById('cv_wave').textContent=this.value;updateParam('wavelength',+this.value)"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Live Data</span>
+          <div class="data-display" id="simData">Wave speed: calculating...</div>
+        </div>
+      `;
+    },
+    init(canvas, p) {
+      const ctx=canvas.getContext('2d'); let t=0;
+      return function loop(){
+        const W=canvas.width, H=canvas.height, cy=H/2;
+        ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
+        // centre line
+        ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+        ctx.setLineDash([5,5]);
+        ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.stroke();
+        ctx.setLineDash([]);
+        // wave
+        ctx.strokeStyle='#1a3a5c'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        for(let x=0;x<=W;x++){
+          const y=cy + p.amplitude * Math.sin(2*Math.PI*(x/p.wavelength - p.frequency*t*0.015));
+          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+        // amplitude markers
+        ctx.strokeStyle='rgba(200,169,110,0.35)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(0,cy-p.amplitude); ctx.lineTo(W,cy-p.amplitude); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0,cy+p.amplitude); ctx.lineTo(W,cy+p.amplitude); ctx.stroke();
+        ctx.setLineDash([]);
+        // labels
+        ctx.fillStyle='rgba(200,169,110,0.7)'; ctx.font='11px JetBrains Mono,monospace';
+        ctx.fillText('A = '+p.amplitude, 8, cy-p.amplitude-6);
+        ctx.fillText('λ = '+p.wavelength, 8, 16);
+        const speed=(p.frequency*p.wavelength).toFixed(0);
+        document.getElementById('simData').innerHTML =
+          `Speed v = fλ\nv = ${p.frequency} × ${p.wavelength}\nv = ${speed} units/s\nA = ${p.amplitude} units`;
+        t++;
+      };
+    }
+  },
+  projectile: {
+    title: 'Projectile Motion',
+    params: { speed: 25, angle: 45, gravity: 9.8 },
+    controls(p) {
+      return `
+        <div class="ctrl-group">
+          <span class="ctrl-label">Initial Speed (m/s)</span>
+          <div class="ctrl-value" id="cv_speed">${p.speed}</div>
+          <input type="range" min="5" max="50" step="1" value="${p.speed}"
+            oninput="document.getElementById('cv_speed').textContent=this.value;updateParam('speed',+this.value);resetSim()"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Launch Angle (°)</span>
+          <div class="ctrl-value" id="cv_angle">${p.angle}°</div>
+          <input type="range" min="5" max="85" step="1" value="${p.angle}"
+            oninput="document.getElementById('cv_angle').textContent=this.value+'°';updateParam('angle',+this.value);resetSim()"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Gravity (m/s²)</span>
+          <div class="ctrl-value" id="cv_grav">${p.gravity}</div>
+          <input type="range" min="1" max="25" step="0.5" value="${p.gravity}"
+            oninput="document.getElementById('cv_grav').textContent=this.value;updateParam('gravity',+this.value);resetSim()"/>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Results</span>
+          <div class="data-display" id="simData">Calculating...</div>
+        </div>
+        <button class="ctrl-btn" onclick="resetSim()">↺ Reset</button>
+      `;
+    },
+    init(canvas, p) {
+      const ctx=canvas.getContext('2d');
+      let simT=0, trail=[], running=true;
+      const scale=12;
+      function getPos(t){ // physics pos in metres, scaled to px
+        const rad=p.angle*Math.PI/180;
+        const vx=p.speed*Math.cos(rad), vy=p.speed*Math.sin(rad);
+        const x=vx*t, y=vy*t - 0.5*p.gravity*t*t;
+        return {x,y,done:y<0&&t>0.1};
+      }
+      const range=(2*p.speed*p.speed*Math.sin(p.angle*Math.PI/180)*Math.cos(p.angle*Math.PI/180))/p.gravity;
+      const maxH=(p.speed*Math.sin(p.angle*Math.PI/180))**2/(2*p.gravity);
+      const tFlight=2*p.speed*Math.sin(p.angle*Math.PI/180)/p.gravity;
+      document.getElementById('simData').innerHTML =
+        `Range: ${range.toFixed(1)} m\nMax Height: ${maxH.toFixed(1)} m\nFlight Time: ${tFlight.toFixed(2)} s\nAngle: ${p.angle}°`;
+      return function loop(){
+        const W=canvas.width, H=canvas.height, ground=H-40;
+        ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
+        // ground
+        ctx.fillStyle='rgba(255,255,255,0.07)'; ctx.fillRect(0,ground,W,4);
+        // trajectory dotted path
+        ctx.strokeStyle='rgba(200,169,110,0.25)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.beginPath();
+        for(let i=0;i<=200;i++){
+          const t=i*tFlight/200, pos=getPos(t);
+          const px=40+pos.x*scale, py=ground-pos.y*scale;
+          if(py<0||px>W) break;
+          i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+        if(running){
+          simT+=0.04;
+          const pos=getPos(simT);
+          if(pos.done){running=false;}
+          else{trail.push({x:40+pos.x*scale, y:ground-pos.y*scale});}
+        }
+        // trail
+        if(trail.length>1){
+          ctx.strokeStyle='rgba(26,58,92,0.8)'; ctx.lineWidth=2.5; ctx.beginPath();
+          trail.forEach((pt,i)=>i===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y));
+          ctx.stroke();
+        }
+        // ball
+        if(trail.length>0){
+          const last=trail[trail.length-1];
+          ctx.fillStyle='#c8a96e'; ctx.beginPath(); ctx.arc(last.x,last.y,10,0,Math.PI*2); ctx.fill();
+        }
+        // launch arrow
+        const rad=p.angle*Math.PI/180;
+        ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(40,ground); ctx.lineTo(40+30*Math.cos(rad), ground-30*Math.sin(rad)); ctx.stroke();
+      };
+    }
+  }
+};
+
+let simParams = {}, simLoopFn = null;
+
+function openSim(id) {
+  currentSim = id;
+  const sim = SIMS[id];
+  simParams = {...sim.params};
+  document.getElementById('simTitle').textContent = sim.title;
+  document.getElementById('simControls').innerHTML = sim.controls(simParams);
+  document.getElementById('simModal').classList.add('open');
+  resizeAndStart();
+}
+
+function resizeAndStart() {
+  const canvas = document.getElementById('simCanvas');
+  const wrap = canvas.parentElement;
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+  if(animId) cancelAnimationFrame(animId);
+  simLoopFn = SIMS[currentSim].init(canvas, simParams);
+  function tick(){ simLoopFn(); animId=requestAnimationFrame(tick); }
+  tick();
+}
+
+function updateParam(key, val){ simParams[key]=val; }
+function resetSim(){ if(animId)cancelAnimationFrame(animId); resizeAndStart(); }
+function closeSim(){
+  document.getElementById('simModal').classList.remove('open');
+  if(animId){ cancelAnimationFrame(animId); animId=null; }
+}
+window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSim(); });
+window.addEventListener('resize', ()=>{ if(currentSim) resizeAndStart(); });
+</script>
+</body>
+</html>

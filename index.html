@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schrödinger Classes — Physics Mastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f7f4;
+      --cream: #f0ede6;
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #1a3a5c;
+      --accent2: #c8a96e;
+      --border: #e0ddd6;
+      --serif: 'DM Serif Display', serif;
+      --sans: 'DM Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 2.4rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.875rem; font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--white) !important;
+      padding: 0.5rem 1.4rem !important;
+      border-radius: 2px !important;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--accent2) !important; color: var(--ink) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: 'Ψ';
+      position: absolute;
+      right: -2rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 28rem;
+      font-family: var(--serif);
+      color: rgba(26,58,92,0.04);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: rgba(200,169,110,0.1);
+      border: 1px solid rgba(200,169,110,0.3);
+      padding: 0.3rem 0.9rem;
+      border-radius: 2px;
+      margin-bottom: 1.6rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin-bottom: 2.4rem;
+      font-weight: 400;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border: none; border-radius: 2px;
+      font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent2); color: var(--ink); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      padding: 0.85rem 2rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 2px;
+      font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--accent); color: var(--white); }
+
+    .hero-stats {
+      display: flex; gap: 2.4rem; margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat-item { text-align: left; }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+
+    /* Hero right — formula card */
+    .hero-visual {
+      position: relative;
+      display: flex; flex-direction: column; gap: 1.2rem;
+      animation: floatIn 1s ease both 0.3s;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .formula-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.6rem 2rem;
+    }
+    .formula-card .card-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+    }
+    .formula-card .formula {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+    .formula-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    /* ── FEATURES ── */
+    .section { padding: 6rem 4rem; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 3.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+    }
+    .feature-card {
+      background: var(--white);
+      padding: 2.5rem;
+      transition: background 0.2s;
+    }
+    .feature-card:hover { background: var(--cream); }
+    .feature-icon {
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 1.3rem;
+      margin-bottom: 1.4rem;
+    }
+    .feature-card h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .feature-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .feature-link:hover { border-color: var(--accent); }
+
+    /* ── COURSES ── */
+    .courses-bg { background: var(--cream); }
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .course-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .course-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+    .course-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: rgba(200,169,110,0.1);
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .course-card h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .course-card p { font-size: 0.83rem; color: var(--muted); }
+    .course-meta {
+      display: flex; gap: 1rem;
+      margin-top: 1.2rem; padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--muted);
+    }
+
+    /* ── WHY SECTION ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .why-visual {
+      position: relative;
+    }
+    .quote-block {
+      background: var(--accent);
+      color: var(--white);
+      padding: 3rem;
+      border-radius: 4px;
+      position: relative;
+    }
+    .quote-block::before {
+      content: '"';
+      font-family: var(--serif);
+      font-size: 6rem;
+      position: absolute;
+      top: -1.5rem; left: 2rem;
+      color: var(--accent2);
+      line-height: 1;
+    }
+    .quote-block p {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .quote-block cite {
+      display: block;
+      margin-top: 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      font-style: normal;
+    }
+    .why-points { display: flex; flex-direction: column; gap: 1.8rem; }
+    .why-point { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .why-num {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      background: rgba(200,169,110,0.1);
+      border: 1px solid rgba(200,169,110,0.25);
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+    .why-point h4 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+    .why-point p { font-size: 0.875rem; color: var(--muted); }
+
+    /* ── YOUTUBE SECTION ── */
+    .yt-section { background: var(--ink); color: var(--white); padding: 5rem 4rem; }
+    .yt-section .section-title { color: var(--white); }
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .yt-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .yt-card:hover { transform: translateY(-3px); }
+    .yt-thumb {
+      background: rgba(200,169,110,0.15);
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      position: relative;
+    }
+    .yt-play {
+      position: absolute;
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .yt-card-body { padding: 1.2rem; }
+    .yt-card h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .yt-card p { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
+    .yt-cta { text-align: center; margin-top: 2.5rem; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: var(--accent2);
+      padding: 5rem 4rem;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .cta-banner p { color: rgba(26,26,26,0.65); margin-bottom: 2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 4rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .footer-logo span { color: var(--accent2); }
+    footer p { font-size: 0.83rem; line-height: 1.7; }
+    footer h5 {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    footer ul a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    footer ul a:hover { color: var(--accent2); }
+    .footer-bottom {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 1.2rem 4rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.25);
+      display: flex; justify-content: space-between;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+      .hero::before { font-size: 14rem; right: -1rem; opacity: 0.5; }
+      .hero-visual { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .courses-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { display: none; }
+      .yt-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.5rem; }
+      .footer-bottom { padding: 1rem 1.5rem; flex-direction: column; gap: 0.3rem; }
+      .cta-banner, .yt-section { padding: 3.5rem 1.5rem; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html">Notes</a>
+    <a href="videos.html">Videos</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="test.html">Tests</a>
+    <a href="simulation.html">Simulations</a>
+    <a href="login.html" class="nav-cta">Student Login</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Class 11 · 12 · JEE · NEET Physics</div>
+    <h1>Where Physics<br><em>Finally</em><br>Makes Sense.</h1>
+    <p class="hero-sub">
+      Expert-crafted notes, simulations, and tests — built for students who want to truly understand physics, not just memorise it.
+    </p>
+    <div class="hero-actions">
+      <a href="login.html" class="btn-primary">Start Learning Free →</a>
+      <a href="videos.html" class="btn-outline">Watch Lectures</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Courses</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Topics</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Free</div>
+        <div class="stat-label">Forever</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="formula-card">
+      <div class="card-label">Schrödinger Equation</div>
+      <div class="formula">iℏ ∂Ψ/∂t = ĤΨ</div>
+      <p>The foundation of quantum mechanics — and our name.</p>
+    </div>
+    <div class="formula-card">
+      <div class="card-label">Newton's Second Law</div>
+      <div class="formula">F = ma</div>
+      <p>Where every physics journey begins.</p>
+    </div>
+    <div class="formula-card">
+      <div class="card-label">Maxwell's Equations</div>
+      <div class="formula">∇ × E = −∂B/∂t</div>
+      <p>The elegance of electromagnetism.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-label">What we offer</div>
+  <div class="section-title">Everything You Need<br>to Master Physics.</div>
+  <div class="features-grid fade-in">
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <h3>Structured Notes</h3>
+      <p>Chapter-wise, concept-dense notes in PDF format. Covering full NCERT + JEE/NEET advanced topics with solved examples.</p>
+      <a href="notes.html" class="feature-link">Browse Notes →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <h3>Video Lectures</h3>
+      <p>Full playlist of Class 11 & 12 Physics. Concepts explained step-by-step, from basics to JEE Advanced level problems.</p>
+      <a href="videos.html" class="feature-link">Watch Videos →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Practice Quizzes</h3>
+      <p>Topic-wise MCQs with instant feedback. Sharpen your concept clarity before moving to full tests.</p>
+      <a href="quiz.html" class="feature-link">Take a Quiz →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <h3>Full-Length Tests</h3>
+      <p>JEE / NEET pattern mock tests with detailed solutions. Timed, scored, and analysed for your weak areas.</p>
+      <a href="test.html" class="feature-link">Attempt Test →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔬</div>
+      <h3>Physics Simulations</h3>
+      <p>Interactive visualisations of experiments — pendulums, waves, circuits, optics — to see physics in motion.</p>
+      <a href="simulation.html" class="feature-link">Open Lab →</a>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Progress Tracker</h3>
+      <p>Login to track your quiz scores, completed chapters, and test performance — all in one personal dashboard.</p>
+      <a href="login.html" class="feature-link">My Dashboard →</a>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="section courses-bg">
+  <div class="section-label">All Courses</div>
+  <div class="section-title">Pick Your Path.</div>
+  <div class="courses-grid fade-in">
+    <a href="notes.html?course=11" class="course-card">
+      <span class="course-tag">Class 11</span>
+      <h3>Physics — Class XI</h3>
+      <p>Mechanics, Thermodynamics, Waves, Optics &amp; Modern Physics fundamentals.</p>
+      <div class="course-meta"><span>📄 Notes</span><span>🎬 Videos</span><span>⚡ Quizzes</span></div>
+    </a>
+    <a href="notes.html?course=12" class="course-card">
+      <span class="course-tag">Class 12</span>
+      <h3>Physics — Class XII</h3>
+      <p>Electrostatics, Magnetism, EM Waves, Optics, Atoms &amp; Nuclei.</p>
+      <div class="course-meta"><span>📄 Notes</span><span>🎬 Videos</span><span>⚡ Quizzes</span></div>
+    </a>
+    <a href="test.html?course=jee-mains" class="course-card">
+      <span class="course-tag">JEE Mains</span>
+      <h3>JEE Mains Physics</h3>
+      <p>Full NTA syllabus coverage with chapter tests and previous year questions.</p>
+      <div class="course-meta"><span>📝 Tests</span><span>📄 PYQs</span><span>⚡ MCQs</span></div>
+    </a>
+    <a href="test.html?course=jee-advanced" class="course-card">
+      <span class="course-tag">JEE Advanced</span>
+      <h3>JEE Advanced Physics</h3>
+      <p>Challenging problems, multi-concept questions, and advanced simulations.</p>
+      <div class="course-meta"><span>📝 Tests</span><span>🔬 Sims</span><span>📄 Notes</span></div>
+    </a>
+    <a href="test.html?course=neet" class="course-card">
+      <span class="course-tag">NEET</span>
+      <h3>NEET Physics</h3>
+      <p>NCERT-based MCQs, assertion-reason, and NEET pattern full tests.</p>
+      <div class="course-meta"><span>📝 Tests</span><span>⚡ MCQs</span><span>📄 Notes</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section">
+  <div class="why-grid">
+    <div class="why-visual fade-in">
+      <div class="quote-block">
+        <p>Physics is not just a subject — it is the language the universe uses to explain itself.</p>
+        <cite>— Schrödinger Classes</cite>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Why us</div>
+      <div class="section-title" style="font-size:2rem; margin-bottom:2rem;">Built for<br>Deep Understanding.</div>
+      <div class="why-points fade-in">
+        <div class="why-point">
+          <span class="why-num">01</span>
+          <div>
+            <h4>Concept-First Teaching</h4>
+            <p>Every topic is taught from the ground up — no shortcuts, no rote formulas. We build intuition before equations.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <span class="why-num">02</span>
+          <div>
+            <h4>One Teacher, Consistent Voice</h4>
+            <p>All content is designed and taught by a single dedicated physics educator — no confusion, no inconsistency.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <span class="why-num">03</span>
+          <div>
+            <h4>Free. Always.</h4>
+            <p>Every note, video, quiz, and simulation is free for all students. Quality education should have no price tag.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <span class="why-num">04</span>
+          <div>
+            <h4>Exam-Ready Content</h4>
+            <p>Tests and MCQs are closely aligned with JEE Mains, JEE Advanced, and NEET patterns — real exam preparation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<section class="yt-section">
+  <div class="section-label" style="color:var(--accent2)">YouTube Channel</div>
+  <div class="section-title">Latest Lectures.</div>
+  <div class="yt-grid fade-in">
+    <div class="yt-card">
+      <div class="yt-thumb">⚛️<div class="yt-play">▶</div></div>
+      <div class="yt-card-body">
+        <h4>Newton's Laws — Complete</h4>
+        <p>Class 11 · Mechanics Series</p>
+      </div>
+    </div>
+    <div class="yt-card">
+      <div class="yt-thumb">🌊<div class="yt-play">▶</div></div>
+      <div class="yt-card-body">
+        <h4>Wave Motion from Basics</h4>
+        <p>Class 11 · Waves &amp; Oscillations</p>
+      </div>
+    </div>
+    <div class="yt-card">
+      <div class="yt-thumb">⚡<div class="yt-play">▶</div></div>
+      <div class="yt-card-body">
+        <h4>Electrostatics — Gauss's Law</h4>
+        <p>Class 12 · Electrostatics</p>
+      </div>
+    </div>
+  </div>
+  <div class="yt-cta">
+    <a href="videos.html" class="btn-primary" style="background:var(--accent2);color:var(--ink)">View All Lectures →</a>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Ready to Start Your<br>Physics Journey?</h2>
+  <p>Join hundreds of students mastering physics with Schrödinger Classes.</p>
+  <a href="login.html" class="btn-primary">Create Free Account →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span class="footer-logo">Schrödinger<span>Classes</span></span>
+    <p>Expert physics coaching for Class 11, 12, JEE &amp; NEET students. Free notes, videos, quizzes, tests &amp; simulations.</p>
+  </div>
+  <div>
+    <h5>Learn</h5>
+    <ul>
+      <li><a href="notes.html">Notes</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="simulation.html">Simulations</a></li>
+    </ul>
+  </div>
+  <div>
+    <h5>Practice</h5>
+    <ul>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="test.html">Mock Tests</a></li>
+    </ul>
+  </div>
+  <div>
+    <h5>Account</h5>
+    <ul>
+      <li><a href="login.html">Student Login</a></li>
+      <li><a href="login.html">Register</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2025 Schrödinger Classes. All rights reserved.</span>
+  <span>Made with ❤️ for Physics Students</span>
+</div>
+
+<script>
+  // Intersection observer for fade-in
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

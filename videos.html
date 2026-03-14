@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Lectures — Schrödinger Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
+      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
+      --accent2:#c8a96e;--border:#e0ddd6;
+      --serif:'DM Serif Display',serif;
+      --sans:'DM Sans',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    body { background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300; }
+    nav {
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 4rem;
+      background:rgba(248,247,244,0.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
+    .nav-logo span{color:var(--accent2);}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+
+    .page-header{padding:8rem 4rem 4rem;background:var(--ink);color:var(--white);}
+    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
+    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
+    .page-sub{font-size:0.95rem;color:rgba(255,255,255,0.5);margin-top:0.6rem;}
+
+    /* Channel Banner */
+    .yt-banner{
+      background:var(--cream);border-bottom:1px solid var(--border);
+      padding:1.5rem 4rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+      flex-wrap:wrap;
+    }
+    .yt-info{display:flex;align-items:center;gap:1rem;}
+    .yt-avatar{
+      width:52px;height:52px;background:var(--accent);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--serif);font-size:1.4rem;color:var(--white);
+    }
+    .yt-info h3{font-family:var(--serif);font-size:1.1rem;}
+    .yt-info p{font-size:0.8rem;color:var(--muted);}
+    .yt-subscribe{
+      display:inline-flex;align-items:center;gap:0.5rem;
+      background:#FF0000;color:white;
+      padding:0.6rem 1.4rem;border-radius:3px;
+      font-family:var(--sans);font-size:0.85rem;font-weight:600;
+      text-decoration:none;transition:opacity 0.2s;
+    }
+    .yt-subscribe:hover{opacity:0.85;}
+
+    /* Filter */
+    .filter-bar{
+      display:flex;gap:0.8rem;flex-wrap:wrap;
+      padding:1.5rem 4rem;border-bottom:1px solid var(--border);
+      background:var(--white);position:sticky;top:72px;z-index:50;
+    }
+    .filter-btn{
+      padding:0.45rem 1.2rem;border-radius:2px;
+      border:1.5px solid var(--border);background:transparent;color:var(--muted);
+      font-family:var(--sans);font-size:0.8rem;font-weight:500;cursor:pointer;transition:all 0.2s;
+    }
+    .filter-btn.active,.filter-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
+
+    main{padding:3rem 4rem 5rem;}
+    .playlist-section{margin-bottom:4rem;}
+    .playlist-section h2{font-family:var(--serif);font-size:1.6rem;margin-bottom:0.3rem;}
+    .playlist-section .desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.8rem;}
+
+    .videos-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;
+    }
+    .vid-card{
+      background:var(--white);border:1px solid var(--border);border-radius:4px;
+      overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .vid-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.08);}
+    .vid-thumb{
+      position:relative;padding-top:56.25%;background:var(--ink);overflow:hidden;
+    }
+    .vid-thumb iframe{
+      position:absolute;top:0;left:0;width:100%;height:100%;border:none;
+    }
+    .vid-thumb .thumb-placeholder{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:0.5rem;color:rgba(255,255,255,0.4);font-size:0.8rem;
+    }
+    .thumb-placeholder .play-btn{
+      width:52px;height:52px;background:rgba(255,255,255,0.1);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+      border:2px solid rgba(255,255,255,0.2);
+      transition:background 0.2s;
+    }
+    .vid-card:hover .play-btn{background:rgba(255,255,255,0.2);}
+    .vid-body{padding:1.2rem;}
+    .vid-tag{
+      font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);background:rgba(200,169,110,0.1);
+      padding:0.2rem 0.55rem;border-radius:2px;display:inline-block;margin-bottom:0.6rem;
+    }
+    .vid-body h4{font-family:var(--serif);font-size:1rem;margin-bottom:0.3rem;}
+    .vid-body p{font-size:0.78rem;color:var(--muted);}
+    .vid-footer{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--border);
+      font-size:0.72rem;color:var(--muted);
+    }
+
+    /* Modal */
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;
+      display:none;align-items:center;justify-content:center;padding:2rem;
+    }
+    .modal-overlay.open{display:flex;}
+    .modal-box{
+      background:var(--ink);border-radius:6px;
+      width:100%;max-width:860px;overflow:hidden;position:relative;
+    }
+    .modal-close{
+      position:absolute;top:0.8rem;right:0.8rem;
+      background:rgba(255,255,255,0.1);border:none;color:white;
+      width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;z-index:10;
+    }
+    .modal-video{position:relative;padding-top:56.25%;}
+    .modal-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+    .modal-info{padding:1.2rem 1.5rem;color:white;}
+    .modal-info h3{font-family:var(--serif);font-size:1.2rem;}
+    .modal-info p{font-size:0.82rem;color:rgba(255,255,255,0.5);margin-top:0.3rem;}
+
+    @media(max-width:900px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      .page-header,.filter-bar,main,.yt-banner{padding-left:1.5rem;padding-right:1.5rem;}
+      .videos-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html">Notes</a>
+    <a href="videos.html" class="active">Videos</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="test.html">Tests</a>
+    <a href="simulation.html">Simulations</a>
+    <a href="login.html" class="nav-cta">Login</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-label">Video Lectures</div>
+  <div class="page-title">Learn from the<br>Source.</div>
+  <p class="page-sub">Full physics lectures — Class 11, 12, JEE & NEET. Free on YouTube.</p>
+</div>
+
+<!-- YouTube Channel Banner -->
+<div class="yt-banner">
+  <div class="yt-info">
+    <div class="yt-avatar">S</div>
+    <div>
+      <h3>Schrödinger Classes</h3>
+      <!-- ✏️ UPDATE: Replace with your actual subscriber count -->
+      <p>YouTube Channel · Physics for Class 11, 12, JEE & NEET</p>
+    </div>
+  </div>
+  <!-- ✏️ UPDATE: Replace YOUR_CHANNEL_HANDLE with your actual YouTube channel link -->
+  <a href="https://youtube.com/@YOUR_CHANNEL_HANDLE" target="_blank" class="yt-subscribe">
+    ▶ Subscribe on YouTube
+  </a>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterVids('all',this)">All</button>
+  <button class="filter-btn" onclick="filterVids('11',this)">Class 11</button>
+  <button class="filter-btn" onclick="filterVids('12',this)">Class 12</button>
+  <button class="filter-btn" onclick="filterVids('jee',this)">JEE</button>
+  <button class="filter-btn" onclick="filterVids('neet',this)">NEET</button>
+</div>
+
+<main>
+  <!-- ════════════════════════════════════════════════════
+       ✏️ HOW TO ADD YOUR VIDEOS:
+       1. Get YouTube video ID from: https://youtu.be/VIDEO_ID
+       2. Replace "VIDEO_ID_HERE" with your actual video ID
+       3. Set data-course to: 11 / 12 / jee / neet
+       ════════════════════════════════════════════════════ -->
+
+  <div class="playlist-section" data-course="11">
+    <h2>Class XI Physics</h2>
+    <p class="desc">Complete playlist — mechanics, waves, thermodynamics & more.</p>
+    <div class="videos-grid">
+
+      <!-- ✏️ VIDEO CARD TEMPLATE — duplicate and edit for each video -->
+      <div class="vid-card" onclick="openVideo('VIDEO_ID_HERE','Newton\'s Laws of Motion — Complete','Class 11 · Mechanics')">
+        <div class="vid-thumb">
+          <div class="thumb-placeholder">
+            <div class="play-btn">▶</div>
+            <span>Newton's Laws of Motion</span>
+          </div>
+        </div>
+        <div class="vid-body">
+          <span class="vid-tag">Class 11</span>
+          <h4>Newton's Laws of Motion</h4>
+          <p>Complete explanation with solved examples and JEE problems.</p>
+          <div class="vid-footer">
+            <span>Mechanics Series</span>
+            <span>▶ Watch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-card" onclick="openVideo('VIDEO_ID_HERE','Kinematics — 1D & 2D Motion','Class 11 · Mechanics')">
+        <div class="vid-thumb">
+          <div class="thumb-placeholder">
+            <div class="play-btn">▶</div>
+            <span>Kinematics</span>
+          </div>
+        </div>
+        <div class="vid-body">
+          <span class="vid-tag">Class 11</span>
+          <h4>Kinematics — 1D & 2D Motion</h4>
+          <p>Motion equations, graphs, projectile motion — full lecture.</p>
+          <div class="vid-footer">
+            <span>Mechanics Series</span>
+            <span>▶ Watch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-card" onclick="openVideo('VIDEO_ID_HERE','Work Energy & Power','Class 11')">
+        <div class="vid-thumb">
+          <div class="thumb-placeholder">
+            <div class="play-btn">▶</div>
+            <span>Work, Energy & Power</span>
+          </div>
+        </div>
+        <div class="vid-body">
+          <span class="vid-tag">Class 11</span>
+          <h4>Work, Energy & Power</h4>
+          <p>Work-energy theorem, conservative forces, collisions.</p>
+          <div class="vid-footer">
+            <span>Mechanics Series</span>
+            <span>▶ Watch</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="playlist-section" data-course="12">
+    <h2>Class XII Physics</h2>
+    <p class="desc">Electrostatics, magnetism, optics, modern physics — full coverage.</p>
+    <div class="videos-grid">
+
+      <div class="vid-card" onclick="openVideo('VIDEO_ID_HERE','Electric Field & Gauss Law','Class 12 · Electrostatics')">
+        <div class="vid-thumb">
+          <div class="thumb-placeholder">
+            <div class="play-btn">▶</div>
+            <span>Electric Field & Gauss Law</span>
+          </div>
+        </div>
+        <div class="vid-body">
+          <span class="vid-tag">Class 12</span>
+          <h4>Electric Field & Gauss's Law</h4>
+          <p>Field lines, flux, Gauss theorem applications.</p>
+          <div class="vid-footer">
+            <span>Electrostatics Series</span>
+            <span>▶ Watch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vid-card" onclick="openVideo('VIDEO_ID_HERE','Electromagnetic Induction','Class 12 · EMI')">
+        <div class="vid-thumb">
+          <div class="thumb-placeholder">
+            <div class="play-btn">▶</div>
+            <span>Electromagnetic Induction</span>
+          </div>
+        </div>
+        <div class="vid-body">
+          <span class="vid-tag">Class 12</span>
+          <h4>Electromagnetic Induction</h4>
+          <p>Faraday's law, Lenz's law, self and mutual inductance.</p>
+          <div class="vid-footer">
+            <span>EMI Series</span>
+            <span>▶ Watch</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Video Modal -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeVideo()">✕</button>
+    <div class="modal-video">
+      <iframe id="modalIframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <div class="modal-info">
+      <h3 id="modalTitle"></h3>
+      <p id="modalSub"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+function openVideo(id, title, sub) {
+  if (id === 'VIDEO_ID_HERE') {
+    alert('Add your YouTube video ID in the onclick attribute of this card!');
+    return;
+  }
+  document.getElementById('modalIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSub').textContent = sub;
+  document.getElementById('modal').classList.add('open');
+}
+function closeVideo() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modalIframe').src = '';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeVideo();
+}
+function filterVids(course, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.playlist-section').forEach(s=>{
+    s.style.display = (course==='all'||s.dataset.course===course) ? 'block' : 'none';
+  });
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeVideo(); });
+</script>
+</body>
+</html>

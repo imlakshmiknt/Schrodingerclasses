@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mock Tests — Schrödinger Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
+      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
+      --accent2:#c8a96e;--border:#e0ddd6;
+      --green:#27ae60;--red:#c0392b;--orange:#e67e22;
+      --serif:'DM Serif Display',serif;
+      --sans:'DM Sans',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 4rem;background:rgba(248,247,244,0.95);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+    }
+    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
+    .nav-logo span{color:var(--accent2);}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+
+    /* ── TEST SELECTOR ── */
+    #testSelector{padding:8rem 4rem 5rem;}
+    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
+    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;margin-bottom:0.6rem;}
+    .page-sub{font-size:0.95rem;color:var(--muted);margin-bottom:3rem;}
+    .tests-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;}
+    .test-card{
+      background:var(--cream);border:1px solid var(--border);border-radius:6px;
+      padding:2rem;transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .test-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.07);}
+    .test-badge{
+      font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);background:rgba(200,169,110,0.15);
+      padding:0.2rem 0.6rem;border-radius:2px;display:inline-block;margin-bottom:1rem;
+    }
+    .test-card h3{font-family:var(--serif);font-size:1.15rem;margin-bottom:0.4rem;}
+    .test-card p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+    .test-meta{
+      display:flex;gap:1.2rem;margin-top:1.2rem;padding-top:1.2rem;
+      border-top:1px solid var(--border);font-size:0.78rem;color:var(--muted);flex-wrap:wrap;
+    }
+    .test-meta span{display:flex;align-items:center;gap:0.3rem;}
+    .btn-start{
+      width:100%;margin-top:1.2rem;padding:0.75rem;
+      background:var(--accent);color:white;border:none;border-radius:3px;
+      font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;
+      transition:background 0.2s;
+    }
+    .btn-start:hover{background:var(--accent2);color:var(--ink);}
+
+    /* ── ACTIVE TEST ── */
+    #activeTest{display:none;}
+    .test-topbar{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      background:var(--accent);color:white;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.8rem 2rem;flex-wrap:wrap;gap:0.5rem;
+    }
+    .test-topbar h3{font-family:var(--serif);font-size:1rem;}
+    .timer{
+      font-family:var(--mono);font-size:1.1rem;font-weight:600;
+      background:rgba(255,255,255,0.15);padding:0.3rem 0.8rem;border-radius:3px;
+    }
+    .timer.warning{background:rgba(200,0,0,0.4);}
+    .test-body{
+      display:flex;gap:0;min-height:100vh;padding-top:56px;
+    }
+    .test-main{flex:1;padding:2rem 3rem;}
+    .test-sidebar{
+      width:220px;background:var(--cream);border-left:1px solid var(--border);
+      padding:1.5rem;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
+    }
+    .sidebar-title{
+      font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:1rem;
+    }
+    .q-nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+    .q-nav-btn{
+      width:100%;aspect-ratio:1;background:white;border:1.5px solid var(--border);
+      border-radius:3px;font-family:var(--mono);font-size:0.75rem;cursor:pointer;
+      transition:all 0.15s;
+    }
+    .q-nav-btn.answered{background:var(--green);color:white;border-color:var(--green);}
+    .q-nav-btn.current{border-color:var(--accent);color:var(--accent);}
+    .q-nav-btn.skipped{background:var(--orange);color:white;border-color:var(--orange);}
+
+    .test-q-card{max-width:700px;}
+    .q-num-badge{
+      font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;
+      text-transform:uppercase;color:var(--accent2);margin-bottom:0.8rem;
+    }
+    .q-text-main{
+      font-family:var(--serif);font-size:1.15rem;line-height:1.6;
+      margin-bottom:2rem;color:var(--ink);
+    }
+    .test-options{display:flex;flex-direction:column;gap:0.7rem;}
+    .test-opt{
+      background:white;border:1.5px solid var(--border);border-radius:4px;
+      padding:0.9rem 1.2rem;text-align:left;font-family:var(--sans);font-size:0.9rem;
+      cursor:pointer;transition:all 0.15s;display:flex;gap:0.8rem;align-items:center;
+    }
+    .test-opt:hover{border-color:var(--accent);}
+    .test-opt.selected{background:rgba(26,58,92,0.07);border-color:var(--accent);}
+    .test-opt.correct{background:rgba(39,174,96,0.1);border-color:var(--green);}
+    .test-opt.wrong{background:rgba(192,57,43,0.08);border-color:var(--red);}
+    .opt-circle{
+      width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--mono);font-size:0.72rem;font-weight:600;flex-shrink:0;
+    }
+    .test-opt.selected .opt-circle,.test-opt.correct .opt-circle{
+      background:var(--accent);color:white;border-color:var(--accent);
+    }
+    .test-opt.wrong .opt-circle{background:var(--red);color:white;border-color:var(--red);}
+    .test-explanation{
+      margin-top:1.2rem;padding:1rem 1.2rem;
+      background:rgba(26,58,92,0.05);border-left:3px solid var(--accent);
+      border-radius:0 4px 4px 0;font-size:0.875rem;display:none;line-height:1.65;
+    }
+    .test-explanation.show{display:block;}
+    .marking-scheme{
+      font-family:var(--mono);font-size:0.72rem;color:var(--muted);
+      margin-bottom:1rem;
+    }
+    .marking-scheme span{margin-right:1rem;}
+
+    .test-btn-row{
+      display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;
+    }
+    .btn-test{
+      padding:0.7rem 1.6rem;border-radius:3px;
+      font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.2s;
+    }
+    .btn-save{background:var(--accent);color:white;border:none;}
+    .btn-save:hover{background:var(--accent2);color:var(--ink);}
+    .btn-skip{background:transparent;color:var(--orange);border:1.5px solid var(--orange);}
+    .btn-skip:hover{background:var(--orange);color:white;}
+    .btn-submit-test{background:var(--red);color:white;border:none;margin-left:auto;}
+    .btn-submit-test:hover{opacity:0.85;}
+
+    /* RESULT */
+    #testResult{display:none;padding:6rem 4rem 4rem;text-align:center;}
+    .result-box{max-width:600px;margin:0 auto;}
+    .result-box h2{font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem;}
+    .score-row{
+      display:flex;gap:1.5rem;justify-content:center;margin:2.5rem 0;flex-wrap:wrap;
+    }
+    .score-chip{
+      background:var(--cream);border:1px solid var(--border);
+      border-radius:6px;padding:1.2rem 2rem;min-width:120px;
+    }
+    .chip-num{font-family:var(--serif);font-size:2rem;color:var(--accent);}
+    .chip-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--mono);}
+
+    @media(max-width:900px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      #testSelector{padding:7rem 1.5rem 4rem;}
+      .test-sidebar{display:none;}
+      .test-main{padding:1.5rem;}
+      #testResult{padding:5rem 1.5rem 3rem;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html">Notes</a>
+    <a href="videos.html">Videos</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="test.html" class="active">Tests</a>
+    <a href="simulation.html">Simulations</a>
+    <a href="login.html" class="nav-cta">Login</a>
+  </div>
+</nav>
+
+<!-- TEST SELECTOR -->
+<div id="testSelector">
+  <div class="page-label">Exam Practice</div>
+  <div class="page-title">Mock Tests</div>
+  <p class="page-sub">JEE & NEET pattern full-length tests. Timed. Scored. Analysed.</p>
+  <div class="tests-grid" id="testsGrid"></div>
+</div>
+
+<!-- ACTIVE TEST -->
+<div id="activeTest">
+  <div class="test-topbar">
+    <h3 id="testName">Test</h3>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="timer" id="timer">60:00</div>
+      <button class="btn-test btn-submit-test" onclick="submitTest()">Submit Test</button>
+    </div>
+  </div>
+  <div class="test-body">
+    <div class="test-main" id="testMain"></div>
+    <div class="test-sidebar">
+      <div class="sidebar-title">Question Palette</div>
+      <div class="q-nav-grid" id="qNavGrid"></div>
+      <div style="margin-top:1.5rem;font-size:0.75rem;color:var(--muted);line-height:1.8;">
+        <div>🟩 Answered</div>
+        <div>🟧 Skipped</div>
+        <div>⬜ Not visited</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="testResult">
+  <div class="result-box">
+    <div class="page-label">Test Complete</div>
+    <h2 id="resultTitle">Results</h2>
+    <div class="score-row" id="scoreRow"></div>
+    <p id="resultMsg" style="color:var(--muted);margin-bottom:2rem;"></p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-test btn-save" onclick="backToTests()">← All Tests</button>
+      <button class="btn-test btn-save" onclick="reviewTest()">Review Answers</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// TEST DATA
+// ══════════════════════════════════════════════
+const TESTS = [
+  {
+    id:'jee-mini-1', title:'JEE Mains Mini Test 1',
+    type:'JEE Mains', duration:30, marks:'+4/-1',
+    desc:'10 questions covering Mechanics & Waves. JEE pattern marking.',
+    questions:[
+      {q:"A particle moves in a circle of radius 5 m with uniform speed 10 m/s. Its centripetal acceleration is:",options:["2 m/s²","20 m/s²","50 m/s²","100 m/s²"],ans:1,exp:"a = v²/r = 100/5 = 20 m/s²"},
+      {q:"The period of a simple pendulum doubles when:",options:["Length is doubled","Length is halved","Length becomes 4 times","Mass is doubled"],ans:2,exp:"T = 2π√(L/g). For T to double, √L must double, so L must become 4L."},
+      {q:"A spring of force constant k is cut into two equal halves. Each half has force constant:",options:["k/2","k","2k","4k"],ans:2,exp:"Force constant is inversely proportional to length. Cutting in half doubles k."},
+      {q:"The velocity of sound is maximum in:",options:["Air","Water","Steel","Vacuum"],ans:2,exp:"Sound travels fastest in solids due to high elasticity. Speed in steel ≈ 5000 m/s vs 340 m/s in air."},
+      {q:"In SHM, at extreme position:",options:["Velocity is max, acceleration is zero","Velocity is zero, acceleration is max","Both are max","Both are zero"],ans:1,exp:"At extreme position, displacement is max. v=0, a=ω²A (maximum)."},
+      {q:"Beats are produced by superposition of two waves of frequencies 200 Hz and 205 Hz. Beat frequency is:",options:["405 Hz","200 Hz","5 Hz","2.5 Hz"],ans:2,exp:"Beat frequency = |f₁ - f₂| = |200 - 205| = 5 Hz"},
+      {q:"A 2 kg object on a frictionless surface is pulled by 8 N for 4 s from rest. Final velocity is:",options:["1 m/s","8 m/s","16 m/s","4 m/s"],ans:2,exp:"a=F/m=4 m/s². v=u+at=0+4×4=16 m/s"},
+      {q:"Dimensional formula of angular momentum is:",options:["MLT⁻¹","ML²T⁻¹","ML²T⁻²","MLT⁻²"],ans:1,exp:"L=mvr. [L]=[M][LT⁻¹][L]=ML²T⁻¹"},
+      {q:"A bullet of mass 10g moving at 400 m/s is stopped by a wooden block. Momentum change is:",options:["4 kg·m/s","40 kg·m/s","0.4 kg·m/s","400 kg·m/s"],ans:0,exp:"p=mv=0.010×400=4 kg·m/s. Change = 4 - 0 = 4 kg·m/s"},
+      {q:"At resonance in a series LCR circuit, impedance is:",options:["Maximum","Zero","Equal to R","Equal to L"],ans:2,exp:"At resonance XL=XC, so they cancel. Z=√(R²+(XL-XC)²)=√(R²+0)=R"}
+    ]
+  },
+  {
+    id:'neet-mini-1', title:'NEET Physics Mini Test 1',
+    type:'NEET', duration:20, marks:'+4/-1',
+    desc:'8 NCERT-based NEET pattern questions. Single correct MCQ.',
+    questions:[
+      {q:"The unit of electric field intensity is:",options:["N/C","C/N","N·m","J/C²"],ans:0,exp:"E = F/q. Unit = Newton/Coulomb = N/C or V/m."},
+      {q:"When a charged particle moves perpendicular to a magnetic field, it:",options:["Slows down","Speeds up","Moves in a circle","Moves in a spiral"],ans:2,exp:"F=qv×B, force ⊥ velocity → circular motion. Speed unchanged."},
+      {q:"Ohm's law is NOT obeyed by:",options:["Copper wire","Resistor","Diode","Nichrome wire"],ans:2,exp:"Diode is a non-ohmic device. Its V-I relationship is non-linear."},
+      {q:"Photoelectric effect proves:",options:["Wave nature of light","Particle nature of light","Both","Neither"],ans:1,exp:"Photoelectric effect cannot be explained by wave theory. It proves photon (particle) nature of light — Einstein 1905."},
+      {q:"The de Broglie wavelength of an electron is related to its momentum p as:",options:["λ=hp","λ=h/p","λ=p/h","λ=h/p²"],ans:1,exp:"de Broglie relation: λ = h/p = h/mv"},
+      {q:"Half life of a radioactive substance is 20 years. After 60 years, fraction remaining is:",options:["1/2","1/4","1/8","1/16"],ans:2,exp:"60 years = 3 half-lives. Fraction = (1/2)³ = 1/8"},
+      {q:"In Young's double slit experiment, fringe width β ∝:",options:["1/λ","1/D","d","λD/d"],ans:3,exp:"β = λD/d. Fringe width is proportional to λ and D, inversely to d."},
+      {q:"Energy stored in a capacitor of capacitance C at voltage V is:",options:["CV","CV²","CV²/2","C²V"],ans:2,exp:"Energy U = ½CV²"}
+    ]
+  }
+];
+
+let activeTest=null, answers={}, skipped={}, timerInterval=null, timeLeft=0, reviewed=false;
+
+function buildTestGrid(){
+  const grid=document.getElementById('testsGrid');
+  grid.innerHTML=TESTS.map(t=>`
+    <div class="test-card">
+      <span class="test-badge">${t.type}</span>
+      <h3>${t.title}</h3>
+      <p>${t.desc}</p>
+      <div class="test-meta">
+        <span>⏱ ${t.duration} min</span>
+        <span>📝 ${t.questions.length} Q</span>
+        <span>🎯 ${t.marks}</span>
+      </div>
+      <button class="btn-start" onclick="startTest('${t.id}')">Start Test →</button>
+    </div>
+  `).join('');
+}
+
+function startTest(id){
+  activeTest=TESTS.find(t=>t.id===id);
+  answers={}; skipped={}; reviewed=false;
+  timeLeft=activeTest.duration*60;
+  document.getElementById('testSelector').style.display='none';
+  document.getElementById('testResult').style.display='none';
+  document.getElementById('activeTest').style.display='block';
+  document.getElementById('testName').textContent=activeTest.title;
+  buildQNav(); showQ(0); startTimer();
+}
+
+let currentQIdx=0;
+function showQ(idx){
+  currentQIdx=idx;
+  const q=activeTest.questions[idx];
+  const total=activeTest.questions.length;
+  const sel=answers[idx];
+  const isReviewed=reviewed;
+
+  document.getElementById('testMain').innerHTML=`
+    <div class="test-q-card">
+      <div class="marking-scheme">
+        <span>✅ Correct: +4</span><span>❌ Wrong: -1</span><span>⬜ Unattempted: 0</span>
+      </div>
+      <div class="q-num-badge">Question ${idx+1} of ${total}</div>
+      <div class="q-text-main">${q.q}</div>
+      <div class="test-options">
+        ${q.options.map((opt,i)=>{
+          let cls='test-opt';
+          if(isReviewed){
+            if(i===q.ans) cls+=' correct';
+            else if(i===sel&&sel!==q.ans) cls+=' wrong';
+          } else if(i===sel) cls+=' selected';
+          return `<button class="${cls}" onclick="selectOpt(${i})" ${isReviewed?'disabled':''}>
+            <span class="opt-circle">${String.fromCharCode(65+i)}</span>${opt}
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="test-explanation ${isReviewed?'show':''}" id="testExp">${q.explanation||''}</div>
+      <div class="test-btn-row">
+        ${idx>0?`<button class="btn-test btn-skip" onclick="showQ(${idx-1})">← Prev</button>`:''}
+        ${!isReviewed?`<button class="btn-test btn-skip" onclick="skipQ(${idx})">Skip →</button>`:''}
+        ${idx<total-1?`<button class="btn-test btn-save" onclick="saveAndNext(${idx})">Save & Next →</button>`:
+          !isReviewed?`<button class="btn-test btn-save" onclick="submitTest()">Submit Test</button>`:''}
+      </div>
+    </div>
+  `;
+  buildQNav();
+}
+
+function selectOpt(i){
+  if(reviewed) return;
+  answers[currentQIdx]=i; delete skipped[currentQIdx];
+  document.querySelectorAll('.test-opt').forEach((b,idx)=>{
+    b.classList.toggle('selected',idx===i);
+  });
+}
+function saveAndNext(idx){
+  showQ(Math.min(idx+1, activeTest.questions.length-1));
+}
+function skipQ(idx){
+  skipped[idx]=true; delete answers[idx];
+  if(idx<activeTest.questions.length-1) showQ(idx+1);
+}
+
+function buildQNav(){
+  const grid=document.getElementById('qNavGrid');
+  if(!grid) return;
+  grid.innerHTML=activeTest.questions.map((_,i)=>{
+    let cls='q-nav-btn';
+    if(answers[i]!==undefined) cls+=' answered';
+    else if(skipped[i]) cls+=' skipped';
+    if(i===currentQIdx) cls+=' current';
+    return `<button class="${cls}" onclick="showQ(${i})">${i+1}</button>`;
+  }).join('');
+}
+
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  updateTimerDisplay();
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft<=0){ clearInterval(timerInterval); submitTest(); }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60), s=timeLeft%60;
+  const el=document.getElementById('timer');
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('warning', timeLeft<=120);
+}
+
+function submitTest(){
+  clearInterval(timerInterval);
+  let correct=0, wrong=0, unattempted=0;
+  activeTest.questions.forEach((_,i)=>{
+    if(answers[i]===undefined) unattempted++;
+    else if(answers[i]===activeTest.questions[i].ans) correct++;
+    else wrong++;
+  });
+  const total=activeTest.questions.length;
+  const score=correct*4 - wrong*1;
+  const maxScore=total*4;
+  const pct=Math.round((score/maxScore)*100);
+
+  document.getElementById('activeTest').style.display='none';
+  document.getElementById('testResult').style.display='block';
+  document.getElementById('resultTitle').textContent=activeTest.title;
+  document.getElementById('scoreRow').innerHTML=`
+    <div class="score-chip"><div class="chip-num">${score}</div><div class="chip-label">Score</div></div>
+    <div class="score-chip"><div class="chip-num">${correct}</div><div class="chip-label">Correct</div></div>
+    <div class="score-chip"><div class="chip-num">${wrong}</div><div class="chip-label">Wrong</div></div>
+    <div class="score-chip"><div class="chip-num">${unattempted}</div><div class="chip-label">Skipped</div></div>
+    <div class="score-chip"><div class="chip-num">${pct}%</div><div class="chip-label">Accuracy</div></div>
+  `;
+  document.getElementById('resultMsg').textContent=
+    pct>=80?'Outstanding! You are JEE ready! 🎉':
+    pct>=60?'Good performance! Keep it up! 💪':
+    'Keep practicing. Review your answers below. 📚';
+}
+
+function reviewTest(){
+  reviewed=true;
+  document.getElementById('testResult').style.display='none';
+  document.getElementById('activeTest').style.display='block';
+  document.getElementById('timer').textContent='REVIEW';
+  document.getElementById('timer').classList.remove('warning');
+  showQ(0);
+}
+function backToTests(){
+  document.getElementById('testResult').style.display='none';
+  document.getElementById('activeTest').style.display='none';
+  document.getElementById('testSelector').style.display='block';
+}
+
+buildTestGrid();
+</script>
+</body>
+</html>

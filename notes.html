@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes — Schrödinger Classes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
+      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
+      --accent2:#c8a96e;--border:#e0ddd6;
+      --serif:'DM Serif Display',serif;
+      --sans:'DM Sans',sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    body { background:var(--white); color:var(--ink); font-family:var(--sans); font-weight:300; }
+    nav {
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:1.2rem 4rem;
+      background:rgba(248,247,244,0.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
+    .nav-logo span{color:var(--accent2);}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+
+    .page-header{
+      padding:8rem 4rem 4rem;background:var(--cream);
+      border-bottom:1px solid var(--border);
+    }
+    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
+    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;color:var(--ink);}
+    .page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;max-width:500px;}
+
+    .filter-bar{
+      display:flex;gap:0.8rem;flex-wrap:wrap;
+      padding:1.5rem 4rem;
+      border-bottom:1px solid var(--border);
+      background:var(--white);
+      position:sticky;top:72px;z-index:50;
+    }
+    .filter-btn{
+      padding:0.45rem 1.2rem;border-radius:2px;
+      border:1.5px solid var(--border);
+      background:transparent;color:var(--muted);
+      font-family:var(--sans);font-size:0.8rem;font-weight:500;
+      cursor:pointer;transition:all 0.2s;
+    }
+    .filter-btn.active,.filter-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
+
+    main{padding:3rem 4rem 5rem;}
+
+    .course-section{margin-bottom:4rem;}
+    .course-section h2{
+      font-family:var(--serif);font-size:1.6rem;
+      color:var(--ink);margin-bottom:0.3rem;
+    }
+    .course-section .course-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.8rem;}
+    .notes-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:1.2rem;
+    }
+    .note-card{
+      background:var(--white);border:1px solid var(--border);border-radius:4px;
+      padding:1.5rem;
+      transition:transform 0.2s,box-shadow 0.2s;
+      position:relative;
+    }
+    .note-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.06);}
+    .note-tag{
+      font-family:var(--mono);font-size:0.65rem;
+      letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--accent2);background:rgba(200,169,110,0.1);
+      border:1px solid rgba(200,169,110,0.2);
+      padding:0.2rem 0.55rem;border-radius:2px;
+      display:inline-block;margin-bottom:0.8rem;
+    }
+    .note-card h4{font-family:var(--serif);font-size:1.05rem;margin-bottom:0.4rem;}
+    .note-card p{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+    .note-footer{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);
+    }
+    .note-meta{font-size:0.72rem;color:var(--muted);}
+    .note-dl{
+      display:inline-flex;align-items:center;gap:0.4rem;
+      padding:0.4rem 0.9rem;background:var(--cream);
+      border:1px solid var(--border);border-radius:2px;
+      font-size:0.75rem;font-weight:500;color:var(--accent);
+      text-decoration:none;transition:all 0.2s;cursor:pointer;
+    }
+    .note-dl:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
+    .note-badge{
+      position:absolute;top:1rem;right:1rem;
+      font-family:var(--mono);font-size:0.62rem;
+      letter-spacing:0.08em;text-transform:uppercase;
+      background:var(--accent);color:var(--white);
+      padding:0.15rem 0.5rem;border-radius:2px;
+    }
+    .upload-note{
+      background:var(--cream);border:1.5px dashed var(--border);border-radius:4px;
+      padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem;
+    }
+    .upload-note strong{display:block;font-family:var(--serif);color:var(--ink);margin-bottom:0.3rem;}
+
+    @media(max-width:900px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      .page-header,.filter-bar,main{padding-left:1.5rem;padding-right:1.5rem;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <div class="nav-links">
+    <a href="notes.html" class="active">Notes</a>
+    <a href="videos.html">Videos</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="test.html">Tests</a>
+    <a href="simulation.html">Simulations</a>
+    <a href="login.html" class="nav-cta">Login</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-label">Study Material</div>
+  <div class="page-title">Chapter Notes</div>
+  <p class="page-sub">Well-structured, concept-rich notes for every chapter. Free to download.</p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterNotes('all',this)">All</button>
+  <button class="filter-btn" onclick="filterNotes('11',this)">Class 11</button>
+  <button class="filter-btn" onclick="filterNotes('12',this)">Class 12</button>
+  <button class="filter-btn" onclick="filterNotes('jee',this)">JEE</button>
+  <button class="filter-btn" onclick="filterNotes('neet',this)">NEET</button>
+</div>
+
+<main>
+  <!-- CLASS 11 -->
+  <div class="course-section" data-course="11">
+    <h2>Class XI Physics</h2>
+    <p class="course-desc">NCERT + JEE/NEET extended topics — complete Class 11 curriculum.</p>
+    <div class="notes-grid">
+      <div class="note-card">
+        <span class="note-tag">Ch. 1</span>
+        <h4>Physical World & Measurement</h4>
+        <p>Units, dimensions, significant figures, error analysis.</p>
+        <div class="note-footer">
+          <span class="note-meta">12 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-badge">New</span>
+        <span class="note-tag">Ch. 2</span>
+        <h4>Kinematics</h4>
+        <p>Motion in a straight line, projectile motion, relative velocity.</p>
+        <div class="note-footer">
+          <span class="note-meta">18 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 3</span>
+        <h4>Laws of Motion</h4>
+        <p>Newton's laws, friction, circular motion dynamics.</p>
+        <div class="note-footer">
+          <span class="note-meta">16 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 4</span>
+        <h4>Work, Energy & Power</h4>
+        <p>Work-energy theorem, potential energy, collisions.</p>
+        <div class="note-footer">
+          <span class="note-meta">14 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 5</span>
+        <h4>Gravitation</h4>
+        <p>Kepler's laws, orbital velocity, escape velocity, satellites.</p>
+        <div class="note-footer">
+          <span class="note-meta">15 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 6</span>
+        <h4>Oscillations & Waves</h4>
+        <p>SHM, wave equation, standing waves, Doppler effect.</p>
+        <div class="note-footer">
+          <span class="note-meta">20 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <!-- Add more note card or upload placeholder -->
+      <div class="upload-note">
+        <strong>More chapters coming soon</strong>
+        Add your PDFs to this folder and update the links above.
+      </div>
+    </div>
+  </div>
+
+  <!-- CLASS 12 -->
+  <div class="course-section" data-course="12">
+    <h2>Class XII Physics</h2>
+    <p class="course-desc">Full Class 12 syllabus — electrostatics to modern physics.</p>
+    <div class="notes-grid">
+      <div class="note-card">
+        <span class="note-tag">Ch. 1</span>
+        <h4>Electric Charges & Fields</h4>
+        <p>Coulomb's law, electric field, Gauss's theorem, dipole.</p>
+        <div class="note-footer">
+          <span class="note-meta">17 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 2</span>
+        <h4>Electrostatic Potential</h4>
+        <p>Potential, capacitance, energy stored, dielectrics.</p>
+        <div class="note-footer">
+          <span class="note-meta">15 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 3</span>
+        <h4>Current Electricity</h4>
+        <p>Ohm's law, Kirchhoff's rules, Wheatstone bridge.</p>
+        <div class="note-footer">
+          <span class="note-meta">18 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 4</span>
+        <h4>Magnetism & Matter</h4>
+        <p>Biot-Savart, Ampere's law, magnetic properties.</p>
+        <div class="note-footer">
+          <span class="note-meta">16 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 5</span>
+        <h4>Electromagnetic Induction</h4>
+        <p>Faraday's law, Lenz's law, mutual inductance, AC circuits.</p>
+        <div class="note-footer">
+          <span class="note-meta">19 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 6</span>
+        <h4>Optics</h4>
+        <p>Ray optics, wave optics, interference, diffraction.</p>
+        <div class="note-footer">
+          <span class="note-meta">22 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+      <div class="note-card">
+        <span class="note-tag">Ch. 7</span>
+        <h4>Dual Nature & Atoms</h4>
+        <p>Photoelectric effect, de Broglie, Bohr model, spectra.</p>
+        <div class="note-footer">
+          <span class="note-meta">14 pages</span>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Toast notification -->
+<div id="toast" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(2rem);opacity:0;background:var(--accent);color:white;padding:0.8rem 1.8rem;border-radius:3px;font-size:0.85rem;transition:all 0.3s;pointer-events:none;z-index:999;">
+  PDF upload karo notes folder mein aur link update karo! 📂
+</div>
+
+<script>
+function filterNotes(course, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.course-section').forEach(sec => {
+    sec.style.display = (course === 'all' || sec.dataset.course === course) ? 'block' : 'none';
+  });
+}
+function notifyUpload(e) {
+  e.preventDefault();
+  const t = document.getElementById('toast');
+  t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(2rem)'; }, 3000);
+}
+</script>
+</body>
+</html>
