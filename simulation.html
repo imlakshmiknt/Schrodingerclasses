@@ -306,7 +306,43 @@ const CATALOG = [
     C.fillStyle=p.charge>0?'#f44':'#44f';C.shadowColor=p.charge>0?'#f44':'#44f';C.shadowBlur=10;
     C.beginPath();C.arc(cv._lx,cv._ly,8,0,Math.PI*2);C.fill();C.shadowBlur=0;
     C.fillStyle='white';C.font='bold 10px sans-serif';C.textAlign='center';C.fillText(p.charge>0?'+':'−',cv._lx,cv._ly+4);}},
-
+{id:'dipole',group:'elec',title:'Electric Dipole Field',tag:'Class 12',desc:'See how electric field lines form around a dipole — varies with distance.',
+ params:{separation:60,charge:1},
+ controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge Separation</span><div class="ctrl-value" id="p_ds">${p.separation}</div><input type="range" min="20" max="120" step="5" value="${p.separation}" oninput="p_ds.textContent=this.value;UP('separation',+this.value)"/></div><div class="data-box">Electric dipole:\n+q and -q separated\nby distance d\n\nField lines:\n+ to - outside\nField ∝ 1/r³\non axis & equatorial</div>`,
+ loop:(cv,p,t)=>{
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
+  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
+  const px=p.separation/2;
+  // Draw field lines
+  for(let l=0;l<20;l++){
+    const a=l*Math.PI*2/20;
+    C.strokeStyle=`hsla(${l*18},70%,60%,0.35)`;C.lineWidth=1.2;C.beginPath();
+    let x=cx+px+8*Math.cos(a),y=cy+8*Math.sin(a);C.moveTo(x,y);
+    for(let s=0;s<120;s++){
+      const dxP=x-(cx+px),dyP=y-cy,dxN=x-(cx-px),dyN=y-cy;
+      const rP=Math.sqrt(dxP**2+dyP**2)+0.1,rN=Math.sqrt(dxN**2+dyN**2)+0.1;
+      const fx=dxP/rP**3-dxN/rN**3,fy=dyP/rP**3-dyN/rN**3;
+      const m=Math.sqrt(fx**2+fy**2)+0.001;
+      x+=fx/m*3;y+=fy/m*3;
+      if(x<5||x>W-5||y<5||y>H-5)break;
+      C.lineTo(x,y);}C.stroke();}
+  // Charges
+  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=12;
+  C.beginPath();C.arc(cx+px,cy,10,0,Math.PI*2);C.fill();
+  C.fillStyle='#44f';C.shadowColor='#44f';
+  C.beginPath();C.arc(cx-px,cy,10,0,Math.PI*2);C.fill();
+  C.shadowBlur=0;
+  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';
+  C.fillText('+',cx+px,cy+4);C.fillText('−',cx-px,cy+4);
+  // Dipole arrow
+  C.strokeStyle='rgba(255,255,255,0.3)';C.lineWidth=1.5;C.setLineDash([4,4]);
+  C.beginPath();C.moveTo(cx-px,cy+20);C.lineTo(cx+px,cy+20);C.stroke();C.setLineDash([]);
+  C.fillStyle='rgba(255,255,255,0.4)';C.font='9px monospace';C.textAlign='center';
+  C.fillText('d = '+p.separation+' units',cx,cy+35);
+  // Test charge moving
+  const angle=(t*.02)%(Math.PI*2);
+  const tr=p.separation*.9,tx=cx+tr*Math.cos(angle),ty=cy+tr*.55*Math.sin(angle);
+  C.fillStyle='#ffeb3b';C.beginPath();C.arc(tx,ty,5,0,Math.PI*2);C.fill();}},
   // MODERN PHYSICS
   {id:'photoelectric',group:'modern',title:'Photoelectric Effect',tag:'Class 12',desc:'Shine light on metal — electrons ejected based on frequency.',
    params:{frequency:6,intensity:3,workFunction:4},
