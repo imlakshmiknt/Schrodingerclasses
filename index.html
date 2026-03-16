@@ -1,74 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Schrödinger Classes — Physics Mastery</title>
+  <title>Schrödinger Classes — Physics by Lakshmi Kant Pandey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black: #0a0a0a;
-      --white: #f8f7f4;
-      --cream: #f0ede6;
-      --ink: #1a1a1a;
-      --muted: #6b6b6b;
-      --accent: #1a3a5c;
-      --accent2: #c8a96e;
-      --border: #e0ddd6;
-      --serif: 'DM Serif Display', serif;
-      --sans: 'DM Sans', sans-serif;
-      --mono: 'JetBrains Mono', monospace;
+      --bg: #f9f8f5;
+      --bg2: #f0ede5;
+      --ink: #16140f;
+      --ink2: #3d3a32;
+      --muted: #7a756a;
+      --accent: #0f2d4a;
+      --gold: #b8892e;
+      --gold2: #ddb96a;
+      --border: #ddd9cf;
+      --white: #ffffff;
+      --red: #c0392b;
+      --green: #1a6b3a;
+      --display: 'Cormorant Garamond', Georgia, serif;
+      --body: 'Outfit', sans-serif;
+      --mono: 'Fira Code', monospace;
+      --shadow: 0 4px 24px rgba(15,45,74,0.08);
+      --shadow-lg: 0 12px 48px rgba(15,45,74,0.14);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--white);
+      background: var(--bg);
       color: var(--ink);
-      font-family: var(--sans);
-      font-weight: 300;
+      font-family: var(--body);
+      font-weight: 400;
       line-height: 1.7;
       overflow-x: hidden;
     }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ── HAMBURGER MENU ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 4rem;
-      background: rgba(248,247,244,0.92);
-      backdrop-filter: blur(12px);
+      padding: 0.9rem 3rem;
+      background: rgba(249,248,245,0.93);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      transition: padding 0.3s;
+      transition: all 0.3s;
     }
+    nav.scrolled {
+      padding: 0.6rem 3rem;
+      box-shadow: var(--shadow);
+    }
+    .nav-brand { text-decoration: none; }
     .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.4rem;
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 600;
       color: var(--accent);
-      text-decoration: none;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
     }
-    .nav-logo span { color: var(--accent2); }
-    .nav-links { display: flex; gap: 2.4rem; align-items: center; }
+    .nav-logo span { color: var(--gold); }
+    .nav-tagline {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .nav-links { display: flex; gap: 0.2rem; align-items: center; }
     .nav-links a {
-      text-decoration: none; color: var(--muted);
-      font-size: 0.875rem; font-weight: 500;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      transition: color 0.2s;
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      transition: all 0.2s;
     }
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover { background: var(--bg2); color: var(--accent); }
     .nav-cta {
       background: var(--accent) !important;
-      color: var(--white) !important;
-      padding: 0.5rem 1.4rem !important;
-      border-radius: 2px !important;
+      color: white !important;
+      padding: 0.5rem 1.2rem !important;
+      border-radius: 8px !important;
       font-weight: 600 !important;
-      transition: background 0.2s !important;
+      margin-left: 0.5rem !important;
+      transition: all 0.2s !important;
+      box-shadow: 0 2px 8px rgba(15,45,74,0.2) !important;
     }
-    .nav-cta:hover { background: var(--accent2) !important; color: var(--ink) !important; }
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--ink) !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 16px rgba(184,137,46,0.3) !important;
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(249,248,245,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.6rem 2rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+      letter-spacing: -0.01em;
+    }
+    .mobile-nav a:hover { background: var(--bg2); color: var(--gold); }
+    .mobile-nav .m-cta {
+      background: var(--accent) !important;
+      color: white !important;
+      font-size: 1.2rem !important;
+      margin-top: 1rem !important;
+      padding: 0.8rem 2.5rem !important;
+    }
 
     /* ── HERO ── */
     .hero {
@@ -76,326 +171,500 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      padding: 8rem 4rem 4rem;
-      gap: 4rem;
+      padding: 7rem 3rem 4rem;
+      gap: 3rem;
       position: relative;
       overflow: hidden;
     }
-    .hero::before {
-      content: 'Ψ';
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(184,137,46,0.06) 0%, transparent 65%),
+                  radial-gradient(ellipse at 20% 80%, rgba(15,45,74,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-psi {
       position: absolute;
-      right: -2rem; top: 50%;
+      right: -1rem; top: 50%;
       transform: translateY(-50%);
-      font-size: 28rem;
-      font-family: var(--serif);
-      color: rgba(26,58,92,0.04);
+      font-family: var(--display);
+      font-size: 30vw;
+      color: rgba(15,45,74,0.03);
       pointer-events: none;
       line-height: 1;
+      user-select: none;
     }
     .hero-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent2);
-      background: rgba(200,169,110,0.1);
-      border: 1px solid rgba(200,169,110,0.3);
-      padding: 0.3rem 0.9rem;
-      border-radius: 2px;
-      margin-bottom: 1.6rem;
+      color: var(--gold);
+      background: rgba(184,137,46,0.1);
+      border: 1px solid rgba(184,137,46,0.25);
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
     }
+    .hero-badge::before { content: '⚡'; }
     .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.8rem, 5vw, 4.8rem);
-      line-height: 1.1;
-      letter-spacing: -0.03em;
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5.5vw, 5.2rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
       color: var(--ink);
       margin-bottom: 1.2rem;
+      animation: fadeUp 0.6s ease both 0.1s;
     }
     .hero h1 em {
       font-style: italic;
+      color: var(--gold);
+    }
+    .hero h1 strong {
       color: var(--accent);
+      font-weight: 700;
     }
     .hero-sub {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--muted);
-      max-width: 440px;
-      margin-bottom: 2.4rem;
+      max-width: 420px;
+      margin-bottom: 2.2rem;
       font-weight: 400;
+      line-height: 1.8;
+      animation: fadeUp 0.6s ease both 0.2s;
     }
-    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s ease both 0.3s;
+    }
     .btn-primary {
       background: var(--accent);
-      color: var(--white);
-      padding: 0.85rem 2rem;
-      border: none; border-radius: 2px;
-      font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: background 0.2s, transform 0.2s;
-      display: inline-block;
+      color: white;
+      padding: 0.85rem 1.8rem;
+      border: none; border-radius: 10px;
+      font-family: var(--body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.25s;
+      box-shadow: 0 4px 16px rgba(15,45,74,0.2);
     }
-    .btn-primary:hover { background: var(--accent2); color: var(--ink); transform: translateY(-1px); }
+    .btn-primary:hover {
+      background: var(--gold);
+      color: var(--ink);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184,137,46,0.3);
+    }
     .btn-outline {
       background: transparent;
       color: var(--accent);
-      padding: 0.85rem 2rem;
+      padding: 0.85rem 1.8rem;
       border: 1.5px solid var(--accent);
-      border-radius: 2px;
-      font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
-      cursor: pointer; text-decoration: none;
-      transition: all 0.2s;
-      display: inline-block;
+      border-radius: 10px;
+      font-family: var(--body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.25s;
     }
-    .btn-outline:hover { background: var(--accent); color: var(--white); }
-
+    .btn-outline:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
     .hero-stats {
-      display: flex; gap: 2.4rem; margin-top: 3rem;
+      display: flex;
+      gap: 2rem;
+      margin-top: 3rem;
       padding-top: 2rem;
       border-top: 1px solid var(--border);
+      animation: fadeUp 0.6s ease both 0.4s;
     }
-    .stat-item { text-align: left; }
+    .stat-item { }
     .stat-num {
-      font-family: var(--serif);
-      font-size: 2rem;
+      font-family: var(--display);
+      font-size: 2.2rem;
+      font-weight: 700;
       color: var(--accent);
       line-height: 1;
     }
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-top: 0.2rem;
+      font-family: var(--mono);
     }
 
-    /* Hero right — formula card */
+    /* Hero right — formula cards */
     .hero-visual {
-      position: relative;
-      display: flex; flex-direction: column; gap: 1.2rem;
-      animation: floatIn 1s ease both 0.3s;
-    }
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      animation: fadeLeft 0.8s ease both 0.3s;
     }
     .formula-card {
-      background: var(--cream);
+      background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.6rem 2rem;
+      border-radius: 14px;
+      padding: 1.4rem 1.8rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      cursor: default;
     }
-    .formula-card .card-label {
+    .formula-card:hover {
+      transform: translateX(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--gold2);
+    }
+    .card-label {
       font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 0.8rem;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
     }
-    .formula-card .formula {
-      font-family: var(--serif);
-      font-size: 1.5rem;
+    .formula {
+      font-family: var(--display);
+      font-size: 1.6rem;
+      font-weight: 600;
       color: var(--accent);
       letter-spacing: 0.02em;
     }
     .formula-card p {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--muted);
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
     }
 
-    /* ── FEATURES ── */
-    .section { padding: 6rem 4rem; }
+    /* ── SECTIONS ── */
+    .section { padding: 5rem 3rem; }
+    .section-bg { background: var(--bg2); }
+    .section-dark { background: var(--accent); color: white; }
+
     .section-label {
       font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 0.8rem;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
     }
     .section-title {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-family: var(--display);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 600;
       line-height: 1.15;
       letter-spacing: -0.02em;
-      margin-bottom: 3.5rem;
+      margin-bottom: 3rem;
     }
 
+    /* ── FEATURES GRID ── */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5px;
-      background: var(--border);
-      border: 1.5px solid var(--border);
+      gap: 1.2rem;
     }
     .feature-card {
       background: var(--white);
-      padding: 2.5rem;
-      transition: background 0.2s;
-    }
-    .feature-card:hover { background: var(--cream); }
-    .feature-icon {
-      width: 44px; height: 44px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--cream);
       border: 1px solid var(--border);
-      border-radius: 2px;
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    .feature-card:hover::after { transform: scaleX(1); }
+    .feature-icon {
+      width: 46px; height: 46px;
+      background: rgba(15,45,74,0.06);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
       font-size: 1.3rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.2rem;
     }
     .feature-card h3 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 1.2rem;
+      font-weight: 600;
       color: var(--ink);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
     .feature-card p {
-      font-size: 0.875rem;
+      font-size: 0.82rem;
       color: var(--muted);
-      line-height: 1.65;
+      line-height: 1.7;
     }
     .feature-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
       margin-top: 1rem;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
       color: var(--accent);
       text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s;
+      transition: gap 0.2s;
     }
-    .feature-link:hover { border-color: var(--accent); }
+    .feature-link:hover { gap: 0.6rem; color: var(--gold); }
 
     /* ── COURSES ── */
-    .courses-bg { background: var(--cream); }
     .courses-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
     }
     .course-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 14px;
+      padding: 1.8rem;
       text-decoration: none;
       color: inherit;
       display: block;
+      transition: all 0.3s;
     }
-    .course-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+    .course-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--gold2);
+    }
     .course-tag {
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent2);
-      background: rgba(200,169,110,0.1);
-      padding: 0.25rem 0.6rem;
-      border-radius: 2px;
+      color: var(--gold);
+      background: rgba(184,137,46,0.1);
+      border: 1px solid rgba(184,137,46,0.2);
+      padding: 0.22rem 0.6rem;
+      border-radius: 100px;
       display: inline-block;
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
     }
     .course-card h3 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: 1.15rem;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
     }
-    .course-card p { font-size: 0.83rem; color: var(--muted); }
+    .course-card p { font-size: 0.82rem; color: var(--muted); }
     .course-meta {
-      display: flex; gap: 1rem;
-      margin-top: 1.2rem; padding-top: 1.2rem;
+      display: flex; gap: 0.8rem; flex-wrap: wrap;
+      margin-top: 1.1rem; padding-top: 1rem;
       border-top: 1px solid var(--border);
-      font-size: 0.78rem; color: var(--muted);
+      font-size: 0.72rem; color: var(--muted);
     }
 
-    /* ── WHY SECTION ── */
+    /* ── WHY ── */
     .why-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: center;
     }
-    .why-visual {
-      position: relative;
-    }
     .quote-block {
       background: var(--accent);
-      color: var(--white);
+      border-radius: 20px;
       padding: 3rem;
-      border-radius: 4px;
       position: relative;
+      overflow: hidden;
     }
     .quote-block::before {
       content: '"';
-      font-family: var(--serif);
-      font-size: 6rem;
+      font-family: var(--display);
+      font-size: 8rem;
+      font-weight: 700;
       position: absolute;
-      top: -1.5rem; left: 2rem;
-      color: var(--accent2);
+      top: -2rem; left: 1.5rem;
+      color: rgba(184,137,46,0.3);
       line-height: 1;
     }
     .quote-block p {
-      font-family: var(--serif);
-      font-size: 1.2rem;
+      font-family: var(--display);
+      font-size: 1.3rem;
       font-style: italic;
+      color: white;
       line-height: 1.6;
+      position: relative;
     }
     .quote-block cite {
       display: block;
       margin-top: 1.2rem;
       font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent2);
+      color: var(--gold2);
       font-style: normal;
     }
-    .why-points { display: flex; flex-direction: column; gap: 1.8rem; }
+    .why-points { display: flex; flex-direction: column; gap: 1.6rem; }
     .why-point { display: flex; gap: 1.2rem; align-items: flex-start; }
     .why-num {
       font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--accent2);
-      background: rgba(200,169,110,0.1);
-      border: 1px solid rgba(200,169,110,0.25);
-      padding: 0.2rem 0.5rem;
-      border-radius: 2px;
+      font-size: 0.68rem;
+      color: var(--gold);
+      background: rgba(184,137,46,0.1);
+      border: 1px solid rgba(184,137,46,0.25);
+      padding: 0.22rem 0.55rem;
+      border-radius: 6px;
       flex-shrink: 0;
       margin-top: 0.2rem;
     }
     .why-point h4 {
-      font-family: var(--serif);
-      font-size: 1.05rem;
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .why-point p { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── TEACHER PROFILE ── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 960px;
+    }
+    .profile-photo-wrap {
+      text-align: center;
+    }
+    .profile-photo {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      border: 4px solid var(--gold);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(15,45,74,0.2);
+      transition: transform 0.3s;
+    }
+    .profile-photo:hover { transform: scale(1.03); }
+    .profile-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 50%;
+    }
+    .profile-photo .initials {
+      font-family: var(--display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--gold2);
+    }
+    .profile-name {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 1.1rem;
+    }
+    .profile-role {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.3rem;
+    }
+    .profile-bio {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.8rem;
+    }
+    .profile-bio em { color: var(--ink); font-style: italic; }
+    .creds-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+    }
+    .cred-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      transition: border-color 0.2s;
+    }
+    .cred-card:hover { border-color: var(--gold2); }
+    .cred-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 0.3rem;
     }
-    .why-point p { font-size: 0.875rem; color: var(--muted); }
+    .cred-val {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .cred-sub { font-size: 0.75rem; color: var(--muted); }
+    .profile-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag {
+      padding: 0.3rem 0.85rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .tag-dark { background: var(--accent); color: white; }
+    .tag-gold { background: rgba(184,137,46,0.12); color: var(--gold); border: 1px solid rgba(184,137,46,0.3); }
 
-    /* ── YOUTUBE SECTION ── */
-    .yt-section { background: var(--ink); color: var(--white); padding: 5rem 4rem; }
-    .yt-section .section-title { color: var(--white); }
+    /* ── YOUTUBE ── */
     .yt-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 1.2rem;
     }
     .yt-card {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
+      border-radius: 14px;
       overflow: hidden;
-      transition: transform 0.2s;
+      transition: all 0.3s;
       cursor: pointer;
     }
-    .yt-card:hover { transform: translateY(-3px); }
+    .yt-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.1);
+      border-color: var(--gold2);
+    }
     .yt-thumb {
-      background: rgba(200,169,110,0.15);
+      background: rgba(184,137,46,0.15);
       height: 140px;
       display: flex; align-items: center; justify-content: center;
       font-size: 2.5rem;
@@ -403,135 +672,245 @@
     }
     .yt-play {
       position: absolute;
-      width: 44px; height: 44px;
+      width: 46px; height: 46px;
       background: rgba(255,255,255,0.15);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: all 0.2s;
     }
-    .yt-card-body { padding: 1.2rem; }
-    .yt-card h4 {
-      font-family: var(--serif);
+    .yt-card:hover .yt-play { background: var(--gold); border-color: var(--gold); }
+    .yt-body { padding: 1.1rem 1.3rem; }
+    .yt-body h4 {
+      font-family: var(--display);
       font-size: 1rem;
-      color: var(--white);
-      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 0.3rem;
     }
-    .yt-card p { font-size: 0.78rem; color: rgba(255,255,255,0.45); }
-    .yt-cta { text-align: center; margin-top: 2.5rem; }
+    .yt-body p { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
 
-    /* ── CTA BANNER ── */
+    /* ── CTA ── */
     .cta-banner {
-      background: var(--accent2);
-      padding: 5rem 4rem;
+      background: linear-gradient(135deg, var(--accent) 0%, #1a4a7a 100%);
+      padding: 5rem 3rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: 'Ψ';
+      position: absolute;
+      font-family: var(--display);
+      font-size: 20rem;
+      color: rgba(255,255,255,0.03);
+      right: -2rem; top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
     }
     .cta-banner h2 {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-size: clamp(2rem, 4vw, 3.2rem);
-      color: var(--ink);
-      margin-bottom: 1rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 0.8rem;
+      position: relative;
     }
-    .cta-banner p { color: rgba(26,26,26,0.65); margin-bottom: 2rem; }
+    .cta-banner p {
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--ink);
+      padding: 0.95rem 2.2rem;
+      border: none; border-radius: 10px;
+      font-family: var(--body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(184,137,46,0.4);
+      position: relative;
+    }
+    .btn-gold:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(184,137,46,0.5);
+    }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--black);
+      background: #0c1c2e;
       color: rgba(255,255,255,0.5);
-      padding: 3rem 4rem;
+      padding: 3.5rem 3rem;
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
+      grid-template-columns: 2.5fr 1fr 1fr 1fr;
       gap: 3rem;
     }
     .footer-logo {
-      font-family: var(--serif);
-      font-size: 1.3rem;
-      color: var(--white);
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: white;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-tagline {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
       margin-bottom: 0.8rem;
       display: block;
     }
-    .footer-logo span { color: var(--accent2); }
-    footer p { font-size: 0.83rem; line-height: 1.7; }
+    footer p { font-size: 0.82rem; line-height: 1.7; }
     footer h5 {
       font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--white);
+      color: white;
       margin-bottom: 1rem;
     }
     footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-    footer ul a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-    footer ul a:hover { color: var(--accent2); }
-    .footer-bottom {
-      background: var(--black);
-      border-top: 1px solid rgba(255,255,255,0.07);
-      padding: 1.2rem 4rem;
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.25);
-      display: flex; justify-content: space-between;
+    footer ul a {
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-size: 0.83rem;
+      transition: color 0.2s;
     }
-
-    /* ── MOBILE ── */
-    @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
-      .hero::before { font-size: 14rem; right: -1rem; opacity: 0.5; }
-      .hero-visual { display: none; }
-      .section { padding: 4rem 1.5rem; }
-      .features-grid { grid-template-columns: 1fr; }
-      .courses-grid { grid-template-columns: 1fr 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .why-visual { display: none; }
-      .yt-grid { grid-template-columns: 1fr; }
-      footer { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.5rem; }
-      .footer-bottom { padding: 1rem 1.5rem; flex-direction: column; gap: 0.3rem; }
-      .cta-banner, .yt-section { padding: 3.5rem 1.5rem; }
+    footer ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      background: #071320;
+      padding: 1.1rem 3rem;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     /* ── ANIMATIONS ── */
-    .fade-in {
-      opacity: 0; transform: translateY(16px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0.85rem 1.2rem; }
+      nav.scrolled { padding: 0.65rem 1.2rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 6rem 1.2rem 3rem;
+        min-height: auto;
+      }
+      .hero-psi { font-size: 55vw; opacity: 0.5; }
+      .hero-visual { display: none; }
+      .hero h1 { font-size: clamp(2.2rem, 8vw, 3.2rem); }
+      .hero-stats { gap: 1.5rem; }
+      .stat-num { font-size: 1.8rem; }
+
+      .section { padding: 3.5rem 1.2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .courses-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .quote-block { display: none; }
+      .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .profile-photo { width: 160px; height: 160px; }
+      .creds-grid { grid-template-columns: 1fr 1fr; }
+      .yt-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.2rem; gap: 2rem; }
+      .footer-bottom { padding: 1rem 1.2rem; flex-direction: column; gap: 0.3rem; text-align: center; }
+      .cta-banner { padding: 3.5rem 1.2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .courses-grid { grid-template-columns: 1fr; }
+      .creds-grid { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+    }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">Schrödinger<span>Classes</span></div>
+    <small class="nav-tagline">An initiative by Lakshmi Kant Pandey</small>
+  </a>
   <div class="nav-links">
     <a href="notes.html">Notes</a>
     <a href="videos.html">Videos</a>
     <a href="quiz.html">Quiz</a>
     <a href="test.html">Tests</a>
     <a href="simulation.html">Simulations</a>
-    <a href="login.html" class="nav-cta">Student Login</a>
+    <a href="login.html" class="nav-cta">Login →</a>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="notes.html" onclick="toggleMenu()">Notes</a>
+  <a href="videos.html" onclick="toggleMenu()">Videos</a>
+  <a href="quiz.html" onclick="toggleMenu()">Quiz</a>
+  <a href="test.html" onclick="toggleMenu()">Tests</a>
+  <a href="simulation.html" onclick="toggleMenu()">Simulations</a>
+  <a href="login.html" class="m-cta" onclick="toggleMenu()">Login →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-psi">Ψ</div>
+
   <div class="hero-left">
     <div class="hero-badge">Class 11 · 12 · JEE · NEET Physics</div>
-    <h1>Where Physics<br><em>Finally</em><br>Makes Sense.</h1>
+    <h1>Where Physics<br><em>Finally</em><br><strong>Makes Sense.</strong></h1>
     <p class="hero-sub">
-      Expert-crafted notes, simulations, and tests — built for students who want to truly understand physics, not just memorise it.
+      Expert-crafted notes, live simulations, and mock tests — built by an IIT Guwahati physicist who believes in understanding over memorisation.
     </p>
     <div class="hero-actions">
       <a href="login.html" class="btn-primary">Start Learning Free →</a>
-      <a href="videos.html" class="btn-outline">Watch Lectures</a>
+      <a href="videos.html" class="btn-outline">▶ Watch Lectures</a>
     </div>
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-num">5</div>
-        <div class="stat-label">Courses</div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Simulations</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">100+</div>
-        <div class="stat-label">Topics</div>
+        <div class="stat-num">5</div>
+        <div class="stat-label">Courses</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">Free</div>
@@ -539,6 +918,7 @@
       </div>
     </div>
   </div>
+
   <div class="hero-visual">
     <div class="formula-card">
       <div class="card-label">Schrödinger Equation</div>
@@ -559,79 +939,79 @@
 </section>
 
 <!-- FEATURES -->
-<section class="section">
+<section class="section section-bg">
   <div class="section-label">What we offer</div>
-  <div class="section-title">Everything You Need<br>to Master Physics.</div>
-  <div class="features-grid fade-in">
-    <div class="feature-card">
+  <div class="section-title reveal">Everything You Need<br>to Master Physics.</div>
+  <div class="features-grid">
+    <div class="feature-card reveal" style="transition-delay:0.05s">
       <div class="feature-icon">📄</div>
       <h3>Structured Notes</h3>
-      <p>Chapter-wise, concept-dense notes in PDF format. Covering full NCERT + JEE/NEET advanced topics with solved examples.</p>
+      <p>Chapter-wise, concept-rich PDF notes. Full NCERT + JEE/NEET advanced topics with solved examples.</p>
       <a href="notes.html" class="feature-link">Browse Notes →</a>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal" style="transition-delay:0.1s">
       <div class="feature-icon">🎬</div>
       <h3>Video Lectures</h3>
-      <p>Full playlist of Class 11 & 12 Physics. Concepts explained step-by-step, from basics to JEE Advanced level problems.</p>
+      <p>Class 11 & 12 Physics — concepts explained from first principles, up to JEE Advanced level.</p>
       <a href="videos.html" class="feature-link">Watch Videos →</a>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal" style="transition-delay:0.15s">
       <div class="feature-icon">⚡</div>
       <h3>Practice Quizzes</h3>
-      <p>Topic-wise MCQs with instant feedback. Sharpen your concept clarity before moving to full tests.</p>
+      <p>Topic-wise MCQs with instant feedback and explanations — sharpen your concept clarity.</p>
       <a href="quiz.html" class="feature-link">Take a Quiz →</a>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal" style="transition-delay:0.2s">
       <div class="feature-icon">📝</div>
       <h3>Full-Length Tests</h3>
-      <p>JEE / NEET pattern mock tests with detailed solutions. Timed, scored, and analysed for your weak areas.</p>
+      <p>JEE & NEET pattern timed mock tests with detailed scoring and weak-area analysis.</p>
       <a href="test.html" class="feature-link">Attempt Test →</a>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal" style="transition-delay:0.25s">
       <div class="feature-icon">🔬</div>
-      <h3>Physics Simulations</h3>
-      <p>Interactive visualisations of experiments — pendulums, waves, circuits, optics — to see physics in motion.</p>
+      <h3>15+ Simulations</h3>
+      <p>Interactive physics lab — circuits, magnetic fields, photoelectric effect, nuclear fission & more.</p>
       <a href="simulation.html" class="feature-link">Open Lab →</a>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal" style="transition-delay:0.3s">
       <div class="feature-icon">📊</div>
       <h3>Progress Tracker</h3>
-      <p>Login to track your quiz scores, completed chapters, and test performance — all in one personal dashboard.</p>
+      <p>Login to track your quiz scores, completed chapters, and test performance in one dashboard.</p>
       <a href="login.html" class="feature-link">My Dashboard →</a>
     </div>
   </div>
 </section>
 
 <!-- COURSES -->
-<section class="section courses-bg">
+<section class="section">
   <div class="section-label">All Courses</div>
-  <div class="section-title">Pick Your Path.</div>
-  <div class="courses-grid fade-in">
-    <a href="notes.html?course=11" class="course-card">
+  <div class="section-title reveal">Pick Your Path.</div>
+  <div class="courses-grid">
+    <a href="notes.html?course=11" class="course-card reveal">
       <span class="course-tag">Class 11</span>
       <h3>Physics — Class XI</h3>
-      <p>Mechanics, Thermodynamics, Waves, Optics &amp; Modern Physics fundamentals.</p>
+      <p>Mechanics, Thermodynamics, Waves, Optics & Modern Physics fundamentals.</p>
       <div class="course-meta"><span>📄 Notes</span><span>🎬 Videos</span><span>⚡ Quizzes</span></div>
     </a>
-    <a href="notes.html?course=12" class="course-card">
+    <a href="notes.html?course=12" class="course-card reveal" style="transition-delay:0.05s">
       <span class="course-tag">Class 12</span>
       <h3>Physics — Class XII</h3>
-      <p>Electrostatics, Magnetism, EM Waves, Optics, Atoms &amp; Nuclei.</p>
+      <p>Electrostatics, Magnetism, EM Waves, Optics, Atoms & Nuclei.</p>
       <div class="course-meta"><span>📄 Notes</span><span>🎬 Videos</span><span>⚡ Quizzes</span></div>
     </a>
-    <a href="test.html?course=jee-mains" class="course-card">
+    <a href="test.html?course=jee-mains" class="course-card reveal" style="transition-delay:0.1s">
       <span class="course-tag">JEE Mains</span>
       <h3>JEE Mains Physics</h3>
-      <p>Full NTA syllabus coverage with chapter tests and previous year questions.</p>
+      <p>Full NTA syllabus with chapter tests and previous year questions.</p>
       <div class="course-meta"><span>📝 Tests</span><span>📄 PYQs</span><span>⚡ MCQs</span></div>
     </a>
-    <a href="test.html?course=jee-advanced" class="course-card">
+    <a href="test.html?course=jee-advanced" class="course-card reveal" style="transition-delay:0.15s">
       <span class="course-tag">JEE Advanced</span>
       <h3>JEE Advanced Physics</h3>
       <p>Challenging problems, multi-concept questions, and advanced simulations.</p>
       <div class="course-meta"><span>📝 Tests</span><span>🔬 Sims</span><span>📄 Notes</span></div>
     </a>
-    <a href="test.html?course=neet" class="course-card">
+    <a href="test.html?course=neet" class="course-card reveal" style="transition-delay:0.2s">
       <span class="course-tag">NEET</span>
       <h3>NEET Physics</h3>
       <p>NCERT-based MCQs, assertion-reason, and NEET pattern full tests.</p>
@@ -641,9 +1021,9 @@
 </section>
 
 <!-- WHY -->
-<section class="section">
+<section class="section section-bg">
   <div class="why-grid">
-    <div class="why-visual fade-in">
+    <div class="reveal-left">
       <div class="quote-block">
         <p>Physics is not just a subject — it is the language the universe uses to explain itself.</p>
         <cite>— Schrödinger Classes</cite>
@@ -651,34 +1031,34 @@
     </div>
     <div>
       <div class="section-label">Why us</div>
-      <div class="section-title" style="font-size:2rem; margin-bottom:2rem;">Built for<br>Deep Understanding.</div>
-      <div class="why-points fade-in">
+      <div class="section-title" style="font-size:2rem;margin-bottom:2rem;">Built for<br>Deep Understanding.</div>
+      <div class="why-points reveal">
         <div class="why-point">
           <span class="why-num">01</span>
           <div>
             <h4>Concept-First Teaching</h4>
-            <p>Every topic is taught from the ground up — no shortcuts, no rote formulas. We build intuition before equations.</p>
+            <p>Every topic from the ground up — no shortcuts. We build intuition before equations.</p>
           </div>
         </div>
         <div class="why-point">
           <span class="why-num">02</span>
           <div>
-            <h4>One Teacher, Consistent Voice</h4>
-            <p>All content is designed and taught by a single dedicated physics educator — no confusion, no inconsistency.</p>
+            <h4>IIT Guwahati Physicist</h4>
+            <p>All content designed and taught by an M.Sc Physics student from IIT Guwahati.</p>
           </div>
         </div>
         <div class="why-point">
           <span class="why-num">03</span>
           <div>
             <h4>Free. Always.</h4>
-            <p>Every note, video, quiz, and simulation is free for all students. Quality education should have no price tag.</p>
+            <p>Every note, video, quiz, and simulation is free for all students. No price tag.</p>
           </div>
         </div>
         <div class="why-point">
           <span class="why-num">04</span>
           <div>
             <h4>Exam-Ready Content</h4>
-            <p>Tests and MCQs are closely aligned with JEE Mains, JEE Advanced, and NEET patterns — real exam preparation.</p>
+            <p>Tests aligned with JEE Mains, JEE Advanced, and NEET patterns — real exam prep.</p>
           </div>
         </div>
       </div>
@@ -686,50 +1066,101 @@
   </div>
 </section>
 
+<!-- TEACHER PROFILE -->
+<section class="section">
+  <div class="section-label">Your Teacher</div>
+  <div class="section-title reveal">Meet the Mind<br>Behind the Classes.</div>
+  <div class="profile-grid">
+    <div class="profile-photo-wrap reveal-left">
+      <div class="profile-photo">
+        <img src="images/teacher.jpg" alt="Lakshmi Kant Pandey"
+          onerror="this.style.display='none';this.parentElement.querySelector('.initials').style.display='flex'"/>
+        <div class="initials" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">LK</div>
+      </div>
+      <div class="profile-name">Lakshmi Kant Pandey</div>
+      <div class="profile-role">Physics Educator</div>
+    </div>
+    <div class="reveal">
+      <p class="profile-bio">
+        Passionate about making Physics intuitive and accessible for every student. My teaching philosophy is simple — <em>understand the concept first, formulas will follow.</em> Currently pursuing M.Sc Physics from IIT Guwahati, one of India's premier institutes.
+      </p>
+      <div class="creds-grid">
+        <div class="cred-card">
+          <div class="cred-label">Qualification</div>
+          <div class="cred-val">M.Sc Physics</div>
+          <div class="cred-sub">IIT Guwahati</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Experience</div>
+          <div class="cred-val">3–5 Years</div>
+          <div class="cred-sub">Teaching Physics</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Specialisation</div>
+          <div class="cred-val">JEE & NEET</div>
+          <div class="cred-sub">Mains + Advanced</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Institute</div>
+          <div class="cred-val">IIT Guwahati</div>
+          <div class="cred-sub">Premier IIT, India</div>
+        </div>
+      </div>
+      <div class="profile-tags">
+        <span class="tag tag-dark">⚛️ JEE Advanced</span>
+        <span class="tag tag-dark">🏥 NEET Physics</span>
+        <span class="tag tag-dark">📚 Class 11 & 12</span>
+        <span class="tag tag-gold">IIT Guwahati 🎓</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- YOUTUBE -->
-<section class="yt-section">
-  <div class="section-label" style="color:var(--accent2)">YouTube Channel</div>
-  <div class="section-title">Latest Lectures.</div>
-  <div class="yt-grid fade-in">
+<section class="section section-dark">
+  <div class="section-label">YouTube Channel</div>
+  <div class="section-title" style="color:white;" class="reveal">Latest Lectures.</div>
+  <div class="yt-grid reveal">
     <div class="yt-card">
       <div class="yt-thumb">⚛️<div class="yt-play">▶</div></div>
-      <div class="yt-card-body">
+      <div class="yt-body">
         <h4>Newton's Laws — Complete</h4>
         <p>Class 11 · Mechanics Series</p>
       </div>
     </div>
     <div class="yt-card">
       <div class="yt-thumb">🌊<div class="yt-play">▶</div></div>
-      <div class="yt-card-body">
+      <div class="yt-body">
         <h4>Wave Motion from Basics</h4>
-        <p>Class 11 · Waves &amp; Oscillations</p>
+        <p>Class 11 · Waves & Oscillations</p>
       </div>
     </div>
     <div class="yt-card">
       <div class="yt-thumb">⚡<div class="yt-play">▶</div></div>
-      <div class="yt-card-body">
+      <div class="yt-body">
         <h4>Electrostatics — Gauss's Law</h4>
         <p>Class 12 · Electrostatics</p>
       </div>
     </div>
   </div>
-  <div class="yt-cta">
-    <a href="videos.html" class="btn-primary" style="background:var(--accent2);color:var(--ink)">View All Lectures →</a>
+  <div style="text-align:center;margin-top:2.5rem;">
+    <a href="videos.html" class="btn-gold">View All Lectures →</a>
   </div>
 </section>
 
 <!-- CTA BANNER -->
 <section class="cta-banner">
   <h2>Ready to Start Your<br>Physics Journey?</h2>
-  <p>Join hundreds of students mastering physics with Schrödinger Classes.</p>
-  <a href="login.html" class="btn-primary">Create Free Account →</a>
+  <p>Join students mastering physics with Schrödinger Classes — free, forever.</p>
+  <a href="login.html" class="btn-gold">Create Free Account →</a>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div>
     <span class="footer-logo">Schrödinger<span>Classes</span></span>
-    <p>Expert physics coaching for Class 11, 12, JEE &amp; NEET students. Free notes, videos, quizzes, tests &amp; simulations.</p>
+    <span class="footer-tagline">An initiative by Lakshmi Kant Pandey</span>
+    <p>Expert physics coaching for Class 11, 12, JEE & NEET students. Free notes, videos, quizzes, tests & simulations.</p>
   </div>
   <div>
     <h5>Learn</h5>
@@ -755,16 +1186,41 @@
   </div>
 </footer>
 <div class="footer-bottom">
-  <span>© 2025 Schrödinger Classes. All rights reserved.</span>
+  <span>© 2025 Schrödinger Classes — An initiative by Lakshmi Kant Pandey</span>
   <span>Made with ❤️ for Physics Students</span>
 </div>
 
 <script>
-  // Intersection observer for fade-in
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+
+  // Close mobile menu on outside click
+  document.getElementById('mobileNav').addEventListener('click', function(e) {
+    if (e.target === this) toggleMenu();
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  document.querySelectorAll('.reveal, .reveal-left').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
