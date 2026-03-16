@@ -371,6 +371,44 @@ const CATALOG = [
   C.fillText('+'+p.q1,x1,cy+4);C.fillText('+'+p.q2,x2,cy+4);
   const d=document.getElementById('simData');
   if(d)d.textContent=`F = kq₁q₂/r²\nq1=${p.q1} q2=${p.q2}\nr = ${r.toFixed(2)} m\nF = ${F.toFixed(2)} N\nHalve r → 4x Force!`;}},
+  {id:'gauss',group:'elec',title:"Gauss's Law",tag:'Class 12',desc:'Electric flux through a closed surface around a point charge.',
+ params:{charge:3,radius:80},
+ controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge (Q)</span><div class="ctrl-value" id="p_gq">${p.charge}</div><input type="range" min="1" max="8" step="1" value="${p.charge}" oninput="p_gq.textContent=this.value;UP('charge',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Surface Radius</span><div class="ctrl-value" id="p_gr">${p.radius}</div><input type="range" min="40" max="140" step="10" value="${p.radius}" oninput="p_gr.textContent=this.value;UP('radius',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
+ loop:(cv,p,t)=>{
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
+  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
+  const flux=p.charge/8.85;
+  // Gaussian surface
+  C.strokeStyle='rgba(100,181,246,0.5)';C.lineWidth=2;C.setLineDash([6,4]);
+  C.beginPath();C.arc(cx,cy,p.radius,0,Math.PI*2);C.stroke();C.setLineDash([]);
+  // Field lines radiating outward
+  const numLines=p.charge*4;
+  for(let i=0;i<numLines;i++){
+    const a=i*Math.PI*2/numLines;
+    const x1=cx+12*Math.cos(a),y1=cy+12*Math.sin(a);
+    const x2=cx+(p.radius+40)*Math.cos(a),y2=cy+(p.radius+40)*Math.sin(a);
+    C.strokeStyle=`rgba(255,100,100,0.6)`;C.lineWidth=1.5;C.beginPath();C.moveTo(x1,y1);C.lineTo(x2,y2);C.stroke();
+    // Arrow at surface
+    const ax=cx+p.radius*Math.cos(a),ay=cy+p.radius*Math.sin(a);
+    C.fillStyle='rgba(255,100,100,0.7)';C.beginPath();
+    C.moveTo(ax+8*Math.cos(a),ay+8*Math.sin(a));
+    C.lineTo(ax+2*Math.cos(a+0.4),ay+2*Math.sin(a+0.4));
+    C.lineTo(ax+2*Math.cos(a-0.4),ay+2*Math.sin(a-0.4));
+    C.fill();}
+  // Flux dots on surface (animated)
+  for(let i=0;i<numLines*2;i++){
+    const a=i*Math.PI*2/(numLines*2)+t*.02;
+    const fx=cx+p.radius*Math.cos(a),fy=cy+p.radius*Math.sin(a);
+    C.fillStyle=`rgba(100,255,150,${0.4+0.4*Math.sin(t*.05+i)})`;
+    C.beginPath();C.arc(fx,fy,2.5,0,Math.PI*2);C.fill();}
+  // Charge
+  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=16;
+  C.beginPath();C.arc(cx,cy,10+p.charge,0,Math.PI*2);C.fill();C.shadowBlur=0;
+  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';C.fillText('+Q',cx,cy+4);
+  C.fillStyle='rgba(100,181,246,0.7)';C.font='10px monospace';
+  C.fillText('Gaussian Surface (r='+p.radius+')',cx,cy-p.radius-10);
+  const d=document.getElementById('simData');
+  if(d)d.textContent=`Φ = Q/ε₀\nQ = ${p.charge} C\nε₀ = 8.85×10⁻¹²\nΦ = ${flux.toFixed(2)} N·m²/C\nFlux independent\nof surface size!`;}},
   // MODERN PHYSICS
   {id:'photoelectric',group:'modern',title:'Photoelectric Effect',tag:'Class 12',desc:'Shine light on metal — electrons ejected based on frequency.',
    params:{frequency:6,intensity:3,workFunction:4},
