@@ -343,6 +343,34 @@ const CATALOG = [
   const angle=(t*.02)%(Math.PI*2);
   const tr=p.separation*.9,tx=cx+tr*Math.cos(angle),ty=cy+tr*.55*Math.sin(angle);
   C.fillStyle='#ffeb3b';C.beginPath();C.arc(tx,ty,5,0,Math.PI*2);C.fill();}},
+
+  {id:'coulomb',group:'elec',title:"Coulomb's Law",tag:'Class 12',desc:'Force between two charges — vary distance and see F ∝ 1/r².',
+ params:{q1:2,q2:2,distance:120},
+ controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge q1</span><div class="ctrl-value" id="p_cq1">${p.q1}</div><input type="range" min="1" max="5" step="1" value="${p.q1}" oninput="p_cq1.textContent=this.value;UP('q1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Charge q2</span><div class="ctrl-value" id="p_cq2">${p.q2}</div><input type="range" min="1" max="5" step="1" value="${p.q2}" oninput="p_cq2.textContent=this.value;UP('q2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Distance</span><div class="ctrl-value" id="p_cd">${p.distance}</div><input type="range" min="40" max="220" step="10" value="${p.distance}" oninput="p_cd.textContent=this.value;UP('distance',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
+ loop:(cv,p,t)=>{
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
+  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
+  const r=p.distance/50,F=9*p.q1*p.q2/r**2;
+  const x1=cx-p.distance/2,x2=cx+p.distance/2;
+  const aLen=Math.min(55,F*2.5);
+  C.strokeStyle='rgba(255,200,50,0.85)';C.lineWidth=2.5;
+  C.beginPath();C.moveTo(x1,cy);C.lineTo(x1-aLen,cy);C.stroke();
+  C.fillStyle='rgba(255,200,50,0.85)';
+  C.beginPath();C.moveTo(x1-aLen-8,cy);C.lineTo(x1-aLen+4,cy-6);C.lineTo(x1-aLen+4,cy+6);C.fill();
+  C.beginPath();C.moveTo(x2,cy);C.lineTo(x2+aLen,cy);C.stroke();
+  C.beginPath();C.moveTo(x2+aLen+8,cy);C.lineTo(x2+aLen-4,cy-6);C.lineTo(x2+aLen-4,cy+6);C.fill();
+  C.strokeStyle='rgba(255,255,255,0.15)';C.setLineDash([4,4]);
+  C.beginPath();C.moveTo(x1,cy+32);C.lineTo(x2,cy+32);C.stroke();C.setLineDash([]);
+  C.fillStyle='rgba(255,255,255,0.4)';C.font='10px monospace';C.textAlign='center';
+  C.fillText('r = '+r.toFixed(2)+' m',cx,cy+46);
+  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=14;
+  C.beginPath();C.arc(x1,cy,13+p.q1*2,0,Math.PI*2);C.fill();
+  C.fillStyle='#f44';C.beginPath();C.arc(x2,cy,13+p.q2*2,0,Math.PI*2);C.fill();
+  C.shadowBlur=0;
+  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';
+  C.fillText('+'+p.q1,x1,cy+4);C.fillText('+'+p.q2,x2,cy+4);
+  const d=document.getElementById('simData');
+  if(d)d.textContent=`F = kq₁q₂/r²\nq1=${p.q1} q2=${p.q2}\nr = ${r.toFixed(2)} m\nF = ${F.toFixed(2)} N\nHalve r → 4x Force!`;}},
   // MODERN PHYSICS
   {id:'photoelectric',group:'modern',title:'Photoelectric Effect',tag:'Class 12',desc:'Shine light on metal — electrons ejected based on frequency.',
    params:{frequency:6,intensity:3,workFunction:4},
