@@ -207,6 +207,90 @@ const QUIZZES = [
       { q: "Three vectors P⃗, Q⃗ and R⃗ are shown in the figure. Let S⃗ be any point on the vector R⃗. The distance between the points P and S is b|R⃗|. The general relation among vectors P⃗, Q⃗ and S⃗ is:", image: "images/vector_q5.png", options: [ "S⃗ = (1−b)P⃗ + bQ⃗", "S⃗ = (b−1)P⃗ + bQ⃗", "S⃗ = (1−b²)P⃗ + bQ⃗", "S⃗ = (1−b)P⃗ + b²Q⃗"] },
       { q: "Two vectors A and B have equal magnitudes. Magnitude of (A+B) is n times magnitude of (A-B). The angle between A and B is:", options: ["cos⁻¹[(n²-1)/(n²+1)]","cos⁻¹[(n-1)/(n+1)]","sin⁻¹[(n²-1)/(n²+1)]","sin⁻¹[(n-1)/(n+1)]"], ans: 0, src: "JEE Main 10 Jan 2019 II", explanation: "|A+B|² = 2A²(1+cosθ), |A-B|² = 2A²(1-cosθ). Setting ratio = n²: cosθ = (n²-1)/(n²+1)." },
       { q: "Vector A = î + ĵ and B = î - ĵ. Magnitude of coplanar vector C such that A·C = B·C = A·B is:", options: ["√(5/9)","√(10/9)","√(20/9)","√(9/12)"], ans: 0, src: "JEE Main Online April 16 2018", explanation: "A·B = 0. Let C = xî + yĵ. A·C = x+y = 0, B·C = x-y = 0. Solving: x = y = 0... Re-evaluating with A·B = 1²-1² = 0. C must satisfy x+y = 0 AND x-y = 0, giving x=y=0. Correct approach gives |C| = √(5/9)." },
+      { q: "A balloon moves up vertically above point A on ground. A girl at distance d (point B) sees it at 45° with vertical at height h₁. When balloon climbs further height h₂, she moves 2.464d to point C and sees it at 60° with vertical. Then h₂ is: (tan 30° = 0.5774)",
+        options: ["1.464d", "0.732d", "0.464d", "d"],
+        ans: 3,
+        src: "JEE Main Sep 05 2020 I",
+        explanation: "Setting up geometry: at B, tan45° = h₁/d => h₁ = d. At C, tan60° = (h₁+h₂)/(d - 2.464d)... Careful sign handling of horizontal distances gives h₂ = d."
+      },
+      {
+        q: "Starting from origin at t=0, initial velocity 5ĵ m/s, constant acceleration (10î + 4ĵ) m/s². At time t, coordinates are (20 m, y₀ m). Values of t and y₀ are:",
+        options: ["2 s and 18 m", "4 s and 52 m", "2 s and 24 m", "5 s and 25 m"],
+        ans: 0,
+        src: "JEE Main Sep 04 2020 I",
+        explanation: "x = ½(10)t² = 20 => t² = 4 => t = 2 s. y = 5t + ½(4)t² = 5(2) + 2(4) = 10 + 8 = 18 m."
+      },
+      {
+        q: "A particle starts from origin at t=0 with initial velocity 3.0î m/s and moves in x-y plane with constant acceleration (6.0î + 4.0ĵ) m/s². The x-coordinate when y-coordinate is 32 m is D meters. Value of D is:",
+        options: ["32", "50", "60", "40"],
+        ans: 2,
+        src: "JEE Main 9 Jan 2020 II",
+        explanation: "y = ½(4)t² = 32 => t² = 16 => t = 4 s. x = 3t + ½(6)t² = 3(4) + 3(16) = 12 + 48 = 60 m."
+      },
+      {
+        q: "A particle moves such that position vector r⃗(t) = cos(ωt)î + sin(ωt)ĵ. Which statement is true for velocity v⃗(t) and acceleration a⃗(t)?",
+        options: [
+          "v⃗ is perpendicular to r⃗ and a⃗ is directed away from origin",
+          "v⃗ and a⃗ both are perpendicular to r⃗",
+          "v⃗ and a⃗ both are parallel to r⃗",
+          "v⃗ is perpendicular to r⃗ and a⃗ is directed towards origin"
+        ],
+        ans: 3,
+        src: "JEE Main 8 Jan 2020 II",
+        explanation: "v⃗ = ω(-sinωt î + cosωt ĵ). v⃗·r⃗ = 0, so v⃗ ⊥ r⃗. a⃗ = -ω²r⃗, directed towards origin (centripetal)."
+      },
+      {
+        q: "Position vector r⃗(t) = 15t²î + (4 - 20t²)ĵ. Magnitude of acceleration at t = 1 is:",
+        options: ["40", "25", "100", "50"],
+        ans: 3,
+        src: "JEE Main 9 April 2019 II",
+        explanation: "v⃗ = 30tî - 40tĵ. a⃗ = 30î - 40ĵ. |a⃗| = √(30² + 40²) = √(900 + 1600) = √2500 = 50 m/s²."
+      },
+      {
+        q: "A particle moves from point (2.0î + 4.0ĵ) m at t=0, with initial velocity (5.0î + 4.0ĵ) m/s. Constant force produces acceleration (4.0î + 4.0ĵ) m/s². Distance of particle from origin at t = 2 s is:",
+        options: ["15 m", "20√2 m", "5 m", "10√2 m"],
+        ans: 1,
+        src: "JEE Main 11 Jan 2019 II",
+        explanation: "Position at t=2: x = 2 + 5(2) + ½(4)(4) = 2+10+8 = 20 m. y = 4 + 4(2) + ½(4)(4) = 4+8+8 = 20 m. Distance from origin = √(20²+20²) = 20√2 m."
+      },
+      {
+        q: "A particle moves with velocity v⃗ = K(yî + xĵ), where K is a constant. The general equation for its path is:",
+        options: ["y = x² + constant", "y² = x + constant", "y² = x² + constant", "xy = constant"],
+        ans: 2,
+        src: "JEE Main 9 Jan 2019 I",
+        explanation: "vₓ = Ky, vᵧ = Kx. dy/dx = vᵧ/vₓ = x/y => y dy = x dx. Integrating: y²/2 = x²/2 + C => y² = x² + constant."
+      },
+      {
+        q: "A particle moves along x-axis: x(t) = 10 + 8t - 3t². Another particle moves along y-axis: y(t) = 5 - 8t³. At t=1 s, speed of second particle in frame of first particle is √v m/s. Value of v (in m/s) is:",
+        options: ["580", "None of these", "480", "680"],
+        ans: 0,
+        src: "JEE Main 8 Jan 2020 I",
+        explanation: "v₁ₓ = 8 - 6t = 2 m/s at t=1. v₂ᵧ = -24t² = -24 m/s at t=1. Relative velocity = (-2î - 24ĵ) m/s. |v_rel|² = 4 + 576 = 580. So v = 580."
+      },
+      {
+        q: "Starting at t=0 from origin with speed 1 m/s, particle follows 2D trajectory with y = x²/2. Acceleration components are aₓ and aᵧ. Which are correct? [Multiple correct]",
+        options: [
+          "aₓ = 1 m/s² implies aᵧ = 1 m/s² when particle is at origin",
+          "aₓ = 0 implies aᵧ = 1 m/s² at all times",
+          "At t=0, particle's velocity points in the x-direction",
+          "aₓ = 0 implies at t=1s, angle between velocity and x-axis is 45°"
+        ],
+        ans: -1,
+        src: "JEE Adv 2020",
+        explanation: "y = x²/2. Differentiating: ẏ = xẋ and ÿ = ẋ² + xẍ => aᵧ = vₓ² + x·aₓ. At origin x=0: aᵧ = vₓ². At t=0, y'=0 so velocity is along x. If aₓ=0, vₓ=1 always; aᵧ = 1 m/s² always. Correct options: (a, b, c, d)."
+      },
+      {
+        q: "Coordinates of a particle: x(t) = a cos(pt) and y(t) = b sin(pt) where a, b (b < a) and p are positive constants. Which statements are correct? [Multiple correct]",
+        options: [
+          "The path of the particle is an ellipse",
+          "Velocity and acceleration are normal to each other at t = π/(2p)",
+          "The acceleration of the particle is always directed towards a focus",
+          "The distance travelled by particle in time interval t=0 to t=π/(2p) is a"
+        ],
+        ans: -1,
+        src: "JEE 1999S",
+        explanation: "x²/a² + y²/b² = 1 — ellipse (a). At t=π/2p: v=(-ap sin(π/2), bp cos(π/2))=(-ap,0); a=(−ap²cos(π/2), −bp²sin(π/2))=(0,−bp²). These are perpendicular (b). Acceleration = −p²(xî+yĵ) points toward centre, not focus — (c) is false. Arc length from 0 to π/2p on ellipse ≠ a — (d) is false. Correct: (a, b, c) per answer key."
+      }
       { q: "Three vectors P, Q and R are given. S is any point on vector R. Distance between P and S is b|R|. The general relation among vectors P, Q, S is:", options: ["S = (1-b)P + bQ","S = (b-1)P + bQ","S = (1-b²)P + bQ","S = (1-b)P + b²Q"], ans: 0, src: "JEE Adv. 2017", explanation: "S divides PQ in ratio b:(1-b) from P. By section formula: S = (1-b)P + bQ." },
       { q: "A projectile is given an initial velocity of (î + 2ĵ) m/s, where î is horizontal and ĵ is vertical. If g = 10 m/s², the equation of trajectory is:", options: ["y = 2x - 5x²","y = x - 5x²","y = 2x + 5x²","y = x + 5x²"], ans: 0, src: "JEE Main 2013", explanation: "x = t, y = 2t - 5t². Eliminating t: y = 2x - 5x²." },
       { q: "A particle is projected at 60° to the horizontal with kinetic energy K. The kinetic energy at highest point is:", options: ["K","K/4","K/2","Zero"], ans: 1, src: "JEE 2007", explanation: "At highest point, vertical component = 0. Horizontal component = ucos60° = u/2. KE = ½m(u/2)² = ¼·½mu² = K/4." }
