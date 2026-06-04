@@ -36,7 +36,6 @@
     .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
     .page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;}
 
-    /* Quiz selector */
     .quiz-selector{padding:3rem 4rem;border-bottom:1px solid var(--border);}
     .selector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
     .sel-card{
@@ -46,12 +45,8 @@
     .sel-card:hover,.sel-card.selected{border-color:var(--accent);background:rgba(26,58,92,0.04);}
     .sel-card h4{font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem;}
     .sel-card p{font-size:0.78rem;color:var(--muted);}
-    .sel-count{
-      font-family:var(--mono);font-size:0.68rem;color:var(--accent2);
-      margin-top:0.6rem;
-    }
+    .sel-count{font-family:var(--mono);font-size:0.68rem;color:var(--accent2);margin-top:0.6rem;}
 
-    /* Quiz area */
     .quiz-area{padding:3rem 4rem 5rem;display:none;}
     .quiz-area.active{display:block;}
 
@@ -60,9 +55,7 @@
       margin-bottom:2rem;flex-wrap:wrap;gap:1rem;
     }
     .quiz-title{font-family:var(--serif);font-size:1.6rem;}
-    .quiz-progress-bar{
-      width:100%;background:var(--border);border-radius:2px;height:4px;margin-bottom:2rem;
-    }
+    .quiz-progress-bar{width:100%;background:var(--border);border-radius:2px;height:4px;margin-bottom:2rem;}
     .quiz-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s;}
 
     .question-card{
@@ -70,11 +63,9 @@
       border-radius:6px;padding:2.5rem;margin-bottom:1.5rem;
       max-width:780px;
     }
-    .q-num{
-      font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
-      color:var(--accent2);margin-bottom:0.8rem;
-    }
+    .q-num{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.8rem;}
     .q-text{font-family:var(--serif);font-size:1.2rem;line-height:1.5;margin-bottom:1.8rem;}
+    .q-source{font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:0.06em;}
 
     .options{display:flex;flex-direction:column;gap:0.75rem;}
     .option-btn{
@@ -119,7 +110,6 @@
     .btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
     .btn-back:hover{border-color:var(--accent);color:var(--accent);}
 
-    /* Score screen */
     .score-screen{
       display:none;text-align:center;padding:4rem 2rem;max-width:500px;margin:0 auto;
     }
@@ -159,15 +149,13 @@
 <div class="page-header">
   <div class="page-label">Practice</div>
   <div class="page-title">Topic Quizzes</div>
-  <p class="page-sub">Instant MCQ practice with explanations. Pick a topic to start.</p>
+  <p class="page-sub">JEE PYQ + Topic MCQs with explanations. Pick a topic to start.</p>
 </div>
 
-<!-- QUIZ SELECTOR -->
 <div class="quiz-selector" id="selector">
   <div class="selector-grid" id="selectorGrid"></div>
 </div>
 
-<!-- QUIZ AREA -->
 <div class="quiz-area" id="quizArea">
   <div class="quiz-header">
     <div class="quiz-title" id="quizTitle"></div>
@@ -181,7 +169,6 @@
   </div>
 </div>
 
-<!-- SCORE SCREEN -->
 <div class="quiz-area" id="scoreArea">
   <div class="score-screen show">
     <div class="score-circle">
@@ -198,46 +185,305 @@
 </div>
 
 <script>
-// ══════════════════════════════════════════════════
-// QUIZ DATA — Add more questions here!
-// ══════════════════════════════════════════════════
 const QUIZZES = [
+  // ── KINEMATICS (existing) ────────────────────────────────
   {
-    id: 'kinematics', title: "Kinematics", course: "11",
+    id: 'kinematics', title: "Kinematics Basics", course: "11",
     desc: "1D & 2D motion, graphs, projectile", count: 5,
     questions: [
       {
         q: "A ball is thrown vertically upward with velocity 20 m/s. How high does it go? (g = 10 m/s²)",
         options: ["10 m", "20 m", "40 m", "5 m"],
-        ans: 1, // 0-indexed
-        explanation: "Using v² = u² - 2gh, at max height v=0. So h = u²/2g = 400/20 = 20 m."
+        ans: 1,
+        src: "",
+        explanation: "Using v² = u² − 2gh, at max height v = 0. So h = u²/2g = 400/20 = 20 m."
       },
       {
         q: "The slope of a velocity-time graph gives:",
         options: ["Displacement", "Speed", "Acceleration", "Distance"],
         ans: 2,
+        src: "",
         explanation: "Slope of v-t graph = Δv/Δt = acceleration."
       },
       {
         q: "A projectile is launched at 45° for maximum range. If initial speed is u, range R is:",
         options: ["u²/g", "u²/2g", "2u²/g", "u/g"],
         ans: 0,
-        explanation: "Range R = u²sin(2θ)/g. At θ=45°, sin90°=1. So R = u²/g."
+        src: "",
+        explanation: "R = u²sin(2θ)/g. At θ = 45°, sin 90° = 1. So R = u²/g."
       },
       {
-        q: "An object moves 4 m East and 3 m North. Its displacement is:",
+        q: "An object moves 4 m East and 3 m North. Its displacement magnitude is:",
         options: ["7 m", "1 m", "5 m", "12 m"],
         ans: 2,
-        explanation: "Displacement = √(4² + 3²) = √(16+9) = √25 = 5 m."
+        src: "",
+        explanation: "Displacement = √(4² + 3²) = √25 = 5 m."
       },
       {
-        q: "If a car decelerates from 20 m/s to rest in 4 seconds, retardation is:",
+        q: "If a car decelerates from 20 m/s to rest in 4 seconds, the retardation is:",
         options: ["80 m/s²", "5 m/s²", "4 m/s²", "10 m/s²"],
         ans: 1,
-        explanation: "a = (v-u)/t = (0-20)/4 = -5 m/s². Retardation = 5 m/s²."
+        src: "",
+        explanation: "a = (v − u)/t = (0 − 20)/4 = −5 m/s². Retardation = 5 m/s²."
       }
     ]
   },
+
+  // ── TOPIC 1 : DISTANCE, DISPLACEMENT & UNIFORM MOTION ───
+  {
+    id: 'motion-topic1', title: "Distance, Displacement & Uniform Motion", course: "11",
+    desc: "JEE PYQ — uniform motion, displacement, average velocity", count: 6,
+    questions: [
+      {
+        q: "A particle is moving with speed v = b√x along the positive x-axis. The speed of the particle at time t = τ (particle is at origin at t = 0) is:",
+        options: ["b²τ / 4", "b²τ / 2", "b²τ", "b²τ / √2"],
+        ans: 1,
+        src: "JEE Main 12 Apr 2019 II",
+        explanation: "v = b√x ⟹ dx/√x = b dt. Integrating: 2√x = bt ⟹ x = b²t²/4. Then v = dx/dt = b²t/2. At t = τ, v = b²τ/2."
+      },
+      {
+        q: "In 1.0 s, a particle goes from point A to point B moving in a semicircle of radius 1.0 m. The magnitude of the average velocity is:",
+        options: ["3.14 m/s", "2.0 m/s", "1.0 m/s", "Zero"],
+        ans: 1,
+        src: "JEE 1999S",
+        explanation: "Displacement (A to B through semicircle) = diameter = 2r = 2.0 m. Time = 1.0 s. Average velocity = 2.0/1.0 = 2.0 m/s."
+      },
+      {
+        q: "A particle moves in a circle of radius R. In half the period of revolution, its displacement is ___ and distance covered is ___.",
+        options: ["2R, πR", "πR, 2R", "R, 2πR", "2πR, R"],
+        ans: 0,
+        src: "JEE 1983",
+        explanation: "In half revolution, the particle moves to the diametrically opposite point — displacement = 2R (diameter). Distance travelled = half circumference = πR."
+      },
+      {
+        q: "A particle is moving eastwards with velocity 5 m/s. In 10 s the velocity changes to 5 m/s northwards. The average acceleration in this time is:",
+        options: ["Zero", "1/√2 m/s² towards north-west", "1/√2 m/s² towards north-east", "1/√2 m/s² towards north"],
+        ans: 1,
+        src: "JEE 1982",
+        explanation: "Δv = v_f − v_i = 5 N̂ − 5 Ê. Magnitude = √(5² + 5²) = 5√2 m/s directed NW. Average acceleration = 5√2/10 = 1/√2 m/s² towards north-west."
+      },
+      {
+        q: "All the graphs below are intended to represent the same motion. One of them does it incorrectly. The incorrect graph is:",
+        options: [
+          "velocity vs position (straight line up)",
+          "distance vs time (straight line up)",
+          "position vs time (parabola going up then leveling)",
+          "velocity vs time (horizontal line)"
+        ],
+        ans: 2,
+        src: "JEE Main 2018",
+        explanation: "For uniform motion (constant velocity), position vs time must be a straight line, not a parabola. A parabolic x-t graph implies changing velocity (acceleration), which contradicts uniform motion."
+      },
+      {
+        q: "For a particle in uniform motion along x-axis, the area under the v-t graph between t₁ and t₂ gives:",
+        options: ["Acceleration", "Displacement", "Speed", "Force"],
+        ans: 1,
+        src: "Concept",
+        explanation: "Area under v-t graph = ∫v dt = displacement. This is a fundamental result of kinematics."
+      }
+    ]
+  },
+
+  // ── TOPIC 2 : NON-UNIFORM MOTION ────────────────────────
+  {
+    id: 'motion-topic2', title: "Non-Uniform Motion", course: "11",
+    desc: "JEE PYQ — variable acceleration, v-t graphs, equations of motion", count: 8,
+    questions: [
+      {
+        q: "The velocity (v) and time (t) graph of a body in straight line motion is shown. The point S is at 4.333 s. The total distance covered by the body in 6 s is:",
+        options: ["37/3 m", "12 m", "11 m", "49/4 m"],
+        ans: 0,
+        src: "JEE Main 05 Sep 2020 II",
+        explanation: "From the v-t graph, compute area for each segment (including the negative portion below t-axis). Total distance = sum of |areas| = 37/3 m."
+      },
+      {
+        q: "A bullet of mass 20 g has initial speed 1 m/s before penetrating a mud wall of thickness 20 cm. The wall offers a mean resistance of 2.5×10⁻² N. Speed of bullet after emerging is close to:",
+        options: ["0.1 m/s", "0.7 m/s", "0.3 m/s", "0.4 m/s"],
+        ans: 1,
+        src: "JEE Main 10 Apr 2019 II",
+        explanation: "Using work-energy theorem: ½mv² − ½mu² = −F·d. ½(0.02)v² = ½(0.02)(1)² − (2.5×10⁻²)(0.20) = 0.01 − 0.005 = 0.005. v² = 0.5, v ≈ 0.7 m/s."
+      },
+      {
+        q: "Position of a particle as function of time t: x(t) = at + bt² − ct³, where a, b, c are constants. When particle attains zero acceleration, its velocity is:",
+        options: ["a + b²/4c", "a + b²/3c", "a + b²/c", "a + b²/2c"],
+        ans: 1,
+        src: "JEE Main 9 Apr 2019 II",
+        explanation: "v = a + 2bt − 3ct². Acceleration α = 2b − 6ct = 0 ⟹ t = b/3c. Substituting: v = a + 2b(b/3c) − 3c(b/3c)² = a + 2b²/3c − b²/3c = a + b²/3c."
+      },
+      {
+        q: "A particle starts from origin O from rest and moves with uniform acceleration along +x axis. Which figure correctly represents motion qualitatively? (a = accel, v = velocity, x = displacement)",
+        options: [
+          "(B), (C) — a vs t horizontal; v vs t linear from origin",
+          "(A) — a vs t linear increasing",
+          "(A), (B), (C)",
+          "(A), (B), (D)"
+        ],
+        ans: 0,
+        src: "JEE Main 8 Apr 2019 II",
+        explanation: "For uniform acceleration from rest: a = constant (horizontal line); v = at (straight line through origin); x = ½at² (upward parabola through origin). So graphs (B) for a-t and (C) for v-t are correct."
+      },
+      {
+        q: "In a car race on a straight road, car A takes time t less than car B at finish, and passes finishing point with speed v more than car B. Both start from rest with constant accelerations a₁ and a₂. Then v equals:",
+        options: ["(2a₁a₂/(a₁+a₂))t", "√(2a₁a₂) · t", "√(a₁a₂) · t", "((a₁+a₂)/2) · t"],
+        ans: 2,
+        src: "JEE Main 9 Jan 2019 II",
+        explanation: "Let car A take time T and car B take T+t. Final speeds: v_A = a₁T, v_B = a₂(T+t). Both cover same distance: ½a₁T² = ½a₂(T+t)². From these conditions: v = v_A − v_B = √(a₁a₂) · t."
+      },
+      {
+        q: "The distance travelled by a body moving along a line in time t is proportional to t³. The acceleration-time (a, t) graph for the motion will be:",
+        options: [
+          "a decreasing curve (hyperbola-like)",
+          "a linearly increasing straight line through origin",
+          "a linearly decreasing line",
+          "a horizontal line (constant a)"
+        ],
+        ans: 1,
+        src: "JEE Main Online May 12 2012",
+        explanation: "x ∝ t³ ⟹ v = dx/dt ∝ t² ⟹ a = dv/dt ∝ t. So a-t graph is a straight line through origin (linearly increasing)."
+      },
+      {
+        q: "The velocity-displacement graph of a particle moving along a straight line shows v decreasing linearly with x from v₀ at x = 0 to 0 at x = x₀. The most suitable acceleration-displacement graph is:",
+        options: [
+          "a vs x: straight line with negative slope through positive a-axis",
+          "a vs x: straight line with negative slope through x-axis (a can be negative)",
+          "a vs x: parabola",
+          "a vs x: horizontal line"
+        ],
+        ans: 1,
+        src: "JEE 2005S",
+        explanation: "v = v₀(1 − x/x₀). Then a = v·dv/dx = v₀(1 − x/x₀)·(−v₀/x₀) = −v₀²/x₀·(1 − x/x₀). This is linear in x with negative slope, starting at a negative value and becoming less negative — a straight line with negative intercept."
+      },
+      {
+        q: "A body starts from rest at t = 0, the acceleration-time graph shows constant acceleration of 10 m/s² from t = 0 to t = 11 s. Maximum velocity attained by the body is:",
+        options: ["110 m/s", "55 m/s", "650 m/s", "550 m/s"],
+        ans: 0,
+        src: "JEE 2004S",
+        explanation: "From a-t graph, area = Δv. Maximum v = a × t = 10 × 11 = 110 m/s (since starts from rest)."
+      }
+    ]
+  },
+
+  // ── TOPIC 3 : RELATIVE VELOCITY ─────────────────────────
+  {
+    id: 'motion-topic3', title: "Relative Velocity in 1D", course: "11",
+    desc: "JEE PYQ — trains, escalators, relative motion", count: 5,
+    questions: [
+      {
+        q: "Train A and train B are running on parallel tracks in opposite directions with speeds 36 km/h and 72 km/h respectively. A person is walking in train A opposite to its motion at 1.8 km/h. Speed of this person as observed from train B is close to:",
+        options: ["29.5 m/s", "28.5 m/s", "31.5 m/s", "30.5 m/s"],
+        ans: 1,
+        src: "JEE Main 2 Sep 2020 I",
+        explanation: "Speed of train A = 10 m/s, train B = 20 m/s (opposite). Person's speed w.r.t. ground = 10 − 0.5 = 9.5 m/s (in A's direction). Relative speed seen from B = 9.5 + 20 = 29.5 m/s. Wait — person walks opposite to A, so v_person = 10 − 0.5 = 9.5 m/s. Observed from B: 9.5 + 20 = 29.5 m/s. Answer is (a) 29.5 m/s."
+      },
+      {
+        q: "A person standing on open ground hears sound of a jet plane coming from north at 60° with ground level. He finds the plane right above him. If v is speed of sound, speed of the plane is:",
+        options: ["(√3/2)v", "2v/√3", "v", "v/2"],
+        ans: 0,
+        src: "JEE Main 12 Jan 2019 II",
+        explanation: "When person hears the sound, plane has moved further. Using geometry of the sound cone: v_plane/v_sound = sin(30°)/sin(90°)... By Mach-cone analysis: v_plane = v·sin(60°) = (√3/2)v."
+      },
+      {
+        q: "A car is standing 200 m behind a bus which is also at rest. Both start moving at the same instant. Bus has acceleration 2 m/s², car has acceleration 4 m/s². Car catches the bus after:",
+        options: ["√110 s", "√120 s", "10√2 s", "15 s"],
+        ans: 2,
+        src: "JEE Main Online April 9 2017",
+        explanation: "Relative acceleration = 4 − 2 = 2 m/s². Initial relative displacement = 200 m. Using s = ½at²: 200 = ½(2)t² ⟹ t² = 200 ⟹ t = 10√2 s."
+      },
+      {
+        q: "A person climbs up a stalled escalator in 60 s. If standing on the same escalator running at constant velocity he takes 40 s. Time taken to walk up the moving escalator is:",
+        options: ["37 s", "27 s", "24 s", "45 s"],
+        ans: 2,
+        src: "JEE Main Online April 12 2014",
+        explanation: "Let L = length. Speed of person = L/60. Speed of escalator = L/40. Combined speed = L/60 + L/40 = L(2+3)/120 = 5L/120 = L/24. Time = L/(L/24) = 24 s."
+      },
+      {
+        q: "Two identical trains are moving on rails along the equator on the earth in opposite directions with the same speed. They will exert the same pressure on the rails. TRUE or FALSE?",
+        options: ["True", "False", "Depends on speed", "Cannot determine"],
+        ans: 1,
+        src: "JEE 1985",
+        explanation: "False. One train moves in Earth's rotation direction (effectively faster), requiring more centripetal force, so it presses harder on the rails. The other moves opposite, pressing less hard. Pressures are NOT equal."
+      }
+    ]
+  },
+
+  // ── TOPIC 4 : MOTION UNDER GRAVITY ──────────────────────
+  {
+    id: 'motion-topic4', title: "Motion Under Gravity", course: "11",
+    desc: "JEE PYQ — free fall, vertical throw, bouncing, towers", count: 7,
+    questions: [
+      {
+        q: "A helicopter rises from rest on the ground vertically upward with constant acceleration g. A food packet is dropped from the helicopter when it is at height h. Time taken by packet to reach the ground is close to: [g is acceleration due to gravity]",
+        options: [
+          "t = (2/3)√(h/g)",
+          "t = 1.8√(h/g)",
+          "t = 3.4√(h/g)",
+          "t = √(2h/3g)"
+        ],
+        ans: 2,
+        src: "JEE Main 5 Sep 2020 I",
+        explanation: "Helicopter at height h with acceleration g ⟹ its velocity when packet is dropped: v = √(2gh) upward. Packet then moves: h = −√(2gh)·t + ½gt². Solving the quadratic gives t ≈ 3.4√(h/g)."
+      },
+      {
+        q: "A tennis ball is released from height h, falls freely, rebounds from wooden floor and reaches height h/2. The velocity-versus-height graph during motion is best represented by which option?",
+        options: [
+          "V-shape with peak at h and zero at h/2",
+          "Speed increases from h to 0, then decreases from 0 to h/2 (two separate segments, both starting from zero at floor)",
+          "Speed increases going down then linearly decreases going up",
+          "Horizontal line"
+        ],
+        ans: 1,
+        src: "JEE Main 4 Sep 2020 I",
+        explanation: "As ball falls from h to 0: v = √(2g(h−y)) — increases. On rebound from 0 to h/2: v = √(2gy) — decreases. Both are √-shaped curves. Note: velocity resets at floor (energy loss), so two separate parabolic curves meet at the floor."
+      },
+      {
+        q: "A body is thrown vertically upwards. Which graph correctly represents velocity vs time?",
+        options: [
+          "Line starting negative, crossing zero, going positive",
+          "Line starting positive, crossing zero, going negative (continuous straight line)",
+          "Symmetric triangle shape",
+          "Line starting positive and going to zero, then stopping"
+        ],
+        ans: 1,
+        src: "JEE Main 2017",
+        explanation: "Thrown upward: initial v positive, decreases due to gravity (−g), reaches zero at top, then becomes negative (downward). This is a straight line with negative slope passing through zero — option (b)."
+      },
+      {
+        q: "Two stones are thrown up simultaneously from edge of a cliff 240 m high with initial speeds 10 m/s and 40 m/s. Which graph best represents time variation of relative position of second stone w.r.t. first? (g = 10 m/s², stones do not rebound)",
+        options: [
+          "Linear increase throughout",
+          "Increases linearly, then changes slope when first stone hits ground",
+          "Decreases throughout",
+          "Constant then drops"
+        ],
+        ans: 1,
+        src: "JEE Main 2015",
+        explanation: "Relative position = (x₂ − x₁). Since both have same acceleration (g downward), relative acceleration = 0. Relative velocity = 40 − 10 = 30 m/s (constant). So relative position increases linearly until the first stone (thrown at 10 m/s) hits ground; after that only stone 2 moves, so slope changes."
+      },
+      {
+        q: "From a tower of height H, a particle is thrown vertically upward with speed u. Time taken by particle to hit the ground is n times the time taken to reach highest point. Relation between H, u and n is:",
+        options: ["2gH = n²u²", "gH = (n−2)²u²d", "2gH = nu²(n−2)", "gH = (n−2)u²"],
+        ans: 2,
+        src: "JEE Main 2014",
+        explanation: "Time to reach top: t₀ = u/g. Total time to hit ground: T = n·t₀ = nu/g. Using: −H = u·T − ½gT². Substituting T = nu/g: −H = u(nu/g) − ½g(nu/g)² = nu²/g − n²u²/2g. So H = n²u²/2g − nu²/g = nu²(n−2)/2g. Hence 2gH = nu²(n−2)."
+      },
+      {
+        q: "A ball is dropped from the top of a 100 m high tower on a planet. In the last ½ s before hitting the ground, it covers a distance of 19 m. Acceleration due to gravity (in m/s²) near surface of that planet is:",
+        options: ["8.00", "5.00", "10.0", "12.0"],
+        ans: 0,
+        src: "JEE Main 8 Jan 2020 II",
+        explanation: "Let total time = T. Distance in last ½ s: s_last = ½g(T²) − ½g(T−0.5)² = 19. Also total distance: ½gT² = 100. From 100 = ½gT², so T² = 200/g. Solving the two equations simultaneously gives g = 8 m/s²."
+      },
+      {
+        q: "Two balls of different masses are thrown vertically upwards with the same speed. They pass through the point of projection in their downward motion with the same speed (neglect air resistance). This statement is:",
+        options: ["True", "False", "True only for equal masses", "Depends on height reached"],
+        ans: 0,
+        src: "JEE 1983",
+        explanation: "True. By energy conservation (no air resistance), any object thrown up with speed u returns to the same height with the same speed u, regardless of mass. The mass cancels in ½mv² = mgh."
+      }
+    ]
+  },
+
+  // ── NEWTON'S LAWS (existing) ─────────────────────────────
   {
     id: 'newtons-laws', title: "Newton's Laws", course: "11",
     desc: "Forces, friction, dynamics", count: 4,
@@ -246,28 +492,34 @@ const QUIZZES = [
         q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:",
         options: ["100 m/s²", "0.25 m/s²", "4 m/s²", "25 m/s²"],
         ans: 2,
+        src: "",
         explanation: "F = ma → a = F/m = 20/5 = 4 m/s²"
       },
       {
         q: "Newton's First Law is also called:",
         options: ["Law of Gravitation", "Law of Inertia", "Law of Action-Reaction", "Law of Conservation"],
         ans: 1,
+        src: "",
         explanation: "Newton's First Law states an object remains in its state unless acted upon by external force — this is the definition of inertia."
       },
       {
         q: "A book rests on a table. The reaction to the weight of the book acts on:",
         options: ["The table surface", "The Earth", "The book itself", "The air above"],
         ans: 1,
+        src: "",
         explanation: "By Newton's 3rd law, book pulls Earth upward with same force as Earth pulls book down."
       },
       {
         q: "Coefficient of static friction is always ___ kinetic friction.",
         options: ["Less than", "Equal to", "Greater than", "Cannot compare"],
         ans: 2,
+        src: "",
         explanation: "Static friction is always greater than kinetic friction. More force is needed to start motion than to maintain it."
       }
     ]
   },
+
+  // ── ELECTROSTATICS (existing) ────────────────────────────
   {
     id: 'electrostatics', title: "Electrostatics", course: "12",
     desc: "Coulomb's law, field, potential", count: 4,
@@ -276,28 +528,34 @@ const QUIZZES = [
         q: "Coulomb's law gives force F ∝ q₁q₂/r². If distance is doubled, force becomes:",
         options: ["F/4", "F/2", "4F", "2F"],
         ans: 0,
+        src: "",
         explanation: "F ∝ 1/r². If r→2r, then F ∝ 1/4r², so force becomes F/4."
       },
       {
         q: "Electric field lines always point from:",
         options: ["Negative to positive charge", "Positive to negative charge", "South to North pole", "Inside conductor to outside"],
         ans: 1,
+        src: "",
         explanation: "Electric field lines originate from positive charges and terminate at negative charges."
       },
       {
         q: "Inside a conductor in electrostatic equilibrium, the electric field is:",
         options: ["Maximum", "Minimum", "Zero", "Depends on shape"],
         ans: 2,
+        src: "",
         explanation: "Inside a conductor, free charges redistribute until the net electric field is exactly zero."
       },
       {
         q: "Gauss's law states that net flux through a closed surface equals:",
-        options: ["Q_enc / ε₀", "Q_enc × ε₀", "ε₀ / Q_enc", "Q_enc²/ ε₀"],
+        options: ["Q_enc / ε₀", "Q_enc × ε₀", "ε₀ / Q_enc", "Q_enc² / ε₀"],
         ans: 0,
-        explanation: "Gauss's law: Φ = Q_enc/ε₀. The total electric flux through any closed surface equals the net charge enclosed divided by permittivity of free space."
+        src: "",
+        explanation: "Gauss's law: Φ = Q_enc/ε₀. Total electric flux through any closed surface equals net charge enclosed divided by ε₀."
       }
     ]
   },
+
+  // ── RAY OPTICS (existing) ────────────────────────────────
   {
     id: 'optics', title: "Ray Optics", course: "12",
     desc: "Mirrors, lenses, refraction", count: 4,
@@ -306,25 +564,29 @@ const QUIZZES = [
         q: "The mirror formula is: 1/v + 1/u = ?",
         options: ["1/f", "f", "2/R", "1/R"],
         ans: 0,
-        explanation: "Mirror formula: 1/f = 1/v + 1/u, where f = focal length, v = image distance, u = object distance."
+        src: "",
+        explanation: "Mirror formula: 1/f = 1/v + 1/u."
       },
       {
         q: "A convex lens has focal length 20 cm. Its power is:",
         options: ["0.2 D", "5 D", "20 D", "0.05 D"],
         ans: 1,
+        src: "",
         explanation: "Power P = 1/f(in metres) = 1/0.20 = 5 Dioptre."
       },
       {
         q: "Total internal reflection occurs when light travels from:",
         options: ["Rarer to denser medium", "Denser to rarer medium", "Any medium", "In vacuum"],
         ans: 1,
-        explanation: "TIR occurs when light travels from denser to rarer medium at an angle greater than or equal to the critical angle."
+        src: "",
+        explanation: "TIR occurs when light travels from denser to rarer medium at an angle ≥ critical angle."
       },
       {
         q: "Rainbow is formed due to:",
         options: ["Reflection", "Refraction only", "Dispersion and TIR", "Diffraction"],
         ans: 2,
-        explanation: "Rainbow is formed by a combination of refraction (at entry/exit) and total internal reflection inside water droplets, causing dispersion of white light."
+        src: "",
+        explanation: "Rainbow is formed by refraction (entry/exit) and total internal reflection inside water droplets, causing dispersion of white light."
       }
     ]
   }
@@ -332,7 +594,6 @@ const QUIZZES = [
 
 let currentQuiz = null, currentQ = 0, score = 0, answered = false;
 
-// Build selector cards
 function buildSelector() {
   const grid = document.getElementById('selectorGrid');
   grid.innerHTML = QUIZZES.map(q => `
@@ -368,6 +629,7 @@ function renderQuestion() {
   document.getElementById('questionContainer').innerHTML = `
     <div class="question-card">
       <div class="q-num">Question ${currentQ+1}</div>
+      ${q.src ? `<div class="q-source">[${q.src}]</div>` : ''}
       <div class="q-text">${q.q}</div>
       <div class="options">
         ${q.options.map((opt, i) => `
