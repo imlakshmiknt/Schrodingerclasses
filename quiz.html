@@ -207,19 +207,8 @@ const QUIZZES = [
       { q: "Three vectors P⃗, Q⃗ and R⃗ are shown in the figure. Let S⃗ be any point on the vector R⃗. The distance between the points P and S is b|R⃗|. The general relation among vectors P⃗, Q⃗ and S⃗ is:", image: "images/vector_q5.png", options: [ "S⃗ = (1−b)P⃗ + bQ⃗", "S⃗ = (b−1)P⃗ + bQ⃗", "S⃗ = (1−b²)P⃗ + bQ⃗", "S⃗ = (1−b)P⃗ + b²Q⃗"] },
       { q: "Two vectors A and B have equal magnitudes. Magnitude of (A+B) is n times magnitude of (A-B). The angle between A and B is:", options: ["cos⁻¹[(n²-1)/(n²+1)]","cos⁻¹[(n-1)/(n+1)]","sin⁻¹[(n²-1)/(n²+1)]","sin⁻¹[(n-1)/(n+1)]"], ans: 0, src: "JEE Main 10 Jan 2019 II", explanation: "|A+B|² = 2A²(1+cosθ), |A-B|² = 2A²(1-cosθ). Setting ratio = n²: cosθ = (n²-1)/(n²+1)." },
       { q: "Vector A = î + ĵ and B = î - ĵ. Magnitude of coplanar vector C such that A·C = B·C = A·B is:", options: ["√(5/9)","√(10/9)","√(20/9)","√(9/12)"], ans: 0, src: "JEE Main Online April 16 2018", explanation: "A·B = 0. Let C = xî + yĵ. A·C = x+y = 0, B·C = x-y = 0. Solving: x = y = 0... Re-evaluating with A·B = 1²-1² = 0. C must satisfy x+y = 0 AND x-y = 0, giving x=y=0. Correct approach gives |C| = √(5/9)." },
-      { q: "A balloon moves up vertically above point A on ground. A girl at distance d (point B) sees it at 45° with vertical at height h₁. When balloon climbs further height h₂, she moves 2.464d to point C and sees it at 60° with vertical. Then h₂ is: (tan 30° = 0.5774)",
-        options: ["1.464d", "0.732d", "0.464d", "d"],
-        ans: 3,
-        src: "JEE Main Sep 05 2020 I",
-        explanation: "Setting up geometry: at B, tan45° = h₁/d => h₁ = d. At C, tan60° = (h₁+h₂)/(d - 2.464d)... Careful sign handling of horizontal distances gives h₂ = d."
-      },
-      {
-        q: "Starting from origin at t=0, initial velocity 5ĵ m/s, constant acceleration (10î + 4ĵ) m/s². At time t, coordinates are (20 m, y₀ m). Values of t and y₀ are:",
-        options: ["2 s and 18 m", "4 s and 52 m", "2 s and 24 m", "5 s and 25 m"],
-        ans: 0,
-        src: "JEE Main Sep 04 2020 I",
-        explanation: "x = ½(10)t² = 20 => t² = 4 => t = 2 s. y = 5t + ½(4)t² = 5(2) + 2(4) = 10 + 8 = 18 m."
-      },
+      { q: "A balloon moves up vertically above point A on ground. A girl at distance d (point B) sees it at 45° with vertical at height h₁. When balloon climbs further height h₂, she moves 2.464d to point C and sees it at 60° with vertical. Then h₂ is: (tan 30° = 0.5774)", options: ["1.464d", "0.732d", "0.464d", "d"], ans: 3, src: "JEE Main Sep 05 2020 I", explanation: "Setting up geometry: at B, tan45° = h₁/d => h₁ = d. At C, tan60° = (h₁+h₂)/(d - 2.464d)... Careful sign handling of horizontal distances gives h₂ = d." },
+      {q: "Starting from origin at t=0, initial velocity 5ĵ m/s, constant acceleration (10î + 4ĵ) m/s². At time t, coordinates are (20 m, y₀ m). Values of t and y₀ are:", options: ["2 s and 18 m", "4 s and 52 m", "2 s and 24 m", "5 s and 25 m"], ans: 0, src: "JEE Main Sep 04 2020 I", explanation: "x = ½(10)t² = 20 => t² = 4 => t = 2 s. y = 5t + ½(4)t² = 5(2) + 2(4) = 10 + 8 = 18 m." },
       {
         q: "A particle starts from origin at t=0 with initial velocity 3.0î m/s and moves in x-y plane with constant acceleration (6.0î + 4.0ĵ) m/s². The x-coordinate when y-coordinate is 32 m is D meters. Value of D is:",
         options: ["32", "50", "60", "40"],
