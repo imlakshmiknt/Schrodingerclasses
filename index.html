@@ -6,7 +6,7 @@
   <title>Schrödinger Classes — Physics by Lakshmi Kant Pandey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,9 +23,9 @@
       --white: #ffffff;
       --red: #c0392b;
       --green: #1a6b3a;
-      --display: 'Cormorant Garamond', Georgia, serif;
-      --body: 'Outfit', sans-serif;
-      --mono: 'Fira Code', monospace;
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
       --shadow: 0 4px 24px rgba(15,45,74,0.08);
       --shadow-lg: 0 12px 48px rgba(15,45,74,0.14);
     }
@@ -87,7 +87,7 @@
     .nav-logo {
       font-family: var(--display);
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--accent);
       letter-spacing: -0.01em;
       line-height: 1.1;
@@ -172,7 +172,7 @@
       grid-template-columns: 1fr 1fr;
       align-items: center;
       padding: 7rem 3rem 4rem;
-      gap: 3rem;
+      gap: 4rem;
       position: relative;
       overflow: hidden;
     }
@@ -213,7 +213,7 @@
     .hero h1 {
       font-family: var(--display);
       font-size: clamp(2.8rem, 5.5vw, 5.2rem);
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--ink);
@@ -226,7 +226,7 @@
     }
     .hero h1 strong {
       color: var(--accent);
-      font-weight: 700;
+      font-weight: 900;
     }
     .hero-sub {
       font-size: 1rem;
@@ -294,7 +294,6 @@
       border-top: 1px solid var(--border);
       animation: fadeUp 0.6s ease both 0.4s;
     }
-    .stat-item { }
     .stat-num {
       font-family: var(--display);
       font-size: 2.2rem;
@@ -311,46 +310,178 @@
       font-family: var(--mono);
     }
 
-    /* Hero right — formula cards */
+    /* ── HERO RIGHT — BOOK SHOWCASE ── */
     .hero-visual {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      align-items: center;
+      justify-content: center;
       animation: fadeLeft 0.8s ease both 0.3s;
+      position: relative;
     }
-    .formula-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.4rem 1.8rem;
-      box-shadow: var(--shadow);
-      transition: all 0.3s;
-      cursor: default;
+
+    /* Decorative glow behind book */
+    .book-glow {
+      position: absolute;
+      width: 340px;
+      height: 420px;
+      background: radial-gradient(ellipse at center,
+        rgba(184,137,46,0.18) 0%,
+        rgba(15,45,74,0.08) 50%,
+        transparent 75%);
+      border-radius: 50%;
+      filter: blur(30px);
+      z-index: 0;
+      pointer-events: none;
     }
-    .formula-card:hover {
-      transform: translateX(-6px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--gold2);
+
+    .book-wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
     }
-    .card-label {
+
+    /* 3D Book container */
+    .book-3d {
+      position: relative;
+      width: 240px;
+      filter: drop-shadow(0 24px 48px rgba(15,45,74,0.22));
+      transition: transform 0.4s ease;
+    }
+    .book-3d:hover {
+      transform: translateY(-8px) rotate(-1deg);
+    }
+
+    /* Book cover image */
+    .book-cover-img {
+      width: 100%;
+      border-radius: 4px 12px 12px 4px;
+      display: block;
+      border: 1px solid rgba(184,137,46,0.2);
+    }
+
+    /* Spine shadow effect */
+    .book-3d::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 2%; bottom: 2%;
+      width: 12px;
+      background: linear-gradient(to right, rgba(0,0,0,0.35), rgba(0,0,0,0.05));
+      border-radius: 4px 0 0 4px;
+      z-index: 2;
+    }
+
+    /* Page edges */
+    .book-3d::after {
+      content: '';
+      position: absolute;
+      right: -5px; top: 3%; bottom: 3%;
+      width: 6px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #e8e2d4 0px,
+        #f0ead8 1px,
+        #e8e2d4 2px
+      );
+      border-radius: 0 2px 2px 0;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.12);
+    }
+
+    /* Book label below */
+    .book-label {
+      text-align: center;
+    }
+    .book-label-title {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .book-label-sub {
       font-family: var(--mono);
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 0.6rem;
+      margin-top: 0.2rem;
     }
-    .formula {
-      font-family: var(--display);
-      font-size: 1.6rem;
+
+    /* Badge pills around book */
+    .book-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.3rem;
+    }
+    .book-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .book-badge.dark {
+      background: var(--accent);
+      color: rgba(255,255,255,0.85);
+    }
+    .book-badge.gold {
+      background: rgba(184,137,46,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(184,137,46,0.3);
+    }
+
+    /* Floating star rating */
+    .book-rating {
+      position: absolute;
+      top: -14px;
+      right: -20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.45rem 0.7rem;
+      box-shadow: var(--shadow);
+      font-size: 0.72rem;
+      font-family: var(--body);
       font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.02em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      z-index: 3;
+      animation: float 3s ease-in-out infinite;
     }
-    .formula-card p {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.4rem;
+    .book-rating .stars { color: var(--gold); font-size: 0.65rem; }
+
+    /* Floating "New" badge */
+    .book-new-badge {
+      position: absolute;
+      bottom: 30px;
+      left: -22px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(184,137,46,0.35);
+      z-index: 3;
+      animation: float 3.5s ease-in-out infinite 0.5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
 
     /* ── SECTIONS ── */
@@ -369,7 +500,7 @@
     .section-title {
       font-family: var(--display);
       font-size: clamp(2rem, 3.5vw, 3.2rem);
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 3rem;
@@ -558,9 +689,7 @@
       align-items: center;
       max-width: 960px;
     }
-    .profile-photo-wrap {
-      text-align: center;
-    }
+    .profile-photo-wrap { text-align: center; }
     .profile-photo {
       width: 200px; height: 200px;
       border-radius: 50%;
@@ -586,7 +715,7 @@
     .profile-name {
       font-family: var(--display);
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--ink);
       margin-top: 1.1rem;
     }
@@ -712,7 +841,7 @@
     .cta-banner h2 {
       font-family: var(--display);
       font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 600;
+      font-weight: 700;
       color: white;
       margin-bottom: 0.8rem;
       position: relative;
@@ -755,7 +884,7 @@
     .footer-logo {
       font-family: var(--display);
       font-size: 1.4rem;
-      font-weight: 600;
+      font-weight: 700;
       color: white;
       display: block;
       margin-bottom: 0.2rem;
@@ -830,7 +959,11 @@
         min-height: auto;
       }
       .hero-psi { font-size: 55vw; opacity: 0.5; }
-      .hero-visual { display: none; }
+      .hero-visual {
+        display: flex;
+        margin-top: 1rem;
+      }
+      .book-3d { width: 180px; }
       .hero h1 { font-size: clamp(2.2rem, 8vw, 3.2rem); }
       .hero-stats { gap: 1.5rem; }
       .stat-num { font-size: 1.8rem; }
@@ -854,6 +987,7 @@
       .creds-grid { grid-template-columns: 1fr; }
       .hero-actions { flex-direction: column; }
       .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .book-badges { display: none; }
     }
   </style>
 </head>
@@ -863,7 +997,7 @@
 <nav id="navbar">
   <a href="index.html" class="nav-brand">
     <div class="nav-logo">Schrödinger<span>Classes</span></div>
-    <small class="nav-tagline">A Concept by Lakshmi Kant </small>
+    <small class="nav-tagline">A Concept by Lakshmi Kant</small>
   </a>
   <div class="nav-links">
     <a href="notes.html">Notes</a>
@@ -919,21 +1053,36 @@
     </div>
   </div>
 
+  <!-- BOOK SHOWCASE replacing formula cards -->
   <div class="hero-visual">
-    <div class="formula-card">
-      <div class="card-label">Schrödinger Equation</div>
-      <div class="formula">iℏ ∂Ψ/∂t = ĤΨ</div>
-      <p>The foundation of quantum mechanics — and our name.</p>
-    </div>
-    <div class="formula-card">
-      <div class="card-label">Newton's Second Law</div>
-      <div class="formula">F = ma</div>
-      <p>Where every physics journey begins.</p>
-    </div>
-    <div class="formula-card">
-      <div class="card-label">Maxwell's Equations</div>
-      <div class="formula">∇ × E = −∂B/∂t</div>
-      <p>The elegance of electromagnetism.</p>
+    <div class="book-glow"></div>
+    <div class="book-wrapper">
+      <div class="book-3d">
+        <!-- Floating rating badge -->
+        <div class="book-rating">
+          <span class="stars">★★★★★</span> IIT Crafted
+        </div>
+        <!-- NEW badge -->
+        <div class="book-new-badge">1st Edition</div>
+        <!-- Book cover image -->
+        <img
+          src="images/book.jpg"
+          alt="Beyond Classical Physics — by Lakshmi Kant Pandey"
+          class="book-cover-img"
+          onerror="this.style.background='linear-gradient(135deg,#0f2d4a 0%,#1a4a7a 100%)';this.style.minHeight='340px';this.alt='Book cover coming soon';"
+        />
+      </div>
+
+      <div class="book-label">
+        <div class="book-label-title">Beyond Classical Physics</div>
+        <div class="book-label-sub">by Lakshmi Kant Pandey · JEE / NEET</div>
+      </div>
+
+      <div class="book-badges">
+        <span class="book-badge dark">JEE Advanced</span>
+        <span class="book-badge dark">NEET</span>
+        <span class="book-badge gold">First Edition</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1191,12 +1340,10 @@
 </div>
 
 <script>
-  // Nav scroll effect
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // Hamburger menu
   function toggleMenu() {
     const menu = document.getElementById('mobileNav');
     const btn = document.getElementById('hamburger');
@@ -1205,12 +1352,10 @@
     document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
   }
 
-  // Close mobile menu on outside click
   document.getElementById('mobileNav').addEventListener('click', function(e) {
     if (e.target === this) toggleMenu();
   });
 
-  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
