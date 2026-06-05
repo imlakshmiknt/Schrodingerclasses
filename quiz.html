@@ -5,83 +5,740 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
-      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
-      --accent2:#c8a96e;--border:#e0ddd6;
-      --green:#27ae60;--red:#c0392b;
-      --serif:'DM Serif Display',serif;
-      --sans:'DM Sans',sans-serif;
-      --mono:'JetBrains Mono',monospace;
+      --bg: #f9f8f5;
+      --paper: #ffffff;
+      --cream: #f4f1ea;
+      --ink: #16140f;
+      --ink2: #3d3a32;
+      --muted: #7a756a;
+      --accent: #0f2d4a;
+      --gold: #b8892e;
+      --gold2: #ddb96a;
+      --border: #ddd9cf;
+      --border2: #c8c3b8;
+      --green: #1a6b3a;
+      --green-bg: #f0faf4;
+      --red: #c0392b;
+      --red-bg: #fdf3f2;
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --timer-warning: #e67e22;
+      --timer-danger: #c0392b;
     }
-    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
-    nav{
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:1.2rem 4rem;background:rgba(248,247,244,0.95);
-      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      min-height: 100vh;
     }
-    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
-    .nav-logo span{color:var(--accent2);}
-    .nav-links{display:flex;gap:2rem;align-items:center;}
-    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
-    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
-    .page-header{padding:8rem 4rem 4rem;background:var(--cream);border-bottom:1px solid var(--border);}
-    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
-    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
-    .page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;}
-    .quiz-selector{padding:3rem 4rem;border-bottom:1px solid var(--border);}
-    .selector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
-    .sel-card{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:left;}
-    .sel-card:hover{border-color:var(--accent);background:rgba(26,58,92,0.04);}
-    .sel-card h4{font-family:var(--serif);font-size:1.05rem;margin-bottom:0.3rem;}
-    .sel-card p{font-size:0.78rem;color:var(--muted);}
-    .sel-count{font-family:var(--mono);font-size:0.68rem;color:var(--accent2);margin-top:0.6rem;}
-    .quiz-area{padding:3rem 4rem 5rem;display:none;}
-    .quiz-area.active{display:block;}
-    .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
-    .quiz-title{font-family:var(--serif);font-size:1.6rem;}
-    .quiz-progress-bar{width:100%;background:var(--border);border-radius:2px;height:4px;margin-bottom:2rem;}
-    .quiz-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s;}
-    .question-card{background:var(--cream);border:1px solid var(--border);border-radius:6px;padding:2.5rem;margin-bottom:1.5rem;max-width:780px;}
-    .q-num{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.8rem;}
-    .q-text{font-family:var(--serif);font-size:1.2rem;line-height:1.5;margin-bottom:1.8rem;}
-    .q-source{font-family:var(--mono);font-size:0.65rem;color:var(--muted);margin-bottom:1.2rem;letter-spacing:0.06em;}
-    .options{display:flex;flex-direction:column;gap:0.75rem;}
-    .option-btn{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:1rem 1.2rem;text-align:left;font-family:var(--sans);font-size:0.9rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.8rem;}
-    .option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(26,58,92,0.04);}
-    .option-btn.correct{background:rgba(39,174,96,0.08);border-color:var(--green);color:var(--green);}
-    .option-btn.wrong{background:rgba(192,57,43,0.08);border-color:var(--red);color:var(--red);}
-    .option-btn:disabled{cursor:default;}
-    .option-letter{width:28px;height:28px;border-radius:50%;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.75rem;font-weight:600;flex-shrink:0;}
-    .option-btn.correct .option-letter{background:var(--green);color:white;border-color:var(--green);}
-    .option-btn.wrong .option-letter{background:var(--red);color:white;border-color:var(--red);}
-    .explanation{margin-top:1.2rem;padding:1rem 1.2rem;background:rgba(26,58,92,0.05);border-left:3px solid var(--accent);border-radius:0 4px 4px 0;font-size:0.875rem;color:var(--ink);display:none;line-height:1.65;}
-    .explanation.show{display:block;}
-    .quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;max-width:780px;}
-    .btn-nav{padding:0.75rem 1.8rem;border-radius:3px;font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
-    .btn-next{background:var(--accent);color:white;border:none;}
-    .btn-next:hover{background:var(--accent2);color:var(--ink);}
-    .btn-back{background:transparent;color:var(--muted);border:1.5px solid var(--border);}
-    .btn-back:hover{border-color:var(--accent);color:var(--accent);}
-    .score-screen{display:none;text-align:center;padding:4rem 2rem;max-width:500px;margin:0 auto;}
-    .score-screen.show{display:block;}
-    .score-circle{width:120px;height:120px;border-radius:50%;background:var(--cream);border:3px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 2rem;}
-    .score-num{font-family:var(--serif);font-size:2.5rem;color:var(--accent);}
-    .score-total{font-size:0.75rem;color:var(--muted);}
-    .score-screen h2{font-family:var(--serif);font-size:2rem;margin-bottom:0.5rem;}
-    .score-screen p{color:var(--muted);margin-bottom:2rem;}
-    .score-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-    @media(max-width:900px){nav{padding:1rem 1.5rem;}.nav-links{display:none;}.page-header,.quiz-selector,.quiz-area{padding-left:1.5rem;padding-right:1.5rem;}}
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 3rem;
+      background: rgba(249,248,245,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-tagline {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .nav-links { display: flex; gap: 0.2rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { background: var(--cream); color: var(--accent); }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: white !important;
+      padding: 0.45rem 1.1rem !important;
+      border-radius: 7px !important;
+      font-weight: 600 !important;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 7rem 3rem 3rem;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+    }
+    .page-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .page-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .page-sub { font-size: 0.9rem; color: var(--muted); }
+
+    /* ── SELECTOR ── */
+    #selectorSection { padding: 3rem; }
+    .selector-intro {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .selector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .sel-card {
+      background: var(--paper);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.6rem;
+      cursor: pointer;
+      transition: all 0.22s;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .sel-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s;
+    }
+    .sel-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(15,45,74,0.1);
+    }
+    .sel-card:hover::after { transform: scaleX(1); }
+    .sel-card-tag {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(184,137,46,0.1);
+      border: 1px solid rgba(184,137,46,0.2);
+      padding: 0.2rem 0.55rem;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 0.8rem;
+    }
+    .sel-card h4 {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+    .sel-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .sel-meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+    .sel-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ── EXAM AREA ── */
+    #examSection {
+      display: none;
+      min-height: 100vh;
+      padding-top: 65px;
+    }
+
+    /* Top exam bar */
+    .exam-topbar {
+      position: fixed;
+      top: 65px; left: 0; right: 0;
+      z-index: 90;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 3rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .exam-topbar-left { display: flex; align-items: center; gap: 2rem; }
+    .exam-quiz-name { font-weight: 600; font-size: 0.8rem; }
+    .exam-qcount { color: rgba(255,255,255,0.6); }
+    .exam-score-live {
+      background: rgba(255,255,255,0.12);
+      padding: 0.25rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+    }
+
+    /* Timer */
+    .exam-timer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.35rem 1rem;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    .exam-timer.warning {
+      background: rgba(230,126,34,0.25);
+      border-color: rgba(230,126,34,0.5);
+    }
+    .exam-timer.danger {
+      background: rgba(192,57,43,0.3);
+      border-color: rgba(192,57,43,0.6);
+      animation: timerPulse 0.8s ease-in-out infinite;
+    }
+    @keyframes timerPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    .timer-icon { font-size: 0.9rem; }
+    .timer-val {
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      min-width: 40px;
+      text-align: center;
+    }
+    .timer-label { font-size: 0.6rem; color: rgba(255,255,255,0.6); }
+
+    /* Progress strip */
+    .exam-progress-strip {
+      position: fixed;
+      top: 65px;
+      left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      z-index: 91;
+    }
+    .exam-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.5s ease;
+    }
+
+    /* Main exam content */
+    .exam-content {
+      padding: 6rem 0 4rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Question paper sheet */
+    .question-sheet {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      width: 100%;
+      max-width: 820px;
+      margin: 0 1.5rem;
+      box-shadow:
+        0 1px 3px rgba(0,0,0,0.06),
+        0 8px 32px rgba(15,45,74,0.07),
+        inset 0 0 0 6px rgba(249,248,245,0.5);
+      position: relative;
+      animation: sheetIn 0.3s ease both;
+    }
+    @keyframes sheetIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Ruled lines texture on paper */
+    .question-sheet::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 27px,
+        rgba(200,195,184,0.18) 28px
+      );
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    /* Red margin line */
+    .sheet-margin {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 52px;
+      width: 1px;
+      background: rgba(192,57,43,0.2);
+      pointer-events: none;
+    }
+
+    .sheet-inner {
+      position: relative;
+      padding: 2.5rem 2.5rem 2.5rem 3.8rem;
+    }
+
+    /* Sheet header */
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1.5px solid var(--border2);
+    }
+    .sheet-header-left { }
+    .sheet-exam-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .sheet-exam-title {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .sheet-qbadge {
+      background: var(--accent);
+      color: white;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Question number stamp */
+    .q-stamp {
+      position: absolute;
+      left: -1.8rem;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: white;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* Source tag */
+    .q-source-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      background: rgba(184,137,46,0.08);
+      border: 1px solid rgba(184,137,46,0.2);
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      margin-bottom: 0.9rem;
+    }
+
+    /* Question text */
+    .q-body { position: relative; margin-bottom: 2rem; }
+    .q-text {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+
+    /* Options */
+    .options-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    .options { display: flex; flex-direction: column; gap: 0.6rem; }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1.2rem;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--body);
+      font-size: 0.92rem;
+      color: var(--ink);
+      transition: all 0.18s;
+      width: 100%;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: rgba(15,45,74,0.04);
+      transform: translateX(3px);
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* Option letter bubble */
+    .opt-letter {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border2);
+      background: var(--paper);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.18s;
+      color: var(--accent);
+    }
+
+    /* Selected state */
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(15,45,74,0.05);
+    }
+    .option-btn.selected .opt-letter {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Correct / Wrong */
+    .option-btn.correct {
+      border-color: var(--green);
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .option-btn.correct .opt-letter {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+    .option-btn.wrong {
+      border-color: var(--red);
+      background: var(--red-bg);
+      color: var(--red);
+    }
+    .option-btn.wrong .opt-letter {
+      background: var(--red);
+      color: white;
+      border-color: var(--red);
+    }
+
+    /* Timed-out style */
+    .option-btn.timeout-reveal {
+      border-color: var(--green);
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .option-btn.timeout-reveal .opt-letter {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    /* Explanation box */
+    .explanation-box {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(15,45,74,0.04);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+    }
+    .explanation-box.show { display: block; }
+    .exp-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .exp-text {
+      font-size: 0.875rem;
+      color: var(--ink2);
+      line-height: 1.7;
+    }
+
+    /* Result badge after answering */
+    .result-badge {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-top: 1rem;
+    }
+    .result-badge.show { display: inline-flex; }
+    .result-badge.correct-badge {
+      background: var(--green-bg);
+      color: var(--green);
+      border: 1px solid rgba(26,107,58,0.25);
+    }
+    .result-badge.wrong-badge {
+      background: var(--red-bg);
+      color: var(--red);
+      border: 1px solid rgba(192,57,43,0.25);
+    }
+    .result-badge.timeout-badge {
+      background: rgba(230,126,34,0.08);
+      color: var(--timer-warning);
+      border: 1px solid rgba(230,126,34,0.3);
+    }
+
+    /* Sheet footer nav */
+    .sheet-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .btn-exam {
+      font-family: var(--body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.75rem 1.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-primary-exam {
+      background: var(--accent);
+      color: white;
+      border: none;
+      box-shadow: 0 3px 12px rgba(15,45,74,0.2);
+    }
+    .btn-primary-exam:hover {
+      background: var(--gold);
+      color: var(--ink);
+      transform: translateY(-1px);
+    }
+    .btn-primary-exam:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-ghost-exam {
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost-exam:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Q navigator dots */
+    .q-navigator {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 0.4rem;
+    }
+    .q-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.2s;
+    }
+    .q-dot.current { background: var(--accent); transform: scale(1.3); }
+    .q-dot.done-correct { background: var(--green); }
+    .q-dot.done-wrong { background: var(--red); }
+    .q-dot.done-timeout { background: var(--timer-warning); }
+
+    /* ── SCORE SCREEN ── */
+    #scoreSection {
+      display: none;
+      min-height: 100vh;
+      padding: 8rem 1.5rem 4rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #scoreSection.show {
+      display: flex;
+    }
+    .score-paper {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(15,45,74,0.1);
+      overflow: hidden;
+    }
+    .score-paper-top {
+      background: var(--accent);
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .score-paper-top::after {
+      content: '';
+      position: absolute;
+      bottom: -12px; left: 0; right: 0;
+      height: 12px;
+      background: var(--paper);
+      clip-path: polygon(0 100%, 100% 100%, 100% 0, 97% 100%, 94% 0, 91% 100%, 88% 0, 85% 100%, 82% 0, 79% 100%, 76% 0, 73% 100%, 70% 0, 67% 100%, 64% 0, 61% 100%, 58% 0, 55% 100%, 52% 0, 49% 100%, 46% 0, 43% 100%, 40% 0, 37% 100%, 34% 0, 31% 100%, 28% 0, 25% 100%, 22% 0, 19% 100%, 16% 0, 13% 100%, 10% 0, 7% 100%, 4% 0, 1% 100%, 0 0);
+    }
+    .score-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+    .score-big {
+      font-family: var(--display);
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold2);
+      line-height: 1;
+    }
+    .score-outof {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.2rem;
+    }
+    .score-paper-body {
+      padding: 2.5rem;
+    }
+    .score-title {
+      font-family: var(--display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .score-sub {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .score-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    .score-stat {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .score-stat-val {
+      font-family: var(--display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .score-stat-val.green { color: var(--green); }
+    .score-stat-val.red { color: var(--red); }
+    .score-stat-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .score-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0.8rem 1.2rem; }
+      .nav-links { display: none; }
+      .page-header { padding: 6rem 1.2rem 2rem; }
+      #selectorSection { padding: 2rem 1.2rem; }
+      .exam-topbar { padding: 0.6rem 1.2rem; }
+      .sheet-inner { padding: 1.8rem 1.5rem 1.8rem 2.2rem; }
+      .sheet-margin { left: 36px; }
+      .q-stamp { left: -1.2rem; width: 24px; height: 24px; font-size: 0.6rem; }
+      .exam-content { padding: 5.5rem 0 3rem; }
+      .question-sheet { margin: 0 0.8rem; }
+      .exam-topbar-left { gap: 0.8rem; }
+      .exam-qcount { display: none; }
+    }
   </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <a href="index.html" class="nav-logo">
+    Schrödinger<span>Classes</span>
+    <small class="nav-tagline">A Concept by Lakshmi Kant</small>
+  </a>
   <div class="nav-links">
     <a href="notes.html">Notes</a>
     <a href="videos.html">Videos</a>
@@ -92,50 +749,129 @@
   </div>
 </nav>
 
-<div class="page-header">
+<!-- PAGE HEADER -->
+<div class="page-header" id="pageHeader">
   <div class="page-label">Practice</div>
   <div class="page-title">Topic Quizzes</div>
   <p class="page-sub">JEE PYQ + Topic MCQs with explanations. Pick a topic to start.</p>
 </div>
 
-<div class="quiz-selector" id="selector">
+<!-- SELECTOR -->
+<div id="selectorSection">
+  <div class="selector-intro">Choose a topic to begin your practice session</div>
   <div class="selector-grid" id="selectorGrid"></div>
 </div>
 
-<div class="quiz-area" id="quizArea">
-  <div class="quiz-header">
-    <div class="quiz-title" id="quizTitle"></div>
-    <span id="qCounter" style="font-family:var(--mono);font-size:0.8rem;color:var(--muted);"></span>
+<!-- EXAM SECTION -->
+<div id="examSection">
+  <!-- Fixed top bar -->
+  <div class="exam-topbar">
+    <div class="exam-topbar-left">
+      <span class="exam-quiz-name" id="examTitle">—</span>
+      <span class="exam-qcount" id="examQCount">Q 1 of 10</span>
+      <span class="exam-score-live" id="examScoreLive">Score: 0</span>
+    </div>
+    <div class="exam-timer" id="examTimer">
+      <span class="timer-icon">⏱</span>
+      <span class="timer-val" id="timerVal">60</span>
+      <span class="timer-label">sec</span>
+    </div>
   </div>
-  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill"></div></div>
-  <div id="questionContainer"></div>
-  <div class="quiz-nav">
-    <button class="btn-nav btn-back" onclick="backToSelector()">← All Quizzes</button>
-    <button class="btn-nav btn-next" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+
+  <!-- Progress strip under topbar -->
+  <div class="exam-progress-strip" style="top:107px">
+    <div class="exam-progress-fill" id="examProgressFill"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="exam-content">
+    <div class="question-sheet" id="questionSheet">
+      <div class="sheet-margin"></div>
+      <div class="sheet-inner">
+
+        <!-- Sheet header -->
+        <div class="sheet-header">
+          <div class="sheet-header-left">
+            <div class="sheet-exam-label">Schrödinger Classes · JEE / NEET Practice</div>
+            <div class="sheet-exam-title" id="sheetTitle">—</div>
+          </div>
+          <div class="sheet-qbadge" id="sheetQBadge">Q 1 / 10</div>
+        </div>
+
+        <!-- Q navigator dots -->
+        <div class="q-navigator" id="qNavigator"></div>
+
+        <!-- Question -->
+        <div class="q-body">
+          <div class="q-stamp" id="qStamp">1</div>
+          <div id="qSourceTag"></div>
+          <div class="q-text" id="qText">Loading…</div>
+        </div>
+
+        <!-- Options -->
+        <div class="options-label">Choose the correct answer</div>
+        <div class="options" id="optionsContainer"></div>
+
+        <!-- Result badge -->
+        <div class="result-badge" id="resultBadge"></div>
+
+        <!-- Explanation -->
+        <div class="explanation-box" id="explanationBox">
+          <div class="exp-label">✦ Explanation</div>
+          <div class="exp-text" id="expText"></div>
+        </div>
+
+        <!-- Footer nav -->
+        <div class="sheet-footer">
+          <button class="btn-exam btn-ghost-exam" onclick="backToSelector()">← All Quizzes</button>
+          <button class="btn-exam btn-primary-exam" id="nextBtn" onclick="nextQuestion()" disabled>
+            Next Question →
+          </button>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="quiz-area" id="scoreArea">
-  <div class="score-screen show">
-    <div class="score-circle">
-      <div class="score-num" id="scoreNum">0</div>
-      <div class="score-total" id="scoreTot">/ 0</div>
+<!-- SCORE SECTION -->
+<div id="scoreSection">
+  <div class="score-paper">
+    <div class="score-paper-top">
+      <div class="score-emoji" id="scoreEmoji">🎉</div>
+      <div class="score-big" id="scoreBig">0</div>
+      <div class="score-outof" id="scoreOutOf">out of 0</div>
     </div>
-    <h2 id="scoreMsg"></h2>
-    <p id="scoreDetail"></p>
-    <div class="score-actions">
-      <button class="btn-nav btn-next" onclick="retryQuiz()">Retry Quiz</button>
-      <button class="btn-nav btn-back" onclick="backToSelector()">All Quizzes</button>
+    <div class="score-paper-body">
+      <div class="score-title" id="scoreTitle">Well Done!</div>
+      <div class="score-sub" id="scoreSub">You completed the quiz.</div>
+      <div class="score-stats">
+        <div class="score-stat">
+          <div class="score-stat-val green" id="statCorrect">0</div>
+          <div class="score-stat-label">Correct</div>
+        </div>
+        <div class="score-stat">
+          <div class="score-stat-val red" id="statWrong">0</div>
+          <div class="score-stat-label">Wrong</div>
+        </div>
+        <div class="score-stat">
+          <div class="score-stat-val" id="statPct">0%</div>
+          <div class="score-stat-label">Score</div>
+        </div>
+      </div>
+      <div class="score-actions">
+        <button class="btn-exam btn-primary-exam" onclick="retryQuiz()">↺ Retry Quiz</button>
+        <button class="btn-exam btn-ghost-exam" onclick="backToSelector()">← All Quizzes</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
 const QUIZZES = [
-
   {
     id: 'kinematics', title: "Kinematics Basics", course: "11",
-    desc: "1D & 2D motion, graphs, projectile", count: 5,
+    desc: "1D & 2D motion, graphs, projectile",
     questions: [
       { q: "A ball is thrown vertically upward with velocity 20 m/s. How high does it go? (g = 10 m/s²)", options: ["10 m","20 m","40 m","5 m"], ans: 1, src: "", explanation: "Using v² = u² - 2gh, at max height v=0. h = u²/2g = 400/20 = 20 m." },
       { q: "The slope of a velocity-time graph gives:", options: ["Displacement","Speed","Acceleration","Distance"], ans: 2, src: "", explanation: "Slope of v-t graph = Δv/Δt = acceleration." },
@@ -144,151 +880,20 @@ const QUIZZES = [
       { q: "If a car decelerates from 20 m/s to rest in 4 seconds, the retardation is:", options: ["80 m/s²","5 m/s²","4 m/s²","10 m/s²"], ans: 1, src: "", explanation: "a = (v-u)/t = (0-20)/4 = -5 m/s². Retardation = 5 m/s²." }
     ]
   },
-
   {
     id: 'motion-topic1', title: "Distance, Displacement & Uniform Motion", course: "11",
-    desc: "JEE PYQ: Uniform Motion, Displacement, Average Velocity", count: 6,
+    desc: "JEE PYQ: Uniform Motion, Displacement, Average Velocity",
     questions: [
       { q: "A particle is moving with speed v = b√x along the positive x-axis. The speed of the particle at time t = τ (particle is at origin at t = 0) is:", options: ["b²τ / 4","b²τ / 2","b²τ","b²τ / √2"], ans: 1, src: "JEE Main 12 Apr 2019 II", explanation: "v = b√x => dx/√x = b dt. Integrating: 2√x = bt => x = b²t²/4. Then v = dx/dt = b²t/2. At t = τ, v = b²τ/2." },
       { q: "In 1.0 s, a particle goes from point A to point B moving in a semicircle of radius 1.0 m. The magnitude of the average velocity is:", options: ["3.14 m/s","2.0 m/s","1.0 m/s","Zero"], ans: 1, src: "JEE 1999S", explanation: "Displacement = diameter = 2r = 2.0 m. Time = 1.0 s. Average velocity = 2.0/1.0 = 2.0 m/s." },
       { q: "A particle moves in a circle of radius R. In half the period of revolution, its displacement is ___ and distance covered is ___.", options: ["2R, πR","πR, 2R","R, 2πR","2πR, R"], ans: 0, src: "JEE 1983", explanation: "In half revolution, displacement = diameter = 2R. Distance = half circumference = πR." },
       { q: "A particle is moving eastwards with velocity 5 m/s. In 10 s the velocity changes to 5 m/s northwards. The average acceleration in this time is:", options: ["Zero","1/√2 m/s² towards north-west","1/√2 m/s² towards north-east","1/√2 m/s² towards north"], ans: 1, src: "JEE 1982", explanation: "Δv = 5N - 5E. Magnitude = 5√2 m/s directed NW. Average acceleration = 5√2/10 = 1/√2 m/s² towards north-west." },
-      { q: "All the graphs below are intended to represent the same uniform motion. One of them does it incorrectly. The incorrect graph is the one showing:", options: ["velocity vs position: straight line","distance vs time: straight line","position vs time: parabola (curved)","velocity vs time: horizontal line"], ans: 2, src: "JEE Main 2018", explanation: "For uniform motion, position vs time must be a straight line, not a parabola. A parabolic x-t graph implies acceleration, contradicting uniform motion." },
       { q: "For a particle in uniform motion along x-axis, the area under the v-t graph between t₁ and t₂ gives:", options: ["Acceleration","Displacement","Speed","Force"], ans: 1, src: "Concept", explanation: "Area under v-t graph = ∫v dt = displacement." }
     ]
   },
-
-  {
-    id: 'motion-topic2', title: "Non-Uniform Motion", course: "11",
-    desc: "JEE PYQ: Variable Acceleration, V-T Graphs, Equations of Motion", count: 8,
-    questions: [
-      { q: "The velocity (v) and time (t) graph of a body shows point S at 4.333 s. The total distance covered by the body in 6 s is:", options: ["37/3 m","12 m","11 m","49/4 m"], ans: 0, src: "JEE Main 05 Sep 2020 II", explanation: "Compute |area| of each segment in v-t graph (including portions below t-axis). Total distance = 37/3 m." },
-      { q: "A bullet of mass 20 g has initial speed 1 m/s before penetrating a mud wall of thickness 20 cm. The wall offers mean resistance 2.5×10⁻² N. Speed of bullet after emerging is close to:", options: ["0.1 m/s","0.7 m/s","0.3 m/s","0.4 m/s"], ans: 1, src: "JEE Main 10 Apr 2019 II", explanation: "Work-energy theorem: ½mv² = ½mu² - F·d = 0.01 - 0.005 = 0.005. v² = 0.5, v ≈ 0.7 m/s." },
-      { q: "Position of a particle: x(t) = at + bt² - ct³. When particle attains zero acceleration, its velocity is:", options: ["a + b²/4c","a + b²/3c","a + b²/c","a + b²/2c"], ans: 1, src: "JEE Main 9 Apr 2019 II", explanation: "Acceleration = 2b - 6ct = 0 => t = b/3c. Substituting: v = a + 2b(b/3c) - 3c(b/3c)² = a + b²/3c." },
-      { q: "A particle starts from origin from rest with uniform acceleration along +x axis. Which graphs are correct? (a=accel, v=velocity, x=displacement, t=time)", options: ["(B) a-t horizontal line AND (C) v-t linear from origin","(A) a-t linearly increasing","(A), (B), (C) all","(A), (B), (D) all"], ans: 0, src: "JEE Main 8 Apr 2019 II", explanation: "Uniform acceleration: a = constant (horizontal line); v = at (straight line from origin). So (B) for a-t and (C) for v-t are correct." },
-      { q: "In a car race, car A takes time t less than car B at finish, with speed v more than car B. Both start from rest with accelerations a₁ and a₂. Then v equals:", options: ["(2a₁a₂/(a₁+a₂))t","√(2a₁a₂) · t","√(a₁a₂) · t","((a₁+a₂)/2) · t"], ans: 2, src: "JEE Main 9 Jan 2019 II", explanation: "Using equal distance condition for both cars and time difference t: v = √(a₁a₂) · t." },
-      { q: "Distance travelled by a body is proportional to t³. The acceleration-time (a-t) graph for the motion will be:", options: ["Hyperbola-like decreasing curve","Linearly increasing straight line through origin","Linearly decreasing line","Horizontal line (constant a)"], ans: 1, src: "JEE Main Online May 12 2012", explanation: "x ∝ t³ => v ∝ t² => a ∝ t. So a-t graph is a straight line through origin." },
-      { q: "Velocity-displacement graph shows v decreasing linearly with x from v₀ at x=0 to 0 at x=x₀. The most suitable acceleration-displacement graph is:", options: ["a-x: line with negative slope, starts from positive a","a-x: line with negative slope, starts from negative a (a is always negative)","a-x: parabola","a-x: horizontal line"], ans: 1, src: "JEE 2005S", explanation: "v = v₀(1 - x/x₀). a = v·dv/dx = -v₀²/x₀ · (1 - x/x₀). This is linear in x, always negative, with negative intercept at x=0." },
-      { q: "A body starts from rest at t=0 with constant acceleration 10 m/s² for 11 s. Maximum velocity attained is:", options: ["110 m/s","55 m/s","650 m/s","550 m/s"], ans: 0, src: "JEE 2004S", explanation: "v = u + at = 0 + 10×11 = 110 m/s." }
-    ]
-  },
-
-  {
-    id: 'motion-topic3', title: "Relative Velocity in 1D", course: "11",
-    desc: "JEE PYQ: Trains, Escalators, Relative Motion", count: 5,
-    questions: [
-      { q: "Train A and train B run on parallel tracks in opposite directions at 36 km/h and 72 km/h. A person in train A walks opposite to its motion at 1.8 km/h. Speed of the person as observed from train B is close to:", options: ["29.5 m/s","28.5 m/s","31.5 m/s","30.5 m/s"], ans: 0, src: "JEE Main 2 Sep 2020 I", explanation: "Train A = 10 m/s, Train B = 20 m/s (opposite). Person's ground speed = 10 - 0.5 = 9.5 m/s. Observed from B: 9.5 + 20 = 29.5 m/s." },
-      { q: "A person on open ground hears sound of a jet coming from north at 60° with ground. He finds the plane right above him. If v is speed of sound, speed of the plane is:", options: ["(√3/2)v","2v/√3","v","v/2"], ans: 0, src: "JEE Main 12 Jan 2019 II", explanation: "By Mach-cone geometry: v_plane = v·sin(60°) = (√3/2)v." },
-      { q: "A car is 200 m behind a bus, both at rest. Both start together. Bus: a = 2 m/s², car: a = 4 m/s². Car catches bus after:", options: ["√110 s","√120 s","10√2 s","15 s"], ans: 2, src: "JEE Main Online April 9 2017", explanation: "Relative acceleration = 2 m/s². 200 = ½(2)t² => t² = 200 => t = 10√2 s." },
-      { q: "A person climbs a stalled escalator in 60 s. Standing on running escalator takes 40 s. Time to walk up the moving escalator:", options: ["37 s","27 s","24 s","45 s"], ans: 2, src: "JEE Main Online April 12 2014", explanation: "Speed of person = L/60, escalator = L/40. Combined = L/60 + L/40 = L/24. Time = 24 s." },
-      { q: "Two identical trains move on rails along equator in opposite directions at same speed. They will exert same pressure on rails. TRUE or FALSE?", options: ["True","False","Depends on speed","Cannot determine"], ans: 1, src: "JEE 1985", explanation: "False. One train moves with Earth's rotation (effectively faster, needs more centripetal force, presses harder). Pressures are NOT equal." }
-    ]
-  },
-
-  {
-    id: 'motion-topic4', title: "Motion Under Gravity", course: "11",
-    desc: "JEE PYQ: Free Fall, Vertical Throw, Bouncing, Towers", count: 7,
-    questions: [
-      { q: "A helicopter rises from rest with constant acceleration g. A food packet is dropped when helicopter is at height h. Time taken by packet to reach ground is close to:", options: ["t = (2/3)√(h/g)","t = 1.8√(h/g)","t = 3.4√(h/g)","t = √(2h/3g)"], ans: 2, src: "JEE Main 5 Sep 2020 I", explanation: "Packet is dropped with upward velocity v = √(2gh). Solving -h = v·t - ½gt² gives t ≈ 3.4√(h/g)." },
-      { q: "A tennis ball released from height h rebounds from floor to height h/2. The velocity-versus-height graph is best represented by:", options: ["V-shape with single peak","Two separate √-shaped curves: one going down (h to 0), one going up (0 to h/2)","Linear decrease then increase","Horizontal line"], ans: 1, src: "JEE Main 4 Sep 2020 I", explanation: "Falling: v = √(2g(h-y)) - sqrt curve. Rising: v = √(2gy) - sqrt curve. Two separate curves due to energy loss at floor." },
-      { q: "A body is thrown vertically upwards. Which graph correctly represents velocity vs time?", options: ["Line starting negative, going positive","Straight line starting positive, passing through zero, going negative","Symmetric triangle shape","Line from positive to zero only"], ans: 1, src: "JEE Main 2017", explanation: "Initial v is positive (upward), decreases at constant rate g, passes through zero at top, becomes negative (downward). Straight line with negative slope." },
-      { q: "Two stones thrown up from 240 m cliff with speeds 10 m/s and 40 m/s simultaneously. Graph of relative position of 2nd w.r.t. 1st vs time:", options: ["Linear increase throughout","Linear increase, then slope changes when 1st stone hits ground","Decreases throughout","Constant then drops"], ans: 1, src: "JEE Main 2015", explanation: "Relative velocity = 30 m/s (constant, since both have same g). Linear increase until 1st stone lands; then slope changes." },
-      { q: "From tower of height H, particle thrown up with speed u. Total time to hit ground = n × time to reach highest point. Relation between H, u, n:", options: ["2gH = n²u²","gH = (n-2)²u²","2gH = nu²(n-2)","gH = (n-2)u²"], ans: 2, src: "JEE Main 2014", explanation: "t_top = u/g. T = nu/g. Using -H = uT - ½gT²: 2gH = nu²(n-2)." },
-      { q: "Ball dropped from 100 m tower on a planet. In last ½ s covers 19 m. Acceleration due to gravity (m/s²) on that planet is:", options: ["8.00","5.00","10.0","12.0"], ans: 0, src: "JEE Main 8 Jan 2020 II", explanation: "From ½gT² = 100 and distance in last ½s = 19 m, solving simultaneously gives g = 8 m/s²." },
-      { q: "Two balls of different masses thrown vertically upward with same speed return to projection point with same speed (neglect air resistance). This is:", options: ["True","False","True only for equal masses","Depends on height"], ans: 0, src: "JEE 1983", explanation: "True. By energy conservation, any object returns with same speed u regardless of mass. mgh = ½mv² — mass cancels." }
-    ]
-  },
-
-  {
-    id: 'vectors', title: "Vectors & Motion in a Plane", course: "11",
-    desc: "JEE PYQ: Vector Algebra, Dot Product, Projectile in 2D", count: 6,
-    questions: [
-      { q: "Let |A₁| = 3, |A₂| = 5 and |A₁ + A₂| = 5. The value of (2A₁ + 3A₂)·(3A₁ - 2A₂) is:", options: ["-106.5","-99.5","-112.5","-118.5"], ans: 3, src: "JEE Main 8 Apr 2019 II", explanation: "From |A₁+A₂|² = |A₁|² + |A₂|² + 2A₁·A₂: 25 = 9 + 25 + 2A₁·A₂ => A₁·A₂ = -4.5. Then (2A₁+3A₂)·(3A₁-2A₂) = 6|A₁|² - 4A₁·A₂ + 9A₁·A₂ - 6|A₂|² = 6(9) + 5(-4.5) - 6(25) = 54 - 22.5 - 150 = -118.5." },
-      { q: "Three vectors P⃗, Q⃗ and R⃗ are shown in the figure. Let S⃗ be any point on the vector R⃗. The distance between the points P and S is b|R⃗|. The general relation among vectors P⃗, Q⃗ and S⃗ is:", image: "images/vector_q5.png", options: [ "S⃗ = (1−b)P⃗ + bQ⃗", "S⃗ = (b−1)P⃗ + bQ⃗", "S⃗ = (1−b²)P⃗ + bQ⃗", "S⃗ = (1−b)P⃗ + b²Q⃗"] },
-      { q: "Two vectors A and B have equal magnitudes. Magnitude of (A+B) is n times magnitude of (A-B). The angle between A and B is:", options: ["cos⁻¹[(n²-1)/(n²+1)]","cos⁻¹[(n-1)/(n+1)]","sin⁻¹[(n²-1)/(n²+1)]","sin⁻¹[(n-1)/(n+1)]"], ans: 0, src: "JEE Main 10 Jan 2019 II", explanation: "|A+B|² = 2A²(1+cosθ), |A-B|² = 2A²(1-cosθ). Setting ratio = n²: cosθ = (n²-1)/(n²+1)." },
-      { q: "Vector A = î + ĵ and B = î - ĵ. Magnitude of coplanar vector C such that A·C = B·C = A·B is:", options: ["√(5/9)","√(10/9)","√(20/9)","√(9/12)"], ans: 0, src: "JEE Main Online April 16 2018", explanation: "A·B = 0. Let C = xî + yĵ. A·C = x+y = 0, B·C = x-y = 0. Solving: x = y = 0... Re-evaluating with A·B = 1²-1² = 0. C must satisfy x+y = 0 AND x-y = 0, giving x=y=0. Correct approach gives |C| = √(5/9)." },
-      { q: "A balloon moves up vertically above point A on ground. A girl at distance d (point B) sees it at 45° with vertical at height h₁. When balloon climbs further height h₂, she moves 2.464d to point C and sees it at 60° with vertical. Then h₂ is: (tan 30° = 0.5774)", options: ["1.464d", "0.732d", "0.464d", "d"], ans: 3, src: "JEE Main Sep 05 2020 I", explanation: "Setting up geometry: at B, tan45° = h₁/d => h₁ = d. At C, tan60° = (h₁+h₂)/(d - 2.464d)... Careful sign handling of horizontal distances gives h₂ = d." },
-      { q: "Starting from origin at t=0, initial velocity 5ĵ m/s, constant acceleration (10î + 4ĵ) m/s². At time t, coordinates are (20 m, y₀ m). Values of t and y₀ are:", options: ["2 s and 18 m", "4 s and 52 m", "2 s and 24 m", "5 s and 25 m"], ans: 0, src: "JEE Main Sep 04 2020 I", explanation: "x = ½(10)t² = 20 => t² = 4 => t = 2 s. y = 5t + ½(4)t² = 5(2) + 2(4) = 10 + 8 = 18 m." },
-      {
-        q: "A particle starts from origin at t=0 with initial velocity 3.0î m/s and moves in x-y plane with constant acceleration (6.0î + 4.0ĵ) m/s². The x-coordinate when y-coordinate is 32 m is D meters. Value of D is:",
-        options: ["32", "50", "60", "40"],
-        ans: 2,
-        src: "JEE Main 9 Jan 2020 II",
-        explanation: "y = ½(4)t² = 32 => t² = 16 => t = 4 s. x = 3t + ½(6)t² = 3(4) + 3(16) = 12 + 48 = 60 m."
-      },
-      {
-        q: "A particle moves such that position vector r⃗(t) = cos(ωt)î + sin(ωt)ĵ. Which statement is true for velocity v⃗(t) and acceleration a⃗(t)?",
-        options: [
-          "v⃗ is perpendicular to r⃗ and a⃗ is directed away from origin",
-          "v⃗ and a⃗ both are perpendicular to r⃗",
-          "v⃗ and a⃗ both are parallel to r⃗",
-          "v⃗ is perpendicular to r⃗ and a⃗ is directed towards origin"
-        ],
-        ans: 3,
-        src: "JEE Main 8 Jan 2020 II",
-        explanation: "v⃗ = ω(-sinωt î + cosωt ĵ). v⃗·r⃗ = 0, so v⃗ ⊥ r⃗. a⃗ = -ω²r⃗, directed towards origin (centripetal)."
-      },
-      {
-        q: "Position vector r⃗(t) = 15t²î + (4 - 20t²)ĵ. Magnitude of acceleration at t = 1 is:",
-        options: ["40", "25", "100", "50"],
-        ans: 3,
-        src: "JEE Main 9 April 2019 II",
-        explanation: "v⃗ = 30tî - 40tĵ. a⃗ = 30î - 40ĵ. |a⃗| = √(30² + 40²) = √(900 + 1600) = √2500 = 50 m/s²."
-      },
-      {
-        q: "A particle moves from point (2.0î + 4.0ĵ) m at t=0, with initial velocity (5.0î + 4.0ĵ) m/s. Constant force produces acceleration (4.0î + 4.0ĵ) m/s². Distance of particle from origin at t = 2 s is:",
-        options: ["15 m", "20√2 m", "5 m", "10√2 m"],
-        ans: 1,
-        src: "JEE Main 11 Jan 2019 II",
-        explanation: "Position at t=2: x = 2 + 5(2) + ½(4)(4) = 2+10+8 = 20 m. y = 4 + 4(2) + ½(4)(4) = 4+8+8 = 20 m. Distance from origin = √(20²+20²) = 20√2 m."
-      },
-      {
-        q: "A particle moves with velocity v⃗ = K(yî + xĵ), where K is a constant. The general equation for its path is:",
-        options: ["y = x² + constant", "y² = x + constant", "y² = x² + constant", "xy = constant"],
-        ans: 2,
-        src: "JEE Main 9 Jan 2019 I",
-        explanation: "vₓ = Ky, vᵧ = Kx. dy/dx = vᵧ/vₓ = x/y => y dy = x dx. Integrating: y²/2 = x²/2 + C => y² = x² + constant."
-      },
-      {
-        q: "A particle moves along x-axis: x(t) = 10 + 8t - 3t². Another particle moves along y-axis: y(t) = 5 - 8t³. At t=1 s, speed of second particle in frame of first particle is √v m/s. Value of v (in m/s) is:",
-        options: ["580", "None of these", "480", "680"],
-        ans: 0,
-        src: "JEE Main 8 Jan 2020 I",
-        explanation: "v₁ₓ = 8 - 6t = 2 m/s at t=1. v₂ᵧ = -24t² = -24 m/s at t=1. Relative velocity = (-2î - 24ĵ) m/s. |v_rel|² = 4 + 576 = 580. So v = 580."
-      },
-      {
-        q: "Starting at t=0 from origin with speed 1 m/s, particle follows 2D trajectory with y = x²/2. Acceleration components are aₓ and aᵧ. Which are correct? [Multiple correct]",
-        options: [
-          "aₓ = 1 m/s² implies aᵧ = 1 m/s² when particle is at origin",
-          "aₓ = 0 implies aᵧ = 1 m/s² at all times",
-          "At t=0, particle's velocity points in the x-direction",
-          "aₓ = 0 implies at t=1s, angle between velocity and x-axis is 45°"
-        ],
-        ans: -1,
-        src: "JEE Adv 2020",
-        explanation: "y = x²/2. Differentiating: ẏ = xẋ and ÿ = ẋ² + xẍ => aᵧ = vₓ² + x·aₓ. At origin x=0: aᵧ = vₓ². At t=0, y'=0 so velocity is along x. If aₓ=0, vₓ=1 always; aᵧ = 1 m/s² always. Correct options: (a, b, c, d)."
-      },
-      {
-        q: "Coordinates of a particle: x(t) = a cos(pt) and y(t) = b sin(pt) where a, b (b < a) and p are positive constants. Which statements are correct? [Multiple correct]",
-        options: [
-          "The path of the particle is an ellipse",
-          "Velocity and acceleration are normal to each other at t = π/(2p)",
-          "The acceleration of the particle is always directed towards a focus",
-          "The distance travelled by particle in time interval t=0 to t=π/(2p) is a"
-        ],
-        ans: -1,
-        src: "JEE 1999S",
-        explanation: "x²/a² + y²/b² = 1 — ellipse (a). At t=π/2p: v=(-ap sin(π/2), bp cos(π/2))=(-ap,0); a=(−ap²cos(π/2), −bp²sin(π/2))=(0,−bp²). These are perpendicular (b). Acceleration = −p²(xî+yĵ) points toward centre, not focus — (c) is false. Arc length from 0 to π/2p on ellipse ≠ a — (d) is false. Correct: (a, b, c) per answer key."
-      },
-      { q: "Three vectors P, Q and R are given. S is any point on vector R. Distance between P and S is b|R|. The general relation among vectors P, Q, S is:", options: ["S = (1-b)P + bQ","S = (b-1)P + bQ","S = (1-b²)P + bQ","S = (1-b)P + b²Q"], ans: 0, src: "JEE Adv. 2017", explanation: "S divides PQ in ratio b:(1-b) from P. By section formula: S = (1-b)P + bQ." },
-      { q: "A projectile is given an initial velocity of (î + 2ĵ) m/s, where î is horizontal and ĵ is vertical. If g = 10 m/s², the equation of trajectory is:", options: ["y = 2x - 5x²","y = x - 5x²","y = 2x + 5x²","y = x + 5x²"], ans: 0, src: "JEE Main 2013", explanation: "x = t, y = 2t - 5t². Eliminating t: y = 2x - 5x²." },
-      { q: "A particle is projected at 60° to the horizontal with kinetic energy K. The kinetic energy at highest point is:", options: ["K","K/4","K/2","Zero"], ans: 1, src: "JEE 2007", explanation: "At highest point, vertical component = 0. Horizontal component = ucos60° = u/2. KE = ½m(u/2)² = ¼·½mu² = K/4." }
-    ]
-  },
-
   {
     id: 'newtons-laws', title: "Newton's Laws", course: "11",
-    desc: "Forces, friction, dynamics", count: 4,
+    desc: "Forces, friction, dynamics",
     questions: [
       { q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:", options: ["100 m/s²","0.25 m/s²","4 m/s²","25 m/s²"], ans: 2, src: "", explanation: "F = ma => a = F/m = 20/5 = 4 m/s²." },
       { q: "Newton's First Law is also called:", options: ["Law of Gravitation","Law of Inertia","Law of Action-Reaction","Law of Conservation"], ans: 1, src: "", explanation: "Newton's First Law — an object remains in its state unless acted upon by external force — is the Law of Inertia." },
@@ -296,10 +901,9 @@ const QUIZZES = [
       { q: "Coefficient of static friction is always ___ kinetic friction.", options: ["Less than","Equal to","Greater than","Cannot compare"], ans: 2, src: "", explanation: "Static friction > kinetic friction. More force needed to start motion than to maintain it." }
     ]
   },
-
   {
     id: 'electrostatics', title: "Electrostatics", course: "12",
-    desc: "Coulomb's law, field, potential", count: 4,
+    desc: "Coulomb's law, field, potential",
     questions: [
       { q: "Coulomb's law: F ∝ q₁q₂/r². If distance is doubled, force becomes:", options: ["F/4","F/2","4F","2F"], ans: 0, src: "", explanation: "F ∝ 1/r². If r→2r, force becomes F/4." },
       { q: "Electric field lines always point from:", options: ["Negative to positive charge","Positive to negative charge","South to North pole","Inside conductor to outside"], ans: 1, src: "", explanation: "Field lines originate from positive charges and terminate at negative charges." },
@@ -307,10 +911,9 @@ const QUIZZES = [
       { q: "Gauss's law: net flux through a closed surface equals:", options: ["Q_enc / ε₀","Q_enc × ε₀","ε₀ / Q_enc","Q_enc² / ε₀"], ans: 0, src: "", explanation: "Gauss's law: Φ = Q_enc/ε₀." }
     ]
   },
-
   {
     id: 'optics', title: "Ray Optics", course: "12",
-    desc: "Mirrors, lenses, refraction", count: 4,
+    desc: "Mirrors, lenses, refraction",
     questions: [
       { q: "The mirror formula is: 1/v + 1/u = ?", options: ["1/f","f","2/R","1/R"], ans: 0, src: "", explanation: "Mirror formula: 1/f = 1/v + 1/u." },
       { q: "A convex lens has focal length 20 cm. Its power is:", options: ["0.2 D","5 D","20 D","0.05 D"], ans: 1, src: "", explanation: "P = 1/f(metres) = 1/0.20 = 5 D." },
@@ -318,98 +921,272 @@ const QUIZZES = [
       { q: "Rainbow is formed due to:", options: ["Reflection","Refraction only","Dispersion and TIR","Diffraction"], ans: 2, src: "", explanation: "Rainbow: refraction at entry/exit + TIR inside water droplets causes dispersion." }
     ]
   }
-
 ];
 
-let currentQuiz = null, currentQ = 0, score = 0, answered = false;
+const QUESTION_TIME = 60; // seconds per question
 
+let currentQuiz = null;
+let currentQIdx = 0;
+let score = 0;
+let wrongCount = 0;
+let timeoutCount = 0;
+let answered = false;
+let timerInterval = null;
+let timeLeft = QUESTION_TIME;
+let dotStates = [];
+
+/* ── BUILD SELECTOR ── */
 function buildSelector() {
   const grid = document.getElementById('selectorGrid');
   grid.innerHTML = QUIZZES.map(q => `
     <button class="sel-card" onclick="startQuiz('${q.id}')">
+      <span class="sel-card-tag">Class ${q.course}</span>
       <h4>${q.title}</h4>
       <p>${q.desc}</p>
-      <div class="sel-count">${q.questions.length} Questions &middot; Class ${q.course}</div>
+      <div class="sel-meta">
+        <span>📋 ${q.questions.length} Questions</span>
+        <span>⏱ ${QUESTION_TIME}s / question</span>
+      </div>
     </button>
   `).join('');
 }
 
+/* ── START QUIZ ── */
 function startQuiz(id) {
   currentQuiz = QUIZZES.find(q => q.id === id);
-  currentQ = 0; score = 0;
-  document.getElementById('selector').style.display = 'none';
-  document.getElementById('scoreArea').style.display = 'none';
-  document.getElementById('quizArea').style.display = 'block';
-  document.getElementById('quizArea').classList.add('active');
-  document.getElementById('quizTitle').textContent = currentQuiz.title + ' Quiz';
+  currentQIdx = 0;
+  score = 0;
+  wrongCount = 0;
+  timeoutCount = 0;
+  dotStates = new Array(currentQuiz.questions.length).fill('pending');
+
+  document.getElementById('pageHeader').style.display = 'none';
+  document.getElementById('selectorSection').style.display = 'none';
+  document.getElementById('scoreSection').style.display = 'none';
+  document.getElementById('scoreSection').classList.remove('show');
+  document.getElementById('examSection').style.display = 'block';
+
+  document.getElementById('examTitle').textContent = currentQuiz.title;
+  document.getElementById('sheetTitle').textContent = currentQuiz.title;
+
   renderQuestion();
 }
 
+/* ── RENDER QUESTION ── */
 function renderQuestion() {
+  const q = currentQuiz.questions[currentQIdx];
   const total = currentQuiz.questions.length;
-  const q = currentQuiz.questions[currentQ];
   answered = false;
-  document.getElementById('qCounter').textContent = 'Q ' + (currentQ+1) + ' of ' + total;
-  document.getElementById('progressFill').style.width = ((currentQ/total)*100)+'%';
-  document.getElementById('nextBtn').disabled = true;
-  document.getElementById('nextBtn').textContent = currentQ < total-1 ? 'Next →' : 'See Results';
-  document.getElementById('questionContainer').innerHTML =
-    '<div class="question-card">' +
-      '<div class="q-num">Question ' + (currentQ+1) + '</div>' +
-      (q.src ? '<div class="q-source">[' + q.src + ']</div>' : '') +
-      '<div class="q-text">' + q.q + '</div>' +
-      '<div class="options">' +
-        q.options.map(function(opt, i) {
-          return '<button class="option-btn" onclick="selectAnswer(' + i + ')" id="opt' + i + '">' +
-            '<span class="option-letter">' + String.fromCharCode(65+i) + '</span>' + opt +
-          '</button>';
-        }).join('') +
-      '</div>' +
-      '<div class="explanation" id="explanation">' + q.explanation + '</div>' +
-    '</div>';
+
+  // Update counters
+  document.getElementById('examQCount').textContent = `Q ${currentQIdx+1} of ${total}`;
+  document.getElementById('examScoreLive').textContent = `Score: ${score}`;
+  document.getElementById('sheetQBadge').textContent = `Q ${currentQIdx+1} / ${total}`;
+  document.getElementById('qStamp').textContent = currentQIdx + 1;
+  document.getElementById('examProgressFill').style.width = ((currentQIdx / total) * 100) + '%';
+
+  // Source tag
+  const srcEl = document.getElementById('qSourceTag');
+  srcEl.innerHTML = q.src
+    ? `<div class="q-source-tag">⭐ ${q.src}</div>`
+    : '';
+
+  // Question text
+  document.getElementById('qText').textContent = q.q;
+
+  // Navigator dots
+  buildDots();
+
+  // Options
+  const opts = document.getElementById('optionsContainer');
+  opts.innerHTML = q.options.map((opt, i) =>
+    `<button class="option-btn" id="opt${i}" onclick="selectAnswer(${i})">
+      <span class="opt-letter">${String.fromCharCode(65+i)}</span>
+      <span>${opt}</span>
+    </button>`
+  ).join('');
+
+  // Reset result/explanation
+  const rb = document.getElementById('resultBadge');
+  rb.className = 'result-badge';
+  rb.textContent = '';
+  document.getElementById('explanationBox').classList.remove('show');
+  document.getElementById('expText').textContent = '';
+
+  // Next button
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = true;
+  nb.textContent = currentQIdx < total - 1 ? 'Next Question →' : 'See Results →';
+
+  // Animate sheet
+  const sheet = document.getElementById('questionSheet');
+  sheet.style.animation = 'none';
+  sheet.offsetHeight; // reflow
+  sheet.style.animation = 'sheetIn 0.3s ease both';
+
+  // Start timer
+  startTimer();
 }
 
+/* ── TIMER ── */
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = QUESTION_TIME;
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('timerVal');
+  const timerBox = document.getElementById('examTimer');
+  el.textContent = timeLeft;
+  timerBox.className = 'exam-timer';
+  if (timeLeft <= 10) timerBox.classList.add('danger');
+  else if (timeLeft <= 20) timerBox.classList.add('warning');
+}
+
+function handleTimeout() {
+  if (answered) return;
+  answered = true;
+  timeoutCount++;
+  dotStates[currentQIdx] = 'timeout';
+
+  // Disable all options and reveal correct
+  const q = currentQuiz.questions[currentQIdx];
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById(`opt${i}`);
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('timeout-reveal');
+  });
+
+  // Result badge
+  showResultBadge('timeout', '⏰ Time Up! Correct answer revealed.');
+  showExplanation(q.explanation);
+  buildDots();
+  document.getElementById('nextBtn').disabled = false;
+}
+
+/* ── SELECT ANSWER ── */
 function selectAnswer(selected) {
   if (answered) return;
   answered = true;
-  var q = currentQuiz.questions[currentQ];
-  if (selected === q.ans) score++;
-  q.options.forEach(function(_, i) {
-    var btn = document.getElementById('opt'+i);
+  clearInterval(timerInterval);
+
+  const q = currentQuiz.questions[currentQIdx];
+  const isCorrect = selected === q.ans;
+
+  if (isCorrect) {
+    score++;
+    dotStates[currentQIdx] = 'correct';
+  } else {
+    wrongCount++;
+    dotStates[currentQIdx] = 'wrong';
+  }
+
+  // Style options
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById(`opt${i}`);
     btn.disabled = true;
     if (i === q.ans) btn.classList.add('correct');
     else if (i === selected) btn.classList.add('wrong');
   });
-  document.getElementById('explanation').classList.add('show');
+
+  document.getElementById('examScoreLive').textContent = `Score: ${score}`;
+  showResultBadge(isCorrect ? 'correct' : 'wrong',
+    isCorrect ? '✓ Correct! Well done.' : `✗ Wrong. Correct was (${String.fromCharCode(65 + q.ans)})`
+  );
+  showExplanation(q.explanation);
+  buildDots();
   document.getElementById('nextBtn').disabled = false;
 }
 
-function nextQ() {
-  currentQ++;
-  if (currentQ >= currentQuiz.questions.length) showScore();
-  else renderQuestion();
+function showResultBadge(type, msg) {
+  const rb = document.getElementById('resultBadge');
+  rb.textContent = msg;
+  rb.className = `result-badge show ${type}-badge`;
 }
 
+function showExplanation(text) {
+  document.getElementById('expText').textContent = text;
+  document.getElementById('explanationBox').classList.add('show');
+}
+
+/* ── DOTS ── */
+function buildDots() {
+  const nav = document.getElementById('qNavigator');
+  nav.innerHTML = dotStates.map((state, i) => {
+    let cls = 'q-dot';
+    if (i === currentQIdx) cls += ' current';
+    else if (state === 'correct') cls += ' done-correct';
+    else if (state === 'wrong') cls += ' done-wrong';
+    else if (state === 'timeout') cls += ' done-timeout';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+/* ── NEXT QUESTION ── */
+function nextQuestion() {
+  currentQIdx++;
+  if (currentQIdx >= currentQuiz.questions.length) {
+    showScore();
+  } else {
+    renderQuestion();
+  }
+}
+
+/* ── SCORE ── */
 function showScore() {
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('scoreArea').style.display = 'block';
-  var total = currentQuiz.questions.length;
-  var pct = Math.round((score/total)*100);
-  document.getElementById('scoreNum').textContent = score;
-  document.getElementById('scoreTot').textContent = '/ '+total;
-  document.getElementById('scoreMsg').textContent = pct >= 80 ? 'Excellent! 🎉' : pct >= 60 ? 'Good Work! 👍' : 'Keep Practising! 💪';
-  document.getElementById('scoreDetail').textContent = 'You scored ' + score + ' out of ' + total + ' (' + pct + '%) in ' + currentQuiz.title + '.';
+  clearInterval(timerInterval);
+  document.getElementById('examSection').style.display = 'none';
+
+  const total = currentQuiz.questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  let emoji = '💪', title = 'Keep Practising!';
+  if (pct >= 90) { emoji = '🏆'; title = 'Outstanding!'; }
+  else if (pct >= 75) { emoji = '🎉'; title = 'Excellent Work!'; }
+  else if (pct >= 60) { emoji = '👍'; title = 'Good Job!'; }
+  else if (pct >= 40) { emoji = '📚'; title = 'Keep Practising!'; }
+  else { emoji = '💡'; title = 'Review & Retry!'; }
+
+  document.getElementById('scoreEmoji').textContent = emoji;
+  document.getElementById('scoreBig').textContent = score;
+  document.getElementById('scoreOutOf').textContent = `out of ${total}`;
+  document.getElementById('scoreTitle').textContent = title;
+  document.getElementById('scoreSub').textContent =
+    `You scored ${score}/${total} (${pct}%) in "${currentQuiz.title}"`;
+  document.getElementById('statCorrect').textContent = score;
+  document.getElementById('statWrong').textContent = wrongCount;
+  document.getElementById('statPct').textContent = pct + '%';
+
+  const ss = document.getElementById('scoreSection');
+  ss.style.display = 'flex';
+  ss.classList.add('show');
 }
 
+/* ── RETRY ── */
 function retryQuiz() {
-  document.getElementById('scoreArea').style.display = 'none';
+  document.getElementById('scoreSection').style.display = 'none';
+  document.getElementById('scoreSection').classList.remove('show');
   startQuiz(currentQuiz.id);
 }
 
+/* ── BACK TO SELECTOR ── */
 function backToSelector() {
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('scoreArea').style.display = 'none';
-  document.getElementById('selector').style.display = 'block';
+  clearInterval(timerInterval);
+  document.getElementById('examSection').style.display = 'none';
+  document.getElementById('scoreSection').style.display = 'none';
+  document.getElementById('scoreSection').classList.remove('show');
+  document.getElementById('pageHeader').style.display = 'block';
+  document.getElementById('selectorSection').style.display = 'block';
   currentQuiz = null;
 }
 
