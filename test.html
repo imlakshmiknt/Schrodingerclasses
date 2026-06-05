@@ -5,428 +5,918 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mock Tests — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
-      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
-      --accent2:#c8a96e;--border:#e0ddd6;
-      --green:#27ae60;--red:#c0392b;--orange:#e67e22;
-      --serif:'DM Serif Display',serif;
-      --sans:'DM Sans',sans-serif;
-      --mono:'JetBrains Mono',monospace;
+      --bg: #f9f8f5;
+      --bg2: #f0ede5;
+      --paper: #ffffff;
+      --ink: #16140f;
+      --ink2: #3d3a32;
+      --muted: #7a756a;
+      --accent: #0f2d4a;
+      --gold: #b8892e;
+      --gold2: #ddb96a;
+      --border: #ddd9cf;
+      --border2: #c8c3b8;
+      --green: #1a6b3a;
+      --green-bg: #f0faf4;
+      --red: #c0392b;
+      --red-bg: #fdf3f2;
+      --orange: #e67e22;
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow: 0 4px 24px rgba(15,45,74,0.08);
+      --shadow-lg: 0 12px 48px rgba(15,45,74,0.14);
     }
-    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
-    nav{
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:1.2rem 4rem;background:rgba(248,247,244,0.95);
-      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
-    }
-    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
-    .nav-logo span{color:var(--accent2);}
-    .nav-links{display:flex;gap:2rem;align-items:center;}
-    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
-    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
 
-    /* ── TEST SELECTOR ── */
-    #testSelector{padding:8rem 4rem 5rem;}
-    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
-    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;margin-bottom:0.6rem;}
-    .page-sub{font-size:0.95rem;color:var(--muted);margin-bottom:3rem;}
-    .tests-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;}
-    .test-card{
-      background:var(--cream);border:1px solid var(--border);border-radius:6px;
-      padding:2rem;transition:transform 0.2s,box-shadow 0.2s;
-    }
-    .test-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.07);}
-    .test-badge{
-      font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;
-      color:var(--accent2);background:rgba(200,169,110,0.15);
-      padding:0.2rem 0.6rem;border-radius:2px;display:inline-block;margin-bottom:1rem;
-    }
-    .test-card h3{font-family:var(--serif);font-size:1.15rem;margin-bottom:0.4rem;}
-    .test-card p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
-    .test-meta{
-      display:flex;gap:1.2rem;margin-top:1.2rem;padding-top:1.2rem;
-      border-top:1px solid var(--border);font-size:0.78rem;color:var(--muted);flex-wrap:wrap;
-    }
-    .test-meta span{display:flex;align-items:center;gap:0.3rem;}
-    .btn-start{
-      width:100%;margin-top:1.2rem;padding:0.75rem;
-      background:var(--accent);color:white;border:none;border-radius:3px;
-      font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;
-      transition:background 0.2s;
-    }
-    .btn-start:hover{background:var(--accent2);color:var(--ink);}
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--body); overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
-    /* ── ACTIVE TEST ── */
-    #activeTest{display:none;}
-    .test-topbar{
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      background:var(--accent);color:white;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:0.8rem 2rem;flex-wrap:wrap;gap:0.5rem;
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 3rem;
+      background: rgba(249,248,245,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
     }
-    .test-topbar h3{font-family:var(--serif);font-size:1rem;}
-    .timer{
-      font-family:var(--mono);font-size:1.1rem;font-weight:600;
-      background:rgba(255,255,255,0.15);padding:0.3rem 0.8rem;border-radius:3px;
-    }
-    .timer.warning{background:rgba(200,0,0,0.4);}
-    .test-body{
-      display:flex;gap:0;min-height:100vh;padding-top:56px;
-    }
-    .test-main{flex:1;padding:2rem 3rem;}
-    .test-sidebar{
-      width:220px;background:var(--cream);border-left:1px solid var(--border);
-      padding:1.5rem;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
-    }
-    .sidebar-title{
-      font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
-      color:var(--muted);margin-bottom:1rem;
-    }
-    .q-nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
-    .q-nav-btn{
-      width:100%;aspect-ratio:1;background:white;border:1.5px solid var(--border);
-      border-radius:3px;font-family:var(--mono);font-size:0.75rem;cursor:pointer;
-      transition:all 0.15s;
-    }
-    .q-nav-btn.answered{background:var(--green);color:white;border-color:var(--green);}
-    .q-nav-btn.current{border-color:var(--accent);color:var(--accent);}
-    .q-nav-btn.skipped{background:var(--orange);color:white;border-color:var(--orange);}
+    nav.scrolled { padding: 0.6rem 3rem; box-shadow: var(--shadow); }
+    .nav-brand { text-decoration: none; }
+    .nav-logo { font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+    .nav-logo span { color: var(--gold); }
+    .nav-tagline { display: block; font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 1px; }
+    .nav-links { display: flex; gap: 0.2rem; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--ink2); font-size: 0.82rem; font-weight: 500; padding: 0.45rem 0.8rem; border-radius: 6px; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { background: var(--bg2); color: var(--accent); }
+    .nav-cta { background: var(--accent) !important; color: white !important; padding: 0.5rem 1.2rem !important; border-radius: 8px !important; font-weight: 600 !important; }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--ink) !important; }
 
-    .test-q-card{max-width:700px;}
-    .q-num-badge{
-      font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;
-      text-transform:uppercase;color:var(--accent2);margin-bottom:0.8rem;
-    }
-    .q-text-main{
-      font-family:var(--serif);font-size:1.15rem;line-height:1.6;
-      margin-bottom:2rem;color:var(--ink);
-    }
-    .test-options{display:flex;flex-direction:column;gap:0.7rem;}
-    .test-opt{
-      background:white;border:1.5px solid var(--border);border-radius:4px;
-      padding:0.9rem 1.2rem;text-align:left;font-family:var(--sans);font-size:0.9rem;
-      cursor:pointer;transition:all 0.15s;display:flex;gap:0.8rem;align-items:center;
-    }
-    .test-opt:hover{border-color:var(--accent);}
-    .test-opt.selected{background:rgba(26,58,92,0.07);border-color:var(--accent);}
-    .test-opt.correct{background:rgba(39,174,96,0.1);border-color:var(--green);}
-    .test-opt.wrong{background:rgba(192,57,43,0.08);border-color:var(--red);}
-    .opt-circle{
-      width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);
-      display:flex;align-items:center;justify-content:center;
-      font-family:var(--mono);font-size:0.72rem;font-weight:600;flex-shrink:0;
-    }
-    .test-opt.selected .opt-circle,.test-opt.correct .opt-circle{
-      background:var(--accent);color:white;border-color:var(--accent);
-    }
-    .test-opt.wrong .opt-circle{background:var(--red);color:white;border-color:var(--red);}
-    .test-explanation{
-      margin-top:1.2rem;padding:1rem 1.2rem;
-      background:rgba(26,58,92,0.05);border-left:3px solid var(--accent);
-      border-radius:0 4px 4px 0;font-size:0.875rem;display:none;line-height:1.65;
-    }
-    .test-explanation.show{display:block;}
-    .marking-scheme{
-      font-family:var(--mono);font-size:0.72rem;color:var(--muted);
-      margin-bottom:1rem;
-    }
-    .marking-scheme span{margin-right:1rem;}
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--accent); border-radius: 2px; transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-nav { display: none; position: fixed; inset: 0; background: rgba(249,248,245,0.98); backdrop-filter: blur(20px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a { font-family: var(--display); font-size: 1.8rem; font-weight: 600; color: var(--accent); text-decoration: none; padding: 0.6rem 2rem; border-radius: 8px; transition: all 0.2s; }
+    .mobile-nav a:hover { background: var(--bg2); color: var(--gold); }
+    .mobile-nav .m-cta { background: var(--accent) !important; color: white !important; font-size: 1.2rem !important; margin-top: 1rem !important; }
 
-    .test-btn-row{
-      display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;
-    }
-    .btn-test{
-      padding:0.7rem 1.6rem;border-radius:3px;
-      font-family:var(--sans);font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.2s;
-    }
-    .btn-save{background:var(--accent);color:white;border:none;}
-    .btn-save:hover{background:var(--accent2);color:var(--ink);}
-    .btn-skip{background:transparent;color:var(--orange);border:1.5px solid var(--orange);}
-    .btn-skip:hover{background:var(--orange);color:white;}
-    .btn-submit-test{background:var(--red);color:white;border:none;margin-left:auto;}
-    .btn-submit-test:hover{opacity:0.85;}
+    /* ══════════════════════════════
+       TEST SELECTOR PAGE
+    ══════════════════════════════ */
+    #testSelector { padding: 8rem 3rem 5rem; }
 
-    /* RESULT */
-    #testResult{display:none;padding:6rem 4rem 4rem;text-align:center;}
-    .result-box{max-width:600px;margin:0 auto;}
-    .result-box h2{font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem;}
-    .score-row{
-      display:flex;gap:1.5rem;justify-content:center;margin:2.5rem 0;flex-wrap:wrap;
+    .page-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
     }
-    .score-chip{
-      background:var(--cream);border:1px solid var(--border);
-      border-radius:6px;padding:1.2rem 2rem;min-width:120px;
+    .page-title {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
     }
-    .chip-num{font-family:var(--serif);font-size:2rem;color:var(--accent);}
-    .chip-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--mono);}
+    .page-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 3rem; line-height: 1.7; }
 
-    @media(max-width:900px){
-      nav{padding:1rem 1.5rem;}
-      .nav-links{display:none;}
-      #testSelector{padding:7rem 1.5rem 4rem;}
-      .test-sidebar{display:none;}
-      .test-main{padding:1.5rem;}
-      #testResult{padding:5rem 1.5rem 3rem;}
+    .tests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .test-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      transition: all 0.28s;
+      position: relative;
+      overflow: hidden;
+    }
+    .test-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .test-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .test-card:hover::after { transform: scaleX(1); }
+
+    .test-type-badge {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(184,137,46,0.1);
+      border: 1px solid rgba(184,137,46,0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .test-card h3 {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .test-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    .test-meta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-top: 1.3rem; padding-top: 1.1rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .btn-start-test {
+      width: 100%; margin-top: 1.3rem;
+      padding: 0.8rem;
+      background: var(--accent); color: white;
+      border: none; border-radius: 9px;
+      font-family: var(--body);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.22s;
+      box-shadow: 0 3px 12px rgba(15,45,74,0.18);
+    }
+    .btn-start-test:hover { background: var(--gold); color: var(--ink); transform: translateY(-1px); }
+
+    /* ══════════════════════════════
+       ACTIVE TEST
+    ══════════════════════════════ */
+    #activeTest { display: none; }
+
+    /* Fixed top bar */
+    .test-topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: var(--accent);
+      color: white;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.7rem 2rem;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 1.2rem; }
+    .topbar-title {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .topbar-qcount {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.55);
+    }
+    .topbar-right { display: flex; align-items: center; gap: 0.8rem; }
+
+    /* Timer */
+    .test-timer {
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.35rem 0.9rem;
+      border-radius: 8px;
+      letter-spacing: 0.06em;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .test-timer.warning { background: rgba(230,126,34,0.3); border-color: rgba(230,126,34,0.5); }
+    .test-timer.danger { background: rgba(192,57,43,0.35); border-color: rgba(192,57,43,0.6); animation: tpulse 0.7s ease-in-out infinite; }
+    @keyframes tpulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
+    .btn-submit-top {
+      background: var(--red); color: white;
+      border: none; border-radius: 7px;
+      padding: 0.45rem 1.1rem;
+      font-family: var(--body); font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn-submit-top:hover { opacity: 0.85; }
+
+    /* Progress bar */
+    .test-progress-bar {
+      position: fixed; top: 52px; left: 0; right: 0; height: 3px;
+      background: rgba(255,255,255,0.1); z-index: 99;
+    }
+    .test-progress-fill { height: 100%; background: var(--gold); transition: width 0.4s; }
+
+    /* Layout */
+    .test-layout {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 58px;
+    }
+
+    /* Main area */
+    .test-main { flex: 1; padding: 2.5rem 3rem; }
+
+    /* Question paper sheet */
+    .test-sheet {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      max-width: 740px;
+      box-shadow: 0 2px 16px rgba(15,45,74,0.06), inset 0 0 0 5px rgba(249,248,245,0.4);
+      position: relative;
+      animation: sheetIn 0.3s ease both;
+    }
+    @keyframes sheetIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    /* Ruled lines */
+    .test-sheet::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 27px, rgba(200,195,184,0.15) 28px);
+      pointer-events: none; border-radius: 2px;
+    }
+    /* Margin line */
+    .test-sheet::after {
+      content: '';
+      position: absolute; top: 0; bottom: 0; left: 50px;
+      width: 1px; background: rgba(192,57,43,0.18);
+      pointer-events: none;
+    }
+
+    .sheet-inner { position: relative; padding: 2rem 2.2rem 2rem 3.6rem; }
+
+    .sheet-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 1.5rem; padding-bottom: 1rem;
+      border-bottom: 1.5px solid var(--border2);
+      flex-wrap: wrap; gap: 0.8rem;
+    }
+    .sheet-top-left { }
+    .sheet-exam-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; margin-bottom: 0.2rem;
+    }
+    .sheet-test-name {
+      font-family: var(--display); font-size: 1rem; font-weight: 700; color: var(--accent);
+    }
+    .marking-pills { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .mpill {
+      font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
+      padding: 0.22rem 0.65rem; border-radius: 100px;
+    }
+    .mpill-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(26,107,58,0.2); }
+    .mpill-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(192,57,43,0.2); }
+    .mpill-grey { background: var(--bg2); color: var(--muted); border: 1px solid var(--border); }
+
+    /* Q number stamp */
+    .q-stamp {
+      position: absolute; left: -1.7rem; top: 0;
+      width: 27px; height: 27px;
+      background: var(--accent); color: white;
+      font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* Source tag */
+    .q-src-tag {
+      display: inline-flex; align-items: center;
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      background: rgba(184,137,46,0.08);
+      border: 1px solid rgba(184,137,46,0.2);
+      padding: 0.16rem 0.5rem; border-radius: 4px;
+      margin-bottom: 0.8rem;
+    }
+
+    .q-body { position: relative; margin-bottom: 1.8rem; }
+
+    /* QUESTION FONT — Georgia exam style */
+    .q-text-main {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    /* Options */
+    .options-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.75rem;
+    }
+    .test-options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    /* OPTION FONT — Georgia exam style */
+    .test-opt {
+      display: flex; align-items: center; gap: 0.9rem;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      cursor: pointer; text-align: left;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      transition: all 0.18s;
+      width: 100%;
+    }
+    .test-opt:hover:not(:disabled) { border-color: var(--accent); background: rgba(15,45,74,0.04); transform: translateX(3px); }
+    .test-opt:disabled { cursor: default; }
+    .test-opt.selected { border-color: var(--accent); background: rgba(15,45,74,0.05); }
+    .test-opt.selected .opt-circle { background: var(--accent); color: white; border-color: var(--accent); }
+    .test-opt.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+    .test-opt.correct .opt-circle { background: var(--green); color: white; border-color: var(--green); }
+    .test-opt.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+    .test-opt.wrong .opt-circle { background: var(--red); color: white; border-color: var(--red); }
+
+    .opt-circle {
+      width: 29px; height: 29px; border-radius: 50%;
+      border: 1.5px solid var(--border2);
+      background: var(--paper);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+      flex-shrink: 0; transition: all 0.18s;
+      color: var(--accent);
+    }
+
+    /* Explanation */
+    .test-explanation {
+      display: none;
+      margin-top: 1.3rem;
+      padding: 1.1rem 1.3rem;
+      background: rgba(15,45,74,0.04);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+    }
+    .test-explanation.show { display: block; }
+    .exp-label { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.4rem; }
+    .exp-text { font-family: Georgia, serif; font-size: 0.875rem; color: var(--ink2); line-height: 1.7; }
+
+    /* Nav buttons */
+    .sheet-footer {
+      display: flex; gap: 0.8rem; margin-top: 2rem;
+      padding-top: 1.4rem; border-top: 1px solid var(--border);
+      flex-wrap: wrap; align-items: center;
+    }
+    .btn-t {
+      font-family: var(--body); font-size: 0.875rem; font-weight: 600;
+      padding: 0.7rem 1.5rem; border-radius: 8px;
+      cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .btn-primary-t { background: var(--accent); color: white; border: none; box-shadow: 0 3px 10px rgba(15,45,74,0.18); }
+    .btn-primary-t:hover { background: var(--gold); color: var(--ink); }
+    .btn-ghost-t { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost-t:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-skip-t { background: transparent; color: var(--orange); border: 1.5px solid rgba(230,126,34,0.4); }
+    .btn-skip-t:hover { background: rgba(230,126,34,0.08); }
+    .btn-ml { margin-left: auto; }
+
+    /* ── SIDEBAR ── */
+    .test-sidebar {
+      width: 200px;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+      padding: 1.5rem 1.2rem;
+      position: sticky;
+      top: 58px;
+      height: calc(100vh - 58px);
+      overflow-y: auto;
+    }
+    .sidebar-title {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .q-nav-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; margin-bottom: 1.5rem; }
+    .q-nav-btn {
+      aspect-ratio: 1;
+      background: var(--paper);
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      font-family: var(--mono); font-size: 0.7rem;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .q-nav-btn:hover { border-color: var(--accent); }
+    .q-nav-btn.answered { background: var(--green); color: white; border-color: var(--green); }
+    .q-nav-btn.skipped { background: var(--orange); color: white; border-color: var(--orange); }
+    .q-nav-btn.current { border-color: var(--accent); border-width: 2px; color: var(--accent); font-weight: 600; }
+
+    .legend { display: flex; flex-direction: column; gap: 0.5rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ══════════════════════════════
+       RESULT PAGE
+    ══════════════════════════════ */
+    #testResult {
+      display: none;
+      min-height: 100vh;
+      padding: 8rem 3rem 5rem;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    #testResult.show { display: flex; }
+
+    .result-wrap { max-width: 680px; width: 100%; }
+
+    .result-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .result-top {
+      background: var(--accent);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .result-emoji { font-size: 3.2rem; margin-bottom: 0.6rem; }
+    .result-score-big {
+      font-family: var(--display);
+      font-size: 4.5rem; font-weight: 700;
+      color: var(--gold2); line-height: 1;
+    }
+    .result-score-label {
+      font-family: var(--mono); font-size: 0.75rem;
+      color: rgba(255,255,255,0.45); margin-top: 0.3rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .result-body { padding: 2.5rem; }
+    .result-title {
+      font-family: var(--display); font-size: 1.8rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.3rem;
+    }
+    .result-sub { font-size: 0.875rem; color: var(--muted); margin-bottom: 2rem; }
+
+    .score-chips {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem; margin-bottom: 2rem;
+    }
+    .score-chip {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 0.8rem; text-align: center;
+    }
+    .chip-val { font-family: var(--display); font-size: 1.7rem; font-weight: 700; color: var(--accent); }
+    .chip-val.green { color: var(--green); }
+    .chip-val.red { color: var(--red); }
+    .chip-val.orange { color: var(--orange); }
+    .chip-label { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+    .result-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0.85rem 1.2rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      #testSelector { padding: 7rem 1.2rem 4rem; }
+      .test-main { padding: 1.5rem 1rem; }
+      .sheet-inner { padding: 1.8rem 1.2rem 1.8rem 2.2rem; }
+      .test-sheet::after { left: 34px; }
+      .q-stamp { left: -1.1rem; width: 22px; height: 22px; font-size: 0.55rem; }
+      .test-sidebar { display: none; }
+      .test-topbar { padding: 0.6rem 1.2rem; }
+      .topbar-title { font-size: 0.85rem; }
+      #testResult { padding: 6rem 1.2rem 4rem; }
+      .score-chips { grid-template-columns: repeat(2,1fr); }
     }
   </style>
 </head>
 <body>
-<nav>
-  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">Schrödinger<span>Classes</span></div>
+    <small class="nav-tagline">A Concept by Lakshmi Kant</small>
+  </a>
   <div class="nav-links">
     <a href="notes.html">Notes</a>
     <a href="videos.html">Videos</a>
     <a href="quiz.html">Quiz</a>
     <a href="test.html" class="active">Tests</a>
     <a href="simulation.html">Simulations</a>
-    <a href="login.html" class="nav-cta">Login</a>
+    <a href="login.html" class="nav-cta">Login →</a>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- TEST SELECTOR -->
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="notes.html" onclick="toggleMenu()">Notes</a>
+  <a href="videos.html" onclick="toggleMenu()">Videos</a>
+  <a href="quiz.html" onclick="toggleMenu()">Quiz</a>
+  <a href="test.html" onclick="toggleMenu()">Tests</a>
+  <a href="simulation.html" onclick="toggleMenu()">Simulations</a>
+  <a href="login.html" class="m-cta" onclick="toggleMenu()">Login →</a>
+</div>
+
+<!-- ══════════════════════════════
+     TEST SELECTOR
+══════════════════════════════ -->
 <div id="testSelector">
   <div class="page-label">Exam Practice</div>
   <div class="page-title">Mock Tests</div>
-  <p class="page-sub">JEE & NEET pattern full-length tests. Timed. Scored. Analysed.</p>
+  <p class="page-sub">JEE & NEET pattern full-length tests. Timed. Scored. Analysed.<br>+4 for correct, −1 for wrong. Real exam feel.</p>
   <div class="tests-grid" id="testsGrid"></div>
 </div>
 
-<!-- ACTIVE TEST -->
+<!-- ══════════════════════════════
+     ACTIVE TEST
+══════════════════════════════ -->
 <div id="activeTest">
+  <!-- Topbar -->
   <div class="test-topbar">
-    <h3 id="testName">Test</h3>
-    <div style="display:flex;align-items:center;gap:1rem;">
-      <div class="timer" id="timer">60:00</div>
-      <button class="btn-test btn-submit-test" onclick="submitTest()">Submit Test</button>
+    <div class="topbar-left">
+      <span class="topbar-title" id="testName">Test</span>
+      <span class="topbar-qcount" id="topQCount">Q 1 of 10</span>
+    </div>
+    <div class="topbar-right">
+      <div class="test-timer" id="testTimer">⏱ <span id="timerVal">30:00</span></div>
+      <button class="btn-submit-top" onclick="confirmSubmit()">Submit Test</button>
     </div>
   </div>
-  <div class="test-body">
-    <div class="test-main" id="testMain"></div>
+  <div class="test-progress-bar"><div class="test-progress-fill" id="testProgressFill"></div></div>
+
+  <!-- Layout -->
+  <div class="test-layout">
+    <!-- Main -->
+    <div class="test-main">
+      <div class="test-sheet" id="testSheet">
+        <div class="sheet-inner">
+          <!-- Sheet header -->
+          <div class="sheet-top">
+            <div class="sheet-top-left">
+              <div class="sheet-exam-label">Schrödinger Classes · Mock Test</div>
+              <div class="sheet-test-name" id="sheetTestName">—</div>
+            </div>
+            <div class="marking-pills">
+              <span class="mpill mpill-green">+4 Correct</span>
+              <span class="mpill mpill-red">−1 Wrong</span>
+              <span class="mpill mpill-grey">0 Skipped</span>
+            </div>
+          </div>
+
+          <!-- Question body injected here -->
+          <div id="questionArea"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
     <div class="test-sidebar">
       <div class="sidebar-title">Question Palette</div>
       <div class="q-nav-grid" id="qNavGrid"></div>
-      <div style="margin-top:1.5rem;font-size:0.75rem;color:var(--muted);line-height:1.8;">
-        <div>🟩 Answered</div>
-        <div>🟧 Skipped</div>
-        <div>⬜ Not visited</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Answered</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> Skipped</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--border2)"></div> Not visited</div>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <div style="font-family:var(--mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Live Score</div>
+        <div style="font-family:var(--display);font-size:1.8rem;font-weight:700;color:var(--accent)" id="liveScore">0</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- RESULT -->
+<!-- ══════════════════════════════
+     RESULT
+══════════════════════════════ -->
 <div id="testResult">
-  <div class="result-box">
-    <div class="page-label">Test Complete</div>
-    <h2 id="resultTitle">Results</h2>
-    <div class="score-row" id="scoreRow"></div>
-    <p id="resultMsg" style="color:var(--muted);margin-bottom:2rem;"></p>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-      <button class="btn-test btn-save" onclick="backToTests()">← All Tests</button>
-      <button class="btn-test btn-save" onclick="reviewTest()">Review Answers</button>
+  <div class="result-wrap">
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-emoji" id="resEmoji">🎉</div>
+        <div class="result-score-big" id="resBigScore">0</div>
+        <div class="result-score-label">Total Score</div>
+      </div>
+      <div class="result-body">
+        <div class="result-title" id="resTitle">Well Done!</div>
+        <div class="result-sub" id="resSub">You completed the test.</div>
+        <div class="score-chips" id="scoreChips"></div>
+        <div class="result-actions">
+          <button class="btn-t btn-primary-t" onclick="reviewTest()">📋 Review Answers</button>
+          <button class="btn-t btn-ghost-t" onclick="backToTests()">← All Tests</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════
-// TEST DATA
-// ══════════════════════════════════════════════
 const TESTS = [
   {
     id:'jee-mini-1', title:'JEE Mains Mini Test 1',
-    type:'JEE Mains', duration:30, marks:'+4/-1',
-    desc:'10 questions covering Mechanics & Waves. JEE pattern marking.',
+    type:'JEE Mains', duration:30,
+    desc:'10 questions covering Mechanics, Waves & LCR Circuits. JEE pattern marking (+4/−1).',
     questions:[
-      {q:"A particle moves in a circle of radius 5 m with uniform speed 10 m/s. Its centripetal acceleration is:",options:["2 m/s²","20 m/s²","50 m/s²","100 m/s²"],ans:1,exp:"a = v²/r = 100/5 = 20 m/s²"},
-      {q:"The period of a simple pendulum doubles when:",options:["Length is doubled","Length is halved","Length becomes 4 times","Mass is doubled"],ans:2,exp:"T = 2π√(L/g). For T to double, √L must double, so L must become 4L."},
-      {q:"A spring of force constant k is cut into two equal halves. Each half has force constant:",options:["k/2","k","2k","4k"],ans:2,exp:"Force constant is inversely proportional to length. Cutting in half doubles k."},
-      {q:"The velocity of sound is maximum in:",options:["Air","Water","Steel","Vacuum"],ans:2,exp:"Sound travels fastest in solids due to high elasticity. Speed in steel ≈ 5000 m/s vs 340 m/s in air."},
-      {q:"In SHM, at extreme position:",options:["Velocity is max, acceleration is zero","Velocity is zero, acceleration is max","Both are max","Both are zero"],ans:1,exp:"At extreme position, displacement is max. v=0, a=ω²A (maximum)."},
-      {q:"Beats are produced by superposition of two waves of frequencies 200 Hz and 205 Hz. Beat frequency is:",options:["405 Hz","200 Hz","5 Hz","2.5 Hz"],ans:2,exp:"Beat frequency = |f₁ - f₂| = |200 - 205| = 5 Hz"},
-      {q:"A 2 kg object on a frictionless surface is pulled by 8 N for 4 s from rest. Final velocity is:",options:["1 m/s","8 m/s","16 m/s","4 m/s"],ans:2,exp:"a=F/m=4 m/s². v=u+at=0+4×4=16 m/s"},
-      {q:"Dimensional formula of angular momentum is:",options:["MLT⁻¹","ML²T⁻¹","ML²T⁻²","MLT⁻²"],ans:1,exp:"L=mvr. [L]=[M][LT⁻¹][L]=ML²T⁻¹"},
-      {q:"A bullet of mass 10g moving at 400 m/s is stopped by a wooden block. Momentum change is:",options:["4 kg·m/s","40 kg·m/s","0.4 kg·m/s","400 kg·m/s"],ans:0,exp:"p=mv=0.010×400=4 kg·m/s. Change = 4 - 0 = 4 kg·m/s"},
-      {q:"At resonance in a series LCR circuit, impedance is:",options:["Maximum","Zero","Equal to R","Equal to L"],ans:2,exp:"At resonance XL=XC, so they cancel. Z=√(R²+(XL-XC)²)=√(R²+0)=R"}
+      {q:"A particle moves in a circle of radius 5 m with uniform speed 10 m/s. Its centripetal acceleration is:", options:["2 m/s²","20 m/s²","50 m/s²","100 m/s²"], ans:1, exp:"a = v²/r = 100/5 = 20 m/s²"},
+      {q:"The period of a simple pendulum doubles when:", options:["Length is doubled","Length is halved","Length becomes 4 times","Mass is doubled"], ans:2, exp:"T = 2π√(L/g). For T to double, √L must double, so L must become 4L."},
+      {q:"A spring of force constant k is cut into two equal halves. Each half has force constant:", options:["k/2","k","2k","4k"], ans:2, exp:"Force constant is inversely proportional to length. Cutting in half doubles k."},
+      {q:"The velocity of sound is maximum in:", options:["Air","Water","Steel","Vacuum"], ans:2, exp:"Sound travels fastest in solids due to high elasticity. Speed in steel ≈ 5000 m/s vs 340 m/s in air."},
+      {q:"In SHM, at extreme position:", options:["Velocity is max, acceleration is zero","Velocity is zero, acceleration is max","Both are max","Both are zero"], ans:1, exp:"At extreme position, displacement is max. v=0, a=ω²A (maximum)."},
+      {q:"Beats are produced by superposition of two waves of frequencies 200 Hz and 205 Hz. Beat frequency is:", options:["405 Hz","200 Hz","5 Hz","2.5 Hz"], ans:2, exp:"Beat frequency = |f₁ − f₂| = |200 − 205| = 5 Hz"},
+      {q:"A 2 kg object on a frictionless surface is pulled by 8 N for 4 s from rest. Final velocity is:", options:["1 m/s","8 m/s","16 m/s","4 m/s"], ans:2, exp:"a = F/m = 4 m/s². v = u + at = 0 + 4×4 = 16 m/s"},
+      {q:"Dimensional formula of angular momentum is:", options:["MLT⁻¹","ML²T⁻¹","ML²T⁻²","MLT⁻²"], ans:1, exp:"L = mvr. [L] = [M][LT⁻¹][L] = ML²T⁻¹"},
+      {q:"A bullet of mass 10 g moving at 400 m/s is stopped by a wooden block. Momentum change is:", options:["4 kg·m/s","40 kg·m/s","0.4 kg·m/s","400 kg·m/s"], ans:0, exp:"p = mv = 0.010×400 = 4 kg·m/s. Change = 4 − 0 = 4 kg·m/s"},
+      {q:"At resonance in a series LCR circuit, impedance is:", options:["Maximum","Zero","Equal to R","Equal to L"], ans:2, exp:"At resonance XL = XC, so they cancel. Z = √(R² + (XL−XC)²) = R"}
     ]
   },
   {
     id:'neet-mini-1', title:'NEET Physics Mini Test 1',
-    type:'NEET', duration:20, marks:'+4/-1',
-    desc:'8 NCERT-based NEET pattern questions. Single correct MCQ.',
+    type:'NEET', duration:20,
+    desc:'8 NCERT-based NEET pattern questions. Single correct MCQ. (+4/−1)',
     questions:[
-      {q:"The unit of electric field intensity is:",options:["N/C","C/N","N·m","J/C²"],ans:0,exp:"E = F/q. Unit = Newton/Coulomb = N/C or V/m."},
-      {q:"When a charged particle moves perpendicular to a magnetic field, it:",options:["Slows down","Speeds up","Moves in a circle","Moves in a spiral"],ans:2,exp:"F=qv×B, force ⊥ velocity → circular motion. Speed unchanged."},
-      {q:"Ohm's law is NOT obeyed by:",options:["Copper wire","Resistor","Diode","Nichrome wire"],ans:2,exp:"Diode is a non-ohmic device. Its V-I relationship is non-linear."},
-      {q:"Photoelectric effect proves:",options:["Wave nature of light","Particle nature of light","Both","Neither"],ans:1,exp:"Photoelectric effect cannot be explained by wave theory. It proves photon (particle) nature of light — Einstein 1905."},
-      {q:"The de Broglie wavelength of an electron is related to its momentum p as:",options:["λ=hp","λ=h/p","λ=p/h","λ=h/p²"],ans:1,exp:"de Broglie relation: λ = h/p = h/mv"},
-      {q:"Half life of a radioactive substance is 20 years. After 60 years, fraction remaining is:",options:["1/2","1/4","1/8","1/16"],ans:2,exp:"60 years = 3 half-lives. Fraction = (1/2)³ = 1/8"},
-      {q:"In Young's double slit experiment, fringe width β ∝:",options:["1/λ","1/D","d","λD/d"],ans:3,exp:"β = λD/d. Fringe width is proportional to λ and D, inversely to d."},
-      {q:"Energy stored in a capacitor of capacitance C at voltage V is:",options:["CV","CV²","CV²/2","C²V"],ans:2,exp:"Energy U = ½CV²"}
+      {q:"The unit of electric field intensity is:", options:["N/C","C/N","N·m","J/C²"], ans:0, exp:"E = F/q. Unit = Newton/Coulomb = N/C or V/m."},
+      {q:"When a charged particle moves perpendicular to a magnetic field, it:", options:["Slows down","Speeds up","Moves in a circle","Moves in a spiral"], ans:2, exp:"F = qv×B, force ⊥ velocity → circular motion. Speed unchanged."},
+      {q:"Ohm's law is NOT obeyed by:", options:["Copper wire","Resistor","Diode","Nichrome wire"], ans:2, exp:"Diode is a non-ohmic device. Its V-I relationship is non-linear."},
+      {q:"Photoelectric effect proves:", options:["Wave nature of light","Particle nature of light","Both","Neither"], ans:1, exp:"Photoelectric effect cannot be explained by wave theory. It proves photon (particle) nature of light — Einstein 1905."},
+      {q:"The de Broglie wavelength of an electron is related to its momentum p as:", options:["λ = hp","λ = h/p","λ = p/h","λ = h/p²"], ans:1, exp:"de Broglie relation: λ = h/p = h/mv"},
+      {q:"Half life of a radioactive substance is 20 years. After 60 years, fraction remaining is:", options:["1/2","1/4","1/8","1/16"], ans:2, exp:"60 years = 3 half-lives. Fraction = (1/2)³ = 1/8"},
+      {q:"In Young's double slit experiment, fringe width β is proportional to:", options:["1/λ","1/D","d","λD/d"], ans:3, exp:"β = λD/d. Fringe width is proportional to λ and D, inversely to d."},
+      {q:"Energy stored in a capacitor of capacitance C at voltage V is:", options:["CV","CV²","½CV²","C²V"], ans:2, exp:"Energy U = ½CV²"}
     ]
   }
 ];
 
-let activeTest=null, answers={}, skipped={}, timerInterval=null, timeLeft=0, reviewed=false;
+let activeTest = null;
+let answers = {};
+let skipped = {};
+let timerInterval = null;
+let timeLeft = 0;
+let currentQIdx = 0;
+let reviewed = false;
 
-function buildTestGrid(){
-  const grid=document.getElementById('testsGrid');
-  grid.innerHTML=TESTS.map(t=>`
+/* ── BUILD SELECTOR ── */
+function buildTestGrid() {
+  const grid = document.getElementById('testsGrid');
+  grid.innerHTML = TESTS.map(t => `
     <div class="test-card">
-      <span class="test-badge">${t.type}</span>
+      <span class="test-type-badge">${t.type}</span>
       <h3>${t.title}</h3>
       <p>${t.desc}</p>
       <div class="test-meta">
         <span>⏱ ${t.duration} min</span>
         <span>📝 ${t.questions.length} Q</span>
-        <span>🎯 ${t.marks}</span>
+        <span>🎯 +4 / −1</span>
       </div>
-      <button class="btn-start" onclick="startTest('${t.id}')">Start Test →</button>
+      <button class="btn-start-test" onclick="startTest('${t.id}')">Start Test →</button>
     </div>
   `).join('');
 }
 
-function startTest(id){
-  activeTest=TESTS.find(t=>t.id===id);
-  answers={}; skipped={}; reviewed=false;
-  timeLeft=activeTest.duration*60;
-  document.getElementById('testSelector').style.display='none';
-  document.getElementById('testResult').style.display='none';
-  document.getElementById('activeTest').style.display='block';
-  document.getElementById('testName').textContent=activeTest.title;
+/* ── START TEST ── */
+function startTest(id) {
+  activeTest = TESTS.find(t => t.id === id);
+  answers = {}; skipped = {}; reviewed = false;
+  currentQIdx = 0;
+  timeLeft = activeTest.duration * 60;
+
+  document.getElementById('testSelector').style.display = 'none';
+  document.getElementById('testResult').style.display = 'none';
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('activeTest').style.display = 'block';
+  document.getElementById('testName').textContent = activeTest.title;
+  document.getElementById('sheetTestName').textContent = activeTest.title;
+
   buildQNav(); showQ(0); startTimer();
 }
 
-let currentQIdx=0;
-function showQ(idx){
-  currentQIdx=idx;
-  const q=activeTest.questions[idx];
-  const total=activeTest.questions.length;
-  const sel=answers[idx];
-  const isReviewed=reviewed;
+/* ── SHOW QUESTION ── */
+function showQ(idx) {
+  currentQIdx = idx;
+  const q = activeTest.questions[idx];
+  const total = activeTest.questions.length;
+  const sel = answers[idx];
 
-  document.getElementById('testMain').innerHTML=`
-    <div class="test-q-card">
-      <div class="marking-scheme">
-        <span>✅ Correct: +4</span><span>❌ Wrong: -1</span><span>⬜ Unattempted: 0</span>
-      </div>
-      <div class="q-num-badge">Question ${idx+1} of ${total}</div>
+  document.getElementById('topQCount').textContent = `Q ${idx+1} of ${total}`;
+  document.getElementById('testProgressFill').style.width = ((idx / total) * 100) + '%';
+
+  // Animate sheet
+  const sheet = document.getElementById('testSheet');
+  sheet.style.animation = 'none'; sheet.offsetHeight;
+  sheet.style.animation = 'sheetIn 0.28s ease both';
+
+  const isReviewed = reviewed;
+
+  document.getElementById('questionArea').innerHTML = `
+    <div class="q-body">
+      <div class="q-stamp">${idx+1}</div>
+      ${q.src ? `<div class="q-src-tag">⭐ ${q.src}</div>` : ''}
       <div class="q-text-main">${q.q}</div>
-      <div class="test-options">
-        ${q.options.map((opt,i)=>{
-          let cls='test-opt';
-          if(isReviewed){
-            if(i===q.ans) cls+=' correct';
-            else if(i===sel&&sel!==q.ans) cls+=' wrong';
-          } else if(i===sel) cls+=' selected';
-          return `<button class="${cls}" onclick="selectOpt(${i})" ${isReviewed?'disabled':''}>
-            <span class="opt-circle">${String.fromCharCode(65+i)}</span>${opt}
-          </button>`;
-        }).join('')}
-      </div>
-      <div class="test-explanation ${isReviewed?'show':''}" id="testExp">${q.explanation||''}</div>
-      <div class="test-btn-row">
-        ${idx>0?`<button class="btn-test btn-skip" onclick="showQ(${idx-1})">← Prev</button>`:''}
-        ${!isReviewed?`<button class="btn-test btn-skip" onclick="skipQ(${idx})">Skip →</button>`:''}
-        ${idx<total-1?`<button class="btn-test btn-save" onclick="saveAndNext(${idx})">Save & Next →</button>`:
-          !isReviewed?`<button class="btn-test btn-save" onclick="submitTest()">Submit Test</button>`:''}
-      </div>
+    </div>
+    <div class="options-label">Choose the correct answer</div>
+    <div class="test-options">
+      ${q.options.map((opt,i) => {
+        let cls = 'test-opt';
+        if (isReviewed) {
+          if (i === q.ans) cls += ' correct';
+          else if (i === sel && sel !== q.ans) cls += ' wrong';
+        } else if (i === sel) cls += ' selected';
+        return `<button class="${cls}" onclick="selectOpt(${i})" ${isReviewed ? 'disabled' : ''}>
+          <span class="opt-circle">${String.fromCharCode(65+i)}</span>
+          <span>${opt}</span>
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="test-explanation ${isReviewed ? 'show' : ''}" id="testExp">
+      <div class="exp-label">✦ Explanation</div>
+      <div class="exp-text">${q.exp || ''}</div>
+    </div>
+    <div class="sheet-footer">
+      ${idx > 0 ? `<button class="btn-t btn-ghost-t" onclick="showQ(${idx-1})">← Prev</button>` : ''}
+      ${!isReviewed ? `<button class="btn-t btn-skip-t" onclick="skipQ(${idx})">Skip ⟶</button>` : ''}
+      ${idx < total-1
+        ? `<button class="btn-t btn-primary-t btn-ml" onclick="saveAndNext(${idx})">Save & Next →</button>`
+        : !isReviewed
+          ? `<button class="btn-t btn-primary-t btn-ml" onclick="confirmSubmit()">Submit Test</button>`
+          : ''
+      }
     </div>
   `;
   buildQNav();
+  updateLiveScore();
 }
 
-function selectOpt(i){
-  if(reviewed) return;
-  answers[currentQIdx]=i; delete skipped[currentQIdx];
-  document.querySelectorAll('.test-opt').forEach((b,idx)=>{
-    b.classList.toggle('selected',idx===i);
+/* ── SELECT OPTION ── */
+function selectOpt(i) {
+  if (reviewed) return;
+  answers[currentQIdx] = i;
+  delete skipped[currentQIdx];
+  document.querySelectorAll('.test-opt').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+    b.querySelectorAll('.opt-circle').forEach(c => {
+      if (idx === i) { c.style.background = 'var(--accent)'; c.style.color = 'white'; c.style.borderColor = 'var(--accent)'; }
+      else { c.style.background = ''; c.style.color = ''; c.style.borderColor = ''; }
+    });
   });
-}
-function saveAndNext(idx){
-  showQ(Math.min(idx+1, activeTest.questions.length-1));
-}
-function skipQ(idx){
-  skipped[idx]=true; delete answers[idx];
-  if(idx<activeTest.questions.length-1) showQ(idx+1);
+  buildQNav();
+  updateLiveScore();
 }
 
-function buildQNav(){
-  const grid=document.getElementById('qNavGrid');
-  if(!grid) return;
-  grid.innerHTML=activeTest.questions.map((_,i)=>{
-    let cls='q-nav-btn';
-    if(answers[i]!==undefined) cls+=' answered';
-    else if(skipped[i]) cls+=' skipped';
-    if(i===currentQIdx) cls+=' current';
+function saveAndNext(idx) { showQ(Math.min(idx+1, activeTest.questions.length-1)); }
+function skipQ(idx) {
+  skipped[idx] = true; delete answers[idx];
+  if (idx < activeTest.questions.length-1) showQ(idx+1);
+}
+
+/* ── Q NAV ── */
+function buildQNav() {
+  const grid = document.getElementById('qNavGrid');
+  if (!grid) return;
+  grid.innerHTML = activeTest.questions.map((_,i) => {
+    let cls = 'q-nav-btn';
+    if (answers[i] !== undefined) cls += ' answered';
+    else if (skipped[i]) cls += ' skipped';
+    if (i === currentQIdx) cls += ' current';
     return `<button class="${cls}" onclick="showQ(${i})">${i+1}</button>`;
   }).join('');
 }
 
-function startTimer(){
-  if(timerInterval) clearInterval(timerInterval);
+/* ── LIVE SCORE ── */
+function updateLiveScore() {
+  let s = 0;
+  activeTest.questions.forEach((_,i) => {
+    if (answers[i] !== undefined) {
+      s += answers[i] === activeTest.questions[i].ans ? 4 : -1;
+    }
+  });
+  const el = document.getElementById('liveScore');
+  if (el) { el.textContent = s; el.style.color = s >= 0 ? 'var(--accent)' : 'var(--red)'; }
+}
+
+/* ── TIMER ── */
+function startTimer() {
+  clearInterval(timerInterval);
   updateTimerDisplay();
-  timerInterval=setInterval(()=>{
+  timerInterval = setInterval(() => {
     timeLeft--;
     updateTimerDisplay();
-    if(timeLeft<=0){ clearInterval(timerInterval); submitTest(); }
-  },1000);
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitTest(); }
+  }, 1000);
 }
-function updateTimerDisplay(){
-  const m=Math.floor(timeLeft/60), s=timeLeft%60;
-  const el=document.getElementById('timer');
-  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  el.classList.toggle('warning', timeLeft<=120);
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+  const val = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  document.getElementById('timerVal').textContent = val;
+  const el = document.getElementById('testTimer');
+  el.className = 'test-timer';
+  if (timeLeft <= 60) el.classList.add('danger');
+  else if (timeLeft <= 120) el.classList.add('warning');
 }
 
-function submitTest(){
+/* ── SUBMIT ── */
+function confirmSubmit() {
+  const answered = Object.keys(answers).length;
+  const total = activeTest.questions.length;
+  if (answered < total) {
+    if (!confirm(`You have answered ${answered} of ${total} questions. Submit anyway?`)) return;
+  }
+  submitTest();
+}
+
+function submitTest() {
   clearInterval(timerInterval);
-  let correct=0, wrong=0, unattempted=0;
-  activeTest.questions.forEach((_,i)=>{
-    if(answers[i]===undefined) unattempted++;
-    else if(answers[i]===activeTest.questions[i].ans) correct++;
+  let correct = 0, wrong = 0, unattempted = 0;
+  activeTest.questions.forEach((_,i) => {
+    if (answers[i] === undefined) unattempted++;
+    else if (answers[i] === activeTest.questions[i].ans) correct++;
     else wrong++;
   });
-  const total=activeTest.questions.length;
-  const score=correct*4 - wrong*1;
-  const maxScore=total*4;
-  const pct=Math.round((score/maxScore)*100);
+  const total = activeTest.questions.length;
+  const score = correct * 4 - wrong * 1;
+  const maxScore = total * 4;
+  const pct = Math.round((score / maxScore) * 100);
 
-  document.getElementById('activeTest').style.display='none';
-  document.getElementById('testResult').style.display='block';
-  document.getElementById('resultTitle').textContent=activeTest.title;
-  document.getElementById('scoreRow').innerHTML=`
-    <div class="score-chip"><div class="chip-num">${score}</div><div class="chip-label">Score</div></div>
-    <div class="score-chip"><div class="chip-num">${correct}</div><div class="chip-label">Correct</div></div>
-    <div class="score-chip"><div class="chip-num">${wrong}</div><div class="chip-label">Wrong</div></div>
-    <div class="score-chip"><div class="chip-num">${unattempted}</div><div class="chip-label">Skipped</div></div>
-    <div class="score-chip"><div class="chip-num">${pct}%</div><div class="chip-label">Accuracy</div></div>
+  let emoji = '💡', title = 'Review & Retry!';
+  if (pct >= 80) { emoji = '🏆'; title = 'Outstanding! JEE Ready!'; }
+  else if (pct >= 65) { emoji = '🎉'; title = 'Excellent Work!'; }
+  else if (pct >= 50) { emoji = '👍'; title = 'Good Performance!'; }
+  else if (pct >= 35) { emoji = '📚'; title = 'Keep Practising!'; }
+
+  document.getElementById('activeTest').style.display = 'none';
+  const rs = document.getElementById('testResult');
+  rs.style.display = 'flex'; rs.classList.add('show');
+  document.getElementById('resEmoji').textContent = emoji;
+  document.getElementById('resBigScore').textContent = score;
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resSub').textContent = `You scored ${score}/${maxScore} (${pct}%) in "${activeTest.title}"`;
+  document.getElementById('scoreChips').innerHTML = `
+    <div class="score-chip"><div class="chip-val green">${correct}</div><div class="chip-label">Correct</div></div>
+    <div class="score-chip"><div class="chip-val red">${wrong}</div><div class="chip-label">Wrong</div></div>
+    <div class="score-chip"><div class="chip-val orange">${unattempted}</div><div class="chip-label">Skipped</div></div>
+    <div class="score-chip"><div class="chip-val">${pct}%</div><div class="chip-label">Accuracy</div></div>
   `;
-  document.getElementById('resultMsg').textContent=
-    pct>=80?'Outstanding! You are JEE ready! 🎉':
-    pct>=60?'Good performance! Keep it up! 💪':
-    'Keep practicing. Review your answers below. 📚';
 }
 
-function reviewTest(){
-  reviewed=true;
-  document.getElementById('testResult').style.display='none';
-  document.getElementById('activeTest').style.display='block';
-  document.getElementById('timer').textContent='REVIEW';
-  document.getElementById('timer').classList.remove('warning');
+/* ── REVIEW ── */
+function reviewTest() {
+  reviewed = true;
+  document.getElementById('testResult').style.display = 'none';
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('activeTest').style.display = 'block';
+  document.getElementById('timerVal').textContent = 'REVIEW';
+  document.getElementById('testTimer').className = 'test-timer';
   showQ(0);
 }
-function backToTests(){
-  document.getElementById('testResult').style.display='none';
-  document.getElementById('activeTest').style.display='none';
-  document.getElementById('testSelector').style.display='block';
+
+/* ── BACK ── */
+function backToTests() {
+  clearInterval(timerInterval);
+  document.getElementById('testResult').style.display = 'none';
+  document.getElementById('testResult').classList.remove('show');
+  document.getElementById('activeTest').style.display = 'none';
+  document.getElementById('testSelector').style.display = 'block';
+  window.scrollTo(0, 0);
 }
+
+/* ── NAV ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+function toggleMenu() {
+  const menu = document.getElementById('mobileNav');
+  const btn = document.getElementById('hamburger');
+  menu.classList.toggle('open'); btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+document.getElementById('mobileNav').addEventListener('click', function(e) {
+  if (e.target === this) toggleMenu();
+});
 
 buildTestGrid();
 </script>
