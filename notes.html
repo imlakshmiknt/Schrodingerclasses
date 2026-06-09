@@ -1,125 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notes — Schrödinger Classes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;
-      --ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;
-      --accent2:#c8a96e;--border:#e0ddd6;
-      --serif:'DM Serif Display',serif;
-      --sans:'DM Sans',sans-serif;
-      --mono:'JetBrains Mono',monospace;
-    }
-    body { background:var(--white); color:var(--ink); font-family:var(--sans); font-weight:300; }
-    nav {
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:1.2rem 4rem;
-      background:rgba(248,247,244,0.95);backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-    }
-    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
-    .nav-logo span{color:var(--accent2);}
-    .nav-links{display:flex;gap:2rem;align-items:center;}
-    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
-    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Notes — Schrödinger Classes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    .page-header{
-      padding:8rem 4rem 4rem;background:var(--cream);
-      border-bottom:1px solid var(--border);
-    }
-    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
-    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;color:var(--ink);}
-    .page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;max-width:500px;}
+:root{
+  --white:#f8f7f4;
+  --cream:#f0ede6;
+  --cream2:#e8e3d8;
+  --ink:#1a1a1a;
+  --ink2:#3d3a32;
+  --muted:#6b6b6b;
+  --muted2:#9a9690;
+  --accent:#1a3a5c;
+  --accent-lt:#234d7a;
+  --accent-dim:rgba(26,58,92,0.08);
+  --gold:#c8a96e;
+  --gold-lt:#d9bc8a;
+  --gold-dim:rgba(200,169,110,0.12);
+  --gold-border:rgba(200,169,110,0.28);
+  --border:#e0ddd6;
+  --border2:#d4d0c8;
+  --shadow:0 2px 16px rgba(26,58,92,0.06);
+  --shadow-lg:0 8px 40px rgba(26,58,92,0.1);
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --r:4px;
+}
 
-    .filter-bar{
-      display:flex;gap:0.8rem;flex-wrap:wrap;
-      padding:1.5rem 4rem;
-      border-bottom:1px solid var(--border);
-      background:var(--white);
-      position:sticky;top:72px;z-index:50;
-    }
-    .filter-btn{
-      padding:0.45rem 1.2rem;border-radius:2px;
-      border:1.5px solid var(--border);
-      background:transparent;color:var(--muted);
-      font-family:var(--sans);font-size:0.8rem;font-weight:500;
-      cursor:pointer;transition:all 0.2s;
-    }
-    .filter-btn.active,.filter-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
 
-    main{padding:3rem 4rem 5rem;}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
 
-    .course-section{margin-bottom:4rem;}
-    .course-section h2{
-      font-family:var(--serif);font-size:1.6rem;
-      color:var(--ink);margin-bottom:0.3rem;
-    }
-    .course-section .course-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.8rem;}
-    .notes-grid{
-      display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-      gap:1.2rem;
-    }
-    .note-card{
-      background:var(--white);border:1px solid var(--border);border-radius:4px;
-      padding:1.5rem;
-      transition:transform 0.2s,box-shadow 0.2s;
-      position:relative;
-    }
-    .note-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.06);}
-    .note-tag{
-      font-family:var(--mono);font-size:0.65rem;
-      letter-spacing:0.1em;text-transform:uppercase;
-      color:var(--accent2);background:rgba(200,169,110,0.1);
-      border:1px solid rgba(200,169,110,0.2);
-      padding:0.2rem 0.55rem;border-radius:2px;
-      display:inline-block;margin-bottom:0.8rem;
-    }
-    .note-card h4{font-family:var(--serif);font-size:1.05rem;margin-bottom:0.4rem;}
-    .note-card p{font-size:0.8rem;color:var(--muted);line-height:1.6;}
-    .note-footer{
-      display:flex;justify-content:space-between;align-items:center;
-      margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);
-    }
-    .note-meta{font-size:0.72rem;color:var(--muted);}
-    .note-dl{
-      display:inline-flex;align-items:center;gap:0.4rem;
-      padding:0.4rem 0.9rem;background:var(--cream);
-      border:1px solid var(--border);border-radius:2px;
-      font-size:0.75rem;font-weight:500;color:var(--accent);
-      text-decoration:none;transition:all 0.2s;cursor:pointer;
-    }
-    .note-dl:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
-    .note-badge{
-      position:absolute;top:1rem;right:1rem;
-      font-family:var(--mono);font-size:0.62rem;
-      letter-spacing:0.08em;text-transform:uppercase;
-      background:var(--accent);color:var(--white);
-      padding:0.15rem 0.5rem;border-radius:2px;
-    }
-    .upload-note{
-      background:var(--cream);border:1.5px dashed var(--border);border-radius:4px;
-      padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem;
-    }
-    .upload-note strong{display:block;font-family:var(--serif);color:var(--ink);margin-bottom:0.3rem;}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 4rem;
+  background:rgba(248,247,244,0.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:all 0.3s;
+}
+nav.scrolled{padding:0.7rem 4rem;box-shadow:0 4px 24px rgba(26,58,92,0.07)}
+.nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+.nav-logo-psi{color:var(--gold);font-size:1.6rem;line-height:1}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:0.5rem;align-items:center}
+.nav-links a:not(.nav-cta){
+  text-decoration:none;color:var(--muted);font-size:0.8rem;font-weight:500;
+  letter-spacing:0.04em;text-transform:uppercase;
+  padding:0.4rem 0.75rem;border-radius:var(--r);
+  transition:all 0.2s;
+}
+.nav-links a:not(.nav-cta):hover,.nav-links a.active{color:var(--accent);background:var(--accent-dim)}
+.nav-cta{
+  background:var(--accent)!important;color:var(--white)!important;
+  padding:0.45rem 1.3rem!important;border-radius:var(--r)!important;
+  font-size:0.8rem!important;font-weight:600!important;
+  text-decoration:none!important;letter-spacing:0.03em!important;
+  transition:all 0.2s!important;
+}
+.nav-cta:hover{background:var(--gold)!important;color:var(--ink)!important}
+.nav-progress{position:absolute;bottom:-1px;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--accent);border-radius:2px;transition:all 0.3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-nav{display:none;position:fixed;inset:0;background:rgba(248,247,244,0.98);backdrop-filter:blur(20px);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
+.mobile-nav.open{display:flex}
+.mobile-nav a{font-family:var(--serif);font-size:2rem;color:var(--accent);text-decoration:none;padding:0.5rem 2rem;border-radius:var(--r)}
+.mobile-nav a:hover{color:var(--gold)}
+.mobile-nav .m-cta{background:var(--accent)!important;color:var(--white)!important;font-size:1.1rem!important;margin-top:1rem!important;padding:0.75rem 2.5rem!important}
 
-    @media(max-width:900px){
-      nav{padding:1rem 1.5rem;}
-      .nav-links{display:none;}
-      .page-header,.filter-bar,main{padding-left:1.5rem;padding-right:1.5rem;}
-    }
-  </style>
+/* ── PAGE HEADER ── */
+.page-header{
+  padding:8.5rem 4rem 3.5rem;
+  background:var(--cream);
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.page-header::before{
+  content:'Ψ';
+  position:absolute;right:-1rem;top:50%;transform:translateY(-50%);
+  font-family:var(--serif);font-size:18rem;
+  color:rgba(26,58,92,0.04);pointer-events:none;line-height:1;user-select:none;
+}
+.page-header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:3rem;flex-wrap:wrap}
+.ph-left{}
+.page-eyebrow{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem}
+.page-eyebrow::before{content:'';width:14px;height:1.5px;background:var(--gold);border-radius:1px;flex-shrink:0}
+.page-title{font-family:var(--serif);font-size:clamp(2.4rem,4.5vw,4rem);letter-spacing:-0.025em;color:var(--ink);line-height:1.1}
+.page-title em{font-style:italic;color:var(--accent)}
+.page-sub{font-size:0.95rem;color:var(--muted);margin-top:0.6rem;max-width:450px;line-height:1.75}
+.ph-stats{display:flex;gap:2.5rem;flex-shrink:0}
+.ph-stat{}
+.ph-stat-val{font-family:var(--serif);font-size:2.2rem;color:var(--accent);line-height:1}
+.ph-stat-label{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem}
+
+/* ── SEARCH + FILTER BAR ── */
+.controls-bar{
+  position:sticky;top:66px;z-index:100;
+  background:rgba(248,247,244,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 4rem;
+}
+.controls-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:1rem 0;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:340px}
+.search-wrap input{
+  width:100%;padding:0.6rem 1rem 0.6rem 2.4rem;
+  background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r);
+  font-family:var(--sans);font-size:0.84rem;color:var(--ink);
+  outline:none;transition:all 0.2s;
+}
+.search-wrap input:focus{border-color:var(--accent);background:var(--white);box-shadow:0 0 0 3px rgba(26,58,92,0.06)}
+.search-wrap input::placeholder{color:var(--muted2)}
+.search-icon{position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:0.85rem;pointer-events:none}
+.filter-tabs{display:flex;gap:0.4rem;flex-wrap:wrap}
+.filter-tab{
+  padding:0.4rem 1.1rem;border-radius:100px;
+  border:1.5px solid var(--border);background:transparent;
+  color:var(--muted);font-family:var(--sans);font-size:0.78rem;font-weight:500;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.01em;
+}
+.filter-tab.active{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.filter-tab:hover:not(.active){border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.sort-wrap{margin-left:auto;display:flex;align-items:center;gap:0.6rem}
+.sort-label{font-family:var(--mono);font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2)}
+.sort-select{
+  padding:0.4rem 0.8rem;background:var(--cream);border:1.5px solid var(--border);
+  border-radius:var(--r);font-family:var(--sans);font-size:0.78rem;color:var(--ink);
+  cursor:pointer;outline:none;transition:border-color 0.2s;
+}
+.sort-select:focus{border-color:var(--accent)}
+
+/* ── PROGRESS STRIP ── */
+.progress-strip{background:var(--cream2);border-bottom:1px solid var(--border);padding:0.8rem 4rem}
+.progress-strip-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.prog-item{display:flex;align-items:center;gap:0.7rem;flex:1;min-width:160px}
+.prog-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.prog-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;transition:width 0.8s ease}
+.prog-pct{font-family:var(--mono);font-size:0.65rem;color:var(--accent);font-weight:600;white-space:nowrap}
+
+/* ── MAIN LAYOUT ── */
+main{max-width:1200px;margin:0 auto;padding:3rem 4rem 6rem}
+
+/* ── SECTION HEADER ── */
+.course-section{margin-bottom:4.5rem}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;
+  margin-bottom:2rem;padding-bottom:1.2rem;
+  border-bottom:1.5px solid var(--border);
+  flex-wrap:wrap;
+}
+.section-head-left{}
+.section-eyebrow{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.section-head h2{font-family:var(--serif);font-size:1.7rem;color:var(--ink);letter-spacing:-0.015em;line-height:1.1}
+.section-desc{font-size:0.82rem;color:var(--muted);margin-top:0.25rem}
+.section-count{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);display:flex;align-items:center;gap:0.4rem;white-space:nowrap;flex-shrink:0}
+.section-count::before{content:'';width:20px;height:1px;background:var(--border2)}
+
+/* ── NOTES GRID ── */
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem}
+
+/* ── NOTE CARD ── */
+.note-card{
+  background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:1.6rem;position:relative;overflow:hidden;
+  transition:all 0.3s;display:flex;flex-direction:column;
+  cursor:pointer;
+}
+.note-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+  background:linear-gradient(90deg,var(--accent),var(--gold));
+  transform:scaleX(0);transform-origin:left;transition:transform 0.3s;
+}
+.note-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--border2)}
+.note-card:hover::before{transform:scaleX(1)}
+
+/* card top row */
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.9rem}
+.note-tag{
+  font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);border:1px solid var(--gold-border);
+  padding:0.2rem 0.6rem;border-radius:100px;display:inline-block;
+}
+.note-badge{
+  font-family:var(--mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--accent);color:var(--white);padding:0.18rem 0.55rem;border-radius:100px;
+}
+.note-badge.updated{background:var(--gold);color:var(--ink)}
+
+/* card icon */
+.note-icon{font-size:1.6rem;margin-bottom:0.7rem;display:block;transition:transform 0.3s}
+.note-card:hover .note-icon{transform:scale(1.1) rotate(-4deg)}
+
+/* card body */
+.note-card h4{font-family:var(--serif);font-size:1.1rem;color:var(--ink);margin-bottom:0.35rem;line-height:1.3;letter-spacing:-0.01em}
+.note-card p{font-size:0.8rem;color:var(--muted);line-height:1.65;flex:1}
+
+/* topics chips */
+.note-topics{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.75rem}
+.note-topic{
+  font-size:0.68rem;padding:0.18rem 0.55rem;border-radius:100px;
+  background:var(--accent-dim);color:var(--accent);
+  border:1px solid rgba(26,58,92,0.12);font-weight:500;
+}
+
+/* card footer */
+.note-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:0.7rem;
+  margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);
+}
+.note-meta{font-size:0.7rem;color:var(--muted2);font-family:var(--mono);letter-spacing:0.04em;display:flex;align-items:center;gap:0.9rem}
+.note-meta span{display:flex;align-items:center;gap:0.2rem}
+.note-dl{
+  display:inline-flex;align-items:center;gap:0.35rem;
+  padding:0.42rem 0.95rem;background:var(--cream);
+  border:1.5px solid var(--border);border-radius:var(--r);
+  font-size:0.75rem;font-weight:600;color:var(--accent);
+  text-decoration:none;transition:all 0.2s;cursor:pointer;white-space:nowrap;
+}
+.note-dl:hover{background:var(--accent);color:var(--white);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,58,92,0.2)}
+
+/* completed overlay */
+.note-card.completed::after{
+  content:'✓ Read';position:absolute;top:0.75rem;right:0.75rem;
+  font-family:var(--mono);font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:rgba(26,107,58,0.1);color:#1a6b3a;border:1px solid rgba(26,107,58,0.25);
+  padding:0.18rem 0.55rem;border-radius:100px;
+}
+
+/* ── COMING SOON CARD ── */
+.note-card.coming-soon{
+  opacity:0.65;cursor:default;
+  background:var(--cream);
+}
+.note-card.coming-soon:hover{transform:none;box-shadow:none;border-color:var(--border)}
+.coming-tag{
+  font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);background:rgba(107,107,107,0.1);border:1px solid var(--border2);
+  padding:0.2rem 0.6rem;border-radius:100px;display:inline-block;margin-bottom:0.8rem;
+}
+.note-card.coming-soon .note-dl{cursor:default;opacity:0.5;pointer-events:none}
+
+/* ── CHAPTER MAP (visual tree) ── */
+.chapter-map{
+  background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:1.8rem;margin-bottom:1.5rem;
+  display:flex;flex-direction:column;gap:0.6rem;
+}
+.cm-title{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.cm-row{display:flex;align-items:center;gap:0.75rem}
+.cm-dot{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;
+  border:2px solid var(--accent);background:var(--white);
+  transition:all 0.2s;cursor:pointer;
+}
+.cm-dot.done{background:var(--accent);border-color:var(--accent)}
+.cm-dot.partial{background:var(--gold);border-color:var(--gold)}
+.cm-line{flex:1;height:1px;background:var(--border);position:relative}
+.cm-name{font-size:0.75rem;color:var(--ink2);white-space:nowrap;font-weight:500;min-width:160px}
+.cm-status{font-family:var(--mono);font-size:0.6rem;color:var(--muted2);white-space:nowrap}
+
+/* ── QUICK ACCESS PANEL ── */
+.quick-access{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+  margin-bottom:3rem;
+}
+.qa-card{
+  background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:1.2rem;transition:all 0.25s;cursor:pointer;text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem;
+}
+.qa-card:hover{border-color:var(--accent);background:var(--white);box-shadow:var(--shadow);transform:translateY(-2px)}
+.qa-icon{font-size:1.3rem}
+.qa-label{font-size:0.78rem;font-weight:600;color:var(--ink)}
+.qa-sub{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted2)}
+
+/* ── FLASHCARD PEEK ── */
+.flashcard-strip{
+  background:linear-gradient(135deg,var(--accent) 0%,#1e4d7a 100%);
+  border-radius:var(--r);padding:2rem 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+  margin-bottom:3.5rem;flex-wrap:wrap;position:relative;overflow:hidden;
+}
+.flashcard-strip::before{
+  content:'Ψ';position:absolute;right:-1rem;top:50%;transform:translateY(-50%);
+  font-family:var(--serif);font-size:8rem;color:rgba(255,255,255,0.04);pointer-events:none;line-height:1;
+}
+.fs-text h3{font-family:var(--serif);font-size:1.4rem;color:var(--white);margin-bottom:0.3rem;position:relative}
+.fs-text p{font-size:0.85rem;color:rgba(255,255,255,0.55);position:relative}
+.fs-card{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  border-radius:var(--r);padding:1rem 1.5rem;min-width:200px;
+  text-align:center;cursor:pointer;transition:all 0.3s;position:relative;
+  perspective:600px;
+}
+.fs-card:hover{background:rgba(255,255,255,0.14);transform:rotateY(4deg) scale(1.02)}
+.fs-q{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.5rem}
+.fs-formula{font-family:var(--mono);font-size:1rem;color:var(--gold-lt);font-weight:600}
+.fs-hint{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.4rem;font-style:italic}
+.fs-btn{
+  background:var(--gold);color:var(--ink);padding:0.7rem 1.6rem;
+  border:none;border-radius:var(--r);font-family:var(--sans);font-size:0.85rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.fs-btn:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,169,110,0.4)}
+
+/* ── FORMULA SHEET CARD ── */
+.formula-highlight{
+  background:var(--cream);border:1.5px solid var(--border);border-left:4px solid var(--gold);
+  border-radius:var(--r);padding:1.4rem 1.6rem;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1.5rem;
+}
+.fh-icon{font-size:1.8rem;flex-shrink:0}
+.fh-text h4{font-family:var(--serif);font-size:1rem;color:var(--ink);margin-bottom:0.2rem}
+.fh-text p{font-size:0.8rem;color:var(--muted)}
+.fh-link{margin-left:auto;flex-shrink:0}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:4rem 2rem;
+  color:var(--muted);
+}
+.empty-state-icon{font-size:3rem;margin-bottom:1rem;display:block;opacity:0.4}
+.empty-state h4{font-family:var(--serif);font-size:1.2rem;color:var(--ink2);margin-bottom:0.4rem}
+.empty-state p{font-size:0.85rem}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(1.5rem);
+  opacity:0;background:var(--accent);color:var(--white);
+  padding:0.8rem 1.8rem;border-radius:var(--r);font-size:0.85rem;
+  transition:all 0.35s;pointer-events:none;z-index:9999;
+  display:flex;align-items:center;gap:0.5rem;
+  box-shadow:0 8px 32px rgba(26,58,92,0.25);
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1060px){
+  nav,.page-header,.controls-bar,.progress-strip{padding-left:1.5rem;padding-right:1.5rem}
+  main{padding:2.5rem 1.5rem 5rem}
+  .quick-access{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  nav{padding:0.85rem 1.2rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .ph-stats{display:none}
+  .flashcard-strip{flex-direction:column;align-items:flex-start}
+  .fs-card{width:100%}
+}
+@media(max-width:600px){
+  .quick-access{grid-template-columns:1fr 1fr}
+  .controls-inner{flex-direction:column;align-items:stretch}
+  .search-wrap{max-width:100%}
+  .sort-wrap{margin-left:0}
+  .notes-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-<nav>
-  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-progress" id="navProgress"></div>
+  <a href="index.html" class="nav-logo">
+    Schrödinger<span>Classes</span>
+  </a>
   <div class="nav-links">
     <a href="notes.html" class="active">Notes</a>
     <a href="videos.html">Videos</a>
@@ -128,202 +394,590 @@
     <a href="simulation.html">Simulations</a>
     <a href="login.html" class="nav-cta">Login</a>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="notes.html" onclick="toggleMenu()">Notes</a>
+  <a href="videos.html" onclick="toggleMenu()">Videos</a>
+  <a href="quiz.html" onclick="toggleMenu()">Quiz</a>
+  <a href="test.html" onclick="toggleMenu()">Tests</a>
+  <a href="simulation.html" onclick="toggleMenu()">Simulations</a>
+  <a href="login.html" class="m-cta" onclick="toggleMenu()">Login</a>
+</div>
+
+<!-- PAGE HEADER -->
 <div class="page-header">
-  <div class="page-label">Study Material</div>
-  <div class="page-title">Chapter Notes</div>
-  <p class="page-sub">Well-structured, concept-rich notes for every chapter. Free to download.</p>
+  <div class="page-header-inner">
+    <div class="ph-left">
+      <div class="page-eyebrow">Study Material</div>
+      <h1 class="page-title">Chapter <em>Notes.</em></h1>
+      <p class="page-sub">Concept-rich, exam-ready notes for every chapter — built from first principles, free to download.</p>
+    </div>
+    <div class="ph-stats">
+      <div class="ph-stat">
+        <div class="ph-stat-val" data-count="15">0</div>
+        <div class="ph-stat-label">Chapters</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-val" data-count="250" data-suffix="+">0</div>
+        <div class="ph-stat-label">Pages</div>
+      </div>
+      <div class="ph-stat">
+        <div class="ph-stat-val">Free</div>
+        <div class="ph-stat-label">Always</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="filter-bar">
-  <button class="filter-btn active" onclick="filterNotes('all',this)">All</button>
-  <button class="filter-btn" onclick="filterNotes('11',this)">Class 11</button>
-  <button class="filter-btn" onclick="filterNotes('12',this)">Class 12</button>
-  <button class="filter-btn" onclick="filterNotes('jee',this)">JEE</button>
-  <button class="filter-btn" onclick="filterNotes('neet',this)">NEET</button>
+<!-- SEARCH + FILTER -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search chapters, topics…" oninput="handleSearch(this.value)">
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterNotes('all',this)">All</button>
+      <button class="filter-tab" onclick="filterNotes('11',this)">Class 11</button>
+      <button class="filter-tab" onclick="filterNotes('12',this)">Class 12</button>
+    </div>
+    <div class="sort-wrap">
+      <span class="sort-label">Sort</span>
+      <select class="sort-select" onchange="sortNotes(this.value)">
+        <option value="default">Default</option>
+        <option value="name">A → Z</option>
+        <option value="new">Newest First</option>
+      </select>
+    </div>
+  </div>
 </div>
 
+<!-- PROGRESS STRIP -->
+<div class="progress-strip" id="progressStrip">
+  <div class="progress-strip-inner">
+    <div class="prog-item">
+      <span class="prog-label">Class 11</span>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:0%" data-width="75%"></div></div>
+      <span class="prog-pct">8/8 notes</span>
+    </div>
+    <div class="prog-item">
+      <span class="prog-label">Class 12</span>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:0%" data-width="40%"></div></div>
+      <span class="prog-pct">7 uploaded</span>
+    </div>
+    <div class="prog-item">
+      <span class="prog-label">Total coverage</span>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:0%" data-width="60%"></div></div>
+      <span class="prog-pct">60%</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <main>
-  <!-- CLASS 11 -->
-  <div class="course-section" data-course="11">
-    <h2>Class XI Physics</h2>
-    <p class="course-desc">NCERT + JEE/NEET extended topics — complete Class 11 curriculum.</p>
-    <div class="notes-grid">
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 1</span>
+
+  <!-- QUICK ACCESS -->
+  <div class="quick-access reveal">
+    <a href="notes/formula-sheet.pdf" class="qa-card" onclick="notifyUpload(event,'Formula sheet coming soon!')">
+      <span class="qa-icon">📐</span>
+      <span class="qa-label">Formula Sheets</span>
+      <span class="qa-sub">Quick reference</span>
+    </a>
+    <a href="quiz.html" class="qa-card">
+      <span class="qa-icon">⚡</span>
+      <span class="qa-label">Practice Quizzes</span>
+      <span class="qa-sub">Test each chapter</span>
+    </a>
+    <a href="simulation.html" class="qa-card">
+      <span class="qa-icon">🔬</span>
+      <span class="qa-label">Simulations</span>
+      <span class="qa-sub">Visual learning</span>
+    </a>
+    <a href="test.html" class="qa-card">
+      <span class="qa-icon">📝</span>
+      <span class="qa-label">Mock Tests</span>
+      <span class="qa-sub">JEE · NEET pattern</span>
+    </a>
+  </div>
+
+  <!-- FLASHCARD STRIP -->
+  <div class="flashcard-strip reveal">
+    <div class="fs-text">
+      <h3>Daily Formula Flashcard</h3>
+      <p>Tap to reveal · A new formula every day to keep concepts sharp.</p>
+    </div>
+    <div class="fs-card" onclick="nextFlashcard(this)">
+      <div class="fs-q">Today's Formula</div>
+      <div class="fs-formula" id="fcFormula">E = mc²</div>
+      <div class="fs-hint" id="fcHint">Mass-energy equivalence · Special Relativity</div>
+    </div>
+    <button class="fs-btn" onclick="nextFlashcard(document.querySelector('.fs-card'))">Next Card →</button>
+  </div>
+
+  <!-- CLASS 11 SECTION -->
+  <div class="course-section reveal" data-course="11" id="section-11">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow">Class 11 Physics</div>
+        <h2>Class XI — Complete Notes</h2>
+        <p class="section-desc">NCERT + JEE/NEET extended topics — fully solved examples included.</p>
+      </div>
+      <div class="section-count" id="count-11">8 chapters</div>
+    </div>
+
+    <div class="notes-grid" id="grid-11">
+
+      <div class="note-card" data-name="physical world measurement" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 1</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">📏</span>
         <h4>Physical World & Measurement</h4>
-        <p>Units, dimensions, significant figures, error analysis.</p>
+        <p>Units, dimensions, significant figures, and complete error analysis with solved JEE problems.</p>
+        <div class="note-topics">
+          <span class="note-topic">Dimensions</span>
+          <span class="note-topic">SI Units</span>
+          <span class="note-topic">Error Analysis</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 1.pdf" download>📄 Download PDF</a>
+          <div class="note-meta">
+            <span>📄 PDF</span>
+          </div>
+          <a class="note-dl" href="notes/Tut 1.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 2</span>
+
+      <div class="note-card" data-name="kinematics motion projectile" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 2</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">🏃</span>
         <h4>Kinematics</h4>
-        <p>Motion in a straight line, projectile motion, relative velocity.</p>
+        <p>Motion in a straight line, projectile motion, relative velocity with graph-based problems.</p>
+        <div class="note-topics">
+          <span class="note-topic">1D Motion</span>
+          <span class="note-topic">Projectile</span>
+          <span class="note-topic">Relative Velocity</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 2.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 2.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 3</span>
+
+      <div class="note-card" data-name="laws of motion newton friction circular" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 3</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">⚙️</span>
         <h4>Laws of Motion</h4>
-        <p>Newton's laws, friction, circular motion dynamics.</p>
+        <p>Newton's three laws, friction (static & kinetic), circular motion dynamics and banking.</p>
+        <div class="note-topics">
+          <span class="note-topic">Newton's Laws</span>
+          <span class="note-topic">Friction</span>
+          <span class="note-topic">Circular Motion</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 3.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 3.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 5</span>
+
+      <div class="note-card" data-name="work energy power theorem collisions" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 5</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">🔋</span>
         <h4>Work, Energy & Power</h4>
-        <p>Work-energy theorem, potential energy, collisions.</p>
+        <p>Work-energy theorem, potential energy, conservation of energy, elastic & inelastic collisions.</p>
+        <div class="note-topics">
+          <span class="note-topic">Work-Energy</span>
+          <span class="note-topic">Collisions</span>
+          <span class="note-topic">Power</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 5.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 5.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 6</span>
+
+      <div class="note-card" data-name="gravitation kepler orbit satellite escape velocity" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 6</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">🌍</span>
         <h4>Gravitation</h4>
-        <p>Kepler's laws, orbital velocity, escape velocity, satellites.</p>
+        <p>Kepler's three laws, orbital velocity, escape velocity, satellites and gravitational potential energy.</p>
+        <div class="note-topics">
+          <span class="note-topic">Kepler's Laws</span>
+          <span class="note-topic">Satellites</span>
+          <span class="note-topic">Escape Velocity</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 6.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 6.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 7</span>
+
+      <div class="note-card" data-name="oscillations waves shm doppler standing" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 7</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">🌊</span>
         <h4>Oscillations & Waves</h4>
-        <p>SHM, wave equation, standing waves, Doppler effect.</p>
+        <p>Simple harmonic motion, wave equation, standing waves, resonance, and Doppler effect.</p>
+        <div class="note-topics">
+          <span class="note-topic">SHM</span>
+          <span class="note-topic">Standing Waves</span>
+          <span class="note-topic">Doppler Effect</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 7.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 7.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 8</span>
+
+      <div class="note-card" data-name="electromagnetic induction faraday lenz inductance ac" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 8</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">🔌</span>
         <h4>Electromagnetic Induction</h4>
-        <p>Faraday's law, Lenz's law, mutual inductance, AC circuits.</p>
+        <p>Faraday's law, Lenz's law, self & mutual inductance, EMF, and AC circuit basics.</p>
+        <div class="note-topics">
+          <span class="note-topic">Faraday's Law</span>
+          <span class="note-topic">Inductance</span>
+          <span class="note-topic">AC Circuits</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 8.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 8.pdf" download>⬇ Download</a>
         </div>
       </div>
-      <div class="note-card">
-        <span class="note-badge">New</span>
-        <span class="note-tag">Tut 9</span>
+
+      <div class="note-card" data-name="optics ray wave interference diffraction" data-new="true">
+        <div class="card-top">
+          <span class="note-tag">Tut 9</span>
+          <span class="note-badge">New</span>
+        </div>
+        <span class="note-icon">💡</span>
         <h4>Optics</h4>
-        <p>Ray optics, wave optics, interference, diffraction.</p>
+        <p>Ray optics (mirrors & lenses), wave optics, Young's double slit, interference, and diffraction.</p>
+        <div class="note-topics">
+          <span class="note-topic">Ray Optics</span>
+          <span class="note-topic">Interference</span>
+          <span class="note-topic">Diffraction</span>
+        </div>
         <div class="note-footer">
-          <span class="note-meta">📄 PDF</span>
-          <a class="note-dl" href="notes/Tut 9.pdf" download>📄 Download PDF</a>
+          <div class="note-meta"><span>📄 PDF</span></div>
+          <a class="note-dl" href="notes/Tut 9.pdf" download>⬇ Download</a>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- CLASS 12 -->
-  <div class="course-section" data-course="12">
-    <h2>Class XII Physics</h2>
-    <p class="course-desc">Full Class 12 syllabus — electrostatics to modern physics.</p>
-    <div class="notes-grid">
-      <div class="note-card">
-        <span class="note-tag">Ch. 1</span>
-        <h4>Electric Charges & Fields</h4>
-        <p>Coulomb's law, electric field, Gauss's theorem, dipole.</p>
-        <div class="note-footer">
-          <span class="note-meta">17 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
+  <!-- CLASS 12 SECTION -->
+  <div class="course-section reveal" data-course="12" id="section-12">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-eyebrow">Class 12 Physics</div>
+        <h2>Class XII — Complete Notes</h2>
+        <p class="section-desc">Full Class 12 syllabus — electrostatics through modern physics. More chapters uploading soon.</p>
       </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 2</span>
-        <h4>Electrostatic Potential</h4>
-        <p>Potential, capacitance, energy stored, dielectrics.</p>
-        <div class="note-footer">
-          <span class="note-meta">15 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
+      <div class="section-count" id="count-12">7 chapters</div>
+    </div>
+
+    <!-- Formula highlight bar -->
+    <div class="formula-highlight">
+      <span class="fh-icon">📐</span>
+      <div class="fh-text">
+        <h4>Class 12 Formula Sheet</h4>
+        <p>All key formulas for Electrostatics, Magnetism, Optics & Modern Physics — one PDF.</p>
       </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 3</span>
-        <h4>Current Electricity</h4>
-        <p>Ohm's law, Kirchhoff's rules, Wheatstone bridge.</p>
-        <div class="note-footer">
-          <span class="note-meta">18 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
-      </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 4</span>
-        <h4>Magnetism & Matter</h4>
-        <p>Biot-Savart, Ampere's law, magnetic properties.</p>
-        <div class="note-footer">
-          <span class="note-meta">16 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
-      </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 5</span>
-        <h4>Electromagnetic Induction</h4>
-        <p>Faraday's law, Lenz's law, mutual inductance, AC circuits.</p>
-        <div class="note-footer">
-          <span class="note-meta">19 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
-      </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 6</span>
-        <h4>Optics</h4>
-        <p>Ray optics, wave optics, interference, diffraction.</p>
-        <div class="note-footer">
-          <span class="note-meta">22 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
-      </div>
-      <div class="note-card">
-        <span class="note-tag">Ch. 7</span>
-        <h4>Dual Nature & Atoms</h4>
-        <p>Photoelectric effect, de Broglie, Bohr model, spectra.</p>
-        <div class="note-footer">
-          <span class="note-meta">14 pages</span>
-          <a class="note-dl" href="#" onclick="notifyUpload(event)">📄 Download PDF</a>
-        </div>
+      <div class="fh-link">
+        <a class="note-dl" href="#" onclick="notifyUpload(event,'Formula sheet upload ho raha hai!')">⬇ Download Sheet</a>
       </div>
     </div>
+
+    <div class="notes-grid" id="grid-12">
+
+      <div class="note-card" data-name="electric charges fields coulomb gauss dipole">
+        <div class="card-top">
+          <span class="note-tag">Ch. 1</span>
+        </div>
+        <span class="note-icon">⚡</span>
+        <h4>Electric Charges & Fields</h4>
+        <p>Coulomb's law, superposition principle, electric field lines, Gauss's theorem, dipole in uniform field.</p>
+        <div class="note-topics">
+          <span class="note-topic">Coulomb's Law</span>
+          <span class="note-topic">Gauss's Law</span>
+          <span class="note-topic">Electric Dipole</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>17 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="electrostatic potential capacitance energy dielectrics">
+        <div class="card-top">
+          <span class="note-tag">Ch. 2</span>
+        </div>
+        <span class="note-icon">🔋</span>
+        <h4>Electrostatic Potential</h4>
+        <p>Electric potential, equipotential surfaces, capacitance, energy stored in a capacitor, dielectrics.</p>
+        <div class="note-topics">
+          <span class="note-topic">Potential</span>
+          <span class="note-topic">Capacitors</span>
+          <span class="note-topic">Dielectrics</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>15 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="current electricity ohm kirchhoff wheatstone">
+        <div class="card-top">
+          <span class="note-tag">Ch. 3</span>
+        </div>
+        <span class="note-icon">🔌</span>
+        <h4>Current Electricity</h4>
+        <p>Ohm's law, resistivity, Kirchhoff's rules, Wheatstone bridge, meter bridge, and potentiometer.</p>
+        <div class="note-topics">
+          <span class="note-topic">Ohm's Law</span>
+          <span class="note-topic">Kirchhoff</span>
+          <span class="note-topic">Wheatstone</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>18 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="magnetism matter biot savart ampere magnetic">
+        <div class="card-top">
+          <span class="note-tag">Ch. 4</span>
+        </div>
+        <span class="note-icon">🧲</span>
+        <h4>Magnetism & Matter</h4>
+        <p>Biot-Savart law, Ampere's law, force on moving charge, solenoid, magnetic properties of materials.</p>
+        <div class="note-topics">
+          <span class="note-topic">Biot-Savart</span>
+          <span class="note-topic">Ampere's Law</span>
+          <span class="note-topic">Magnetic Force</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>16 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="electromagnetic induction faraday lenz ac transformer">
+        <div class="card-top">
+          <span class="note-tag">Ch. 5</span>
+        </div>
+        <span class="note-icon">🌀</span>
+        <h4>Electromagnetic Induction</h4>
+        <p>Faraday's law, Lenz's law, self & mutual inductance, AC generator, transformers.</p>
+        <div class="note-topics">
+          <span class="note-topic">Faraday</span>
+          <span class="note-topic">Lenz's Law</span>
+          <span class="note-topic">Transformer</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>19 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="optics ray wave diffraction young double slit lens mirror">
+        <div class="card-top">
+          <span class="note-tag">Ch. 6</span>
+        </div>
+        <span class="note-icon">🔭</span>
+        <h4>Optics</h4>
+        <p>Ray optics (reflection, refraction, lenses, mirrors), wave optics, Young's double slit, single slit diffraction.</p>
+        <div class="note-topics">
+          <span class="note-topic">Refraction</span>
+          <span class="note-topic">YDSE</span>
+          <span class="note-topic">Diffraction</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>22 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+      <div class="note-card" data-name="dual nature atoms bohr photoelectric debroglie spectra">
+        <div class="card-top">
+          <span class="note-tag">Ch. 7</span>
+        </div>
+        <span class="note-icon">⚛️</span>
+        <h4>Dual Nature & Atoms</h4>
+        <p>Photoelectric effect, de Broglie hypothesis, Bohr's atomic model, hydrogen spectra, nuclear binding energy.</p>
+        <div class="note-topics">
+          <span class="note-topic">Photoelectric</span>
+          <span class="note-topic">Bohr Model</span>
+          <span class="note-topic">de Broglie</span>
+        </div>
+        <div class="note-footer">
+          <div class="note-meta"><span>14 pages</span></div>
+          <a class="note-dl" href="#" onclick="notifyUpload(event)">⬇ Download</a>
+        </div>
+      </div>
+
+    </div>
   </div>
+
 </main>
 
-<!-- Toast notification -->
-<div id="toast" style="position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(2rem);opacity:0;background:var(--accent);color:white;padding:0.8rem 1.8rem;border-radius:3px;font-size:0.85rem;transition:all 0.3s;pointer-events:none;z-index:999;">
-  PDF upload karo notes folder mein aur link update karo! 📂
-</div>
+<!-- TOAST -->
+<div id="toast">📂 <span id="toastMsg">Upload PDF to the notes folder and update the link!</span></div>
 
 <script>
-function filterNotes(course, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  nav.classList.toggle('scrolled',window.scrollY>40);
+  const scrolled=window.scrollY;
+  const total=document.body.scrollHeight-window.innerHeight;
+  document.getElementById('navProgress').style.width=(scrolled/total*100)+'%';
+});
+
+/* ── MOBILE MENU ── */
+function toggleMenu(){
+  const m=document.getElementById('mobileNav');
+  const b=document.getElementById('hamburger');
+  m.classList.toggle('open');b.classList.toggle('open');
+  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+}
+
+/* ── SCROLL REVEAL ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ── PROGRESS BARS ANIMATE ── */
+const progObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.prog-bar').forEach(bar=>{bar.style.width=bar.dataset.width});
+      progObserver.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+const progStrip=document.getElementById('progressStrip');
+if(progStrip)progObserver.observe(progStrip);
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el){
+  const target=parseInt(el.dataset.count);
+  const suffix=el.dataset.suffix||'';
+  let c=0;const step=Math.ceil(target/25);
+  const t=setInterval(()=>{c+=step;if(c>=target){c=target;clearInterval(t)}el.textContent=c+suffix;},50);
+}
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('[data-count]').forEach(animateCounter);cntObs.disconnect()}});
+},{threshold:0.5});
+const hdr=document.querySelector('.page-header');if(hdr)cntObs.observe(hdr);
+
+/* ── FILTER ── */
+function filterNotes(course,btn){
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.course-section').forEach(sec => {
-    sec.style.display = (course === 'all' || sec.dataset.course === course) ? 'block' : 'none';
+  document.querySelectorAll('.course-section').forEach(sec=>{
+    sec.style.display=(course==='all'||sec.dataset.course===course)?'block':'none';
+  });
+  document.getElementById('searchInput').value='';
+}
+
+/* ── SEARCH ── */
+function handleSearch(query){
+  const q=query.toLowerCase().trim();
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.filter-tab').classList.add('active');
+  document.querySelectorAll('.course-section').forEach(sec=>sec.style.display='block');
+  let totalVisible=0;
+  document.querySelectorAll('.note-card').forEach(card=>{
+    const text=(card.dataset.name||'')+(card.querySelector('h4')?.textContent||'')+(card.querySelector('p')?.textContent||'');
+    const match=!q||text.toLowerCase().includes(q);
+    card.style.display=match?'flex':'none';
+    if(match)totalVisible++;
+  });
+  // hide empty sections
+  document.querySelectorAll('.course-section').forEach(sec=>{
+    const visible=[...sec.querySelectorAll('.note-card')].some(c=>c.style.display!=='none');
+    sec.style.display=visible?'block':'none';
   });
 }
-function notifyUpload(e) {
-  e.preventDefault();
-  const t = document.getElementById('toast');
-  t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(2rem)'; }, 3000);
+
+/* ── SORT ── */
+function sortNotes(val){
+  ['grid-11','grid-12'].forEach(id=>{
+    const grid=document.getElementById(id);if(!grid)return;
+    const cards=[...grid.querySelectorAll('.note-card')];
+    if(val==='name'){
+      cards.sort((a,b)=>a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent));
+    }else if(val==='new'){
+      cards.sort((a,b)=>(b.dataset.new?1:0)-(a.dataset.new?1:0));
+    }else{
+      // restore DOM order — reset
+      return;
+    }
+    cards.forEach(c=>grid.appendChild(c));
+  });
 }
+
+/* ── TOAST ── */
+function notifyUpload(e,msg){
+  e.preventDefault();
+  document.getElementById('toastMsg').textContent=msg||'PDF upload karo notes/ folder mein! 📂';
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ── FLASHCARD ── */
+const cards=[
+  {formula:'E = mc²',hint:'Mass-Energy Equivalence · Special Relativity'},
+  {formula:'F = qE + qv×B',hint:'Lorentz Force Law · Electromagnetism'},
+  {formula:'iℏ ∂Ψ/∂t = ĤΨ',hint:'Schrödinger Equation · Quantum Mechanics'},
+  {formula:'∇·E = ρ/ε₀',hint:'Gauss\'s Law · Maxwell Equations'},
+  {formula:'λ = h/p',hint:'de Broglie Wavelength · Dual Nature'},
+  {formula:'v² = u² + 2as',hint:'Kinematics · Equations of Motion'},
+  {formula:'τ = r × F',hint:'Torque · Rotational Dynamics'},
+  {formula:'U = -GMm/r',hint:'Gravitational Potential Energy'},
+  {formula:'ε = -dΦ/dt',hint:'Faraday\'s Law of Induction'},
+];
+let fcIdx=0;
+function nextFlashcard(el){
+  fcIdx=(fcIdx+1)%cards.length;
+  el.style.transform='rotateY(90deg)';
+  setTimeout(()=>{
+    document.getElementById('fcFormula').textContent=cards[fcIdx].formula;
+    document.getElementById('fcHint').textContent=cards[fcIdx].hint;
+    el.style.transform='rotateY(0deg)';
+  },180);
+}
+// init random
+fcIdx=Math.floor(Math.random()*cards.length);
+document.getElementById('fcFormula').textContent=cards[fcIdx].formula;
+document.getElementById('fcHint').textContent=cards[fcIdx].hint;
 </script>
 </body>
 </html>
