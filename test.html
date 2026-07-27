@@ -94,7 +94,52 @@
       letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
     }
-    .page-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 3rem; line-height: 1.7; }
+    .page-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+
+    /* ── FILTER BAR (borrowed from videos.html) ── */
+    .filter-bar {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+      position: sticky; top: 65px; z-index: 80;
+      margin-bottom: 2.5rem;
+      border-radius: 10px;
+    }
+    .filter-label {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-right: 0.4rem;
+    }
+    .filter-btn {
+      padding: 0.38rem 1rem; border-radius: 100px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--ink2); font-family: var(--body); font-size: 0.8rem;
+      font-weight: 500; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* ── PLAYLIST-STYLE SECTIONS (borrowed from videos.html) ── */
+    .playlist-section { margin-bottom: 3.5rem; }
+    .playlist-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 1.8rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
+    }
+    .playlist-tag {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 0.2rem;
+    }
+    .playlist-header h2 {
+      font-family: var(--display); font-size: 1.7rem; font-weight: 700;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+    .playlist-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+    .playlist-count {
+      font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+      background: var(--paper); border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem; border-radius: 100px; white-space: nowrap;
+    }
 
     .tests-grid {
       display: grid;
@@ -509,6 +554,7 @@
       .topbar-title { font-size: 0.85rem; }
       #testResult { padding: 6rem 1.2rem 4rem; }
       .score-chips { grid-template-columns: repeat(2,1fr); }
+      .filter-bar { top: 0; }
     }
   </style>
 </head>
@@ -548,8 +594,18 @@
 <div id="testSelector">
   <div class="page-label">Exam Practice</div>
   <div class="page-title">Mock Tests</div>
-  <p class="page-sub">JEE & NEET pattern full-length tests. Timed. Scored. Analysed.<br>+4 for correct, −1 for wrong. Real exam feel.</p>
-  <div class="tests-grid" id="testsGrid"></div>
+  <p class="page-sub">Class 9, 10, 11 & 12 pattern practice tests, topic-wise. Timed. Scored. Analysed.<br>+4 for correct, −1 for wrong. Real exam feel.</p>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterTests('all',this)">All Classes</button>
+    <button class="filter-btn" onclick="filterTests('9',this)">Class 9</button>
+    <button class="filter-btn" onclick="filterTests('10',this)">Class 10</button>
+    <button class="filter-btn" onclick="filterTests('11',this)">Class 11</button>
+    <button class="filter-btn" onclick="filterTests('12',this)">Class 12</button>
+  </div>
+
+  <div id="testSections"></div>
 </div>
 
 <!-- ══════════════════════════════
@@ -637,40 +693,130 @@
 </div>
 
 <script>
+/* ══════════════════════════════
+   TEST DATA — grouped by class,
+   topics pulled from quiz.html
+══════════════════════════════ */
 const TESTS = [
-  {
-    id:'jee-mini-1', title:'JEE Mains Mini Test 1',
-    type:'JEE Mains', duration:30,
-    desc:'10 questions covering Mechanics, Waves & LCR Circuits. JEE pattern marking (+4/−1).',
+  /* ═══ CLASS 9 ═══ */
+  { id:'c9-motion', classGroup:'9', title:'Motion', desc:'Distance, displacement, speed, velocity, acceleration', duration:5,
     questions:[
-      {q:"A particle moves in a circle of radius 5 m with uniform speed 10 m/s. Its centripetal acceleration is:", options:["2 m/s²","20 m/s²","50 m/s²","100 m/s²"], ans:1, exp:"a = v²/r = 100/5 = 20 m/s²"},
-      {q:"The period of a simple pendulum doubles when:", options:["Length is doubled","Length is halved","Length becomes 4 times","Mass is doubled"], ans:2, exp:"T = 2π√(L/g). For T to double, √L must double, so L must become 4L."},
-      {q:"A spring of force constant k is cut into two equal halves. Each half has force constant:", options:["k/2","k","2k","4k"], ans:2, exp:"Force constant is inversely proportional to length. Cutting in half doubles k."},
-      {q:"The velocity of sound is maximum in:", options:["Air","Water","Steel","Vacuum"], ans:2, exp:"Sound travels fastest in solids due to high elasticity. Speed in steel ≈ 5000 m/s vs 340 m/s in air."},
-      {q:"In SHM, at extreme position:", options:["Velocity is max, acceleration is zero","Velocity is zero, acceleration is max","Both are max","Both are zero"], ans:1, exp:"At extreme position, displacement is max. v=0, a=ω²A (maximum)."},
-      {q:"Beats are produced by superposition of two waves of frequencies 200 Hz and 205 Hz. Beat frequency is:", options:["405 Hz","200 Hz","5 Hz","2.5 Hz"], ans:2, exp:"Beat frequency = |f₁ − f₂| = |200 − 205| = 5 Hz"},
-      {q:"A 2 kg object on a frictionless surface is pulled by 8 N for 4 s from rest. Final velocity is:", options:["1 m/s","8 m/s","16 m/s","4 m/s"], ans:2, exp:"a = F/m = 4 m/s². v = u + at = 0 + 4×4 = 16 m/s"},
-      {q:"Dimensional formula of angular momentum is:", options:["MLT⁻¹","ML²T⁻¹","ML²T⁻²","MLT⁻²"], ans:1, exp:"L = mvr. [L] = [M][LT⁻¹][L] = ML²T⁻¹"},
-      {q:"A bullet of mass 10 g moving at 400 m/s is stopped by a wooden block. Momentum change is:", options:["4 kg·m/s","40 kg·m/s","0.4 kg·m/s","400 kg·m/s"], ans:0, exp:"p = mv = 0.010×400 = 4 kg·m/s. Change = 4 − 0 = 4 kg·m/s"},
-      {q:"At resonance in a series LCR circuit, impedance is:", options:["Maximum","Zero","Equal to R","Equal to L"], ans:2, exp:"At resonance XL = XC, so they cancel. Z = √(R² + (XL−XC)²) = R"}
-    ]
-  },
-  {
-    id:'neet-mini-1', title:'NEET Physics Mini Test 1',
-    type:'NEET', duration:20,
-    desc:'8 NCERT-based NEET pattern questions. Single correct MCQ. (+4/−1)',
+      {q:"A car travels 100 m in 10 s. Its average speed is:", options:["1 m/s","10 m/s","100 m/s","1000 m/s"], ans:1, exp:"Speed = distance/time = 100/10 = 10 m/s"},
+      {q:"Which of the following is a vector quantity?", options:["Speed","Distance","Displacement","Time"], ans:2, exp:"Displacement has both magnitude and direction, making it a vector."},
+      {q:"A body starts from rest and attains a velocity of 20 m/s in 4 s. Its acceleration is:", options:["5 m/s²","10 m/s²","20 m/s²","80 m/s²"], ans:0, exp:"a = (v−u)/t = (20−0)/4 = 5 m/s²"}
+    ]},
+  { id:'c9-force', classGroup:'9', title:'Force and Laws of Motion', desc:"Newton's laws, momentum, inertia", duration:5,
     questions:[
-      {q:"The unit of electric field intensity is:", options:["N/C","C/N","N·m","J/C²"], ans:0, exp:"E = F/q. Unit = Newton/Coulomb = N/C or V/m."},
-      {q:"When a charged particle moves perpendicular to a magnetic field, it:", options:["Slows down","Speeds up","Moves in a circle","Moves in a spiral"], ans:2, exp:"F = qv×B, force ⊥ velocity → circular motion. Speed unchanged."},
-      {q:"Ohm's law is NOT obeyed by:", options:["Copper wire","Resistor","Diode","Nichrome wire"], ans:2, exp:"Diode is a non-ohmic device. Its V-I relationship is non-linear."},
-      {q:"Photoelectric effect proves:", options:["Wave nature of light","Particle nature of light","Both","Neither"], ans:1, exp:"Photoelectric effect cannot be explained by wave theory. It proves photon (particle) nature of light — Einstein 1905."},
-      {q:"The de Broglie wavelength of an electron is related to its momentum p as:", options:["λ = hp","λ = h/p","λ = p/h","λ = h/p²"], ans:1, exp:"de Broglie relation: λ = h/p = h/mv"},
-      {q:"Half life of a radioactive substance is 20 years. After 60 years, fraction remaining is:", options:["1/2","1/4","1/8","1/16"], ans:2, exp:"60 years = 3 half-lives. Fraction = (1/2)³ = 1/8"},
-      {q:"In Young's double slit experiment, fringe width β is proportional to:", options:["1/λ","1/D","d","λD/d"], ans:3, exp:"β = λD/d. Fringe width is proportional to λ and D, inversely to d."},
-      {q:"Energy stored in a capacitor of capacitance C at voltage V is:", options:["CV","CV²","½CV²","C²V"], ans:2, exp:"Energy U = ½CV²"}
-    ]
-  }
+      {q:"Newton's first law is also known as the:", options:["Law of inertia","Law of momentum","Law of action-reaction","Law of gravitation"], ans:0, exp:"A body continues in its state of rest or motion unless acted upon by a net force — this is inertia."},
+      {q:"The SI unit of force is:", options:["Joule","Newton","Watt","Pascal"], ans:1, exp:"Force is measured in Newtons (N) = kg·m/s²"},
+      {q:"A 2 kg body experiences a force of 10 N. Its acceleration is:", options:["2 m/s²","5 m/s²","10 m/s²","20 m/s²"], ans:1, exp:"a = F/m = 10/2 = 5 m/s²"}
+    ]},
+  { id:'c9-gravitation', classGroup:'9', title:'Gravitation', desc:'Universal law, free fall, weight, mass', duration:5,
+    questions:[
+      {q:"The value of g on the surface of the Earth is approximately:", options:["8.9 m/s²","9.8 m/s²","10.8 m/s²","11.2 m/s²"], ans:1, exp:"Standard value of g ≈ 9.8 m/s²"},
+      {q:"Weight of a body is:", options:["Mass of the body","Force of gravity on the body","Volume of the body","Density of the body"], ans:1, exp:"Weight = mass × g, i.e. the gravitational force acting on the body."},
+      {q:"According to the universal law of gravitation, force between two masses is proportional to:", options:["Product of masses","Sum of masses","Difference of masses","Square root of masses"], ans:0, exp:"F = Gm₁m₂/r² — force is directly proportional to the product of the two masses."}
+    ]},
+  { id:'c9-work-energy', classGroup:'9', title:'Work, Energy and Power', desc:'Work done, kinetic & potential energy, power, conservation', duration:5,
+    questions:[
+      {q:"Work done is zero when:", options:["Force and displacement are parallel","Force and displacement are perpendicular","Force is large","Displacement is large"], ans:1, exp:"W = Fd cosθ. At θ=90°, cosθ=0, so work done is zero."},
+      {q:"The SI unit of power is:", options:["Joule","Newton","Watt","Pascal"], ans:2, exp:"Power = work/time, measured in Watts (W)."},
+      {q:"Kinetic energy of a body of mass m moving with velocity v is:", options:["mv","½mv","½mv²","mv²"], ans:2, exp:"KE = ½mv² — standard formula for kinetic energy."}
+    ]},
+  { id:'c9-hydrostatics', classGroup:'9', title:'Hydrostatics', desc:"Pressure, buoyancy, Archimedes' principle, floatation", duration:5,
+    questions:[
+      {q:"Pressure exerted by a liquid column depends on:", options:["Height of column only","Density and height","Shape of container","Surface area only"], ans:1, exp:"P = ρgh — pressure depends on density and height of the liquid column, not on the shape of the container."},
+      {q:"Archimedes' principle relates to:", options:["Buoyant force","Gravitational force","Frictional force","Magnetic force"], ans:0, exp:"It states the buoyant force equals the weight of fluid displaced."},
+      {q:"A body floats when:", options:["Its weight equals the buoyant force","Its weight exceeds the buoyant force","Its density is greater than the fluid","It has zero volume"], ans:0, exp:"For floating equilibrium, the upward buoyant force must balance the body's weight."}
+    ]},
+  { id:'c9-elasticity-wave-sound', classGroup:'9', title:'Elasticity, Wave and Sound', desc:'Elastic behaviour, wave motion, sound properties', duration:5,
+    questions:[
+      {q:"The SI unit of frequency is:", options:["Hertz","Second","Meter","Watt"], ans:0, exp:"Frequency is measured in Hertz (Hz), i.e. cycles per second."},
+      {q:"Sound cannot travel through:", options:["Air","Water","Vacuum","Steel"], ans:2, exp:"Sound needs a material medium to propagate; it cannot travel through vacuum."},
+      {q:"Elastic behaviour of a material means it:", options:["Regains its shape after deformation","Permanently deforms","Breaks easily","Has no shape"], ans:0, exp:"An elastic material returns to its original shape once the deforming force is removed."}
+    ]},
+  { id:'c9-units-dimensions', classGroup:'9', title:'Units, Dimensions and Measurements', desc:'SI units, dimensional formulae, significant figures', duration:5,
+    questions:[
+      {q:"The SI unit of mass is:", options:["Gram","Kilogram","Pound","Newton"], ans:1, exp:"Kilogram (kg) is the SI base unit of mass."},
+      {q:"Dimensional formula of velocity is:", options:["LT⁻¹","LT⁻²","L²T⁻¹","MLT⁻¹"], ans:0, exp:"Velocity = displacement/time → [L]/[T] = LT⁻¹"},
+      {q:"Significant figures indicate:", options:["The precision of a measurement","The accuracy of the instrument only","The unit of measurement","The type of quantity"], ans:0, exp:"Significant figures reflect how precisely a quantity was measured."}
+    ]},
+
+  /* ═══ CLASS 10 ═══ */
+  { id:'c10-light', classGroup:'10', title:'Light — Reflection & Refraction', desc:'Mirrors, lenses, refraction, sign convention', duration:5,
+    questions:[
+      {q:"The image formed by a plane mirror is:", options:["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans:1, exp:"A plane mirror always forms a virtual, erect image of the same size as the object."},
+      {q:"Refractive index of a medium is defined as the ratio of:", options:["Speed of light in vacuum to speed in medium","Speed in medium to speed in vacuum","Wavelength in vacuum to medium","Frequency ratio"], ans:0, exp:"n = c/v, i.e. speed of light in vacuum divided by speed in the medium."},
+      {q:"A concave mirror forms a virtual image when the object is placed:", options:["Beyond the center of curvature","At the focus","Between the pole and focus","At the center of curvature"], ans:2, exp:"Object between pole and focus (P–F) gives a virtual, magnified, erect image behind the mirror."}
+    ]},
+  { id:'c10-electricity', classGroup:'10', title:'Electricity', desc:"Ohm's law, resistance, circuits, power", duration:5,
+    questions:[
+      {q:"Ohm's law states that V equals:", options:["IR","I/R","R/I","I²R"], ans:0, exp:"Ohm's law: V = IR at constant temperature."},
+      {q:"The SI unit of resistance is:", options:["Ampere","Volt","Ohm","Watt"], ans:2, exp:"Resistance is measured in Ohms (Ω)."},
+      {q:"Power dissipated in a resistor is given by:", options:["VI","V/I","I/V","V+I"], ans:0, exp:"P = VI (also equivalently I²R or V²/R)."}
+    ]},
+  { id:'c10-magnetism', classGroup:'10', title:'Magnetic Effects of Electric Current', desc:'Magnetic field, right-hand rule, electromagnet, motor', duration:5,
+    questions:[
+      {q:"The rule used to find the direction of an induced current is:", options:["Right-hand thumb rule","Fleming's left-hand rule","Fleming's right-hand rule","Left-hand thumb rule"], ans:2, exp:"Fleming's right-hand rule gives the direction of induced current in a generator; the left-hand rule gives force direction in a motor."},
+      {q:"An electric motor converts:", options:["Electrical energy to mechanical energy","Mechanical energy to electrical energy","Heat energy to electrical energy","Light energy to electrical energy"], ans:0, exp:"A motor uses electric current in a magnetic field to produce mechanical rotation."},
+      {q:"The magnetic field around a straight current-carrying conductor forms:", options:["Straight lines","Concentric circles","Parallel lines","No field"], ans:1, exp:"Field lines around a straight wire are concentric circles centered on the wire."}
+    ]},
+  { id:'c10-basic-maths', classGroup:'10', title:'Basic Mathematics', desc:'Algebra, trigonometry & geometry tools for physics problems', duration:5,
+    questions:[
+      {q:"sin²θ + cos²θ equals:", options:["0","1","2","tanθ"], ans:1, exp:"This is the fundamental trigonometric identity: sin²θ + cos²θ = 1"},
+      {q:"The value of sin 90° is:", options:["0","1","½","√3/2"], ans:1, exp:"sin 90° = 1, the maximum value of the sine function."},
+      {q:"A right triangle has perpendicular 3 and base 4. Its hypotenuse is:", options:["5","6","7","8"], ans:0, exp:"By Pythagoras: √(3²+4²) = √25 = 5 (the classic 3-4-5 triangle)."}
+    ]},
+  { id:'c10-human-eye', classGroup:'10', title:'Human Eye and Optical Instruments', desc:'Eye defects, correction lenses, microscope, telescope', duration:5,
+    questions:[
+      {q:"Myopia (short-sightedness) is corrected using a:", options:["Concave lens","Convex lens","Cylindrical lens","Plane mirror"], ans:0, exp:"A concave (diverging) lens diverges light before it enters the eye, correcting myopia."},
+      {q:"The part of the eye that controls the amount of light entering is the:", options:["Retina","Cornea","Iris","Lens"], ans:2, exp:"The iris adjusts pupil size to control the amount of light entering the eye."},
+      {q:"A simple microscope uses:", options:["A concave lens","A single convex lens","Two convex lenses","A plane mirror"], ans:1, exp:"A simple microscope is just a single convex lens used as a magnifying glass."}
+    ]},
+  { id:'c10-heat', classGroup:'10', title:'Heat', desc:'Temperature, specific heat, latent heat, calorimetry', duration:5,
+    questions:[
+      {q:"The SI unit of heat is:", options:["Kelvin","Joule","Watt","Celsius"], ans:1, exp:"Heat, as a form of energy, is measured in Joules (J)."},
+      {q:"The specific heat capacity of water is approximately:", options:["1 cal/g°C","10 cal/g°C","0.5 cal/g°C","100 cal/g°C"], ans:0, exp:"Water has a specific heat capacity of about 1 cal/g°C (4186 J/kg·K)."},
+      {q:"Latent heat is the heat required to:", options:["Raise temperature","Change state without changing temperature","Cool a substance","Increase pressure"], ans:1, exp:"Latent heat causes a phase change (e.g. melting, boiling) without a temperature change."}
+    ]},
+
+  /* ═══ CLASS 11 ═══ */
+  { id:'c11-kinematics-basics', classGroup:'11', title:'Kinematics Basics', desc:'1D & 2D motion, graphs, projectile', duration:5,
+    questions:[
+      {q:"A ball is thrown vertically upward. At the highest point its velocity is:", options:["Maximum","Zero","Equal to initial velocity","Negative"], ans:1, exp:"At the highest point, the vertical velocity momentarily becomes zero before the ball falls back."},
+      {q:"In projectile motion, the horizontal component of velocity:", options:["Increases","Decreases","Remains constant","Becomes zero at the top"], ans:2, exp:"With no horizontal force (ignoring air resistance), horizontal velocity stays constant throughout."},
+      {q:"The area under a velocity-time graph gives:", options:["Acceleration","Displacement","Force","Momentum"], ans:1, exp:"Area under v-t graph = displacement, since displacement = ∫v dt."}
+    ]},
+  { id:'c11-distance-displacement', classGroup:'11', title:'Distance, Displacement & Uniform Motion', desc:'JEE PYQ: Uniform Motion, Displacement, Average Velocity', duration:5,
+    questions:[
+      {q:"In uniform motion, the velocity-time graph is a:", options:["Straight line parallel to the time axis","Straight line through origin with a slope","Parabola","Circle"], ans:0, exp:"Uniform motion means constant velocity, so the v-t graph is a horizontal line."},
+      {q:"Displacement can be:", options:["Only positive","Only negative","Positive, negative or zero","Always equal to distance"], ans:2, exp:"Displacement is a vector and can be positive, negative, or zero depending on direction and net position change."},
+      {q:"Average velocity is defined as:", options:["Total distance/total time","Total displacement/total time","Total distance/displacement","Final velocity/initial velocity"], ans:1, exp:"Average velocity = total displacement/total time (a vector quantity)."}
+    ]},
+  { id:'c11-newtons-laws', classGroup:'11', title:"Newton's Laws", desc:'Forces, friction, dynamics', duration:5,
+    questions:[
+      {q:"Newton's third law states that for every action there is:", options:["An equal and opposite reaction","A larger reaction","No reaction","A reaction in the same direction"], ans:0, exp:"Action and reaction forces are equal in magnitude and opposite in direction, acting on different bodies."},
+      {q:"The net force on a body moving with constant velocity is:", options:["Positive","Negative","Zero","Infinite"], ans:2, exp:"Constant velocity means zero acceleration, so by Newton's second law, net force = 0."},
+      {q:"Friction force acts:", options:["In the direction of motion","Opposite to relative motion","Perpendicular to motion","Only in vacuum"], ans:1, exp:"Friction always opposes relative motion (or tendency of motion) between two surfaces."}
+    ]},
+
+  /* ═══ CLASS 12 ═══ */
+  { id:'c12-electrostatics', classGroup:'12', title:'Electrostatics', desc:"Coulomb's law, field, potential", duration:5,
+    questions:[
+      {q:"Coulomb's law describes the force between:", options:["Two masses","Two charges","Two currents","Two magnets"], ans:1, exp:"Coulomb's law gives the electrostatic force between two point charges: F = kq₁q₂/r²"},
+      {q:"Electric field due to a point charge varies with distance r as:", options:["1/r","1/r²","1/r³","r²"], ans:1, exp:"E = kq/r² — the field falls off as the inverse square of distance."},
+      {q:"The SI unit of electric potential is:", options:["Volt","Ampere","Ohm","Coulomb"], ans:0, exp:"Electric potential is measured in Volts (V) = Joules/Coulomb."}
+    ]},
+  { id:'c12-ray-optics', classGroup:'12', title:'Ray Optics', desc:'Mirrors, lenses, refraction', duration:5,
+    questions:[
+      {q:"The focal length of a plane mirror is:", options:["Zero","Infinity","Equal to radius","Negative"], ans:1, exp:"A plane mirror has an infinite radius of curvature, so its focal length is infinity."},
+      {q:"A convex lens is also called a:", options:["Diverging lens","Converging lens","Cylindrical lens","Plano lens"], ans:1, exp:"Convex lenses converge parallel rays toward a focal point, hence 'converging lens'."},
+      {q:"Power of a lens is given by:", options:["f (in meters)","1/f (in meters)","f²","√f"], ans:1, exp:"Lens power P = 1/f, where f is in meters, measured in Diopters (D)."}
+    ]}
 ];
+
+const CLASS_LABELS = { '9':'Class 9', '10':'Class 10', '11':'Class 11', '12':'Class 12' };
+const CLASS_TAGS = { '9':'Foundation Physics', '10':'Foundation Physics', '11':'JEE / NEET Foundation', '12':'JEE / NEET Advanced' };
 
 let activeTest = null;
 let answers = {};
@@ -680,22 +826,51 @@ let timeLeft = 0;
 let currentQIdx = 0;
 let reviewed = false;
 
-/* ── BUILD SELECTOR ── */
+/* ── BUILD SELECTOR (grouped by class) ── */
 function buildTestGrid() {
-  const grid = document.getElementById('testsGrid');
-  grid.innerHTML = TESTS.map(t => `
-    <div class="test-card">
-      <span class="test-type-badge">${t.type}</span>
-      <h3>${t.title}</h3>
-      <p>${t.desc}</p>
-      <div class="test-meta">
-        <span>⏱ ${t.duration} min</span>
-        <span>📝 ${t.questions.length} Q</span>
-        <span>🎯 +4 / −1</span>
+  const container = document.getElementById('testSections');
+  const classes = ['9','10','11','12'];
+
+  container.innerHTML = classes.map(cls => {
+    const testsInClass = TESTS.filter(t => t.classGroup === cls);
+    if (!testsInClass.length) return '';
+    return `
+      <div class="playlist-section" data-class="${cls}">
+        <div class="playlist-header">
+          <div class="playlist-header-left">
+            <div class="playlist-tag">${CLASS_TAGS[cls]}</div>
+            <h2>${CLASS_LABELS[cls]} Practice Tests</h2>
+            <p class="playlist-desc">Topic-wise mock tests for ${CLASS_LABELS[cls]}.</p>
+          </div>
+          <span class="playlist-count">${testsInClass.length} Tests</span>
+        </div>
+        <div class="tests-grid">
+          ${testsInClass.map(t => `
+            <div class="test-card">
+              <span class="test-type-badge">${CLASS_LABELS[cls]}</span>
+              <h3>${t.title}</h3>
+              <p>${t.desc}</p>
+              <div class="test-meta">
+                <span>⏱ ${t.duration} min</span>
+                <span>📝 ${t.questions.length} Q</span>
+                <span>🎯 +4 / −1</span>
+              </div>
+              <button class="btn-start-test" onclick="startTest('${t.id}')">Start Test →</button>
+            </div>
+          `).join('')}
+        </div>
       </div>
-      <button class="btn-start-test" onclick="startTest('${t.id}')">Start Test →</button>
-    </div>
-  `).join('');
+    `;
+  }).join('');
+}
+
+/* ── FILTER ── */
+function filterTests(cls, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.playlist-section').forEach(s => {
+    s.style.display = (cls === 'all' || s.dataset.class === cls) ? 'block' : 'none';
+  });
 }
 
 /* ── START TEST ── */
