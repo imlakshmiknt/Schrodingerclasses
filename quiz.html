@@ -919,7 +919,68 @@ const QUIZZES = [
       { q: "Total internal reflection occurs when light travels from:", options: ["Rarer to denser medium","Denser to rarer medium","Any medium","In vacuum"], ans: 1, src: "", explanation: "TIR occurs when light goes from denser to rarer medium at angle >= critical angle." },
       { q: "Rainbow is formed due to:", options: ["Reflection","Refraction only","Dispersion and TIR","Diffraction"], ans: 2, src: "", explanation: "Rainbow: refraction at entry/exit + TIR inside water droplets causes dispersion." }
     ]
-  }
+  },
+  {
+    id: 'motion-class9', title: "Motion", course: "9",
+    desc: "Distance, displacement, speed, velocity, acceleration",
+    questions: [
+      { q: "A body is said to be in uniform motion if it covers:", options: ["Equal distances in equal intervals of time","Unequal distances in equal intervals of time","Equal distances in unequal intervals of time","None of these"], ans: 0, src: "", explanation: "Uniform motion means the object covers equal distances in equal time intervals, no matter how small the intervals are." },
+      { q: "The SI unit of speed is:", options: ["km/h","m/s","m/s²","cm/s"], ans: 1, src: "", explanation: "The SI unit of speed is metre per second (m/s)." },
+      { q: "A car travels 100 km in 2 hours. Its average speed is:", options: ["25 km/h","50 km/h","100 km/h","200 km/h"], ans: 1, src: "", explanation: "Average speed = total distance / total time = 100/2 = 50 km/h." },
+      { q: "Acceleration is defined as the rate of change of:", options: ["Distance","Displacement","Velocity","Speed only"], ans: 2, src: "", explanation: "Acceleration = change in velocity / time taken." },
+      { q: "If a body's velocity-time graph is a straight line parallel to the time axis, the body has:", options: ["Zero acceleration","Uniform acceleration","Non-uniform acceleration","Increasing speed"], ans: 0, src: "", explanation: "A horizontal line on a v-t graph means velocity is constant, so acceleration = 0." }
+    ]
+  },
+  {
+    id: 'force-laws-class9', title: "Force and Laws of Motion", course: "9",
+    desc: "Newton's laws, momentum, inertia",
+    questions: [
+      { q: "The property of a body to resist change in its state of rest or motion is called:", options: ["Momentum","Inertia","Force","Acceleration"], ans: 1, src: "", explanation: "Inertia is the natural tendency of a body to resist any change in its state of rest or motion." },
+      { q: "Momentum is the product of:", options: ["Mass and velocity","Mass and acceleration","Force and time","Force and distance"], ans: 0, src: "", explanation: "Momentum (p) = mass (m) × velocity (v)." },
+      { q: "According to Newton's third law, action and reaction forces:", options: ["Act on the same body","Act on different bodies and are equal and opposite","Are never equal","Act in the same direction"], ans: 1, src: "", explanation: "Newton's third law states every action has an equal and opposite reaction, acting on two different bodies." },
+      { q: "A force of 10 N acts on a mass of 2 kg. The acceleration produced is:", options: ["2 m/s²","5 m/s²","20 m/s²","0.2 m/s²"], ans: 1, src: "", explanation: "a = F/m = 10/2 = 5 m/s²." }
+    ]
+  },
+  {
+    id: 'gravitation-class9', title: "Gravitation", course: "9",
+    desc: "Universal law, free fall, weight, mass",
+    questions: [
+      { q: "The universal law of gravitation was given by:", options: ["Galileo","Newton","Einstein","Kepler"], ans: 1, src: "", explanation: "Sir Isaac Newton proposed the universal law of gravitation." },
+      { q: "The value of acceleration due to gravity on Earth's surface is approximately:", options: ["9.8 m/s²","6.7 m/s²","10.8 m/s²","8.9 m/s²"], ans: 0, src: "", explanation: "The standard value of g near Earth's surface is about 9.8 m/s²." },
+      { q: "Weight of an object is the:", options: ["Amount of matter in it","Force with which Earth attracts it","Same everywhere in the universe","Measured in kg"], ans: 1, src: "", explanation: "Weight = mass × g, the gravitational force exerted by Earth on the object." },
+      { q: "As distance between two objects increases, gravitational force between them:", options: ["Increases","Decreases","Remains same","Becomes zero instantly"], ans: 1, src: "", explanation: "F ∝ 1/r², so gravitational force decreases as distance increases." }
+    ]
+  },
+  {
+    id: 'light-class10', title: "Light — Reflection & Refraction", course: "10",
+    desc: "Mirrors, lenses, refraction, sign convention",
+    questions: [
+      { q: "The image formed by a plane mirror is:", options: ["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans: 1, src: "", explanation: "A plane mirror always forms a virtual, erect image of the same size as the object." },
+      { q: "The focal length of a concave mirror is related to radius of curvature R as:", options: ["f = R","f = 2R","f = R/2","f = R²"], ans: 2, src: "", explanation: "For spherical mirrors, f = R/2." },
+      { q: "A convex lens is also called a:", options: ["Diverging lens","Converging lens","Plane lens","Cylindrical lens"], ans: 1, src: "", explanation: "A convex lens converges parallel rays of light to a point, hence called a converging lens." },
+      { q: "The refractive index of a medium is defined as:", options: ["Speed of light in vacuum / speed of light in medium","Speed of light in medium / speed of light in vacuum","Speed of light in medium only","Angle of incidence / angle of refraction"], ans: 0, src: "", explanation: "Refractive index n = c/v, where c is speed of light in vacuum and v is speed in the medium." }
+    ]
+  },
+  {
+    id: 'electricity-class10', title: "Electricity", course: "10",
+    desc: "Ohm's law, resistance, circuits, power",
+    questions: [
+      { q: "Ohm's law states that V = ?", options: ["I/R","IR","R/I","I²R"], ans: 1, src: "", explanation: "Ohm's law: V = IR, at constant temperature." },
+      { q: "The SI unit of electrical resistance is:", options: ["Ampere","Volt","Ohm","Watt"], ans: 2, src: "", explanation: "Resistance is measured in Ohms (Ω)." },
+      { q: "When resistors are connected in series, the equivalent resistance is:", options: ["Less than the smallest resistance","Sum of individual resistances","Reciprocal of sum of reciprocals","Always zero"], ans: 1, src: "", explanation: "In series, R_eq = R1 + R2 + R3 + ..." },
+      { q: "Electric power is given by the formula:", options: ["P = VI","P = V/I","P = I/V","P = V + I"], ans: 0, src: "", explanation: "Electric power P = VI (Voltage × Current)." }
+    ]
+  },
+  {
+    id: 'magnetic-effects-class10', title: "Magnetic Effects of Electric Current", course: "10",
+    desc: "Magnetic field, right-hand rule, electromagnet, motor",
+    questions: [
+      { q: "The direction of magnetic field around a straight current-carrying conductor is given by:", options: ["Fleming's left-hand rule","Right-hand thumb rule","Lenz's law","Ohm's law"], ans: 1, src: "", explanation: "The right-hand thumb rule gives the direction of the magnetic field around a straight conductor." },
+      { q: "The force on a current-carrying conductor placed in a magnetic field is given by:", options: ["Fleming's left-hand rule","Fleming's right-hand rule","Right-hand thumb rule","Maxwell's rule"], ans: 0, src: "", explanation: "Fleming's left-hand rule gives the direction of force on a current-carrying conductor in a magnetic field." },
+      { q: "An electric motor converts:", options: ["Mechanical energy to electrical energy","Electrical energy to mechanical energy","Heat energy to electrical energy","Chemical energy to heat energy"], ans: 1, src: "", explanation: "An electric motor converts electrical energy into mechanical energy." },
+      { q: "The phenomenon of generating electric current from a changing magnetic field is called:", options: ["Electrolysis","Electromagnetic induction","Electroplating","Rectification"], ans: 1, src: "", explanation: "Electromagnetic induction is the production of induced current due to a changing magnetic field, discovered by Faraday." }
+    ]
+  },
 ];
 
 const QUESTION_TIME = 60; // seconds per question
