@@ -147,7 +147,7 @@
       gap: 1.3rem;
     }
 
-    .test-card {
+ .test-card {
   background: var(--paper);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -170,6 +170,29 @@
 }
 .test-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: transparent; }
 .test-card:hover::after { transform: scaleX(1); }
+
+.test-type-badge {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(184,137,46,0.1);
+  border: 1px solid rgba(184,137,46,0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+.test-card h3 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.test-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
 
 .test-meta {
   display: flex; gap: 1rem; flex-wrap: wrap;
