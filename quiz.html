@@ -1168,7 +1168,7 @@ const QUIZZES = [
       { q: "The volume of a single liquid drop can be measured using a:", options: ["measuring jar","measuring flask","pipette","burette"], ans: 2, src: "S Chand Foundation", explanation: "A pipette can deliver and measure a single small drop of liquid precisely, unlike jars or flasks." },
       { q: "Which of the following is a derived unit?", options: ["Metre","Kilogram","Newton","Second"], ans: 2, src: "", explanation: "Newton (unit of force) is derived from base units kg, m, s: N = kg·m/s²." },
       { q: "The number of significant figures in 0.00420 is:", options: ["2","3","5","6"], ans: 1, src: "", explanation: "Leading zeros are not significant. 4, 2, 0 are significant, so there are 3 significant figures." },
-      { q: "1 nanometre is equal to:", options: ["10⁻⁶ m","10⁻⁹ m","10⁻¹² m","10⁻³ m"], ans: 1, src: "", explanation: "The prefix 'nano' represents 10⁻⁹, so 1 nm = 10⁻⁹ m." },
+      { q: "1 nanometre is equal to:", options: ["10⁻⁶ m","10⁻⁹ m","10⁻¹² m","10⁻³ m"], ans: 1, src: "", explanation: "The prefix 'nano' represents 10⁻⁹, so 1 nm = 10⁻⁹ m." }
     ]
   },
   {
@@ -1180,8 +1180,13 @@ const QUIZZES = [
       { q: "Kinetic energy of a body of mass m moving with velocity v is:", options: ["mv","mv²","½mv²","2mv²"], ans: 2, src: "", explanation: "Kinetic energy KE = ½mv², where m is mass and v is velocity." },
       { q: "Power is defined as:", options: ["Rate of doing work","Total work done","Force applied per unit area","Energy stored in a body"], ans: 0, src: "", explanation: "Power = Work done / Time taken, i.e., the rate at which work is done." },
       { q: "According to the law of conservation of energy, the total energy of an isolated system:", options: ["Keeps increasing","Keeps decreasing","Remains constant","Becomes zero eventually"], ans: 2, src: "", explanation: "Energy can neither be created nor destroyed; it only changes form. Total energy of an isolated system remains constant." }
-      { q: "Pressure is defined as:", options: ["Force × Area","Force / Area","Mass / Volume","Force × Distance"], ans: 1, src: "", explanation: "Pressure = Force / Area, measured in Pascals (Pa) in SI units." },
-      { q: "The upward force experienced by a body immersed in a fluid is called:", options: ["Gravitational force","Buoyant force","Normal force","Frictional force"], ans: 1, src: "", explanation: "The buoyant force (upthrust) is the upward force a fluid exerts on a submerged or floating body." },
+    ]
+  },
+  {
+    id: 'gravitation-full-exercise', title: "Gravitation — Full Exercise", course: "12",
+    desc: "EBD Foundation Guide — Single Option Correct, Assertion-Reason, Passage & Advanced Exercise",
+    questions: [
+      { q: "The value of the universal gravitational constant:", options: ["changes with change of place","does not change from place to place","becomes more at night","becomes more during day"], ans: 1, src: "EBD Foundation", explanation: "G is a universal constant — it has the same value everywhere in the universe, independent of location, time, or the medium." },
       { q: "Two iron and wooden balls identical in size are released from the same height in vacuum. The time taken by them to reach the ground are:", options: ["zero","not equal","roughly equal","exactly equal"], ans: 3, src: "EBD Foundation", explanation: "In vacuum, there's no air resistance, so all bodies fall with the same acceleration g regardless of mass — they reach the ground at exactly the same time." },
       { q: "Two stars of masses m and 5m are 3000 parsec apart. If the force on the large one is F, the force on the small star is:", options: ["F/25","F/5","F","5F"], ans: 2, src: "EBD Foundation", explanation: "By Newton's third law, the gravitational force each star exerts on the other is equal in magnitude — so the force on the small star is also F." },
       { q: "What is the acceleration of a meteor passing the earth at an altitude of 55000 km?", options: ["0.11 m/s²","11 m/s²","1.11 m/s²","5.18 m/s²"], ans: 0, src: "EBD Foundation", explanation: "Distance from Earth's centre = 6400+55000 = 61400 km. g = GM/r² ≈ (3.986×10¹⁴)/(6.14×10⁷)² ≈ 0.11 m/s²." },
@@ -1223,6 +1228,14 @@ const QUIZZES = [
       { q: "The escape velocity of a body depends upon mass as:", options: ["m⁰","m¹","m²","m³"], ans: 0, src: "EBD Foundation — Advanced Exercise", explanation: "v_esc = √(2GM/R) depends only on the mass and radius of the planet, not on the mass of the escaping body — hence it's independent (m⁰)." },
       { q: "The time period of an earth satellite in circular orbit is independent of:", options: ["both the mass and radius of the orbit","the radius of its orbit","the mass of the satellite","neither the mass of the satellite nor the radius of its orbit"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "By Kepler's third law, T² ∝ r³/GM (where M is the central body's mass), which does not depend on the satellite's own mass." },
       { q: "For a satellite moving in an orbit around the earth, the ratio of kinetic energy to potential energy is:", options: ["1/√2","2","1/2","√2"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "KE = GMm/2r and |PE| = GMm/r, so the ratio of their magnitudes KE/|PE| = 1/2." }
+    ]
+  },
+  {
+    id: 'hydrostatics-class9', title: "Hydrostatics", course: "9",
+    desc: "Pressure, buoyancy, Archimedes' principle, floatation",
+    questions: [
+      { q: "Pressure is defined as:", options: ["Force × Area","Force / Area","Mass / Volume","Force × Distance"], ans: 1, src: "", explanation: "Pressure = Force / Area, measured in Pascals (Pa) in SI units." },
+      { q: "The upward force experienced by a body immersed in a fluid is called:", options: ["Gravitational force","Buoyant force","Normal force","Frictional force"], ans: 1, src: "", explanation: "The buoyant force (upthrust) is the upward force a fluid exerts on a submerged or floating body." },
       { q: "Archimedes' principle states that the buoyant force on a body equals:", options: ["The weight of the body","The weight of fluid displaced by the body","The volume of the body","The density of the fluid"], ans: 1, src: "", explanation: "Archimedes' principle: buoyant force = weight of the fluid displaced by the submerged part of the body." },
       { q: "A body floats in a liquid if its density is:", options: ["Greater than the liquid's density","Equal to the liquid's density only","Less than or equal to the liquid's density","Independent of the liquid's density"], ans: 2, src: "", explanation: "A body floats when its average density is less than or equal to the density of the liquid it is placed in." },
       { q: "Pressure exerted by a liquid column depends on:", options: ["Shape of the container","Height of the liquid column and its density","Surface area of the container base","Total mass of container"], ans: 1, src: "", explanation: "Liquid pressure P = hρg, depending only on height (h) and density (ρ), not on the shape of the container." }
