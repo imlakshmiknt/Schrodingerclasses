@@ -6,30 +6,31 @@
   <title>Quiz — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f9f8f5;
+      --bg: #faf9f6;
       --paper: #ffffff;
-      --cream: #f4f1ea;
-      --ink: #16140f;
-      --ink2: #3d3a32;
-      --muted: #7a756a;
-      --accent: #0f2d4a;
+      --cream: #fff9f0;
+      --ink: #111827;
+      --ink2: #374151;
+      --muted: #6b7280;
+      --accent: #0b1f3a;
       --gold: #b8892e;
       --gold2: #ddb96a;
-      --border: #ddd9cf;
-      --border2: #c8c3b8;
-      --green: #1a6b3a;
-      --green-bg: #f0faf4;
-      --red: #c0392b;
-      --red-bg: #fdf3f2;
+      --border: #e5e7eb;
+      --border2: #d1d5db;
+      --green: #10b981;
+      --green-bg: #ecfdf5;
+      --red: #ef4444;
+      --red-bg: #fef2f2;
       --display: 'Playfair Display', Georgia, serif;
       --body: 'Instrument Sans', sans-serif;
       --mono: 'JetBrains Mono', monospace;
-      --timer-warning: #e67e22;
-      --timer-danger: #c0392b;
+      --timer-warning: #f59e0b;
+      --timer-danger: #ef4444;
     }
 
     html { scroll-behavior: smooth; }
@@ -44,144 +45,272 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.9rem 3rem;
-      background: rgba(249,248,245,0.95);
-      backdrop-filter: blur(16px);
+      padding: 0.8rem 4rem;
+      background: #ffffff;
       border-bottom: 1px solid var(--border);
     }
     .nav-logo {
       font-family: var(--display);
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 800;
       color: var(--accent);
       text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
     }
     .nav-logo span { color: var(--gold); }
     .nav-tagline {
-      display: block;
       font-family: var(--mono);
-      font-size: 0.5rem;
-      letter-spacing: 0.1em;
+      font-size: 0.48rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-top: 2px;
     }
-    .nav-links { display: flex; gap: 0.2rem; align-items: center; }
+    .nav-links { display: flex; gap: 0.5rem; align-items: center; }
     .nav-links a {
       text-decoration: none;
       color: var(--ink2);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      border-radius: 20px;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
-    .nav-links a:hover, .nav-links a.active { background: var(--cream); color: var(--accent); }
+    .nav-links a:hover, .nav-links a.active { 
+      background: #f3f4f6; 
+      color: var(--accent); 
+    }
+    .nav-links a.active {
+      background: #eef2ff;
+      color: #312e81;
+      font-weight: 600;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .search-icon {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1rem;
+    }
     .nav-cta {
-      background: var(--accent) !important;
+      background: var(--accent);
       color: white !important;
-      padding: 0.45rem 1.1rem !important;
-      border-radius: 7px !important;
+      padding: 0.5rem 1.4rem !important;
+      border-radius: 8px !important;
       font-weight: 600 !important;
+      font-size: 0.85rem !important;
     }
 
-    /* ── PAGE HEADER ── */
+    /* ── PAGE HEADER HERO ── */
     .page-header {
-      padding: 7rem 3rem 3rem;
-      background: var(--cream);
-      border-bottom: 1px solid var(--border);
+      padding: 6.5rem 4rem 2.5rem;
+      background: #fffbf5;
+      border-bottom: 1px solid #f3ebd8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-left {
+      max-width: 550px;
     }
     .page-label {
       font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--gold);
       font-weight: 700;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
     .page-title {
       font-family: var(--display);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
+      font-size: 3rem;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
+      color: #0d172a;
+      margin-bottom: 0.6rem;
     }
-    .page-sub { font-size: 0.9rem; color: var(--muted); }
+    .page-sub { 
+      font-size: 0.95rem; 
+      color: var(--muted); 
+      line-height: 1.5;
+    }
 
-    /* ── SELECTOR ── */
-    #selectorSection { padding: 3rem; }
-    .selector-intro {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
+    /* Stats Box Right */
+    .hero-stats-card {
+      background: #ffffff;
+      border: 1px solid #f0e6d2;
+      border-radius: 16px;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      gap: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-icon {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .stat-num {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    /* ── FILTER & SELECTOR SECTION ── */
+    #selectorSection { padding: 2rem 4rem 4rem; }
+    
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.8rem;
+    }
+    .selector-intro {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .filter-controls {
+      display: flex;
+      gap: 0.8rem;
+    }
+    .filter-select {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--ink2);
+      font-family: var(--body);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Selector Grid */
     .selector-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
     }
     .sel-card {
       background: var(--paper);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 1.6rem;
-      cursor: pointer;
-      transition: all 0.22s;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-    }
-    .sel-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--gold));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.25s;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     }
     .sel-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 28px rgba(15,45,74,0.1);
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
-    .sel-card:hover::after { transform: scaleX(1); }
-    .sel-card-tag {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      background: rgba(184,137,46,0.1);
-      border: 1px solid rgba(184,137,46,0.2);
-      padding: 0.2rem 0.55rem;
-      border-radius: 100px;
-      display: inline-block;
-      margin-bottom: 0.8rem;
-    }
-    .sel-card h4 {
-      font-family: var(--display);
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 0.35rem;
-    }
-    .sel-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-    .sel-meta {
+    .card-top {
       display: flex;
       gap: 1rem;
-      margin-top: 1rem;
-      padding-top: 0.8rem;
-      border-top: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .card-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .card-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .sel-card-tag {
       font-family: var(--mono);
       font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+      align-self: flex-start;
+      margin-bottom: 0.35rem;
+    }
+    /* Tag colors based on Class */
+    .tag-class-11 { background: #e0e7ff; color: #3730a3; }
+    .tag-class-12 { background: #fce7f3; color: #9d174d; }
+    .tag-class-9  { background: #fef3c7; color: #92400e; }
+    .tag-class-10 { background: #dcfce7; color: #166534; }
+
+    .sel-card h4 {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 0.3rem;
+    }
+    .sel-card p { 
+      font-size: 0.8rem; 
+      color: var(--muted); 
+      line-height: 1.4; 
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+      margin-top: 0.8rem;
+    }
+    .sel-meta {
+      display: flex;
+      gap: 0.8rem;
+      font-family: var(--body);
+      font-size: 0.75rem;
       color: var(--muted);
     }
-    .sel-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .btn-start-quiz {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-start-quiz:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
 
     /* ── EXAM AREA ── */
     #examSection {
@@ -190,20 +319,18 @@
       padding-top: 65px;
     }
 
-    /* Top exam bar */
     .exam-topbar {
       position: fixed;
-      top: 65px; left: 0; right: 0;
+      top: 60px; left: 0; right: 0;
       z-index: 90;
       background: var(--accent);
       color: white;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.6rem 3rem;
+      padding: 0.6rem 4rem;
       font-family: var(--mono);
       font-size: 0.75rem;
-      letter-spacing: 0.05em;
     }
     .exam-topbar-left { display: flex; align-items: center; gap: 2rem; }
     .exam-quiz-name { font-weight: 600; font-size: 0.8rem; }
@@ -215,7 +342,6 @@
       font-size: 0.7rem;
     }
 
-    /* Timer */
     .exam-timer {
       display: flex;
       align-items: center;
@@ -224,332 +350,148 @@
       border: 1px solid rgba(255,255,255,0.2);
       padding: 0.35rem 1rem;
       border-radius: 8px;
-      transition: all 0.3s;
     }
-    .exam-timer.warning {
-      background: rgba(230,126,34,0.25);
-      border-color: rgba(230,126,34,0.5);
-    }
-    .exam-timer.danger {
-      background: rgba(192,57,43,0.3);
-      border-color: rgba(192,57,43,0.6);
-      animation: timerPulse 0.8s ease-in-out infinite;
-    }
-    @keyframes timerPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
-    }
-    .timer-icon { font-size: 0.9rem; }
-    .timer-val {
-      font-weight: 600;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      min-width: 40px;
-      text-align: center;
-    }
-    .timer-label { font-size: 0.6rem; color: rgba(255,255,255,0.6); }
+    .exam-timer.warning { background: rgba(245,158,11,0.25); border-color: rgba(245,158,11,0.5); }
+    .exam-timer.danger { background: rgba(239,68,68,0.3); border-color: rgba(239,68,68,0.6); }
 
-    /* Progress strip */
     .exam-progress-strip {
       position: fixed;
-      top: 65px;
+      top: 100px;
       left: 0; right: 0;
       height: 3px;
-      background: rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.05);
       z-index: 91;
     }
     .exam-progress-fill {
       height: 100%;
       background: var(--gold);
-      transition: width 0.5s ease;
+      transition: width 0.4s ease;
     }
 
-    /* Main exam content */
     .exam-content {
-      padding: 6rem 0 4rem;
+      padding: 5rem 0 4rem;
       display: flex;
       justify-content: center;
     }
 
-    /* Question paper sheet */
     .question-sheet {
       background: var(--paper);
       border: 1px solid var(--border);
-      border-radius: 2px;
+      border-radius: 12px;
       width: 100%;
-      max-width: 820px;
+      max-width: 800px;
       margin: 0 1.5rem;
-      box-shadow:
-        0 1px 3px rgba(0,0,0,0.06),
-        0 8px 32px rgba(15,45,74,0.07),
-        inset 0 0 0 6px rgba(249,248,245,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      padding: 2.5rem;
       position: relative;
-      animation: sheetIn 0.3s ease both;
-    }
-    @keyframes sheetIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Ruled lines texture on paper */
-    .question-sheet::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 27px,
-        rgba(200,195,184,0.18) 28px
-      );
-      pointer-events: none;
-      border-radius: 2px;
-    }
-
-    /* Red margin line */
-    .sheet-margin {
-      position: absolute;
-      top: 0; bottom: 0;
-      left: 52px;
-      width: 1px;
-      background: rgba(192,57,43,0.2);
-      pointer-events: none;
-    }
-
-    .sheet-inner {
-      position: relative;
-      padding: 2.5rem 2.5rem 2.5rem 3.8rem;
-    }
-
-    /* Sheet header — full-bleed bottom rule */
     .sheet-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin: 0 -2.5rem 1.8rem -3.8rem;
-      padding: 0 2.5rem 1.2rem 3.8rem;
-      border-bottom: 1.5px solid var(--border2);
-    }
-    .sheet-header-left { }
-    .sheet-exam-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-weight: 700;
-      margin-bottom: 0.25rem;
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
     }
     .sheet-exam-title {
       font-family: var(--display);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--accent);
     }
     .sheet-qbadge {
-      background: var(--accent);
-      color: white;
-      font-family: Georgia, serif;
-      font-size: 0.7rem;
+      background: #f3f4f6;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.4rem 0.9rem;
+      padding: 0.3rem 0.8rem;
       border-radius: 6px;
-      letter-spacing: 0.05em;
     }
 
-    /* Question number stamp — clear of the margin rule */
-    .q-stamp {
-      position: absolute;
-      left: -3rem;
-      top: 0;
-      width: 28px;
-      height: 28px;
-      background: var(--accent);
-      color: white;
+    .q-source-tag {
+      display: inline-block;
       font-family: var(--mono);
       font-size: 0.65rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    /* Source tag */
-    .q-source-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.06em;
       color: var(--gold);
-      background: rgba(184,137,46,0.08);
-      border: 1px solid rgba(184,137,46,0.2);
-      padding: 0.18rem 0.55rem;
+      background: rgba(184,137,46,0.1);
+      padding: 0.2rem 0.5rem;
       border-radius: 4px;
-      margin-bottom: 0.9rem;
-    }
-
-    /* Question text */
-    .q-body { position: relative; margin-bottom: 2rem; }
-    .q-text {
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 1.1rem;
-      font-weight: 400;
-      line-height: 1.65;
-      color: var(--ink);
-    }
-
-    /* Options */
-    .options-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
       margin-bottom: 0.8rem;
     }
-    .options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .q-text {
+      font-family: Georgia, serif;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .options { display: flex; flex-direction: column; gap: 0.75rem; }
     .option-btn {
       display: flex;
       align-items: center;
       gap: 1rem;
-      background: var(--bg);
+      background: #f9fafb;
       border: 1.5px solid var(--border);
       border-radius: 8px;
       padding: 0.9rem 1.2rem;
       cursor: pointer;
       text-align: left;
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: var(--ink);
-      transition: all 0.18s;
+      transition: all 0.15s;
       width: 100%;
     }
     .option-btn:hover:not(:disabled) {
       border-color: var(--accent);
-      background: rgba(15,45,74,0.04);
-      transform: translateX(3px);
+      background: #f3f4f6;
     }
-    .option-btn:disabled { cursor: default; }
-
-    /* Option letter bubble */
     .opt-letter {
-      width: 30px; height: 30px;
+      width: 28px; height: 28px;
       border-radius: 50%;
-      border: 1.5px solid var(--border2);
-      background: var(--paper);
+      border: 1px solid var(--border2);
+      background: white;
       display: flex; align-items: center; justify-content: center;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 600;
       flex-shrink: 0;
-      transition: all 0.18s;
-      color: var(--accent);
     }
 
-    /* Selected state */
-    .option-btn.selected {
-      border-color: var(--accent);
-      background: rgba(15,45,74,0.05);
-    }
-    .option-btn.selected .opt-letter {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
+    .option-btn.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+    .option-btn.correct .opt-letter { background: var(--green); color: white; border-color: var(--green); }
+    .option-btn.wrong { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+    .option-btn.wrong .opt-letter { background: var(--red); color: white; border-color: var(--red); }
+    .option-btn.timeout-reveal { border-color: var(--green); background: var(--green-bg); }
 
-    /* Correct / Wrong */
-    .option-btn.correct {
-      border-color: var(--green);
-      background: var(--green-bg);
-      color: var(--green);
-    }
-    .option-btn.correct .opt-letter {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-    .option-btn.wrong {
-      border-color: var(--red);
-      background: var(--red-bg);
-      color: var(--red);
-    }
-    .option-btn.wrong .opt-letter {
-      background: var(--red);
-      color: white;
-      border-color: var(--red);
-    }
-
-    /* Timed-out style */
-    .option-btn.timeout-reveal {
-      border-color: var(--green);
-      background: var(--green-bg);
-      color: var(--green);
-    }
-    .option-btn.timeout-reveal .opt-letter {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    /* Explanation box */
     .explanation-box {
       display: none;
       margin-top: 1.5rem;
-      padding: 1.2rem 1.4rem;
-      background: rgba(15,45,74,0.04);
-      border-left: 3px solid var(--accent);
+      padding: 1.2rem;
+      background: #f8fafc;
+      border-left: 4px solid var(--accent);
       border-radius: 0 8px 8px 0;
     }
     .explanation-box.show { display: block; }
-    .exp-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    .exp-text {
-      font-size: 0.875rem;
-      color: var(--ink2);
-      line-height: 1.7;
-    }
+    .exp-label { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.4rem; }
+    .exp-text { font-size: 0.88rem; color: var(--ink2); line-height: 1.6; }
 
-    /* Result badge after answering */
     .result-badge {
       display: none;
-      align-items: center;
-      gap: 0.5rem;
       padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-family: var(--mono);
-      font-size: 0.72rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.04em;
       margin-top: 1rem;
     }
-    .result-badge.show { display: inline-flex; }
-    .result-badge.correct-badge {
-      background: var(--green-bg);
-      color: var(--green);
-      border: 1px solid rgba(26,107,58,0.25);
-    }
-    .result-badge.wrong-badge {
-      background: var(--red-bg);
-      color: var(--red);
-      border: 1px solid rgba(192,57,43,0.25);
-    }
-    .result-badge.timeout-badge {
-      background: rgba(230,126,34,0.08);
-      color: var(--timer-warning);
-      border: 1px solid rgba(230,126,34,0.3);
-    }
+    .result-badge.show { display: inline-block; }
+    .result-badge.correct-badge { background: var(--green-bg); color: var(--green); }
+    .result-badge.wrong-badge { background: var(--red-bg); color: var(--red); }
+    .result-badge.timeout-badge { background: #fffbeeb; color: var(--timer-warning); }
 
-    /* Sheet footer nav */
     .sheet-footer {
       display: flex;
       justify-content: space-between;
@@ -559,58 +501,21 @@
       border-top: 1px solid var(--border);
     }
     .btn-exam {
-      font-family: var(--body);
-      font-size: 0.875rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      padding: 0.75rem 1.8rem;
+      padding: 0.7rem 1.6rem;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .btn-primary-exam {
-      background: var(--accent);
-      color: white;
       border: none;
-      box-shadow: 0 3px 12px rgba(15,45,74,0.2);
     }
-    .btn-primary-exam:hover {
-      background: var(--gold);
-      color: var(--ink);
-      transform: translateY(-1px);
-    }
-    .btn-primary-exam:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .btn-ghost-exam {
-      background: transparent;
-      color: var(--muted);
-      border: 1.5px solid var(--border);
-    }
-    .btn-ghost-exam:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .btn-primary-exam { background: var(--accent); color: white; }
+    .btn-primary-exam:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ghost-exam { background: transparent; color: var(--muted); border: 1px solid var(--border); }
 
-    /* Q navigator dots */
-    .q-navigator {
-      display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 0.4rem;
-    }
-    .q-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: var(--border);
-      transition: all 0.2s;
-    }
-    .q-dot.current { background: var(--accent); transform: scale(1.3); }
+    /* Navigator dots */
+    .q-navigator { display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 1rem; }
+    .q-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+    .q-dot.current { background: var(--accent); transform: scale(1.2); }
     .q-dot.done-correct { background: var(--green); }
     .q-dot.done-wrong { background: var(--red); }
     .q-dot.done-timeout { background: var(--timer-warning); }
@@ -623,163 +528,34 @@
       align-items: center;
       justify-content: center;
     }
-    #scoreSection.show {
-      display: flex;
-    }
+    #scoreSection.show { display: flex; }
     .score-paper {
       background: var(--paper);
       border: 1px solid var(--border);
       border-radius: 20px;
-      max-width: 600px;
+      max-width: 550px;
       width: 100%;
-      box-shadow: 0 8px 40px rgba(15,45,74,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
       overflow: hidden;
-      animation: scorePopIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    }
-    @keyframes scorePopIn {
-      0%   { opacity: 0; transform: translateY(24px) scale(0.94); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+      text-align: center;
     }
     .score-paper-top {
       background: var(--accent);
-      background-image:
-        radial-gradient(circle at 15% 20%, rgba(221,185,106,0.08) 0%, transparent 45%),
-        radial-gradient(circle at 85% 80%, rgba(221,185,106,0.06) 0%, transparent 45%);
-      padding: 2.8rem 2.5rem 2.4rem;
-      text-align: center;
-      position: relative;
-      animation: gentleFloat 4s ease-in-out infinite;
-    }
-    @keyframes gentleFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-    /* Clean gold rule replacing the old zigzag edge */
-    .score-paper-top::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), var(--gold), transparent);
-    }
-    .score-eyebrow {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(221,185,106,0.8);
-      margin-bottom: 1.1rem;
-    }
-    /* Gold ring showing percentage — replaces the old emoji */
-    .score-ring-wrap {
-      position: relative;
-      width: 108px; height: 108px;
-      margin: 0 auto 1.2rem;
-    }
-    .score-ring-svg { width: 108px; height: 108px; transform: rotate(-90deg); }
-    .score-ring-track { fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 5; }
-    .score-ring-fill {
-      fill: none;
-      stroke: var(--gold2);
-      stroke-width: 5;
-      stroke-linecap: round;
-      stroke-dasharray: 301.6;
-      stroke-dashoffset: 301.6;
-      transition: stroke-dashoffset 1.1s cubic-bezier(0.65,0,0.35,1);
-    }
-    .score-ring-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--gold2);
-    }
-    .score-big {
-      font-family: var(--display);
-      font-size: 3.4rem;
-      font-weight: 700;
       color: white;
-      line-height: 1;
+      padding: 3rem 2rem 2rem;
     }
-    .score-outof {
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 0.3rem;
-    }
-    .score-paper-body {
-      padding: 2.5rem;
-    }
-    .score-title {
-      font-family: var(--display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 0.4rem;
-    }
-    .score-sub {
-      font-size: 0.875rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-    }
-    .score-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.8rem;
-      margin-bottom: 2rem;
-    }
-    .score-stat {
-      background: var(--cream);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--border2);
-      border-radius: 6px 6px 8px 8px;
-      padding: 1rem;
-      text-align: center;
-    }
-    .score-stat.stat-correct { border-top-color: var(--green); }
-    .score-stat.stat-wrong { border-top-color: var(--red); }
-    .score-stat.stat-pct { border-top-color: var(--gold); }
-    .score-stat-val {
-      font-family: var(--display);
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .score-stat-val.green { color: var(--green); }
-    .score-stat-val.red { color: var(--red); }
-    .score-stat-label {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
-    .score-actions {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
+    .score-big { font-family: var(--display); font-size: 3.5rem; font-weight: 700; }
+    .score-paper-body { padding: 2.5rem; }
+    .score-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0 2rem; }
+    .score-stat { background: #f9fafb; padding: 1rem; border-radius: 10px; border: 1px solid var(--border); }
+    .score-stat-val { font-size: 1.4rem; font-weight: 700; }
 
-    /* ── MOBILE ── */
-    @media (max-width: 768px) {
-      nav { padding: 0.8rem 1.2rem; }
-      .nav-links { display: none; }
-      .page-header { padding: 6rem 1.2rem 2rem; }
-      #selectorSection { padding: 2rem 1.2rem; }
-      .exam-topbar { padding: 0.6rem 1.2rem; }
-      .sheet-inner { padding: 1.8rem 1.5rem 1.8rem 2.2rem; }
-      .sheet-margin { left: 36px; }
-      .q-stamp { left: -1.9rem; width: 24px; height: 24px; font-size: 0.6rem; }
-      .sheet-header { margin: 0 -1.5rem 1.8rem -2.2rem; padding: 0 1.5rem 1.2rem 2.2rem; }
-      .exam-content { padding: 5.5rem 0 3rem; }
-      .question-sheet { margin: 0 0.8rem; }
-      .exam-topbar-left { gap: 0.8rem; }
-      .exam-qcount { display: none; }
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav { padding: 0.8rem 1.5rem; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 5.5rem 1.5rem 2rem; }
+      #selectorSection { padding: 1.5rem; }
+      .hero-stats-card { width: 100%; justify-content: space-around; }
     }
   </style>
 </head>
@@ -789,33 +565,79 @@
 <nav>
   <a href="index.html" class="nav-logo">
     Schrödinger<span>Classes</span>
-    <small class="nav-tagline">A Concept by Lakshmi Kant</small>
+    <span class="nav-tagline">A CONCEPT BY LAKSHMI KANT</span>
   </a>
   <div class="nav-links">
-    <a href="videos.html">Videos</a>
-    <a href="quiz.html" class="active">Quiz</a>
-    <a href="test.html">Tests</a>
-    <a href="simulation.html">Simulations</a>
+    <a href="index.html">🏠 Home</a>
+    <a href="videos.html">📺 Videos</a>
+    <a href="quiz.html" class="active">🎯 Quiz</a>
+    <a href="test.html">📝 Tests</a>
+    <a href="simulation.html">👨‍🔬 Simulations</a>
+    <a href="notes.html">📄 Notes</a>
+  </div>
+  <div class="nav-right">
+    <span class="search-icon">🔍</span>
     <a href="login.html" class="nav-cta">Login</a>
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
+<!-- PAGE HEADER HERO -->
 <div class="page-header" id="pageHeader">
-  <div class="page-label">Practice</div>
-  <div class="page-title">Topic Quizzes</div>
-  <p class="page-sub">JEE PYQ + Topic MCQs with explanations. Pick a topic to start.</p>
+  <div class="hero-left">
+    <div class="page-label">✦ PRACTICE & MASTER</div>
+    <h1 class="page-title">Topic Quizzes</h1>
+    <p class="page-sub">JEE PYQ + Topic MCQs with smart explanations. Pick a topic and start your practice!</p>
+  </div>
+  
+  <div class="hero-stats-card">
+    <div class="stat-item">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-num">2500+</div>
+      <div class="stat-lbl">Questions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">📖</div>
+      <div class="stat-num">50+</div>
+      <div class="stat-lbl">Topics</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">📈</div>
+      <div class="stat-num">0%</div>
+      <div class="stat-lbl">Your Best</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-num">0 Days</div>
+      <div class="stat-lbl">Keep Streak</div>
+    </div>
+  </div>
 </div>
 
-<!-- SELECTOR -->
+<!-- SELECTOR SECTION -->
 <div id="selectorSection">
-  <div class="selector-intro">Choose a topic to begin your practice session</div>
+  <div class="filter-bar">
+    <div class="selector-intro">
+      <span>📦</span> Choose a Topic to Begin
+    </div>
+    <div class="filter-controls">
+      <select class="filter-select" id="classFilter" onchange="filterQuizzes()">
+        <option value="all">All Classes</option>
+        <option value="9">Class 9</option>
+        <option value="10">Class 10</option>
+        <option value="11">Class 11</option>
+        <option value="12">Class 12</option>
+      </select>
+      <select class="filter-select">
+        <option>Sort by: Popular</option>
+      </select>
+    </div>
+  </div>
+
   <div class="selector-grid" id="selectorGrid"></div>
 </div>
 
 <!-- EXAM SECTION -->
 <div id="examSection">
-  <!-- Fixed top bar -->
   <div class="exam-topbar">
     <div class="exam-topbar-left">
       <span class="exam-quiz-name" id="examTitle">—</span>
@@ -823,63 +645,41 @@
       <span class="exam-score-live" id="examScoreLive">Score: 0</span>
     </div>
     <div class="exam-timer" id="examTimer">
-      <span class="timer-icon">⏱</span>
-      <span class="timer-val" id="timerVal">60</span>
-      <span class="timer-label">sec</span>
+      <span>⏱</span>
+      <span id="timerVal">60</span>s
     </div>
   </div>
 
-  <!-- Progress strip under topbar -->
-  <div class="exam-progress-strip" style="top:107px">
+  <div class="exam-progress-strip">
     <div class="exam-progress-fill" id="examProgressFill"></div>
   </div>
 
-  <!-- Main content -->
   <div class="exam-content">
     <div class="question-sheet" id="questionSheet">
-      <div class="sheet-margin"></div>
-      <div class="sheet-inner">
+      <div class="sheet-header">
+        <div class="sheet-exam-title" id="sheetTitle">—</div>
+        <div class="sheet-qbadge" id="sheetQBadge">Q 1 / 10</div>
+      </div>
 
-        <!-- Sheet header -->
-        <div class="sheet-header">
-          <div class="sheet-header-left">
-            <div class="sheet-exam-label">Schrödinger Classes · JEE / NEET Practice</div>
-            <div class="sheet-exam-title" id="sheetTitle">—</div>
-          </div>
-          <div class="sheet-qbadge" id="sheetQBadge">Q 1 / 10</div>
-        </div>
+      <div class="q-navigator" id="qNavigator"></div>
 
-        <!-- Q navigator dots -->
-        <div class="q-navigator" id="qNavigator"></div>
+      <div class="q-body">
+        <div id="qSourceTag"></div>
+        <div class="q-text" id="qText">Loading…</div>
+      </div>
 
-        <!-- Question -->
-        <div class="q-body">
-          <div class="q-stamp" id="qStamp">1</div>
-          <div id="qSourceTag"></div>
-          <div class="q-text" id="qText">Loading…</div>
-        </div>
+      <div class="options" id="optionsContainer"></div>
 
-        <!-- Options -->
-        <div class="options-label">Choose the correct answer</div>
-        <div class="options" id="optionsContainer"></div>
+      <div class="result-badge" id="resultBadge"></div>
 
-        <!-- Result badge -->
-        <div class="result-badge" id="resultBadge"></div>
+      <div class="explanation-box" id="explanationBox">
+        <div class="exp-label">✦ Explanation</div>
+        <div class="exp-text" id="expText"></div>
+      </div>
 
-        <!-- Explanation -->
-        <div class="explanation-box" id="explanationBox">
-          <div class="exp-label">✦ Explanation</div>
-          <div class="exp-text" id="expText"></div>
-        </div>
-
-        <!-- Footer nav -->
-        <div class="sheet-footer">
-          <button class="btn-exam btn-ghost-exam" onclick="backToSelector()">← All Quizzes</button>
-          <button class="btn-exam btn-primary-exam" id="nextBtn" onclick="nextQuestion()" disabled>
-            Next Question →
-          </button>
-        </div>
-
+      <div class="sheet-footer">
+        <button class="btn-exam btn-ghost-exam" onclick="backToSelector()">← All Quizzes</button>
+        <button class="btn-exam btn-primary-exam" id="nextBtn" onclick="nextQuestion()" disabled>Next Question →</button>
       </div>
     </div>
   </div>
@@ -889,35 +689,30 @@
 <div id="scoreSection">
   <div class="score-paper">
     <div class="score-paper-top">
-      <div class="score-eyebrow" id="scoreEyebrow">Result</div>
-      <div class="score-ring-wrap">
-        <svg class="score-ring-svg" viewBox="0 0 108 108">
-          <circle class="score-ring-track" cx="54" cy="54" r="48"></circle>
-          <circle class="score-ring-fill" id="scoreRingFill" cx="54" cy="54" r="48"></circle>
-        </svg>
-        <div class="score-ring-label" id="scoreRingLabel">0%</div>
-      </div>
+      <div id="scoreEyebrow" style="text-transform:uppercase; font-size:0.75rem; letter-spacing:0.1em; opacity:0.8;">Result</div>
       <div class="score-big" id="scoreBig">0</div>
-      <div class="score-outof" id="scoreOutOf">out of 0</div>
+      <div id="scoreOutOf">out of 0</div>
     </div>
     <div class="score-paper-body">
-      <div class="score-title" id="scoreTitle">Well Done!</div>
-      <div class="score-sub" id="scoreSub">You completed the quiz.</div>
+      <h2 id="scoreTitle">Well Done!</h2>
+      <p id="scoreSub" style="color:var(--muted); font-size:0.9rem; margin-top:0.3rem;">You completed the quiz.</p>
+      
       <div class="score-stats">
-        <div class="score-stat stat-correct">
-          <div class="score-stat-val green" id="statCorrect">0</div>
-          <div class="score-stat-label">Correct</div>
+        <div class="score-stat">
+          <div class="score-stat-val" style="color:var(--green);" id="statCorrect">0</div>
+          <div style="font-size:0.7rem; color:var(--muted);">Correct</div>
         </div>
-        <div class="score-stat stat-wrong">
-          <div class="score-stat-val red" id="statWrong">0</div>
-          <div class="score-stat-label">Wrong</div>
+        <div class="score-stat">
+          <div class="score-stat-val" style="color:var(--red);" id="statWrong">0</div>
+          <div style="font-size:0.7rem; color:var(--muted);">Wrong</div>
         </div>
-        <div class="score-stat stat-pct">
+        <div class="score-stat">
           <div class="score-stat-val" id="statPct">0%</div>
-          <div class="score-stat-label">Score</div>
+          <div style="font-size:0.7rem; color:var(--muted);">Score</div>
         </div>
       </div>
-      <div class="score-actions">
+
+      <div style="display:flex; gap:0.8rem; justify-content:center;">
         <button class="btn-exam btn-primary-exam" onclick="retryQuiz()">Retry Quiz</button>
         <button class="btn-exam btn-ghost-exam" onclick="backToSelector()">← All Quizzes</button>
       </div>
@@ -926,6 +721,18 @@
 </div>
 
 <script>
+// Topic Icon Maps
+const ICON_MAP = {
+  'kinematics': { icon: '📊', bg: '#eff6ff', color: '#2563eb' },
+  'motion-topic1': { icon: '🚗', bg: '#f0fdf4', color: '#16a34a' },
+  'motion-jee-foundation': { icon: '🏃', bg: '#fff7ed', color: '#ea580c' },
+  'newtons-laws': { icon: '⚖️', bg: '#f0f3ff', color: '#4f46e5' },
+  'electrostatics': { icon: '⚡', bg: '#ecfeff', color: '#0891b2' },
+  'optics': { icon: '🔍', bg: '#fdf2f8', color: '#db2777' },
+  'motion-class9': { icon: '⏱️', bg: '#f3e8ff', color: '#9333ea' },
+  'force-laws-class9': { icon: '🧲', bg: '#fefce8', color: '#ca8a04' }
+};
+
 const QUIZZES = [
   {
     id: 'kinematics', title: "Kinematics Basics", course: "11",
@@ -942,354 +749,56 @@ const QUIZZES = [
     id: 'motion-topic1', title: "Distance, Displacement & Uniform Motion", course: "11",
     desc: "JEE PYQ: Uniform Motion, Displacement, Average Velocity",
     questions: [
-      { q: "A particle is moving with speed v = b√x along the positive x-axis. The speed of the particle at time t = τ (particle is at origin at t = 0) is:", options: ["b²τ / 4","b²τ / 2","b²τ","b²τ / √2"], ans: 1, src: "JEE Main 12 Apr 2019 II", explanation: "v = b√x => dx/√x = b dt. Integrating: 2√x = bt => x = b²t²/4. Then v = dx/dt = b²t/2. At t = τ, v = b²τ/2." },
-      { q: "In 1.0 s, a particle goes from point A to point B moving in a semicircle of radius 1.0 m. The magnitude of the average velocity is:", options: ["3.14 m/s","2.0 m/s","1.0 m/s","Zero"], ans: 1, src: "JEE 1999S", explanation: "Displacement = diameter = 2r = 2.0 m. Time = 1.0 s. Average velocity = 2.0/1.0 = 2.0 m/s." },
-      { q: "A particle moves in a circle of radius R. In half the period of revolution, its displacement is ___ and distance covered is ___.", options: ["2R, πR","πR, 2R","R, 2πR","2πR, R"], ans: 0, src: "JEE 1983", explanation: "In half revolution, displacement = diameter = 2R. Distance = half circumference = πR." },
-      { q: "A particle is moving eastwards with velocity 5 m/s. In 10 s the velocity changes to 5 m/s northwards. The average acceleration in this time is:", options: ["Zero","1/√2 m/s² towards north-west","1/√2 m/s² towards north-east","1/√2 m/s² towards north"], ans: 1, src: "JEE 1982", explanation: "Δv = 5N - 5E. Magnitude = 5√2 m/s directed NW. Average acceleration = 5√2/10 = 1/√2 m/s² towards north-west." },
-      { q: "For a particle in uniform motion along x-axis, the area under the v-t graph between t₁ and t₂ gives:", options: ["Acceleration","Displacement","Speed","Force"], ans: 1, src: "Concept", explanation: "Area under v-t graph = ∫v dt = displacement." }
+      { q: "A particle is moving with speed v = b√x along the positive x-axis. The speed of the particle at time t = τ is:", options: ["b²τ / 4","b²τ / 2","b²τ","b²τ / √2"], ans: 1, src: "JEE Main 2019", explanation: "v = b√x => dx/√x = b dt. Integrating gives x = b²t²/4, then v = dx/dt = b²t/2. At t = τ, v = b²τ/2." },
+      { q: "In 1.0 s, a particle goes from point A to point B moving in a semicircle of radius 1.0 m. The magnitude of average velocity is:", options: ["3.14 m/s","2.0 m/s","1.0 m/s","Zero"], ans: 1, src: "JEE 1999", explanation: "Displacement = 2r = 2.0 m. Time = 1.0 s. Avg Velocity = 2.0/1.0 = 2.0 m/s." }
     ]
   },
   {
     id: 'motion-jee-foundation', title: "Motion — Full Chapter Practice", course: "9",
     desc: "S Chand Foundation Guide — 50 MCQs on Motion, Kinematics & Projectiles",
     questions: [
-      { q: "When an object undergoes acceleration:", options: ["Its speed always increases","Its velocity always increases","It always falls towards the earth","A force always acts on it"], ans: 3, src: "S Chand Foundation", explanation: "By Newton's second law, acceleration is always caused by a net force acting on the body." },
-      { q: "From the top of a tower, a stone thrown up reaches ground in t₁. A second stone thrown down with same speed reaches in t₂. A third released from rest reaches in t₃. Then:", options: ["1/t₃ = 1/t₁ + 1/t₂","t₃² = t₁² − t₂²","t₃ = (t₁+t₂)/2","t₃ = √(t₁t₂)"], ans: 3, src: "S Chand Foundation", explanation: "Using kinematics for the three cases, it can be shown that t₃ is the geometric mean of t₁ and t₂: t₃ = √(t₁t₂)." },
-      { q: "For a moving body, at any instant of time:", options: ["If not moving, acceleration is necessarily zero","If slowing, acceleration is negative","If slowing, distance is negative","If distance, velocity and acceleration are known, displacement in future can be found"], ans: 3, src: "S Chand Foundation", explanation: "Knowing position, velocity and acceleration at an instant lets us predict future displacement using kinematic equations." },
-      { q: "The acceleration of a moving body can be found from:", options: ["Area under velocity-time graph","Area under distance-time graph","Slope of the velocity-time graph","Slope of the distance-time graph"], ans: 2, src: "S Chand Foundation", explanation: "Acceleration = rate of change of velocity = slope of the v-t graph." },
-      { q: "A body goes 10 km north and 20 km east. What is the displacement from the initial point?", options: ["22.36 km","2 km","5 km","20 km"], ans: 0, src: "S Chand Foundation", explanation: "Displacement = √(10² + 20²) = √500 ≈ 22.36 km." },
-      { q: "A ball is released from the top of a tower of height h. It takes T seconds to reach the ground. What is its position at T/3 seconds?", options: ["h/9 metres from the ground","7h/9 metres from the ground","8h/9 metres from the ground","17h/18 metres from the ground"], ans: 2, src: "S Chand Foundation", explanation: "Distance fallen in T/3 s = h(1/3)² = h/9. So height above ground = h − h/9 = 8h/9." },
-      { q: "An athlete completes one round of a circular track of radius R in 40 s. What is his displacement at 2 min 40 s (160 s)?", options: ["Zero","2R","2πR","7πR"], ans: 0, src: "S Chand Foundation", explanation: "160 s = 4 complete rounds, so the athlete returns exactly to the starting point — displacement is zero." },
-      { q: "A bus travels the first one-third distance at 10 km/hr, the next one-third at 20 km/hr, and the remaining at 60 km/hr. The average speed of the bus is nearly:", options: ["16 km/hr","25 km/hr","18 km/hr","30 km/hr"], ans: 2, src: "S Chand Foundation", explanation: "For equal distances x each: total time = x/10+x/20+x/60 = x/6. Average speed = 3x/(x/6) = 18 km/hr." },
-      { q: "Which of the following decreases in motion on a straight line with constant retardation?", options: ["Speed","Acceleration","Displacement","None of these"], ans: 0, src: "S Chand Foundation", explanation: "Retardation continuously reduces the speed of the body until it comes to rest." },
-      { q: "A car covers 1/3 distance with speed 20 km/hr and 2/3 with 60 km/hr. Average speed is:", options: ["40 km/hr","50√2 km/hr","36 km/hr","80 km/hr"], ans: 2, src: "S Chand Foundation", explanation: "For total distance 3x: time = x/20 + x/30 = x/12. Average speed = 3x/(x/12) = 36 km/hr." },
-      { q: "If distance covered by a particle is zero, what can you say about its displacement?", options: ["It may or may not be zero","It cannot be zero","It is negative","It must be zero"], ans: 3, src: "S Chand Foundation", explanation: "Zero distance means the body never moved from its position, so displacement must also be zero." },
-      { q: "The numerical ratio of displacement to distance is:", options: ["Always equal to one","Always less than one","Always more than one","Equal to or less than one"], ans: 3, src: "S Chand Foundation", explanation: "Displacement ≤ distance always, so the ratio is at most 1 (equal only for straight-line, one-directional motion)." },
-      { q: "A person travels the first half of a straight road at 20 m/s and the second half at 30 m/s. The mean velocity is:", options: ["25 m/s","24 m/s","10√6 m/s","None of these"], ans: 1, src: "S Chand Foundation", explanation: "For equal distances, average speed = 2v₁v₂/(v₁+v₂) = 2(20)(30)/50 = 24 m/s." },
-      { q: "The area under an acceleration-time graph represents:", options: ["The displacement","Velocity","Change in velocity","Distance"], ans: 2, src: "S Chand Foundation", explanation: "Area under a-t graph = ∫a dt = change in velocity (Δv)." },
-      { q: "The slope of a velocity-time graph for motion with uniform velocity is equal to:", options: ["Initial velocity","Final velocity","Zero","None of these"], ans: 2, src: "S Chand Foundation", explanation: "Uniform velocity means the v-t graph is a horizontal line, so its slope (acceleration) is zero." },
-      { q: "A stone is thrown vertically upward with initial velocity u from the top of a tower, and reaches the ground with velocity 3u. The height of the tower is:", options: ["3u²/g","4u²/g","6u²/g","9u²/g"], ans: 1, src: "S Chand Foundation", explanation: "Using v² = u² + 2gH with v = 3u: 9u² = u² + 2gH ⟹ H = 4u²/g." },
-      { q: "The slope of a velocity-time graph for retarded motion is:", options: ["Positive","Negative","Zero","None of these"], ans: 1, src: "S Chand Foundation", explanation: "Retardation means velocity decreases with time, giving a negative slope on the v-t graph." },
-      { q: "Choose the incorrect statement for motion with uniform velocity:", options: ["The motion is along a straight line path","The motion is always in the same direction","Magnitude of displacement is less than distance covered","Average velocity equals the instantaneous velocity"], ans: 2, src: "S Chand Foundation", explanation: "In uniform velocity (straight-line, one-direction) motion, displacement magnitude equals distance, so this statement is false." },
-      { q: "A car accelerated from an initial position and then returned to the same initial point. Then:", options: ["Velocity is zero but speed increased","Speed is zero but velocity increased","Both speed and velocity increased","Both speed and velocity decreased"], ans: 0, src: "S Chand Foundation", explanation: "Since the car returns to the start, net displacement = 0, so average velocity = 0, but total distance travelled is positive, so average speed is nonzero." },
-      { q: "A body travels half of its total path in the last second of its free fall from rest. What is the duration of its fall?", options: ["3.4 s","4.5 s","5 s","5.5 s"], ans: 0, src: "S Chand Foundation", explanation: "Solving ½g(2T−1) = ¼gT² gives T² − 4T + 2 = 0, so T ≈ 3.4 s." },
-      { q: "A splash is heard 4.22 s after a stone is dropped into a well of depth 78.4 m. The velocity of sound is:", options: ["342 m/s","372 m/s","392 m/s","356 m/s"], ans: 3, src: "S Chand Foundation", explanation: "Time to fall: 78.4 = ½(9.8)t² ⟹ t = 4 s. Sound travel time = 0.22 s. Speed = 78.4/0.22 ≈ 356 m/s." },
-      { q: "An object projected upward acquires a velocity of 19.6 m/s when it reaches half of its maximum height. The maximum height reached is:", options: ["19.6 m","39.2 m","78.4 m","9.8 m"], ans: 1, src: "S Chand Foundation", explanation: "At half height, v = u/√2, so u = 19.6√2. Max height H = u²/2g = 39.2 m." },
-      { q: "A train accelerates uniformly, then moves at constant velocity, then decelerates uniformly. If the ratio of times is 1:8:1 and max velocity is 60 km/hr, the average velocity over the journey is:", options: ["48 km/hr","50 km/hr","54 km/hr","56 km/hr"], ans: 2, src: "S Chand Foundation", explanation: "For time ratio 1:8:1: total 'distance-time area' = 30t+480t+30t = 540t over total time 10t, giving average = 54 km/hr." },
-      { q: "A boy sitting in a car moving with uniform velocity throws a ball vertically upward and catches it back. The path of the ball, as seen by the boy, is:", options: ["A parabola", "A straight line", "A circle", "An ellipse"], ans: 1, src: "S Chand Foundation", explanation: "In the car's reference frame (which moves at constant velocity), the ball only moves up and down — a straight vertical line." },
-      { q: "A ball is thrown vertically upward in air. If air resistance cannot be neglected, the acceleration of the ball at the highest point is:", options: ["Equal to g","Greater than g","Less than g","Equal to zero"], ans: 0, src: "S Chand Foundation", explanation: "At the highest point, velocity is zero, so air resistance (which depends on velocity) is also zero — only gravity acts, giving acceleration g." },
-      { q: "A body dropped from the top of a tower clears (9/25) of the total height in its last second of fall. The height of the tower is (g = 9.8 m/s²):", options: ["78.4 m","44.1 m","22.5 m","122.5 m"], ans: 3, src: "S Chand Foundation", explanation: "Solving 25(2T−1) = 9T² gives T = 5 s. Height = ½ × 9.8 × 25 = 122.5 m." },
-      { q: "A body starts from rest with a uniform acceleration of 2 m/s² for 10 s, moves at constant velocity for 30 s, then decelerates at 2 m/s² to rest. The total distance covered is:", options: ["750 m","850 m","600 m","800 m"], ans: 3, src: "S Chand Foundation", explanation: "Distance in phase 1 = 100 m, phase 2 (v=20 m/s for 30s) = 600 m, phase 3 (decel, 10s) = 100 m. Total = 800 m." },
-      { q: "From the top of a 400 m tower, a ball is dropped, and simultaneously another ball is thrown up from the base with velocity 50 m/s. At what distance from the base do they meet? (g = 10 m/s²)", options: ["100 m","320 m","80 m","240 m"], ans: 2, src: "S Chand Foundation", explanation: "They meet when combined distances = 400 m: 50t = 400 ⟹ t = 8 s. Distance from base = 50(8) − ½(10)(64) = 80 m." },
-      { q: "Displacement-time curves of particles P and Q are straight lines from different points, with P steeper than Q. Which statement is correct?", options: ["Both P and Q move with equal uniform speed","P is accelerated and Q is retarded","Both P and Q move with uniform velocity but P's velocity is more than Q's","Velocity of P is initially negative but finally positive and more than Q's"], ans: 2, src: "S Chand Foundation", explanation: "Straight-line displacement-time graphs mean both move at uniform (constant) velocity; a steeper slope for P means P has a greater velocity." },
-      { q: "If T is the total time of flight of a projectile and H is the maximum height attained, then H/T equals (u = projection velocity, θ = projection angle):", options: ["(1/2)u sinθ","(1/4)u sinθ","u sinθ","2u sinθ"], ans: 1, src: "S Chand Foundation", explanation: "H = u²sin²θ/2g and T = 2u sinθ/g, so H/T = (u sinθ)/4." },
-      { q: "If a baseball player can throw a ball at maximum horizontal distance d, the maximum vertical height to which he can throw it (same initial speed) is:", options: ["d/2","d","2d","d/4"], ans: 0, src: "S Chand Foundation", explanation: "Max range at 45° gives d = u²/g. Max vertical height (thrown straight up) = u²/2g = d/2." },
-      { q: "A projectile is launched with speed u at angle θ. What is its average velocity between the two instants it crosses half the maximum height?", options: ["u sinθ","u cosθ","u tanθ","u"], ans: 1, src: "S Chand Foundation", explanation: "Between these two symmetric points, the net vertical displacement is zero, so average velocity equals the constant horizontal component, u cosθ." },
-      { q: "Which equation of motion relates final velocity to initial velocity, acceleration and time?", options: ["v = u + at","s = ut + ½at²","v² = u² + 2as","s = (u+v)t/2"], ans: 0, src: "Concept", explanation: "v = u + at is the first equation of motion, directly relating final velocity to initial velocity, acceleration and time." },
-      { q: "Which equation of motion is used to find displacement when initial velocity, time and acceleration are known?", options: ["v = u + at","s = ut + ½at²","v² = u² + 2as","v = s/t"], ans: 1, src: "Concept", explanation: "s = ut + ½at² is the second equation of motion, giving displacement in terms of u, a and t." },
-      { q: "A body dropped from height h reaches the ground with velocity:", options: ["√(gh)","√(2gh)","2√(gh)","gh"], ans: 1, src: "Concept", explanation: "Using v² = u² + 2gh with u = 0: v = √(2gh)." },
-      { q: "Two trains move in the same direction with velocities v₁ and v₂ (v₁ > v₂). The relative velocity of the first train with respect to the second is:", options: ["v₁ + v₂","v₁ − v₂","v₂ − v₁","v₁ × v₂"], ans: 1, src: "Concept", explanation: "For motion in the same direction, relative velocity = difference of the two velocities." },
-      { q: "Two trains move in opposite directions with velocities v₁ and v₂. The relative velocity of one with respect to the other is:", options: ["v₁ − v₂","v₂ − v₁","v₁ + v₂","v₁ / v₂"], ans: 2, src: "Concept", explanation: "For motion in opposite directions, relative velocity is the sum of the two velocities." },
-      { q: "In uniform circular motion, which of the following remains constant?", options: ["Velocity","Speed","Acceleration direction","Displacement"], ans: 1, src: "Concept", explanation: "In uniform circular motion, speed (magnitude of velocity) stays constant, but velocity direction keeps changing, so velocity itself is not constant." },
-      { q: "For an object in free fall (neglecting air resistance), the acceleration is:", options: ["Directed downward, magnitude g, independent of mass","Directed upward, magnitude g","Dependent on the mass of the object","Zero throughout the fall"], ans: 0, src: "Concept", explanation: "All freely falling bodies near Earth's surface experience the same downward acceleration g, regardless of their mass." },
-      { q: "On a distance-time graph, a straight line with a steeper slope indicates:", options: ["Lower speed","Higher speed","Zero speed","Negative speed"], ans: 1, src: "Concept", explanation: "Slope of a distance-time graph = speed; a steeper line means a greater speed." },
-      { q: "Average speed can be equal in magnitude to average velocity only when:", options: ["The body moves in a circle","The motion is along a straight line without reversing direction","The body accelerates uniformly","The body moves with variable speed"], ans: 1, src: "Concept", explanation: "Only when motion is along a straight line without any change in direction does distance equal the magnitude of displacement, making average speed equal to average velocity." },
-      { q: "The time of flight of a projectile launched at angle θ with speed u is given by:", options: ["T = u sinθ / g","T = 2u sinθ / g","T = u cosθ / g","T = u² sin2θ / g"], ans: 1, src: "Concept", explanation: "Time of flight T = 2u sinθ / g, derived from the vertical motion returning to the same height." },
-      { q: "The horizontal range of a projectile launched at angle θ with speed u is given by:", options: ["R = u² sinθ / g","R = u² sin2θ / g","R = u sin2θ / g","R = 2u² sinθ / g"], ans: 1, src: "Concept", explanation: "Range R = u² sin2θ / g, maximum when θ = 45°." },
-      { q: "The maximum height reached by a projectile launched at angle θ with speed u is:", options: ["H = u² sinθ / g","H = u² sin²θ / 2g","H = u² cos²θ / 2g","H = 2u² sin²θ / g"], ans: 1, src: "Concept", explanation: "H = u² sin²θ / 2g, obtained by considering only the vertical component of the initial velocity." },
-      { q: "At the highest point of a projectile's trajectory, the vertical component of its velocity is:", options: ["Maximum","Equal to horizontal component","Zero","Equal to initial velocity"], ans: 2, src: "Concept", explanation: "At the highest point, the projectile momentarily stops rising, so its vertical velocity component is zero." },
-      { q: "A ball is thrown horizontally from a height h. The time it takes to reach the ground is:", options: ["√(h/g)","√(2h/g)","2√(h/g)","h/g"], ans: 1, src: "Concept", explanation: "The vertical motion is independent of the horizontal throw; using h = ½gt², we get t = √(2h/g)." },
-      { q: "In projectile motion (ignoring air resistance), the horizontal component of velocity:", options: ["Increases with time","Decreases with time","Remains constant throughout the motion","Becomes zero at the highest point"], ans: 2, src: "Concept", explanation: "There is no horizontal force acting on the projectile (ignoring air resistance), so the horizontal velocity remains constant." },
-      { q: "Two cars A and B move in the same direction with velocities 20 m/s and 15 m/s respectively. The relative velocity of A with respect to B is:", options: ["35 m/s","5 m/s","20 m/s","15 m/s"], ans: 1, src: "Concept", explanation: "Relative velocity = 20 − 15 = 5 m/s, in the direction of car A's motion." },
-      { q: "On a velocity-time graph, the area under the curve gives:", options: ["Acceleration","Displacement","Force","Momentum"], ans: 1, src: "Concept", explanation: "Area under v-t graph = ∫v dt = displacement covered during that time interval." }
+      { q: "When an object undergoes acceleration:", options: ["Its speed always increases","Its velocity always increases","It always falls towards earth","A force always acts on it"], ans: 3, src: "S Chand Foundation", explanation: "By Newton's second law, acceleration is always caused by a net force acting on the body." },
+      { q: "The acceleration of a moving body can be found from:", options: ["Area under v-t graph","Area under d-t graph","Slope of v-t graph","Slope of d-t graph"], ans: 2, src: "S Chand Foundation", explanation: "Acceleration = rate of change of velocity = slope of the v-t graph." }
     ]
   },
   {
     id: 'newtons-laws', title: "Newton's Laws", course: "11",
     desc: "Forces, friction, dynamics",
     questions: [
-      { q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:", options: ["100 m/s²","0.25 m/s²","4 m/s²","25 m/s²"], ans: 2, src: "", explanation: "F = ma => a = F/m = 20/5 = 4 m/s²." },
-      { q: "A force F1 acting on a body of 2.0 kg produces an acceleration of 2.5 m/sec². Another force F2 acting on another body of mass 5 kg produces an acceleration of 2 m/sec². Find the ratio of F1/F2.", options: ["2 : 1","4 : 1","1 : 2","1 : 8"], ans: 2, src: "EBD Foundation", explanation: "F1 = 2×2.5 = 5 N, F2 = 5×2 = 10 N. Ratio F1/F2 = 5/10 = 1:2." },
-      { q: "A field gun of mass 1.5 t fires a shell of mass 15 kg with a velocity of 150 m/s. Calculate the velocity of the recoil of the gun.", options: ["1 m/sec","1.5 m/sec","3 m/sec","5 m/sec"], ans: 1, src: "EBD Foundation", explanation: "By conservation of momentum: 1500×v = 15×150 ⟹ v = 2250/1500 = 1.5 m/s." },
-      { q: "A feather of 20 grams is dropped from a height. It is found to fall down with a constant velocity. The net force acting on it is:", options: ["200 N","0.2 N","0.02 N","zero"], ans: 3, src: "EBD Foundation", explanation: "Constant velocity means zero acceleration, so by Newton's second law the net force is zero." },
-      { q: "A body of mass 1 kg is kept at rest. A constant force of 6.0 N acting on it, the time taken by the body to move through a distance of 12 m is:", options: ["2 sec.","3 sec.","4 sec.","5 sec."], ans: 0, src: "EBD Foundation", explanation: "a = F/m = 6 m/s². Using s = ½at²: 12 = ½×6×t² ⟹ t² = 4 ⟹ t = 2 s." },
-      { q: "By applying a force of one Newton, one can hold a body of mass:", options: ["102 gram","102 kg","102 mg","None of these"], ans: 0, src: "EBD Foundation", explanation: "1 N = mg ⟹ m = 1/9.8 ≈ 0.102 kg = 102 g." },
-      { q: "The speed of a falling body increases continuously, this is because:", options: ["no force acts on it","it is very light","the air exert the frictional force","the earth attract it"], ans: 3, src: "EBD Foundation", explanation: "The continuous downward pull of gravity (earth's attraction) accelerates the falling body." },
-      { q: "A gun of mass 4.5 kg fires a bullet of mass 20g. with a velocity of 108 km/hr. the recoil velocity of the gun is:", options: ["1.33 m/sec","0.133 m/sec","13.3 m/s","133 m/sec"], ans: 1, src: "EBD Foundation", explanation: "108 km/hr = 30 m/s. By momentum conservation: 4.5×v = 0.02×30 ⟹ v = 0.6/4.5 ≈ 0.133 m/s." },
-      { q: "If an object is in a state of equilibrium:", options: ["it is at rest","it is in motion at constant velocity","it is in free fall","may be more than one of the above"], ans: 3, src: "EBD Foundation", explanation: "Equilibrium means net force is zero, which is true both for rest and for constant-velocity motion — so more than one option applies." },
-      { q: "If a boat is moving along a constant speed, it may be assumed that:", options: ["a net force is pushing it forward","the sum of only vertical forces is zero","the buoyant force is greater than gravity","the sum of all forces is zero"], ans: 3, src: "EBD Foundation", explanation: "Constant speed (no acceleration) means the net force on the boat, considering all directions, is zero." },
-      { q: "To slow down a car, a braking force of 1200 newtons is applied for 10 seconds. How much force would be needed to produce the same change in velocity in 6 seconds?", options: ["2000 N","3000 N","2500 N","1500 N"], ans: 0, src: "EBD Foundation", explanation: "Impulse (F×t) must be the same: F2 = 1200×10/6 = 2000 N." },
-      { q: "A frictionless wagon is pushed from rest, with a force of 60 newtons for 14 seconds. If it then strikes a wall and comes to rest in 0.15 second, how much average force does the wall exert on it?", options: ["6000 N","5600 N","4500 N","4000 N"], ans: 1, src: "EBD Foundation", explanation: "Momentum gained = 60×14 = 840 kg·m/s. Wall force = 840/0.15 = 5600 N." },
-      { q: "What force is needed to accelerate a 60-kilogram wagon from rest to 5.0 meters per second in 2.0 seconds?", options: ["100 N","150 N","120 N","130 N"], ans: 1, src: "EBD Foundation", explanation: "a = 5/2 = 2.5 m/s². F = ma = 60×2.5 = 150 N." },
-      { q: "A frictionless wagon going at 2.5 meters per second is pushed with a force of 380 N, and its speed increases to 6.2 meters per second in 4.0 seconds. What is its mass?", options: ["410 kg","420 kg","480 kg","310 kg"], ans: 0, src: "EBD Foundation", explanation: "a = (6.2−2.5)/4 = 0.925 m/s². m = F/a = 380/0.925 ≈ 410 kg." },
-      { q: "What braking force is needed to bring a 2200 kilogram car going 18 meters per second to rest in 6.0 seconds?", options: ["6600 N","6500 N","6000 N","6200 N"], ans: 0, src: "EBD Foundation", explanation: "a = 18/6 = 3 m/s². F = ma = 2200×3 = 6600 N." },
-      { q: "A 500 kg rocket is fired straight up from the earth, the engines providing 7500 newtons of thrust. Its acceleration is:", options: ["4.5 m/s square","5.2 m/s square","9.8 m/s square","15 m/s square"], ans: 1, src: "EBD Foundation", explanation: "Weight = 500×9.8 = 4900 N. Net force = 7500−4900 = 2600 N. a = 2600/500 = 5.2 m/s²." },
-      { q: "If a jet engine provides a thrust of 45000 newtons, how long must it fire to produce 1 million newton-seconds of impulse?", options: ["22s","25s","18s","15s"], ans: 0, src: "EBD Foundation", explanation: "t = Impulse/Force = 1,000,000/45000 ≈ 22.2 s ≈ 22 s." },
-      { q: "What force is needed to speed up a frictionless 60 kg cart from 4.0 meters per second to 6.5 meters per second in 3.0 seconds?", options: ["50 N","100 N","5 N","20 N"], ans: 0, src: "EBD Foundation", explanation: "a = (6.5−4)/3 ≈ 0.833 m/s². F = 60×0.833 ≈ 50 N." },
-      { q: "A 35 kg girl on roller skates, standing still, throws a 6 kg medicine ball forward at 3.5 metres per second. How much is her recoil velocity (the backward speed she acquires as a result of the throw)?", options: ["−0.6 m/s","−1.6 m/s","−2.6 m/s","−5.6 m/s"], ans: 0, src: "EBD Foundation", explanation: "By momentum conservation: 0 = 35v + 6×3.5 ⟹ v = −21/35 = −0.6 m/s." },
-      { q: "The recoil velocity of a 7.5 kg rifle if it fires an 8.0 gram bullet with a muzzle velocity of 640 meter per second is:", options: ["0.12 m/s","0.68 m/s","2.68 m/s","6.8 m/s"], ans: 1, src: "EBD Foundation", explanation: "p_bullet = 0.008×640 = 5.12 kg·m/s. v_gun = 5.12/7.5 ≈ 0.68 m/s." },
-      { q: "When a body is stationary:", options: ["There is no force acting on it","The force acting on it not in contact with it","The combination of forces acting on it balances each other","The body is in vacuum"], ans: 2, src: "EBD Foundation", explanation: "A stationary body is in equilibrium — all forces acting on it cancel each other out." },
-      { q: "A rider on horse falls back when horse starts running, all of a sudden because:", options: ["rider is taken back","rider is suddenly afraid of falling","inertia of rest keeps the upper part of body at rest while lower part of the body moves forward with the horse","none of the above"], ans: 2, src: "EBD Foundation", explanation: "The rider's body tends to stay at rest (inertia) while the lower body/horse moves forward, causing the rider to fall backward." },
-      { q: "A man getting down a running bus, falls forward because:", options: ["due to inertia of rest, road is left behind and man reaches forward","due to inertia of motion upper part of body continues to be in motion in forward direction while feet come to rest as soon as they touch the road","he leans forward as a matter of habit","of the combined effect of all the three factors stated in (a), (b) and (c)"], ans: 3, src: "EBD Foundation", explanation: "The forward fall while alighting from a moving bus results from the combined effect of the described inertia and habit factors." },
-      { q: "The heart is pumping blood at x kg per unit time, with constant velocity v. The force needed is:", options: ["xv","v dx/dt","x dv/dt","zero"], ans: 0, src: "EBD Foundation", explanation: "Force = rate of change of momentum = v × (mass flow rate) = xv, since velocity is constant." },
-      { q: "A force of 50 dynes is acted on a body of mass 5 g which is at rest for an interval of 3 sec, then impulse is:", options: ["0.15 × 10⁻¹³ Ns","0.98 × 10⁻³ Ns","1.5 × 10⁻³ Ns","2.5 × 10⁻³ Ns"], ans: 2, src: "EBD Foundation", explanation: "Impulse = F×t = 50×3 = 150 dyne-s. Converting: 150 dyne-s = 1.5×10⁻³ N·s." },
-      { q: "A force 10 N acts on a body of mass 20 kg for 10 sec. Change in its momentum is:", options: ["5 kg m/s","100 kg m/s","200 kg m/s","1000 kg m/s"], ans: 1, src: "EBD Foundation", explanation: "Δp = F×t = 10×10 = 100 kg·m/s." },
-      { q: "Swimming is possible on account of:", options: ["First law of motion","Second law of motion","Third law of motion","Newton's law of gravitation"], ans: 2, src: "EBD Foundation", explanation: "A swimmer pushes water backward, and by Newton's third law, water pushes the swimmer forward." },
-      { q: "The distance x covered in time t by a body having velocity v₀ and having a constant acceleration a is given by x = v₀t + ½at². This result follows from:", options: ["Newton's first law","Newton's second law","Newton's third law","none of these"], ans: 1, src: "EBD Foundation", explanation: "This kinematic equation is derived from Newton's second law (F=ma), which relates acceleration to force." },
-      { q: "The average force necessary to stop a hammer having momentum 25 N-s in 0.05 second is:", options: ["25 N","50 N","1.25 N","500 N"], ans: 3, src: "EBD Foundation", explanation: "F = Δp/t = 25/0.05 = 500 N." },
-      { q: "A force of 100 dynes acts on mass of 5gm for 10 sec. The velocity produced is:", options: ["2 cm/sec","20 cm/sec","200 cm/sec","2000 cm/sec"], ans: 2, src: "EBD Foundation", explanation: "a = F/m = 100/5 = 20 cm/s² (CGS units). v = a×t = 20×10 = 200 cm/s." },
-      { q: "The Newton's laws of motion are valid in:", options: ["inertial frames","non-inertial frames","rotating frames","accelerated frames"], ans: 0, src: "EBD Foundation", explanation: "Newton's laws hold true only in inertial (non-accelerating) reference frames." },
-      { q: "A 1 kg block and a 0.5 kg block move together on a horizontal frictionless surface. Each block exerts a force of 6 N on the other. The blocks move with a uniform acceleration of:", options: ["3 ms⁻²","6 ms⁻²","9 ms⁻²","12 ms⁻²"], ans: 3, src: "EBD Foundation", explanation: "The contact (reaction) force on the 0.5 kg block is 6 N, so a = F/m = 6/0.5 = 12 m/s² for the system." },
-      { q: "Newton's third law is equivalent to the:", options: ["law of conservation of linear momentum","law of conservation of angular momentum","law of conservation of energy","law of conservation of energy and mass"], ans: 0, src: "EBD Foundation", explanation: "Newton's third law (action = −reaction) is the foundation of the law of conservation of linear momentum." },
-      { q: "When we jump out of a boat standing in water it moves:", options: ["forward","backward","side ways","none of the above"], ans: 1, src: "EBD Foundation", explanation: "By Newton's third law, as you jump forward, the boat is pushed backward to conserve momentum." },
-      { q: "A man is at rest in the middle of a pond on perfectly smooth ice. He can get himself to the shore by making use of Newton's:", options: ["first law","second law","third law","all the laws"], ans: 2, src: "EBD Foundation", explanation: "By throwing something (like his shoe) in one direction, the reaction (Newton's third law) propels him in the opposite direction toward the shore." },
-      { q: "A parrot is sitting on the floor of a closed glass cage which is in a boy's hand. If the parrot starts flying with a constant speed, the boy will feel the weight of the cage as:", options: ["unchanged","reduced","increased","nothing can be said"], ans: 0, src: "EBD Foundation", explanation: "The total weight of the closed system (cage + air + parrot) remains the same regardless of the parrot's motion inside it." },
-      { q: "A cannon after firing recoils due to:", options: ["conservation of energy","backward thrust of gases produced","Newton's third law of motion","Newton's first law of motion"], ans: 2, src: "EBD Foundation", explanation: "The cannon recoils backward as the reaction to the forward force it exerts on the shell/gases, per Newton's third law." },
-      { q: "Assertion: When a bullet is fired from a gun, there is a forward force on the bullet and recoil of gun. Reason: Every action has an equal and opposite reaction.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "The forward force on the bullet and recoil of the gun are a direct action-reaction pair, correctly explained by Newton's third law." },
-      { q: "Assertion: When astronauts throw something in space, that object would continue moving in the same direction and with the same speed. Reason: The acceleration of an object produced by a net applied force is directly related to the magnitude of the force, and inversely related to the mass of the object.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 1, src: "EBD Foundation — Assertion & Reason", explanation: "The assertion is a case of Newton's first law (no force acting), while the reason describes Newton's second law — a true statement, but not the correct explanation for the assertion." },
-      { q: "When we sit on a chair, our body exerts a force downward. Assertion: That chair needs to exert an equal force upward or the chair will collapse. Reason: The third law says that for every action there is an equal and opposite reaction.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "The chair exerting an equal upward reaction force is a direct consequence of Newton's third law, correctly explaining the assertion." },
-      { q: "Assertion: The wings of a bird push air upwards and the air must be pushing the bird downwards. Reason: For every action there is an equal and opposite reaction.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "By Newton's third law, the bird pushing air downward (action) results in the air pushing the bird upward (reaction), correctly explaining the assertion." },
-      { q: "Assertion: When a firefly hits a bus, each of them exerts the same force. Reason: Firefly has more mass as compared to windshield.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 2, src: "EBD Foundation — Assertion & Reason", explanation: "By Newton's third law, the forces are indeed equal, but the reason is false — the firefly has far less mass than the windshield/bus." },
-      { q: "Assertion: Force exerted by the ground on the man moves him forward. Reason: It is a reactional force.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "The forward-driving force from the ground is indeed the reaction to the backward force the foot exerts on the ground, correctly explaining the assertion." },
-      { q: "Assertion: A quick collision between two bodies is more violent than a slow collision, even when the initial and the final velocities are identical. Reason: Because the rate of change of momentum, which determines the force, is greater in the first case.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "A shorter collision time means a higher rate of change of momentum, producing a larger force — correctly explaining why quicker collisions feel more violent." },
-      { q: "Assertion: Change in momentum is impulse. Reason: Impulse is the area between (F − t) graph and time axis.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "Impulse equals the area under the force-time graph, which by Newton's second law equals the change in momentum — correctly explaining the assertion." },
-      { q: "Assertion: A body is momentarily at rest when it reverses direction. Reason: A body cannot have acceleration if its velocity is zero at a given instant of time.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 2, src: "EBD Foundation — Assertion & Reason", explanation: "The assertion is true, but the reason is false — a body can have non-zero acceleration even when its instantaneous velocity is zero (e.g., a ball thrown upward at its highest point)." },
-      { q: "Assertion: While walking on ice, one should take small steps to avoid slipping. Reason: This is because smaller steps ensure smaller friction.", options: ["Both Assertion and Reason are correct and Reason is the correct explanation of Assertion","Both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","Assertion is correct but Reason is incorrect","Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "Smaller steps require a smaller horizontal (frictional) force to maintain balance, reducing the chance that the needed force exceeds the available friction and causes slipping." },
-      { q: "Newton's First Law is also called:", options: ["Law of Gravitation","Law of Inertia","Law of Action-Reaction","Law of Conservation"], ans: 1, src: "", explanation: "Newton's First Law — an object remains in its state unless acted upon by external force — is the Law of Inertia." },
-      { q: "A book rests on a table. The reaction to the weight of the book acts on:", options: ["The table surface","The Earth","The book itself","The air above"], ans: 1, src: "", explanation: "By Newton's 3rd law, book pulls Earth upward with the same force Earth pulls book down." },
-      { q: "Coefficient of static friction is always ___ kinetic friction.", options: ["Less than","Equal to","Greater than","Cannot compare"], ans: 2, src: "", explanation: "Static friction > kinetic friction. More force needed to start motion than to maintain it." }
+      { q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:", options: ["100 m/s²","0.25 m/s²","4 m/s²","25 m/s²"], ans: 2, src: "", explanation: "F = ma => a = F/m = 20/5 = 4 m/s²." }
     ]
   },
   {
     id: 'electrostatics', title: "Electrostatics", course: "12",
     desc: "Coulomb's law, field, potential",
     questions: [
-      { q: "Coulomb's law: F ∝ q₁q₂/r². If distance is doubled, force becomes:", options: ["F/4","F/2","4F","2F"], ans: 0, src: "", explanation: "F ∝ 1/r². If r→2r, force becomes F/4." },
-      { q: "Electric field lines always point from:", options: ["Negative to positive charge","Positive to negative charge","South to North pole","Inside conductor to outside"], ans: 1, src: "", explanation: "Field lines originate from positive charges and terminate at negative charges." },
-      { q: "Inside a conductor in electrostatic equilibrium, the electric field is:", options: ["Maximum","Minimum","Zero","Depends on shape"], ans: 2, src: "", explanation: "Inside a conductor, free charges redistribute until E = 0." },
-      { q: "Gauss's law: net flux through a closed surface equals:", options: ["Q_enc / ε₀","Q_enc × ε₀","ε₀ / Q_enc","Q_enc² / ε₀"], ans: 0, src: "", explanation: "Gauss's law: Φ = Q_enc/ε₀." }
+      { q: "Coulomb's law: F ∝ q₁q₂/r². If distance is doubled, force becomes:", options: ["F/4","F/2","4F","2F"], ans: 0, src: "", explanation: "F ∝ 1/r². If r doubles, force becomes F/4." }
     ]
   },
   {
     id: 'optics', title: "Ray Optics", course: "12",
     desc: "Mirrors, lenses, refraction",
     questions: [
-      { q: "The mirror formula is: 1/v + 1/u = ?", options: ["1/f","f","2/R","1/R"], ans: 0, src: "", explanation: "Mirror formula: 1/f = 1/v + 1/u." },
-      { q: "A convex lens has focal length 20 cm. Its power is:", options: ["0.2 D","5 D","20 D","0.05 D"], ans: 1, src: "", explanation: "P = 1/f(metres) = 1/0.20 = 5 D." },
-      { q: "Total internal reflection occurs when light travels from:", options: ["Rarer to denser medium","Denser to rarer medium","Any medium","In vacuum"], ans: 1, src: "", explanation: "TIR occurs when light goes from denser to rarer medium at angle >= critical angle." },
-      { q: "Rainbow is formed due to:", options: ["Reflection","Refraction only","Dispersion and TIR","Diffraction"], ans: 2, src: "", explanation: "Rainbow: refraction at entry/exit + TIR inside water droplets causes dispersion." }
+      { q: "The mirror formula is: 1/v + 1/u = ?", options: ["1/f","f","2/R","1/R"], ans: 0, src: "", explanation: "Mirror formula: 1/f = 1/v + 1/u." }
     ]
   },
   {
     id: 'motion-class9', title: "Motion", course: "9",
     desc: "Distance, displacement, speed, velocity, acceleration",
     questions: [
-      { q: "A body is said to be in uniform motion if it covers:", options: ["Equal distances in equal intervals of time","Unequal distances in equal intervals of time","Equal distances in unequal intervals of time","None of these"], ans: 0, src: "", explanation: "Uniform motion means the object covers equal distances in equal time intervals, no matter how small the intervals are." },
-      { q: "The SI unit of speed is:", options: ["km/h","m/s","m/s²","cm/s"], ans: 1, src: "", explanation: "The SI unit of speed is metre per second (m/s)." },
-      { q: "A car travels 100 km in 2 hours. Its average speed is:", options: ["25 km/h","50 km/h","100 km/h","200 km/h"], ans: 1, src: "", explanation: "Average speed = total distance / total time = 100/2 = 50 km/h." },
-      { q: "Acceleration is defined as the rate of change of:", options: ["Distance","Displacement","Velocity","Speed only"], ans: 2, src: "", explanation: "Acceleration = change in velocity / time taken." },
-      { q: "If a body's velocity-time graph is a straight line parallel to the time axis, the body has:", options: ["Zero acceleration","Uniform acceleration","Non-uniform acceleration","Increasing speed"], ans: 0, src: "", explanation: "A horizontal line on a v-t graph means velocity is constant, so acceleration = 0." }
+      { q: "The SI unit of speed is:", options: ["km/h","m/s","m/s²","cm/s"], ans: 1, src: "", explanation: "The SI unit of speed is m/s." }
     ]
   },
   {
     id: 'force-laws-class9', title: "Force and Laws of Motion", course: "9",
     desc: "Newton's laws, momentum, inertia",
     questions: [
-      { q: "The property of a body to resist change in its state of rest or motion is called:", options: ["Momentum","Inertia","Force","Acceleration"], ans: 1, src: "", explanation: "Inertia is the natural tendency of a body to resist any change in its state of rest or motion." },
-      { q: "Momentum is the product of:", options: ["Mass and velocity","Mass and acceleration","Force and time","Force and distance"], ans: 0, src: "", explanation: "Momentum (p) = mass (m) × velocity (v)." },
-      { q: "According to Newton's third law, action and reaction forces:", options: ["Act on the same body","Act on different bodies and are equal and opposite","Are never equal","Act in the same direction"], ans: 1, src: "", explanation: "Newton's third law states every action has an equal and opposite reaction, acting on two different bodies." },
-      { q: "A force of 10 N acts on a mass of 2 kg. The acceleration produced is:", options: ["2 m/s²","5 m/s²","20 m/s²","0.2 m/s²"], ans: 1, src: "", explanation: "a = F/m = 10/2 = 5 m/s²." }
+      { q: "Momentum is the product of:", options: ["Mass and velocity","Mass and acceleration","Force and time","Force and distance"], ans: 0, src: "", explanation: "Momentum p = m × v." }
     ]
-  },
-  {
-    id: 'gravitation-class9', title: "Gravitation", course: "9",
-    desc: "Universal law, free fall, weight, mass",
-    questions: [
-      { q: "The universal law of gravitation was given by:", options: ["Galileo","Newton","Einstein","Kepler"], ans: 1, src: "", explanation: "Sir Isaac Newton proposed the universal law of gravitation." },
-      { q: "The value of acceleration due to gravity on Earth's surface is approximately:", options: ["9.8 m/s²","6.7 m/s²","10.8 m/s²","8.9 m/s²"], ans: 0, src: "", explanation: "The standard value of g near Earth's surface is about 9.8 m/s²." },
-      { q: "Weight of an object is the:", options: ["Amount of matter in it","Force with which Earth attracts it","Same everywhere in the universe","Measured in kg"], ans: 1, src: "", explanation: "Weight = mass × g, the gravitational force exerted by Earth on the object." },
-      { q: "As distance between two objects increases, gravitational force between them:", options: ["Increases","Decreases","Remains same","Becomes zero instantly"], ans: 1, src: "", explanation: "F ∝ 1/r², so gravitational force decreases as distance increases." }
-    ]
-  },
-  {
-    id: 'light-class10', title: "Light — Reflection & Refraction", course: "10",
-    desc: "Mirrors, lenses, refraction, sign convention",
-    questions: [
-      { q: "The image formed by a plane mirror is:", options: ["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans: 1, src: "", explanation: "A plane mirror always forms a virtual, erect image of the same size as the object." },
-      { q: "The focal length of a concave mirror is related to radius of curvature R as:", options: ["f = R","f = 2R","f = R/2","f = R²"], ans: 2, src: "", explanation: "For spherical mirrors, f = R/2." },
-      { q: "A convex lens is also called a:", options: ["Diverging lens","Converging lens","Plane lens","Cylindrical lens"], ans: 1, src: "", explanation: "A convex lens converges parallel rays of light to a point, hence called a converging lens." },
-      { q: "The refractive index of a medium is defined as:", options: ["Speed of light in vacuum / speed of light in medium","Speed of light in medium / speed of light in vacuum","Speed of light in medium only","Angle of incidence / angle of refraction"], ans: 0, src: "", explanation: "Refractive index n = c/v, where c is speed of light in vacuum and v is speed in the medium." }
-    ]
-  },
-  {
-    id: 'electricity-class10', title: "Electricity", course: "10",
-    desc: "Ohm's law, resistance, circuits, power",
-    questions: [
-      { q: "Ohm's law states that V = ?", options: ["I/R","IR","R/I","I²R"], ans: 1, src: "", explanation: "Ohm's law: V = IR, at constant temperature." },
-      { q: "The SI unit of electrical resistance is:", options: ["Ampere","Volt","Ohm","Watt"], ans: 2, src: "", explanation: "Resistance is measured in Ohms (Ω)." },
-      { q: "When resistors are connected in series, the equivalent resistance is:", options: ["Less than the smallest resistance","Sum of individual resistances","Reciprocal of sum of reciprocals","Always zero"], ans: 1, src: "", explanation: "In series, R_eq = R1 + R2 + R3 + ..." },
-      { q: "Electric power is given by the formula:", options: ["P = VI","P = V/I","P = I/V","P = V + I"], ans: 0, src: "", explanation: "Electric power P = VI (Voltage × Current)." }
-    ]
-  },
-  {
-    id: 'magnetic-effects-class10', title: "Magnetic Effects of Electric Current", course: "10",
-    desc: "Magnetic field, right-hand rule, electromagnet, motor",
-    questions: [
-      { q: "The direction of magnetic field around a straight current-carrying conductor is given by:", options: ["Fleming's left-hand rule","Right-hand thumb rule","Lenz's law","Ohm's law"], ans: 1, src: "", explanation: "The right-hand thumb rule gives the direction of the magnetic field around a straight conductor." },
-      { q: "The force on a current-carrying conductor placed in a magnetic field is given by:", options: ["Fleming's left-hand rule","Fleming's right-hand rule","Right-hand thumb rule","Maxwell's rule"], ans: 0, src: "", explanation: "Fleming's left-hand rule gives the direction of force on a current-carrying conductor in a magnetic field." },
-      { q: "An electric motor converts:", options: ["Mechanical energy to electrical energy","Electrical energy to mechanical energy","Heat energy to electrical energy","Chemical energy to heat energy"], ans: 1, src: "", explanation: "An electric motor converts electrical energy into mechanical energy." },
-      { q: "The phenomenon of generating electric current from a changing magnetic field is called:", options: ["Electrolysis","Electromagnetic induction","Electroplating","Rectification"], ans: 1, src: "", explanation: "Electromagnetic induction is the production of induced current due to a changing magnetic field, discovered by Faraday." }
-    ]
-  },
-  {
-    id: 'units-dimensions-class9', title: "Units, Dimensions and Measurements", course: "9",
-    desc: "SI units, dimensional formulae, significant figures",
-    questions: [
-      { q: "The SI unit of mass is:", options: ["Gram","Kilogram","Pound","Milligram"], ans: 1, src: "", explanation: "The SI (International System) unit of mass is the kilogram (kg)." },
-      { q: "The dimensional formula of force is:", options: ["[MLT⁻¹]","[MLT⁻²]","[ML²T⁻²]","[ML⁻¹T⁻²]"], ans: 1, src: "", explanation: "Force = mass × acceleration = M × LT⁻² = [MLT⁻²]." },
-      { q: "Which of the following systems of units is not based on units of mass, length and time alone?", options: ["SI","MKS","CGS","FPS"], ans: 0, src: "S Chand Foundation", explanation: "SI has 7 base units (includes current, temperature, etc.), while MKS, CGS, FPS are based only on mass, length and time." },
-      { q: "Unit of latent heat is:", options: ["J kg⁻¹","J mol⁻¹","N kg⁻¹","N mol⁻¹"], ans: 0, src: "S Chand Foundation", explanation: "Latent heat = heat energy / mass, so its unit is J kg⁻¹." },
-      { q: "Which of the following is not a unit of time?", options: ["Solar year","Tropical year","Leap year","Light year"], ans: 3, src: "S Chand Foundation", explanation: "Light year is a unit of distance (distance light travels in one year), not time." },
-      { q: "Dyne-sec is the unit of:", options: ["momentum","force","work","angular momentum"], ans: 0, src: "S Chand Foundation", explanation: "Force × time = impulse = change in momentum. Dyne × sec is a unit of momentum." },
-      { q: "The ampere-second is a unit of:", options: ["current","charge","energy","power"], ans: 1, src: "S Chand Foundation", explanation: "Charge Q = I × t, so ampere-second is a unit of charge (equivalent to coulomb)." },
-      { q: "The SI unit of magnetic flux is:", options: ["gauss","weber","oersted","ampere/metre"], ans: 1, src: "S Chand Foundation", explanation: "Magnetic flux is measured in weber (Wb) in SI units." },
-      { q: "Unit of specific resistance (resistivity) is:", options: ["ohm/m²","ohm m³","ohm-m","ohm/m"], ans: 2, src: "S Chand Foundation", explanation: "Resistivity ρ = RA/l, giving units of ohm-metre (Ω·m)." },
-      { q: "Dimensions of impulse are:", options: ["[MLT⁻¹]","[MLT²]","[MT⁻²]","[ML⁻¹T⁻³]"], ans: 0, src: "S Chand Foundation", explanation: "Impulse = Force × time = (MLT⁻²)(T) = MLT⁻¹, same as momentum." },
-      { q: "Which one is dimensionless?", options: ["force/acceleration","velocity/acceleration","volume/area","energy/work"], ans: 3, src: "S Chand Foundation", explanation: "Energy and work have identical dimensions, so their ratio is dimensionless." },
-      { q: "One second is defined to be equal to:", options: ["1650763.73 periods of the Krypton clock","652189.63 periods of the Krypton clock","165076.73 periods of the Cesium clock","9192631770 periods of the Cesium clock"], ans: 3, src: "S Chand Foundation", explanation: "One second is defined as 9,192,631,770 periods of radiation from the Cesium-133 atom's ground state transition." },
-      { q: "The dimensions of electromotive force in terms of current A are:", options: ["[MT⁻²A⁻²]","[ML²T⁻²A²]","[ML²T⁻²A⁻²]","[ML²T⁻³A⁻¹]"], ans: 3, src: "S Chand Foundation", explanation: "EMF (voltage) = Work/Charge = (ML²T⁻²)/(AT) = ML²T⁻³A⁻¹." },
-      { q: "The expression [ML⁻¹T⁻²] does not represent:", options: ["pressure","power","stress","Young's modulus"], ans: 1, src: "S Chand Foundation", explanation: "Pressure, stress and Young's modulus all have dimensions [ML⁻¹T⁻²] (force/area). Power has dimensions [ML²T⁻³]." },
-      { q: "Distance travelled: S = A(t+B) + Ct². The dimensions of B are:", options: ["[M⁰LT⁻¹]","[M⁰L⁰T]","[M⁰L⁻¹T²]","[M⁰L²T²]"], ans: 1, src: "S Chand Foundation", explanation: "B is added to t inside the bracket, so B must have the same dimension as time: [M⁰L⁰T]." },
-      { q: "Subtract 0.2 J from 7.26 J and express the result with correct significant figures:", options: ["7.1 J","7.06 J","7.0 J","7 J"], ans: 0, src: "S Chand Foundation", explanation: "0.2 has only 1 decimal place, so the result must be rounded to 1 decimal place: 7.26 - 0.2 = 7.06 → 7.1 J." },
-      { q: "Multiply 107.88 by 0.610 and express the result with correct significant figures:", options: ["65.808","65.807","65.81","65.8"], ans: 3, src: "S Chand Foundation", explanation: "0.610 has 3 significant figures, so the answer is rounded to 3 sig figs: 65.8068 → 65.8." },
-      { q: "When 97.52 is divided by 2.54, the correct result is:", options: ["38.3937","38.394","38.39","38.4"], ans: 3, src: "S Chand Foundation", explanation: "2.54 has 3 significant figures, so the result is rounded to 3 sig figs: 38.4." },
-      { q: "In a given system of units, the ratio of the unit of volume to the area gives the unit of:", options: ["mass","length","time","temperature"], ans: 1, src: "S Chand Foundation", explanation: "Volume/Area = L³/L² = L, i.e., length." },
-      { q: "Which of the following is not a derived quantity?", options: ["The floor area of a room","The height of a room","The volume of air in a room","The weight of air in a room"], ans: 1, src: "S Chand Foundation", explanation: "Height is a length, which is a fundamental (base) quantity. Area, volume and weight are all derived quantities." },
-      { q: "The volume of a single liquid drop can be measured using a:", options: ["measuring jar","measuring flask","pipette","burette"], ans: 2, src: "S Chand Foundation", explanation: "A pipette can deliver and measure a single small drop of liquid precisely, unlike jars or flasks." },
-      { q: "Which of the following is a derived unit?", options: ["Metre","Kilogram","Newton","Second"], ans: 2, src: "", explanation: "Newton (unit of force) is derived from base units kg, m, s: N = kg·m/s²." },
-      { q: "The number of significant figures in 0.00420 is:", options: ["2","3","5","6"], ans: 1, src: "", explanation: "Leading zeros are not significant. 4, 2, 0 are significant, so there are 3 significant figures." },
-      { q: "1 nanometre is equal to:", options: ["10⁻⁶ m","10⁻⁹ m","10⁻¹² m","10⁻³ m"], ans: 1, src: "", explanation: "The prefix 'nano' represents 10⁻⁹, so 1 nm = 10⁻⁹ m." }
-    ]
-  },
-  {
-    id: 'work-energy-power-class9', title: "Work, Energy and Power", course: "9",
-    desc: "Work done, kinetic & potential energy, power, conservation",
-    questions: [
-      { q: "Work is said to be done when:", options: ["A force acts on a body","A body moves","A force acts and the body moves in the direction of force","A body remains at rest"], ans: 2, src: "", explanation: "Work is done only when a force causes displacement in the direction of the applied force. W = Fd cosθ." },
-      { q: "The SI unit of work and energy is:", options: ["Watt","Joule","Newton","Pascal"], ans: 1, src: "", explanation: "Work and energy share the same SI unit, the Joule (J), since energy is the capacity to do work." },
-      { q: "Kinetic energy of a body of mass m moving with velocity v is:", options: ["mv","mv²","½mv²","2mv²"], ans: 2, src: "", explanation: "Kinetic energy KE = ½mv², where m is mass and v is velocity." },
-      { q: "Power is defined as:", options: ["Rate of doing work","Total work done","Force applied per unit area","Energy stored in a body"], ans: 0, src: "", explanation: "Power = Work done / Time taken, i.e., the rate at which work is done." },
-      { q: "According to the law of conservation of energy, the total energy of an isolated system:", options: ["Keeps increasing","Keeps decreasing","Remains constant","Becomes zero eventually"], ans: 2, src: "", explanation: "Energy can neither be created nor destroyed; it only changes form. Total energy of an isolated system remains constant." }
-    ]
-  },
-  {
-    id: 'gravitation-full-exercise', title: "Gravitation — Full Exercise", course: "12",
-    desc: "EBD Foundation Guide — Single Option Correct, Assertion-Reason, Passage & Advanced Exercise",
-    questions: [
-      { q: "The value of the universal gravitational constant:", options: ["changes with change of place","does not change from place to place","becomes more at night","becomes more during day"], ans: 1, src: "EBD Foundation", explanation: "G is a universal constant — it has the same value everywhere in the universe, independent of location, time, or the medium." },
-      { q: "Two iron and wooden balls identical in size are released from the same height in vacuum. The time taken by them to reach the ground are:", options: ["zero","not equal","roughly equal","exactly equal"], ans: 3, src: "EBD Foundation", explanation: "In vacuum, there's no air resistance, so all bodies fall with the same acceleration g regardless of mass — they reach the ground at exactly the same time." },
-      { q: "Two stars of masses m and 5m are 3000 parsec apart. If the force on the large one is F, the force on the small star is:", options: ["F/25","F/5","F","5F"], ans: 2, src: "EBD Foundation", explanation: "By Newton's third law, the gravitational force each star exerts on the other is equal in magnitude — so the force on the small star is also F." },
-      { q: "What is the acceleration of a meteor passing the earth at an altitude of 55000 km?", options: ["0.11 m/s²","11 m/s²","1.11 m/s²","5.18 m/s²"], ans: 0, src: "EBD Foundation", explanation: "Distance from Earth's centre = 6400+55000 = 61400 km. g = GM/r² ≈ (3.986×10¹⁴)/(6.14×10⁷)² ≈ 0.11 m/s²." },
-      { q: "Determine the gravitational attraction between two asteroids separated by 22000 meters if their masses are 450000 kg and 700000 kg, respectively.", options: ["1.2 × 10⁻⁶ N","1.2 × 10⁻⁸ N","4.3 × 10⁻⁸ N","2.1 × 10⁻⁶ N"], ans: 2, src: "EBD Foundation", explanation: "F = Gm₁m₂/r² = (6.67×10⁻¹¹ × 450000 × 700000)/(22000)² ≈ 4.3×10⁻⁸ N." },
-      { q: "The radius of the earth is 6400 km. What is its mass?", options: ["6.0 × 10²⁴ kg","5.0 × 10²⁴ kg","1.0 × 10²² kg","6.5 × 10¹⁴ kg"], ans: 0, src: "EBD Foundation", explanation: "Using M = gR²/G with g=9.8, R=6.4×10⁶ m: M = 9.8×(6.4×10⁶)²/(6.67×10⁻¹¹) ≈ 6.0×10²⁴ kg." },
-      { q: "How much is the gravitational force that keeps an artificial satellite of mass 3500 kg in orbit around the earth at an altitude of 4200 km?", options: ["12000 N","12500 N","13000 N","10000 N"], ans: 1, src: "EBD Foundation", explanation: "Orbital radius r = 6400+4200 = 10600 km. g at this altitude = 9.8×(6400/10600)² ≈ 3.57 m/s². F = m×g ≈ 3500×3.57 ≈ 12500 N." },
-      { q: "The radius of earth is about 6400 km. and that of Mars is about 3200 km. The mass of earth is about 10 times the mass of Mars. An object weighs 200 N on earth's surface. Then its weight on the surface of Mars will be:", options: ["8 N","20 N","40 N","80 N"], ans: 3, src: "EBD Foundation", explanation: "g_Mars/g_Earth = (M_Mars/R_Mars²)/(M_Earth/R_Earth²) = (1/10)×(6400/3200)² = 0.4. Weight on Mars = 200×0.4 = 80 N." },
-      { q: "The value of g is maximum:", options: ["at poles of earth","at equator of earth","in a mine","at a high hill"], ans: 0, src: "EBD Foundation", explanation: "Due to Earth's oblate shape and rotation, g is maximum at the poles and minimum at the equator." },
-      { q: "Let us say F1 is the magnitude of the force exerted on sun by earth and F2 is the magnitude of force exerted on earth by sun, then:", options: ["F1 > F2","F1 = F2","F1 < F2","None of above"], ans: 1, src: "EBD Foundation", explanation: "By Newton's third law, the forces the two bodies exert on each other are always equal in magnitude." },
-      { q: "The gravitational force of attraction between two bodies is F Newtons. If the mass of each body and the distance between them are doubled, then the gravitational force between them in Newton is:", options: ["16F","F/16","F/4","F"], ans: 3, src: "EBD Foundation", explanation: "F' = G(2m)(2m)/(2d)² = 4Gm²/4d² = Gm²/d², which is identical to the original force F." },
-      { q: "If the earth stops rotating about its axis, the acceleration due to gravity will remain unchanged at:", options: ["equator","latitude 45°","latitude 60°","poles"], ans: 3, src: "EBD Foundation", explanation: "At the poles, rotation contributes no centrifugal correction to g, so stopping rotation doesn't change g there." },
-      { q: "If a man weighs 60 kg on the surface of the earth, the height above the surface of the earth where his weight is 30 kg is:", options: ["0.41 R","√2 R","R/√2","R/2"], ans: 0, src: "EBD Foundation", explanation: "Setting W/W₀ = R²/(R+h)² = 1/2 gives (R+h) = R√2, so h = R(√2−1) ≈ 0.41R." },
-      { q: "An object weighs 10N when measured on the surface of earth. What should be its weight on moon?", options: ["1.67 N","4.18 N","2.20 N","16.7 N"], ans: 0, src: "EBD Foundation", explanation: "Gravity on the moon is about 1/6th that on Earth: 10/6 ≈ 1.67 N." },
-      { q: "A hypothetical planet has a mass of half that of the Earth and a radius of twice that of the Earth. What is the acceleration due to gravity on the planet in terms of g?", options: ["g","g/2","g/4","g/8"], ans: 3, src: "EBD Foundation", explanation: "g_planet = G(M/2)/(2R)² = GM/(8R²) = g/8." },
-      { q: "The force of gravitation between objects of ordinary size kept at a distance of 1 metre from each other is of the order of?", options: ["10 N","100 N","10⁻⁸ N","10⁻¹¹ N"], ans: 3, src: "EBD Foundation", explanation: "For everyday-sized masses (~1 kg each) at 1 m apart, F = G×1×1/1² = 6.67×10⁻¹¹ N — of the order 10⁻¹¹ N." },
-      { q: "A ball is thrown vertically upwards and attains a maximum height of 100 m. It was thrown with a speed of:", options: ["9.8 m/s","44.3 m/s","19.6 m/s","98 m/s"], ans: 1, src: "EBD Foundation", explanation: "v = √(2gh) = √(2×9.8×100) = √1960 ≈ 44.3 m/s." },
-      { q: "A stone is thrown vertically upwards and caught at the point of projection after 10 seconds. The time taken by the stone to reach the highest point is:", options: ["5 sec.","10 sec.","9.8 sec.","4.9 sec."], ans: 0, src: "EBD Foundation", explanation: "The time to rise equals the time to fall, so the time to the highest point is half the total flight time = 5 s." },
-      { q: "A stone is dropped from the roof of a house and is found to reach the ground in one second. The height of the house is:", options: ["4.9 m","9.8 m","12 m","19.6 m"], ans: 0, src: "EBD Foundation", explanation: "h = ½gt² = ½×9.8×1² = 4.9 m." },
-      { q: "A ball of relative density 0.8 falls into water from a height of 2m. The depth to which the ball will sink is:", options: ["8 m","2 m","6 m","4 m"], ans: 0, src: "EBD Foundation", explanation: "Speed entering water: v²=2gh=39.2. In water, net retarding acceleration a'=g(1/0.8−1)=2.45 m/s². Depth d=v²/(2a')=39.2/4.9=8 m." },
-      { q: "Two point masses each equal to 1 kg attract one another with a force of 10⁻¹⁰ N. The distance between the two point masses is (G = 6.6 × 10⁻¹¹ MKS units):", options: ["8 cm","0.8 cm","80 cm","0.08 cm"], ans: 2, src: "EBD Foundation", explanation: "r² = Gm₁m₂/F = (6.6×10⁻¹¹×1×1)/10⁻¹⁰ = 0.66 m². r = √0.66 ≈ 0.81 m ≈ 80 cm." },
-      { q: "According to Newton's Universal Law of Gravitation:", options: ["F = GM/r²","F = GMm/R²","F = GM/R","F = GMm/R³"], ans: 1, src: "EBD Foundation", explanation: "Newton's law of gravitation states F = GMm/R², where M and m are the two interacting masses." },
-      { q: "The mass of man on earth, if g is 10 m/s² is (from the Passage: a man weighs 600 N on earth, and his weight on the moon is 100 N):", options: ["60 kg","10 kg","6000 kg","1000 kg"], ans: 0, src: "EBD Foundation — Passage", explanation: "Mass = Weight/g = 600/10 = 60 kg." },
-      { q: "The mass of man on moon is (from the Passage: a man weighs 600 N on earth, and his weight on the moon is 100 N):", options: ["60 kg","10 kg","6000 kg","1000 kg"], ans: 0, src: "EBD Foundation — Passage", explanation: "Mass is a constant quantity of matter and does not change with location — it remains 60 kg on the moon too." },
-      { q: "Acceleration due to gravity on moon is (from the Passage: a man weighs 600 N on earth, and his weight on the moon is 100 N):", options: ["10 m/s²","9.8 m/s²","1.66 m/s²","1 m/s²"], ans: 2, src: "EBD Foundation — Passage", explanation: "g_moon = Weight_moon/mass = 100/60 ≈ 1.66 m/s²." },
-      { q: "Assertion: The value of acceleration due to gravity does not depend upon mass of the body. Reason: Acceleration due to gravity is a constant quantity.", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 2, src: "EBD Foundation — Assertion & Reason", explanation: "The assertion is true (g is independent of the falling body's own mass), but the reason is false — g actually varies with altitude, depth, and latitude, so it isn't truly constant." },
-      { q: "Assertion: When distance between two bodies is doubled and also mass of each body is also doubled, gravitational force between them remains the same. Reason: According to Newton's law of gravitation, force is directly proportional to mass of bodies and inversely proportional to distance between them.", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "F' = G(2m)(2m)/(2d)² = Gm²/d² = F, confirming the assertion. The reason correctly describes the proportionalities behind Newton's law that explain this result." },
-      { q: "Assertion: Newton solved the apple-Earth problem using Shell theorem. Reason: Newton's law of gravitation applies strictly to particles.", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 0, src: "EBD Foundation — Assertion & Reason", explanation: "Since the gravitation law strictly applies to point particles, Newton needed the Shell theorem to treat the extended spherical Earth as an equivalent point mass — correctly explaining the assertion." },
-      { q: "Assertion: According to Newton's law of motion, if earth attracts a stone towards itself, then the stone should also attract the earth. Reason: Earth attracts towards stone but with a very small acceleration.", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 1, src: "EBD Foundation — Assertion & Reason", explanation: "Both statements are true — the mutual attraction follows from Newton's third law, while the reason merely explains why we don't observe the Earth's tiny motion, not why the attraction itself exists." },
-      { q: "Assertion: Whether the object is falling towards or moving away from earth, the direction of acceleration is always towards earth. Reason: The value of 'g' is 9.8 m/s².", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 1, src: "EBD Foundation — Assertion & Reason", explanation: "Both statements are true, but the reason (the numeric value of g) doesn't explain why the acceleration direction is always toward Earth — that's because gravity is always attractive." },
-      { q: "Assertion: The value of 'g' is greater at the equator than at the poles. Reason: Radius is more at the equator than at the poles.", options: ["If both Assertion and Reason are correct and Reason is the correct explanation of Assertion","If both Assertion and Reason are correct, but Reason is not the correct explanation of Assertion","If Assertion is correct but Reason is incorrect","If Assertion is incorrect but Reason is correct"], ans: 3, src: "EBD Foundation — Assertion & Reason", explanation: "The assertion is false — g is actually greater at the poles than the equator. The reason (equatorial radius is larger) is true and is in fact part of why g is smaller at the equator." },
-      { q: "An astronaut in a spacecraft goes into circular orbit above a strange planet that has a radius of 2100 km. The craft is going at 1200 meters per second at an altitude of 6500 km. The astronaut's 60 kg life-support pack — what will it weigh on the surface of the planet?", options: ["150 N","170 N","90 N","190 N"], ans: 1, src: "EBD Foundation — Advanced Exercise", explanation: "Orbital radius = 2100+6500 = 8600 km. g_orbit = v²/r = 1200²/8.6×10⁶ ≈ 0.167 m/s². g_surface = g_orbit×(r_orbit/R_planet)² ≈ 2.81 m/s². Weight = 60×2.81 ≈ 170 N." },
-      { q: "When a satellite is in the synchronous orbit above the equator, it stays in one place with reference to the earth by making each revolution in just the same time as it takes the earth to rotate once. What is the altitude of the synchronous orbit?", options: ["20000 km","30000 km","32500 km","36000 km"], ans: 3, src: "EBD Foundation — Advanced Exercise", explanation: "The geostationary orbit altitude is approximately 35786 km, closest to 36000 km." },
-      { q: "If G is gravitational constant and R is the radius of the earth, then acceleration due to gravity 'g' and the mean density of earth D are related by the equation:", options: ["D = (g/G)(4πR³/3)","D = (g/G) / ((4/3)πR)","D = (g/G)(4/3 πR²)","D = (g/G) / ((4/3)πR³)"], ans: 1, src: "EBD Foundation — Advanced Exercise", explanation: "From g = GM/R² and M = (4/3)πR³D, we get g = (4/3)πGRD, so D = (g/G) / ((4/3)πR)." },
-      { q: "A balloon filled with CO2 released on earth would (neglect viscosity of air):", options: ["climb with an acceleration 9.8 m/s²","fall with an acceleration 9.8 m/s²","fall with a constant acceleration 3.4 m/s²","fall with acceleration and then would attain a constant velocity"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "Since CO2 is denser than air, the balloon sinks, but the buoyant force from the surrounding air reduces its net downward acceleration below g." },
-      { q: "If the density of the earth is doubled keeping its radius constant, then acceleration due to gravity (present value 9.8 m/s²) will be:", options: ["2.45 m/s²","4.9 m/s²","9.8 m/s²","19.6 m/s²"], ans: 3, src: "EBD Foundation — Advanced Exercise", explanation: "Since g = (4/3)πGRD is directly proportional to density D, doubling D (with R constant) doubles g to 19.6 m/s²." },
-      { q: "The mass of the moon is 1/81 of earth's mass and its radius 1/4 that of the earth. If the escape velocity from the earth's surface is 11.2 km/sec, its value for the moon will be:", options: ["0.14 km s⁻¹","0.5 km s⁻¹","2.5 km s⁻¹","5.0 km s⁻¹"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "v_moon/v_earth = √[(M_moon/M_earth)/(R_moon/R_earth)] = √[(1/81)/(1/4)] = 2/9. v_moon = 11.2×2/9 ≈ 2.5 km/s." },
-      { q: "Two bodies of masses 10 kg and 100 kg are separated by a distance of 2m (G = 6.67 × 10⁻¹¹ Nm² kg⁻²). The gravitational potential at the mid-point on the line joining the two is:", options: ["7.3 × 10⁻⁷ J/kg","7.3 × 10⁻⁹ J/kg","−7.3 × 10⁻⁹ J/kg","7.3 × 10⁻⁶ J/kg"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "V = −G(m1/r1 + m2/r2) = −6.67×10⁻¹¹×(10/1 + 100/1) = −6.67×10⁻¹¹×110 ≈ −7.3×10⁻⁹ J/kg." },
-      { q: "The ratio of the radii of the planets R1 and R2 is k. The ratio of the acceleration due to gravity is r. The ratio of the escape velocities from these planets is:", options: ["kr","√(kr)","√(k/r)","√(r/k)"], ans: 1, src: "EBD Foundation — Advanced Exercise", explanation: "v_esc = √(2gR), so v1/v2 = √[(g1/g2)(R1/R2)] = √(r×k) = √(kr)." },
-      { q: "The escape velocity of a body depends upon mass as:", options: ["m⁰","m¹","m²","m³"], ans: 0, src: "EBD Foundation — Advanced Exercise", explanation: "v_esc = √(2GM/R) depends only on the mass and radius of the planet, not on the mass of the escaping body — hence it's independent (m⁰)." },
-      { q: "The time period of an earth satellite in circular orbit is independent of:", options: ["both the mass and radius of the orbit","the radius of its orbit","the mass of the satellite","neither the mass of the satellite nor the radius of its orbit"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "By Kepler's third law, T² ∝ r³/GM (where M is the central body's mass), which does not depend on the satellite's own mass." },
-      { q: "For a satellite moving in an orbit around the earth, the ratio of kinetic energy to potential energy is:", options: ["1/√2","2","1/2","√2"], ans: 2, src: "EBD Foundation — Advanced Exercise", explanation: "KE = GMm/2r and |PE| = GMm/r, so the ratio of their magnitudes KE/|PE| = 1/2." }
-    ]
-  },
-  {
-    id: 'hydrostatics-class9', title: "Hydrostatics", course: "9",
-    desc: "Pressure, buoyancy, Archimedes' principle, floatation",
-    questions: [
-      { q: "Pressure is defined as:", options: ["Force × Area","Force / Area","Mass / Volume","Force × Distance"], ans: 1, src: "", explanation: "Pressure = Force / Area, measured in Pascals (Pa) in SI units." },
-      { q: "The upward force experienced by a body immersed in a fluid is called:", options: ["Gravitational force","Buoyant force","Normal force","Frictional force"], ans: 1, src: "", explanation: "The buoyant force (upthrust) is the upward force a fluid exerts on a submerged or floating body." },
-      { q: "Archimedes' principle states that the buoyant force on a body equals:", options: ["The weight of the body","The weight of fluid displaced by the body","The volume of the body","The density of the fluid"], ans: 1, src: "", explanation: "Archimedes' principle: buoyant force = weight of the fluid displaced by the submerged part of the body." },
-      { q: "A body floats in a liquid if its density is:", options: ["Greater than the liquid's density","Equal to the liquid's density only","Less than or equal to the liquid's density","Independent of the liquid's density"], ans: 2, src: "", explanation: "A body floats when its average density is less than or equal to the density of the liquid it is placed in." },
-      { q: "Pressure exerted by a liquid column depends on:", options: ["Shape of the container","Height of the liquid column and its density","Surface area of the container base","Total mass of container"], ans: 1, src: "", explanation: "Liquid pressure P = hρg, depending only on height (h) and density (ρ), not on the shape of the container." }
-    ]
-  },
-  {
-    id: 'elasticity-wave-sound-class9', title: "Elasticity, Wave and Sound", course: "9",
-    desc: "Elastic behaviour, wave motion, sound properties",
-    questions: [
-      { q: "The property of a material to regain its original shape after removal of deforming force is called:", options: ["Plasticity","Elasticity","Ductility","Malleability"], ans: 1, src: "", explanation: "Elasticity is the property by which a body regains its original shape and size once the deforming force is removed." },
-      { q: "Sound waves are an example of:", options: ["Transverse waves","Longitudinal waves","Electromagnetic waves","Standing waves only"], ans: 1, src: "", explanation: "Sound travels as longitudinal waves, where particles vibrate parallel to the direction of wave propagation." },
-      { q: "The speed of sound is generally the fastest in:", options: ["Vacuum","Gases","Liquids","Solids"], ans: 3, src: "", explanation: "Sound travels fastest in solids due to closer molecular packing, which allows faster transfer of vibrations." },
-      { q: "The number of vibrations per second of a wave is called its:", options: ["Amplitude","Wavelength","Frequency","Time period"], ans: 2, src: "", explanation: "Frequency is defined as the number of complete oscillations or vibrations per second, measured in Hertz (Hz)." },
-      { q: "The loudness of sound depends mainly on its:", options: ["Frequency","Wavelength","Amplitude","Speed"], ans: 2, src: "", explanation: "Loudness of a sound is directly related to the amplitude of the sound wave — greater amplitude means louder sound." }
-    ]
-  },
-  {
-    id: 'basic-maths-class10', title: "Basic Mathematics", course: "10",
-    desc: "Algebra, trigonometry & geometry tools for physics problems",
-    questions: [
-      { q: "The value of sin 90° is:", options: ["0","0.5","1","Undefined"], ans: 2, src: "", explanation: "sin 90° = 1, a standard trigonometric value used frequently in physics problems." },
-      { q: "If a right triangle has perpendicular p, base b, and hypotenuse h, then tan θ equals:", options: ["p/h","b/h","p/b","h/p"], ans: 2, src: "", explanation: "tan θ = opposite side / adjacent side = perpendicular / base = p/b." },
-      { q: "The quadratic formula for ax² + bx + c = 0 gives x equal to:", options: ["(-b ± √(b²-4ac)) / 2a","(-b ± √(b²+4ac)) / 2a","(b ± √(b²-4ac)) / a","(-b ± √(4ac-b²)) / 2a"], ans: 0, src: "", explanation: "The quadratic formula is x = [-b ± √(b² - 4ac)] / 2a, used to solve any quadratic equation." },
-      { q: "Which trigonometric identity is always true?", options: ["sin²θ + cos²θ = 0","sin²θ - cos²θ = 1","sin²θ + cos²θ = 1","sinθ × cosθ = 1"], ans: 2, src: "", explanation: "The fundamental trigonometric identity is sin²θ + cos²θ = 1, valid for all angles θ." },
-      { q: "The slope of a straight line y = mx + c is given by:", options: ["c","m","x/y","1/m"], ans: 1, src: "", explanation: "In the equation y = mx + c, m represents the slope of the line and c is the y-intercept." }
-    ]
-  },
-  {
-    id: 'human-eye-optical-class10', title: "Human Eye and Optical Instruments", course: "10",
-    desc: "Eye defects, correction lenses, microscope, telescope",
-    questions: [
-      { q: "The eye lens is a:", options: ["Concave lens","Convex lens","Plano-concave lens","Cylindrical lens"], ans: 1, src: "", explanation: "The human eye lens is a convex lens that focuses light onto the retina." },
-      { q: "Myopia (short-sightedness) is corrected using a:", options: ["Convex lens","Concave lens","Cylindrical lens","Bifocal lens only"], ans: 1, src: "", explanation: "Myopia occurs when the image forms in front of the retina; a concave (diverging) lens corrects this." },
-      { q: "The least distance of distinct vision for a normal human eye is:", options: ["10 cm","25 cm","50 cm","100 cm"], ans: 1, src: "", explanation: "For a normal eye, the least distance of distinct vision (near point) is conventionally taken as 25 cm." },
-      { q: "Hypermetropia (long-sightedness) is corrected using a:", options: ["Concave lens","Convex lens","Plane mirror","Concave mirror"], ans: 1, src: "", explanation: "Hypermetropia occurs when the image forms behind the retina; a convex (converging) lens corrects this." },
-      { q: "A simple microscope uses:", options: ["A concave mirror","A single convex lens","Two concave lenses","A prism"], ans: 1, src: "", explanation: "A simple microscope (magnifying glass) consists of a single convex lens of short focal length." }
-    ]
-  },
-  {
-    id: 'heat-class10', title: "Heat", course: "10",
-    desc: "Temperature, specific heat, latent heat, calorimetry",
-    questions: [
-      { q: "Heat is a form of:", options: ["Force","Energy","Mass","Pressure"], ans: 1, src: "", explanation: "Heat is a form of energy that flows from a hotter body to a colder body due to temperature difference." },
-      { q: "The SI unit of heat energy is:", options: ["Calorie","Joule","Kelvin","Watt"], ans: 1, src: "", explanation: "Although calorie is a common unit, the SI unit of heat energy is the Joule (J)." },
-      { q: "Specific heat capacity of a substance is defined as the heat required to raise the temperature of:", options: ["1 g of substance by 1°C","1 kg of substance by 1°C","Any mass by 1°C","1 kg of substance by 100°C"], ans: 1, src: "", explanation: "Specific heat capacity is the amount of heat needed to raise the temperature of 1 kg of a substance by 1°C (or 1 K)." },
-      { q: "Latent heat of fusion is the heat required to:", options: ["Raise temperature of a solid","Convert a solid to liquid at constant temperature","Convert a liquid to gas","Cool a liquid to solid"], ans: 1, src: "", explanation: "Latent heat of fusion is the heat absorbed to change a substance from solid to liquid state without a change in temperature." },
-      { q: "Heat transfer through direct contact of particles is called:", options: ["Radiation","Convection","Conduction","Insulation"], ans: 2, src: "", explanation: "Conduction is the transfer of heat through a medium via particle collisions, without the particles themselves moving from place to place." }
-    ]
-  },
+  }
 ];
 
-const QUESTION_TIME = 60; // seconds per question
-const RING_CIRCUMFERENCE = 301.6; // 2 * PI * 48
-
+const QUESTION_TIME = 60;
 let currentQuiz = null;
 let currentQIdx = 0;
 let score = 0;
@@ -1300,23 +809,45 @@ let timerInterval = null;
 let timeLeft = QUESTION_TIME;
 let dotStates = [];
 
-/* ── BUILD SELECTOR ── */
-function buildSelector() {
+function buildSelector(filteredList = QUIZZES) {
   const grid = document.getElementById('selectorGrid');
-  grid.innerHTML = QUIZZES.map(q => `
-    <button class="sel-card" onclick="startQuiz('${q.id}')">
-      <span class="sel-card-tag">Class ${q.course}</span>
-      <h4>${q.title}</h4>
-      <p>${q.desc}</p>
-      <div class="sel-meta">
-        <span>📋 ${q.questions.length} Questions</span>
-        <span>⏱ ${QUESTION_TIME}s / question</span>
+  grid.innerHTML = filteredList.map(q => {
+    const iconData = ICON_MAP[q.id] || { icon: '📝', bg: '#f3f4f6', color: '#374151' };
+    return `
+      <div class="sel-card">
+        <div>
+          <div class="card-top">
+            <div class="card-icon-box" style="background:${iconData.bg}; color:${iconData.color};">
+              ${iconData.icon}
+            </div>
+            <div class="card-details">
+              <span class="sel-card-tag tag-class-${q.course}">CLASS ${q.course}</span>
+              <h4>${q.title}</h4>
+            </div>
+          </div>
+          <p>${q.desc}</p>
+        </div>
+        <div class="card-bottom">
+          <div class="sel-meta">
+            <span>📋 ${q.questions.length} Questions</span>
+            <span>⏱ 60s / question</span>
+          </div>
+          <button class="btn-start-quiz" onclick="startQuiz('${q.id}')">Start Quiz →</button>
+        </div>
       </div>
-    </button>
-  `).join('');
+    `;
+  }).join('');
 }
 
-/* ── START QUIZ ── */
+function filterQuizzes() {
+  const val = document.getElementById('classFilter').value;
+  if (val === 'all') {
+    buildSelector(QUIZZES);
+  } else {
+    buildSelector(QUIZZES.filter(q => q.course === val));
+  }
+}
+
 function startQuiz(id) {
   currentQuiz = QUIZZES.find(q => q.id === id);
   currentQIdx = 0;
@@ -1337,32 +868,23 @@ function startQuiz(id) {
   renderQuestion();
 }
 
-/* ── RENDER QUESTION ── */
 function renderQuestion() {
   const q = currentQuiz.questions[currentQIdx];
   const total = currentQuiz.questions.length;
   answered = false;
 
-  // Update counters
   document.getElementById('examQCount').textContent = `Q ${currentQIdx+1} of ${total}`;
   document.getElementById('examScoreLive').textContent = `Score: ${score}`;
   document.getElementById('sheetQBadge').textContent = `Q ${currentQIdx+1} / ${total}`;
-  document.getElementById('qStamp').textContent = currentQIdx + 1;
   document.getElementById('examProgressFill').style.width = ((currentQIdx / total) * 100) + '%';
 
-  // Source tag
   const srcEl = document.getElementById('qSourceTag');
-  srcEl.innerHTML = q.src
-    ? `<div class="q-source-tag">⭐ ${q.src}</div>`
-    : '';
+  srcEl.innerHTML = q.src ? `<div class="q-source-tag">📌 ${q.src}</div>` : '';
 
-  // Question text
   document.getElementById('qText').textContent = q.q;
 
-  // Navigator dots
   buildDots();
 
-  // Options
   const opts = document.getElementById('optionsContainer');
   opts.innerHTML = q.options.map((opt, i) =>
     `<button class="option-btn" id="opt${i}" onclick="selectAnswer(${i})">
@@ -1371,29 +893,18 @@ function renderQuestion() {
     </button>`
   ).join('');
 
-  // Reset result/explanation
   const rb = document.getElementById('resultBadge');
   rb.className = 'result-badge';
   rb.textContent = '';
   document.getElementById('explanationBox').classList.remove('show');
-  document.getElementById('expText').textContent = '';
 
-  // Next button
   const nb = document.getElementById('nextBtn');
   nb.disabled = true;
   nb.textContent = currentQIdx < total - 1 ? 'Next Question →' : 'See Results →';
 
-  // Animate sheet
-  const sheet = document.getElementById('questionSheet');
-  sheet.style.animation = 'none';
-  sheet.offsetHeight; // reflow
-  sheet.style.animation = 'sheetIn 0.3s ease both';
-
-  // Start timer
   startTimer();
 }
 
-/* ── TIMER ── */
 function startTimer() {
   clearInterval(timerInterval);
   timeLeft = QUESTION_TIME;
@@ -1424,7 +935,6 @@ function handleTimeout() {
   timeoutCount++;
   dotStates[currentQIdx] = 'timeout';
 
-  // Disable all options and reveal correct
   const q = currentQuiz.questions[currentQIdx];
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`opt${i}`);
@@ -1432,14 +942,12 @@ function handleTimeout() {
     if (i === q.ans) btn.classList.add('timeout-reveal');
   });
 
-  // Result badge
-  showResultBadge('timeout', '⏰ Time Up! Correct answer revealed.');
+  showResultBadge('timeout', '⏰ Time Up!');
   showExplanation(q.explanation);
   buildDots();
   document.getElementById('nextBtn').disabled = false;
 }
 
-/* ── SELECT ANSWER ── */
 function selectAnswer(selected) {
   if (answered) return;
   answered = true;
@@ -1456,7 +964,6 @@ function selectAnswer(selected) {
     dotStates[currentQIdx] = 'wrong';
   }
 
-  // Style options
   q.options.forEach((_, i) => {
     const btn = document.getElementById(`opt${i}`);
     btn.disabled = true;
@@ -1465,9 +972,7 @@ function selectAnswer(selected) {
   });
 
   document.getElementById('examScoreLive').textContent = `Score: ${score}`;
-  showResultBadge(isCorrect ? 'correct' : 'wrong',
-    isCorrect ? '✓ Correct! Well done.' : `✗ Wrong. Correct was (${String.fromCharCode(65 + q.ans)})`
-  );
+  showResultBadge(isCorrect ? 'correct' : 'wrong', isCorrect ? '✓ Correct!' : '✗ Incorrect');
   showExplanation(q.explanation);
   buildDots();
   document.getElementById('nextBtn').disabled = false;
@@ -1484,7 +989,6 @@ function showExplanation(text) {
   document.getElementById('explanationBox').classList.add('show');
 }
 
-/* ── DOTS ── */
 function buildDots() {
   const nav = document.getElementById('qNavigator');
   nav.innerHTML = dotStates.map((state, i) => {
@@ -1497,7 +1001,6 @@ function buildDots() {
   }).join('');
 }
 
-/* ── NEXT QUESTION ── */
 function nextQuestion() {
   currentQIdx++;
   if (currentQIdx >= currentQuiz.questions.length) {
@@ -1507,20 +1010,6 @@ function nextQuestion() {
   }
 }
 
-/* ── Small helper: animate a number counting up ── */
-function animateCount(el, from, to, duration) {
-  const start = performance.now();
-  function tick(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-    const val = Math.round(from + (to - from) * eased);
-    el.textContent = val;
-    if (progress < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-
-/* ── SCORE ── */
 function showScore() {
   clearInterval(timerInterval);
   document.getElementById('examSection').style.display = 'none';
@@ -1528,71 +1017,28 @@ function showScore() {
   const total = currentQuiz.questions.length;
   const pct = Math.round((score / total) * 100);
 
-  let title = 'Keep Practising!', eyebrow = 'Result';
-  if (pct >= 90) { title = 'Outstanding!'; eyebrow = 'Top Score'; }
-  else if (pct >= 75) { title = 'Excellent Work!'; eyebrow = 'Great Result'; }
-  else if (pct >= 60) { title = 'Good Job!'; eyebrow = 'Solid Result'; }
-  else if (pct >= 40) { title = 'Keep Practising!'; eyebrow = 'Result'; }
-  else { title = 'Review & Retry!'; eyebrow = 'Result'; }
-
-  document.getElementById('scoreEyebrow').textContent = eyebrow;
+  document.getElementById('scoreBig').textContent = score;
   document.getElementById('scoreOutOf').textContent = `out of ${total}`;
-  document.getElementById('scoreTitle').textContent = title;
-  document.getElementById('scoreSub').textContent =
-    `You scored ${score}/${total} (${pct}%) in "${currentQuiz.title}"`;
+  document.getElementById('statCorrect').textContent = score;
   document.getElementById('statWrong').textContent = wrongCount;
   document.getElementById('statPct').textContent = pct + '%';
-
-  // Animate the big score number
-  const bigEl = document.getElementById('scoreBig');
-  animateCount(bigEl, 0, score, 900);
-
-  // Animate the correct-count stat
-  const correctEl = document.getElementById('statCorrect');
-  animateCount(correctEl, 0, score, 900);
-
-  // Animate the gold ring fill + percentage label
-  const ringFill = document.getElementById('scoreRingFill');
-  const ringLabel = document.getElementById('scoreRingLabel');
-  const offset = RING_CIRCUMFERENCE - (RING_CIRCUMFERENCE * pct / 100);
-  // reset first so the transition always plays
-  ringFill.style.transition = 'none';
-  ringFill.style.strokeDashoffset = RING_CIRCUMFERENCE;
-  requestAnimationFrame(() => {
-    ringFill.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(0.65,0,0.35,1)';
-    ringFill.style.strokeDashoffset = offset;
-  });
-  let ringPct = 0;
-  const ringStart = performance.now();
-  function tickRing(now) {
-    const progress = Math.min((now - ringStart) / 1100, 1);
-    ringPct = Math.round(pct * (1 - Math.pow(1 - progress, 3)));
-    ringLabel.textContent = ringPct + '%';
-    if (progress < 1) requestAnimationFrame(tickRing);
-  }
-  requestAnimationFrame(tickRing);
 
   const ss = document.getElementById('scoreSection');
   ss.style.display = 'flex';
   ss.classList.add('show');
 }
 
-/* ── RETRY ── */
 function retryQuiz() {
-  document.getElementById('scoreSection').style.display = 'none';
-  document.getElementById('scoreSection').classList.remove('show');
   startQuiz(currentQuiz.id);
 }
 
-/* ── BACK TO SELECTOR ── */
 function backToSelector() {
   clearInterval(timerInterval);
   document.getElementById('examSection').style.display = 'none';
   document.getElementById('scoreSection').style.display = 'none';
   document.getElementById('scoreSection').classList.remove('show');
-  document.getElementById('pageHeader').style.display = 'block';
+  document.getElementById('pageHeader').style.display = 'flex';
   document.getElementById('selectorSection').style.display = 'block';
-  currentQuiz = null;
 }
 
 buildSelector();
