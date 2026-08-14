@@ -1370,12 +1370,615 @@ const TESTS = [
       }
     ]
   },
-  { id:'c9-force', classGroup:'9', title:'Force and Laws of Motion', desc:"Newton's laws, momentum, inertia", duration:5,
-    questions:[
-      {q:"Newton's first law is also known as the:", options:["Law of inertia","Law of momentum","Law of action-reaction","Law of gravitation"], ans:0, exp:"A body continues in its state of rest or motion unless acted upon by a net force — this is inertia."},
-      {q:"The SI unit of force is:", options:["Joule","Newton","Watt","Pascal"], ans:1, exp:"Force is measured in Newtons (N) = kg·m/s²"},
-      {q:"A 2 kg body experiences a force of 10 N. Its acceleration is:", options:["2 m/s²","5 m/s²","10 m/s²","20 m/s²"], ans:1, exp:"a = F/m = 10/2 = 5 m/s²"}
-    ]},
+  {
+    id: 'c9-force',
+    classGroup: '9',
+    title: 'Force and Laws of Motion',
+    desc: "Newton's laws, linear momentum, impulse, friction, pulley constraints, spring dynamics, and equilibrium systems",
+    duration: 90,
+    questions: [
+      {
+        q: "A machine gun fires n bullets per second, each of mass m with velocity v against a vertical wall. If the bullets bounce back elastically with the same speed, the average force exerted on the wall is:",
+        options: ["n m v", "2 n m v", "n m v / 2", "4 n m v"],
+        ans: 1,
+        exp: "Change in momentum per bullet = m v - (-m v) = 2 m v. With n bullets striking per second, total rate of change of momentum (force) is F = 2 n m v."
+      },
+      {
+        q: "A block of mass M is pulled along a horizontal frictionless surface by a rope of mass m and length L. A force F is applied at the free end of the rope. The tension in the rope at a distance x from the pulled end is:",
+        options: ["F (1 - x/L)", "F [M + m(1 - x/L)] / (M + m)", "F [M + m(x/L)] / (M + m)", "F m x / [L(M + m)]"],
+        ans: 1,
+        exp: "Total acceleration a = F / (M + m). The segment behind point x has mass M + m(1 - x/L). Tension T(x) = [M + m(1 - x/L)] a = F [M + m(1 - x/L)] / (M + m)."
+      },
+      {
+        q: "A stream of water flowing horizontally with speed v from a pipe of cross-sectional area A hits a vertical wall normally and comes to rest. The force exerted on the wall is (density of water = ρ):",
+        options: ["ρ A v", "ρ A v²", "1/2 ρ A v²", "2 ρ A v²"],
+        ans: 1,
+        exp: "Mass of water striking per second dm/dt = ρ A v. Force = (dm/dt) Δv = (ρ A v)(v - 0) = ρ A v²."
+      },
+      {
+        q: "Sand is dropped onto a conveyor belt moving horizontally at a constant speed v at a constant rate of μ kg/s. The extra power required by the motor to keep the belt moving at speed v is:",
+        options: ["1/2 μ v²", "μ v²", "2 μ v²", "1/4 μ v²"],
+        ans: 1,
+        exp: "Force required to accelerate the added sand to speed v is F = v (dm/dt) = μ v. Extra power supplied by the motor P = F v = μ v²."
+      },
+      {
+        q: "A rocket of initial mass M₀ ejects gases at a constant rate r = -dM/dt with a constant exhaust velocity u relative to the rocket. Neglecting gravity and air resistance, the speed of the rocket as a function of remaining mass M is:",
+        options: ["v = u ln(M₀ / M)", "v = u (M₀ / M)", "v = u ln(M / M₀)", "v = u (1 - M/M₀)"],
+        ans: 0,
+        exp: "From Tsiolkovsky's rocket equation: M (dv/dt) = u (-dM/dt) ⇒ dv = -u (dM/M). Integrating from M₀ to M yields v = u ln(M₀ / M)."
+      },
+      {
+        q: "Two masses m₁ = 4 kg and m₂ = 6 kg are connected by a light string passing over a frictionless fixed pulley. The acceleration of the system is (take g = 10 m/s²):",
+        options: ["2 m/s²", "4 m/s²", "1 m/s²", "5 m/s²"],
+        ans: 0,
+        exp: "a = [(m₂ - m₁) / (m₁ + m₂)] g = [(6 - 4) / 10] × 10 = 2 m/s²."
+      },
+      {
+        q: "In the Atwood machine described in the previous question (m₁ = 4 kg, m₂ = 6 kg), the tension in the connecting string is (take g = 10 m/s²):",
+        options: ["24 N", "48 N", "60 N", "40 N"],
+        ans: 1,
+        exp: "T = [2 m₁ m₂ / (m₁ + m₂)] g = [2(4)(6) / 10] × 10 = 48 N."
+      },
+      {
+        q: "In an Atwood machine (m₁ = 4 kg, m₂ = 6 kg), the total reaction force exerted by the axle on the support pulley is (take g = 10 m/s²):",
+        options: ["48 N", "96 N", "100 N", "50 N"],
+        ans: 1,
+        exp: "Reaction force on pulley support R = 2T = 2 × 48 N = 96 N."
+      },
+      {
+        q: "A body of mass 2 kg rests on a rough horizontal plane with static friction coefficient μ_s = 0.4. If a horizontal force of 6 N is applied, the frictional force acting on the body is (take g = 10 m/s²):",
+        options: ["8 N", "6 N", "0 N", "2 N"],
+        ans: 1,
+        exp: "Limiting friction f_max = μ_s m g = 0.4 × 2 × 10 = 8 N. Since applied force (6 N) < f_max, static friction self-adjusts to balance the applied force: f_s = 6 N."
+      },
+      {
+        q: "A block of mass m is placed on an inclined plane of inclination θ. If μ is the coefficient of static friction, the maximum angle θ for which the block remains in equilibrium without sliding is:",
+        options: ["arctan(μ)", "arcsin(μ)", "arccos(μ)", "arccot(μ)"],
+        ans: 0,
+        exp: "For equilibrium on an incline, mg sin θ ≤ μ mg cos θ ⇒ tan θ ≤ μ ⇒ θ_max = arctan(μ), which is the angle of repose."
+      },
+      {
+        q: "A body of mass m is sliding down an inclined plane of angle θ with constant velocity. The coefficient of kinetic friction μ_k is equal to:",
+        options: ["sin θ", "cos θ", "tan θ", "cot θ"],
+        ans: 2,
+        exp: "Constant velocity means acceleration is zero. mg sin θ - f_k = 0 ⇒ mg sin θ = μ_k mg cos θ ⇒ μ_k = tan θ."
+      },
+      {
+        q: "A 5 kg block is held against a vertical wall by applying a horizontal force F. If μ_s = 0.5 between block and wall, the minimum force F required to prevent the block from slipping down is (take g = 10 m/s²):",
+        options: ["100 N", "50 N", "25 N", "200 N"],
+        ans: 0,
+        exp: "Vertical equilibrium requires f_s = mg ⇒ μ_s N = mg. Here normal force N = F. Thus 0.5 F = 5 × 10 = 50 N ⇒ F = 100 N."
+      },
+      {
+        q: "A body of mass 0.5 kg moving at 20 m/s is brought to rest by a constant force in 0.1 s. The magnitude of the force applied is:",
+        options: ["100 N", "200 N", "50 N", "10 N"],
+        ans: 0,
+        exp: "F = Δp / Δt = m(v - u) / Δt = 0.5(0 - 20) / 0.1 = -100 N. Magnitude = 100 N."
+      },
+      {
+        q: "A 60 kg man stands in an elevator that is accelerating downwards at 3 m/s². The apparent weight recorded by a weighing scale under his feet is (take g = 10 m/s²):",
+        options: ["600 N", "420 N", "780 N", "180 N"],
+        ans: 1,
+        exp: "Apparent weight N = m(g - a) = 60(10 - 3) = 60 × 7 = 420 N."
+      },
+      {
+        q: "If the elevator cable snaps and it enters free fall (a = g downwards), the apparent weight of a person of mass m inside is:",
+        options: ["m g", "2 m g", "Zero", "m g / 2"],
+        ans: 2,
+        exp: "N = m(g - a) = m(g - g) = 0. The person experiences weightlessness."
+      },
+      {
+        q: "A monkey of mass 40 kg climbs up a rope that can withstand a maximum tension of 600 N. The maximum upward acceleration with which the monkey can climb safely is (take g = 10 m/s²):",
+        options: ["5 m/s²", "15 m/s²", "10 m/s²", "2.5 m/s²"],
+        ans: 0,
+        exp: "T = m(g + a) ≤ T_max ⇒ 40(10 + a) ≤ 600 ⇒ 10 + a ≤ 15 ⇒ a_max = 5 m/s²."
+      },
+      {
+        q: "Three blocks of masses m₁ = 2 kg, m₂ = 3 kg, and m₃ = 5 kg are in contact on a frictionless horizontal table. A horizontal force F = 20 N is applied on m₁. The contact force between m₂ and m₃ is:",
+        options: ["10 N", "6 N", "14 N", "4 N"],
+        ans: 0,
+        exp: "System acceleration a = F / (m₁ + m₂ + m₃) = 20 / 10 = 2 m/s². The force pushing block m₃ is N₂₃ = m₃ a = 5 × 2 = 10 N."
+      },
+      {
+        q: "In the three-block system from the previous question (m₁ = 2 kg, m₂ = 3 kg, m₃ = 5 kg, F = 20 N on m₁), the contact force between m₁ and m₂ is:",
+        options: ["16 N", "14 N", "10 N", "6 N"],
+        ans: 0,
+        exp: "Force pushing the combined mass (m₂ + m₃) is N₁₂ = (m₂ + m₃) a = (3 + 5) × 2 = 16 N."
+      },
+      {
+        q: "A spring balance is attached to the roof of an elevator. A body of mass m is suspended from it. When the elevator moves up with constant velocity v, the reading of the spring balance is:",
+        options: ["m g", "m(g + v)", "m(g - v)", "m(g + v²/2)"],
+        ans: 0,
+        exp: "Constant velocity implies zero acceleration (a = 0). The spring reading is T = m(g + a) = m g."
+      },
+      {
+        q: "Two bodies of masses 1 kg and 2 kg are connected by a massless spring of force constant k. A force F accelerates the 2 kg mass at 2 m/s² towards the 1 kg mass at an instant when the 1 kg mass accelerates at 1 m/s² in the same direction. The net external force F is:",
+        options: ["5 N", "3 N", "4 N", "2 N"],
+        ans: 0,
+        exp: "F_ext = m₁ a₁ + m₂ a₂ = 1(1) + 2(2) = 1 + 4 = 5 N."
+      },
+      {
+        q: "A ball of mass 0.2 kg falls from a height of 5 m onto a hard floor and rebounds to a height of 3.2 m. If the contact time with the floor is 0.02 s, the average force exerted by the floor on the ball is (take g = 10 m/s²):",
+        options: ["180 N", "182 N", "178 N", "90 N"],
+        ans: 1,
+        exp: "v_impact = √(2gh₁) = √(2×10×5) = 10 m/s (downwards). v_rebound = √(2gh₂) = √(2×10×3.2) = 8 m/s (upwards). Impulse from normal force N: (N - mg) Δt = m(v_f - v_i) ⇒ (N - 2)(0.02) = 0.2(8 - (-10)) = 3.6 ⇒ N - 2 = 180 ⇒ N = 182 N."
+      },
+      {
+        q: "A heavy uniform rope of length L and mass M hangs vertically from a ceiling. The tension in the rope at a distance y from the bottom end is:",
+        options: ["(M/L) y g", "(M/L) (L - y) g", "M g", "1/2 (M/L) y g"],
+        ans: 0,
+        exp: "The segment below distance y supports only its own weight. Mass of this segment = (M/L) y. Tension T(y) = (M/L) y g."
+      },
+      {
+        q: "A block of mass m is placed on a smooth wedge of inclination θ. The horizontal acceleration a that must be given to the wedge so that the block remains stationary relative to the wedge is:",
+        options: ["g tan θ", "g sin θ", "g cos θ", "g cot θ"],
+        ans: 0,
+        exp: "In the accelerating frame of the wedge, pseudo force ma acts horizontally backwards. For equilibrium along the incline: ma cos θ = mg sin θ ⇒ a = g tan θ."
+      },
+      {
+        q: "A shell of mass 3m at rest explodes into three fragments. Two fragments, each of mass m, fly off in mutually perpendicular directions with speed v. The speed of the third fragment (mass m) is:",
+        options: ["v", "√2 v", "2 v", "v / √2"],
+        ans: 1,
+        exp: "By conservation of momentum: 0 = m v î + m v ĵ + m v₃ ⇒ v₃ = -v î - v ĵ ⇒ |v₃| = √[(-v)² + (-v)²] = √2 v."
+      },
+      {
+        q: "A 1000 kg vehicle moving at 25 m/s collides with a stationary 1500 kg truck and they couple together. The common velocity immediately after collision is:",
+        options: ["10 m/s", "12.5 m/s", "15 m/s", "8 m/s"],
+        ans: 0,
+        exp: "By momentum conservation: m₁ u₁ + m₂ u₂ = (m₁ + m₂) V ⇒ 1000(25) + 0 = (1000 + 1500) V ⇒ 25000 = 2500 V ⇒ V = 10 m/s."
+      },
+      {
+        q: "A gun of mass 4 kg fires a bullet of mass 50 g with muzzle speed 400 m/s. The recoil velocity of the gun is:",
+        options: ["-5 m/s", "-2.5 m/s", "-10 m/s", "-4 m/s"],
+        ans: 0,
+        exp: "M V + m v = 0 ⇒ 4 V + 0.05(400) = 0 ⇒ 4 V + 20 = 0 ⇒ V = -5 m/s."
+      },
+      {
+        q: "A force F = (6 t) N acts on a body of mass 2 kg initially at rest at t = 0. The velocity of the body at t = 3 s is:",
+        options: ["9 m/s", "13.5 m/s", "18 m/s", "27 m/s"],
+        ans: 1,
+        exp: "a(t) = F/m = 6t / 2 = 3t. v(t) = ∫ 3t dt = 1.5 t². At t = 3 s: v = 1.5 × (3)² = 13.5 m/s."
+      },
+      {
+        q: "A block of mass 2 kg is placed on a rough horizontal surface with μ_s = 0.4 and μ_k = 0.3. A horizontal force of 10 N is applied. The acceleration of the block is (take g = 10 m/s²):",
+        options: ["2 m/s²", "1 m/s²", "5 m/s²", "3.5 m/s²"],
+        ans: 0,
+        exp: "f_max = 0.4 × 2 × 10 = 8 N. Since F = 10 N > 8 N, the block moves. Kinetic friction f_k = 0.3 × 20 = 6 N. Net force = 10 - 6 = 4 N. Acceleration a = 4 / 2 = 2 m/s²."
+      },
+      {
+        q: "A smooth sphere of radius R is placed on a horizontal table. A small mass m is released from rest at the top crown of the sphere. The angle θ from the vertical at which the mass loses contact with the sphere is:",
+        options: ["arccos(2/3)", "arccos(1/3)", "arccos(3/4)", "arccos(1/2)"],
+        ans: 0,
+        exp: "By energy conservation: 1/2 m v² = mgR(1 - cos θ) ⇒ v² = 2gR(1 - cos θ). Normal force N = mg cos θ - m v²/R. Contact is lost when N = 0 ⇒ mg cos θ = m[2gR(1 - cos θ)]/R ⇒ cos θ = 2 - 2 cos θ ⇒ 3 cos θ = 2 ⇒ θ = arccos(2/3)."
+      },
+      {
+        q: "Two masses m₁ and m₂ (m₁ > m₂) are suspended over a light frictionless pulley. If the pulley is accelerated vertically upwards with acceleration a₀, the acceleration of m₁ relative to the pulley is:",
+        options: ["[(m₁ - m₂) / (m₁ + m₂)] (g + a₀)", "[(m₁ - m₂) / (m₁ + m₂)] (g - a₀)", "[(m₁ - m₂) / (m₁ + m₂)] g", "[(m₁ + m₂) / (m₁ - m₂)] (g + a₀)"],
+        ans: 0,
+        exp: "In the accelerating frame of the pulley, the effective gravity is g_eff = g + a₀. Relative acceleration a_rel = [(m₁ - m₂) / (m₁ + m₂)] (g + a₀)."
+      },
+      {
+        q: "A body of mass M is hung from two identical ropes making equal angles θ with the horizontal ceiling. The tension in each rope is:",
+        options: ["M g / (2 sin θ)", "M g / (2 cos θ)", "M g sin θ", "2 M g / sin θ"],
+        ans: 0,
+        exp: "Vertical equilibrium: 2 T sin θ = M g ⇒ T = M g / (2 sin θ)."
+      },
+      {
+        q: "A block of mass m is supported on a frictionless horizontal floor by a spring of stiffness k attached to a wall. If the block is pulled by distance x₀ and released, the restoring force experienced when passing the equilibrium position is:",
+        options: ["Zero", "k x₀", "1/2 k x₀", "m g"],
+        ans: 0,
+        exp: "At the equilibrium position (x = 0), spring extension is zero, so F_spring = -k(0) = 0."
+      },
+      {
+        q: "Two masses m and 2m are connected by a spring and placed on a smooth table. They are pulled apart and released. The ratio of acceleration of mass m to mass 2m at any instant is:",
+        options: ["2 : 1", "1 : 2", "1 : 1", "4 : 1"],
+        ans: 0,
+        exp: "Spring force magnitude F is identical on both masses. a₁ = F/m, a₂ = F/(2m). Ratio a₁/a₂ = (F/m) / (F/2m) = 2 : 1."
+      },
+      {
+        q: "A particle of mass m is revolving in a horizontal circle of radius r under the influence of a centripetal force F = -k / r². The total mechanical energy of the particle (with U(∞) = 0) is:",
+        options: ["-k / (2r)", "-k / r", "k / (2r)", "Zero"],
+        ans: 0,
+        exp: "Centripetal force m v²/r = k / r² ⇒ Kinetic energy KE = 1/2 m v² = k / (2r). Potential energy U = -∫ F dr = -k / r. Total Energy E = KE + U = k/(2r) - k/r = -k / (2r)."
+      },
+      {
+        q: "A block of mass m is placed on top of a larger block of mass M resting on a smooth horizontal table. The coefficient of static friction between m and M is μ. The maximum horizontal force F applied on M so that both blocks move together without slipping is:",
+        options: ["μ (M + m) g", "μ m g", "μ M g", "μ M m g / (M + m)"],
+        ans: 0,
+        exp: "Maximum common acceleration without m slipping is a_max = f_max / m = (μ m g) / m = μ g. Maximum total force F_max = (M + m) a_max = μ (M + m) g."
+      },
+      {
+        q: "A 10 kg box is dragged along a horizontal floor by a force F acting at an angle of 30° above the horizontal. If μ_k = 0.2, the force F required to move the box with uniform speed is (take g = 10 m/s², cos 30° = 0.866, sin 30° = 0.5):",
+        options: ["20.7 N", "25.0 N", "18.5 N", "30.2 N"],
+        ans: 0,
+        exp: "N = mg - F sin 30°. For uniform speed: F cos 30° = f_k = μ_k N ⇒ F(0.866) = 0.2(100 - 0.5 F) = 20 - 0.1 F ⇒ 0.966 F = 20 ⇒ F ≈ 20.7 N."
+      },
+      {
+        q: "A body of mass 1 kg is suspended by two light strings of lengths 3 m and 4 m from two points on a horizontal ceiling separated by 5 m. The tension in the 3 m string is (take g = 10 m/s²):",
+        options: ["8 N", "6 N", "10 N", "5 N"],
+        ans: 0,
+        exp: "Lengths 3, 4, 5 form a right triangle. Angle opposite to 4 m is θ where sin θ = 4/5 = 0.8. T₁ = mg sin θ = 1(10)(0.8) = 8 N."
+      },
+      {
+        q: "An object is subjected to three concurrent forces F₁ = 3î + 4ĵ, F₂ = -2î + ĵ, and F₃. For the object to remain in equilibrium, F₃ must be:",
+        options: ["-î - 5ĵ", "î + 5ĵ", "-5î - 5ĵ", "5î + 5ĵ"],
+        ans: 0,
+        exp: "For equilibrium: F₁ + F₂ + F₃ = 0 ⇒ (3 - 2)î + (4 + 1)ĵ + F₃ = 0 ⇒ î + 5ĵ + F₃ = 0 ⇒ F₃ = -î - 5ĵ."
+      },
+      {
+        q: "A uniform chain of length L and mass M rests on a table with a coefficient of static friction μ. The maximum fraction of length that can hang over the edge without slipping is:",
+        options: ["μ / (1 + μ)", "1 / (1 + μ)", "μ / (1 - μ)", "μ / 2"],
+        ans: 0,
+        exp: "Let hanging length fraction be f. Hanging weight = f M g. Table friction = μ (1 - f) M g. For equilibrium: f M g = μ (1 - f) M g ⇒ f = μ (1 - f) ⇒ f (1 + μ) = μ ⇒ f = μ / (1 + μ)."
+      },
+      {
+        q: "A person in an accelerating car sees a plumb bob hanging from the roof deflected backwards by an angle θ = 45°. The acceleration of the car is (take g = 10 m/s²):",
+        options: ["10 m/s²", "5 m/s²", "9.8 m/s²", "14.1 m/s²"],
+        ans: 0,
+        exp: "tan θ = a / g ⇒ a = g tan 45° = 10 × 1 = 10 m/s²."
+      },
+      {
+        q: "Two blocks of masses 4 kg and 2 kg are connected by a string on a frictionless horizontal plane. A force of 12 N is applied to the 4 kg block away from the 2 kg block. The tension in the connecting string is:",
+        options: ["4 N", "8 N", "6 N", "2 N"],
+        ans: 0,
+        exp: "System acceleration a = 12 / (4 + 2) = 2 m/s². Tension pulling the 2 kg trailing block is T = 2 × a = 2 × 2 = 4 N."
+      },
+      {
+        q: "A cricket ball of mass 150 g moving with velocity 12 m/s is hit by a bat so that it turns back with velocity 20 m/s. The force acts for 0.01 s. The average force exerted by the bat is:",
+        options: ["480 N", "240 N", "120 N", "600 N"],
+        ans: 0,
+        exp: "Δp = m[v - (-u)] = 0.15(20 + 12) = 0.15 × 32 = 4.8 N·s. Force F = Δp / Δt = 4.8 / 0.01 = 480 N."
+      },
+      {
+        q: "A system of two masses m₁ and m₂ connected by a light spring is suspended from the ceiling by a thread attached to m₁. If the thread is cut, the acceleration of m₁ immediately after the cut is:",
+        options: ["(1 + m₂/m₁) g downwards", "g downwards", "Zero", "(m₁/m₂) g downwards"],
+        ans: 0,
+        exp: "Before cut, spring tension T = m₂ g. When top thread is cut, m₁ experiences downward gravity m₁ g plus downward spring pull T = m₂ g. Thus a₁ = (m₁ g + m₂ g) / m₁ = (1 + m₂/m₁) g downwards."
+      },
+      {
+        q: "In the system from the previous question (m₁ and m₂ suspended by spring and thread), the acceleration of m₂ immediately after the top thread is cut is:",
+        options: ["Zero", "g downwards", "(1 + m₁/m₂) g", "g upwards"],
+        ans: 0,
+        exp: "The spring does not change its length instantaneously. The upward spring force still balances gravity on m₂ (T = m₂ g), so net force on m₂ is zero; a₂ = 0."
+      },
+      {
+        q: "A 70 kg man in a parachute falls with a constant terminal speed of 8 m/s. The upward drag force exerted by the air on the parachutist system is (take g = 10 m/s²):",
+        options: ["700 N", "560 N", "0 N", "1400 N"],
+        ans: 0,
+        exp: "Constant terminal velocity means acceleration is zero (a = 0). Net vertical force = 0 ⇒ F_drag = mg = 70 × 10 = 700 N."
+      },
+      {
+        q: "A body of mass 1 kg thrown vertically upwards with speed 40 m/s reaches the highest point in 3.5 s. The average air resistance force acting on the body is (take g = 10 m/s²):",
+        options: ["1.43 N", "2.50 N", "0.85 N", "3.20 N"],
+        ans: 0,
+        exp: "Net deceleration a = u / t = 40 / 3.5 ≈ 11.43 m/s². Total downward deceleration = g + (F_air / m) ⇒ 11.43 = 10 + F_air / 1 ⇒ F_air = 1.43 N."
+      },
+      {
+        q: "A helicopter of mass 2000 kg accelerates vertically upwards at 2 m/s². The upward aerodynamic lift force produced by the rotor blades is (take g = 10 m/s²):",
+        options: ["24,000 N", "20,000 N", "16,000 N", "4,000 N"],
+        ans: 0,
+        exp: "F_lift - mg = m a ⇒ F_lift = m(g + a) = 2000(10 + 2) = 24,000 N."
+      },
+      {
+        q: "A block of mass 5 kg rests on a table. A string tied to it passes over a pulley and carries a 3 kg mass. If μ_s = 0.4 between block and table, the acceleration of the system is (take g = 10 m/s²):",
+        options: ["1.25 m/s²", "0 m/s²", "2.5 m/s²", "3.75 m/s²"],
+        ans: 0,
+        exp: "Limiting static friction on 5 kg block = 0.4 × 5 × 10 = 20 N. Driving hanging force = 3 × 10 = 30 N. Since 30 N > 20 N, the system moves. Acceleration a = (30 - 20) / (5 + 3) = 10 / 8 = 1.25 m/s²."
+      },
+      {
+        q: "The linear momentum p of a body changes with time as p = a + b t², where a and b are positive constants. The force acting on the body is:",
+        options: ["Proportional to t", "Constant", "Proportional to t²", "Zero"],
+        ans: 0,
+        exp: "Force F = dp/dt = d/dt(a + b t²) = 2b t. Hence F ∝ t (increases linearly with time)."
+      },
+      {
+        q: "A particle of mass m is moving under a central force field F(r) = -k r. The acceleration of the particle is directed:",
+        options: ["Always towards the origin", "Always away from the origin", "Tangentially", "Perpendicular to radius"],
+        ans: 0,
+        exp: "The negative sign indicates an attractive central force directed radially inward toward the origin."
+      },
+      {
+        q: "A 2 kg mass attached to a string of length 1 m is whirled in a vertical circle. The minimum speed at the highest point to prevent the string from slacking is (take g = 10 m/s²):",
+        options: ["√10 m/s", "√50 m/s", "10 m/s", "5 m/s"],
+        ans: 0,
+        exp: "At the top of the vertical circle, tension T ≥ 0 ⇒ mg = m v²/r ⇒ v_min = √(g r) = √(10 × 1) = √10 m/s."
+      },
+      {
+        q: "The minimum speed at the lowest point of a vertical circle of radius r for complete revolution is:",
+        options: ["√(5 g r)", "√(3 g r)", "√(g r)", "√(2 g r)"],
+        ans: 0,
+        exp: "By energy conservation from top (v_top = √(gr)) to bottom: 1/2 m v_bot² = 1/2 m (gr) + mg(2r) ⇒ v_bot = √(5gr)."
+      },
+      {
+        q: "A car rounds an unbanked circular curve of radius 100 m on a flat road with μ_s = 0.4. The maximum safe speed to avoid skidding is (take g = 10 m/s²):",
+        options: ["20 m/s", "40 m/s", "14.1 m/s", "25 m/s"],
+        ans: 0,
+        exp: "v_max = √(μ_s g R) = √(0.4 × 10 × 100) = √400 = 20 m/s."
+      },
+      {
+        q: "A circular track of radius 200 m is banked at an angle θ = 45°. The optimum speed of a vehicle on this track without relying on friction is (take g = 10 m/s²):",
+        options: ["44.7 m/s", "20 m/s", "31.6 m/s", "50 m/s"],
+        ans: 0,
+        exp: "tan θ = v² / (R g) ⇒ v = √(R g tan 45°) = √(200 × 10 × 1) = √2000 ≈ 44.7 m/s."
+      },
+      {
+        q: "An hourglass is placed on a sensitive weighing scale. While the sand is falling freely through the neck at a steady rate, the reading of the scale is:",
+        options: ["Equal to its initial static weight", "Less than its initial weight", "Greater than its initial weight", "Fluctuating wildly"],
+        ans: 0,
+        exp: "The loss of weight due to sand in free fall is balanced by the impact force of sand grains striking the bottom base. The net scale reading remains equal to the static weight."
+      },
+      {
+        q: "A disc of mass 10 g is kept floating horizontally in air by firing bullets of mass 5 g each against it from below at rate n per second with speed 4.9 m/s. If the bullets rebound elastically, n is (take g = 9.8 m/s²):",
+        options: ["2", "1", "4", "0.5"],
+        ans: 1,
+        exp: "Force from rebounding bullets = 2 n m_b v. Weight of disc = m_d g. 2 n(0.005)(4.9) = 0.010(9.8) ⇒ 0.049 n = 0.098 ⇒ n = 2."
+      },
+      {
+        q: "A block of mass m is projected up an inclined plane of angle θ with initial velocity v₀. If the coefficient of kinetic friction is μ, the distance traveled by the block along the incline before coming to rest is:",
+        options: ["v₀² / [2 g (sin θ + μ cos θ)]", "v₀² / [2 g (sin θ - μ cos θ)]", "v₀² / (2 g sin θ)", "v₀² / (2 g μ cos θ)"],
+        ans: 0,
+        exp: "Deceleration along incline a = g(sin θ + μ cos θ). Using v² = v₀² - 2as ⇒ s = v₀² / [2 g (sin θ + μ cos θ)]."
+      },
+      {
+        q: "A passenger in a train throws a ball vertically up. The ball falls behind the passenger. This implies that the train is moving:",
+        options: ["Forward with acceleration", "Forward with deceleration", "Forward with constant speed", "Backward with acceleration"],
+        ans: 0,
+        exp: "Because the train accelerates forward while the ball maintains its horizontal velocity at release, the passenger moves ahead and the ball lands behind."
+      },
+      {
+        q: "A spring balance reads 40 N when carrying a mass on Earth. When taken to a planet where gravity is g/4, the reading of the spring balance is:",
+        options: ["10 N", "40 N", "160 N", "0 N"],
+        ans: 0,
+        exp: "Spring balances measure weight W = m g. At g' = g/4, the reading is 40 / 4 = 10 N."
+      },
+      {
+        q: "A block of mass 1 kg is held in equilibrium between two identical compressed horizontal springs of stiffness k = 100 N/m. If each spring is compressed by 0.1 m, the net force on the block is:",
+        options: ["Zero", "10 N", "20 N", "5 N"],
+        ans: 0,
+        exp: "The two opposing compressed springs push equally in opposite directions (+10 N and -10 N), yielding a net force of zero."
+      },
+      {
+        q: "Two masses 2 kg and 4 kg are attached to the ends of a light string passing over a pulley. The system starts from rest. The velocity of the 4 kg mass after falling 1 m is (take g = 10 m/s²):",
+        options: ["2.58 m/s", "3.16 m/s", "4.47 m/s", "1.82 m/s"],
+        ans: 0,
+        exp: "Acceleration a = [(4 - 2) / 6] × 10 = 20/6 = 3.33 m/s². v = √(2 a s) = √(2 × 3.33 × 1) = √6.67 ≈ 2.58 m/s."
+      },
+      {
+        q: "A flexible chain of length L and uniform mass density λ is held with its bottom link touching a table and released from rest. The force exerted on the table when length x has fallen is:",
+        options: ["3 λ g x", "2 λ g x", "λ g x", "1/2 λ g x"],
+        ans: 0,
+        exp: "Static weight of fallen chain = λ x g. Momentum impact force of incoming chain link at speed v = √(2gx) is (dm/dt) v = (λ v) v = λ v² = 2 λ g x. Total force = λ x g + 2 λ g x = 3 λ g x."
+      },
+      {
+        q: "A body of mass 10 kg is placed on an incline of 30° where μ_s = 0.6. The minimum force parallel to the incline required to push the body up the plane is (take g = 10 m/s², cos 30° = 0.866):",
+        options: ["101.96 N", "50.00 N", "51.96 N", "80.00 N"],
+        ans: 0,
+        exp: "F_up = mg sin θ + μ_s mg cos θ = 10(10)(0.5) + 0.6(10)(10)(0.866) = 50 + 51.96 = 101.96 N."
+      },
+      {
+        q: "In the previous system (10 kg on 30° incline, μ_s = 0.6), the minimum force parallel to the incline to prevent it from sliding down is (take g = 10 m/s²):",
+        options: ["0 N (it won't slide on its own)", "50 N", "1.96 N", "51.96 N"],
+        ans: 0,
+        exp: "Angle of repose θ_r = arctan(0.6) ≈ 31°. Since the incline angle (30°) < angle of repose (31°), the block will not slide on its own. Minimum holding force required is 0 N."
+      },
+      {
+        q: "A wooden wedge of mass M is placed on a smooth table. A block of mass m is placed on its incline of angle θ. If the block slides down the smooth incline, the normal force exerted by the table on the wedge is:",
+        options: ["(M + m) g - m g sin² θ", "(M + m) g", "M g + m g cos θ", "M g + m g sin θ"],
+        ans: 0,
+        exp: "Vertical acceleration of m is a_y = g sin² θ. Total normal reaction from table N_table = M g + m(g - a_y) = (M + m) g - m g sin² θ."
+      },
+      {
+        q: "A 2 kg block is pushed against a rough horizontal ceiling (μ_s = 0.5) by an upward force F = 50 N. The maximum horizontal force that can be applied to the block without moving it is (take g = 10 m/s²):",
+        options: ["15 N", "25 N", "10 N", "30 N"],
+        ans: 0,
+        exp: "Normal force against ceiling N = F - mg = 50 - 2(10) = 30 N. Maximum static friction = μ_s N = 0.5 × 30 = 15 N."
+      },
+      {
+        q: "A mass m is attached to a vertical rotating shaft by two strings of length L forming an equilateral triangle. If the shaft rotates with angular velocity ω, the tension in the upper string is:",
+        options: ["m(g/sin θ + ω² L)", "Greater than the tension in the lower string", "Equal to lower string tension", "Zero"],
+        ans: 1,
+        exp: "Vertical equilibrium: T_upper cos θ = T_lower cos θ + mg ⇒ T_upper - T_lower = mg / cos θ > 0. The upper string tension is always greater."
+      },
+      {
+        q: "A particle of mass m is moving in a straight line with deceleration a = -k v. The distance covered before coming to rest with initial speed v₀ is:",
+        options: ["v₀ / k", "v₀² / (2k)", "ln(v₀) / k", "k v₀"],
+        ans: 0,
+        exp: "v (dv/ds) = -k v ⇒ dv = -k ds. Integrating from v₀ to 0 yields s = v₀ / k."
+      },
+      {
+        q: "Two blocks of masses m₁ and m₂ are connected by a spring of stiffness k and compressed by distance x₀ on a smooth floor. The maximum speed acquired by mass m₁ after release is:",
+        options: ["x₀ √[k m₂ / (m₁ (m₁ + m₂))]", "x₀ √[k / m₁]", "x₀ √[k / (m₁ + m₂)]", "x₀ √[k m₁ / (m₂ (m₁ + m₂))]"],
+        ans: 0,
+        exp: "By momentum conservation: m₁ v₁ = m₂ v₂ ⇒ v₂ = (m₁/m₂) v₁. Total energy: 1/2 m₁ v₁² + 1/2 m₂ v₂² = 1/2 k x₀² ⇒ v₁² [m₁ + m₁²/m₂] = k x₀² ⇒ v₁ = x₀ √[k m₂ / (m₁ (m₁ + m₂))]."
+      },
+      {
+        q: "A block of mass m rests on a rough horizontal surface with friction angle λ. The minimum force required to move the block along the surface is:",
+        options: ["m g sin λ", "m g tan λ", "m g cos λ", "μ m g"],
+        ans: 0,
+        exp: "F = μ mg / (cos θ + μ sin θ). Setting tan λ = μ, F = mg sin λ / cos(θ - λ). Minimum occurs at θ = λ where F_min = mg sin λ."
+      },
+      {
+        q: "A bird is sitting in a large closed wire cage carried by a boy. If the bird starts flying with acceleration a upwards, the boy will feel the cage:",
+        options: ["Heavier", "Lighter", "Of same weight", "Weightless"],
+        ans: 0,
+        exp: "To accelerate upwards, the bird's wings push air downwards with force m(g + a). This downward air thrust acts on the bottom of the closed cage, increasing the apparent weight."
+      },
+      {
+        q: "A block of mass m is suspended from a ceiling by a string of breaking strength 2 mg. The minimum time in which the block can be raised through height h from rest without breaking the string is:",
+        options: ["√(2h / g)", "√(h / g)", "2√(h / g)", "√(4h / g)"],
+        ans: 0,
+        exp: "Maximum tension T_max = 2 mg ⇒ m(g + a_max) = 2 mg ⇒ a_max = g. Using h = 1/2 a_max t² ⇒ t_min = √(2h / g)."
+      },
+      {
+        q: "A conveyor belt is moving horizontally at 2 m/s. A box is gently dropped on it. If μ_k = 0.5, the distance the box slips on the belt before matching its speed is (take g = 10 m/s²):",
+        options: ["0.4 m", "0.8 m", "0.2 m", "1.0 m"],
+        ans: 0,
+        exp: "Acceleration of box = μ_k g = 0.5 × 10 = 5 m/s². Distance to reach 2 m/s from rest: v² = 2as ⇒ (2)² = 2(5)s ⇒ s = 4 / 10 = 0.4 m."
+      },
+      {
+        q: "A block rests on an inclined plane of angle θ. As θ is increased from 0° to 90°, the frictional force on the block:",
+        options: ["Increases to a maximum and then decreases", "Continuously increases", "Continuously decreases", "Remains constant"],
+        ans: 0,
+        exp: "For θ ≤ angle of repose, static friction f = mg sin θ (increases). For θ > angle of repose, kinetic friction f = μ mg cos θ (decreases)."
+      },
+      {
+        q: "A plumb line is suspended from the roof of a railroad car. When the train rounds a curve of radius R at speed v, the angle made by the string with the vertical is:",
+        options: ["arctan(v² / (R g))", "arcsin(v² / (R g))", "arctan(R g / v²)", "arccos(v² / (R g))"],
+        ans: 0,
+        exp: "T sin θ = m v²/R and T cos θ = mg. Dividing equations yields tan θ = v² / (R g) ⇒ θ = arctan(v² / (R g))."
+      },
+      {
+        q: "A uniform rope of length 10 m and mass 5 kg hangs vertically. A block of mass 15 kg is attached to the bottom. The tension at the midpoint of the rope is (take g = 10 m/s²):",
+        options: ["175 N", "150 N", "200 N", "125 N"],
+        ans: 0,
+        exp: "Mass supported below midpoint = 15 kg (block) + 2.5 kg (lower half of rope) = 17.5 kg. Tension = 17.5 × 10 = 175 N."
+      },
+      {
+        q: "A body of mass 2 kg moving on a horizontal surface with velocity 4 m/s enters a rough patch where μ_k = 0.2 and length 2 m. Its velocity after emerging from the patch is (take g = 10 m/s²):",
+        options: ["2.83 m/s", "3.46 m/s", "2.00 m/s", "1.50 m/s"],
+        ans: 0,
+        exp: "Retardation a = μ_k g = 0.2 × 10 = 2 m/s². v² = u² - 2as = 16 - 2(2)(2) = 16 - 8 = 8 ⇒ v = √8 ≈ 2.83 m/s."
+      },
+      {
+        q: "A mass m is attached to two identical springs of constant k in parallel. The effective spring constant of the combination is:",
+        options: ["2 k", "k / 2", "k", "4 k"],
+        ans: 0,
+        exp: "For springs in parallel, equivalent stiffness is k_eq = k₁ + k₂ = k + k = 2k."
+      },
+      {
+        q: "For the two springs of constant k connected in series, the equivalent spring constant is:",
+        options: ["k / 2", "2 k", "k", "k / 4"],
+        ans: 0,
+        exp: "For springs in series, 1/k_eq = 1/k + 1/k = 2/k ⇒ k_eq = k / 2."
+      },
+      {
+        q: "A block of mass 3 kg is pushed against a spring of constant k = 300 N/m compressing it by 0.2 m. When released on a smooth floor, the speed of the block as it leaves the spring is:",
+        options: ["2.0 m/s", "1.41 m/s", "4.0 m/s", "0.5 m/s"],
+        ans: 0,
+        exp: "1/2 m v² = 1/2 k x² ⇒ 3 v² = 300(0.04) = 12 ⇒ v² = 4 ⇒ v = 2.0 m/s."
+      },
+      {
+        q: "A 50 kg skier starts from rest down a 30° frictionless slope of length 20 m. The speed at the bottom of the slope is (take g = 10 m/s²):",
+        options: ["14.1 m/s", "10.0 m/s", "20.0 m/s", "7.07 m/s"],
+        ans: 0,
+        exp: "Acceleration along slope a = g sin 30° = 10 × 0.5 = 5 m/s². v = √(2 a s) = √(2 × 5 × 20) = √200 ≈ 14.1 m/s."
+      },
+      {
+        q: "A ball of mass m strikes a rigid vertical wall at an angle of incidence θ with speed v and rebounds elastically at the same angle. The impulse delivered to the wall is:",
+        options: ["2 m v cos θ", "2 m v sin θ", "m v cos θ", "2 m v"],
+        ans: 0,
+        exp: "Parallel momentum is conserved. Perpendicular momentum changes from m v cos θ to -m v cos θ. Impulse magnitude = 2 m v cos θ."
+      },
+      {
+        q: "A mass m₁ on a smooth horizontal table is connected by a string over a frictionless pulley to a hanging mass m₂. The acceleration of the system is:",
+        options: ["m₂ g / (m₁ + m₂)", "m₁ g / (m₁ + m₂)", "(m₁ - m₂) g / (m₁ + m₂)", "m₂ g / m₁"],
+        ans: 0,
+        exp: "Driving force is m₂ g. Total mass is m₁ + m₂. Acceleration a = m₂ g / (m₁ + m₂)."
+      },
+      {
+        q: "In the system from the previous question (mass m₁ on table, hanging mass m₂), the tension in the string is:",
+        options: ["m₁ m₂ g / (m₁ + m₂)", "2 m₁ m₂ g / (m₁ + m₂)", "m₂ g", "m₁ g"],
+        ans: 0,
+        exp: "Tension T = m₁ a = m₁ [m₂ g / (m₁ + m₂)] = m₁ m₂ g / (m₁ + m₂)."
+      },
+      {
+        q: "A 4 kg block rests on a rough horizontal floor with μ_s = 0.5. A force of 15 N acts horizontally. The force exerted by the floor on the block (resultant of normal and friction) is (take g = 10 m/s²):",
+        options: ["42.7 N", "40.0 N", "15.0 N", "25.0 N"],
+        ans: 0,
+        exp: "Normal force N = 40 N. Friction f_s = 15 N (since 15 N < f_max = 20 N). Contact force R = √(N² + f_s²) = √(40² + 15²) = √(1600 + 225) = √1825 ≈ 42.7 N."
+      },
+      {
+        q: "A particle of mass m is suspended from a ceiling by a thread of length L. If given a horizontal velocity v = √(4 g L) at the bottom, the angle from the vertical at which the string slacks is:",
+        options: ["arccos(-1/3) = 109.5°", "arccos(-2/3) = 131.8°", "90°", "180°"],
+        ans: 0,
+        exp: "Speed at angle θ: v² = v₀² - 2gL(1 - cos θ). String slacks when tension T = 0 ⇒ m v²/L + mg cos θ = 0 ⇒ (4gL - 2gL + 2gL cos θ)/L + g cos θ = 0 ⇒ 2g + 3g cos θ = 0 ⇒ cos θ = -2/3."
+      },
+      {
+        q: "A heavy chain of length L and mass M is held vertically with its lower end touching a balance. If the chain is released, the balance reading when half the chain has fallen is:",
+        options: ["1.5 M g", "3 M g", "M g", "0.5 M g"],
+        ans: 0,
+        exp: "Total force = 3 λ g x. At x = L/2, force = 3 (M/L) g (L/2) = 1.5 M g."
+      },
+      {
+        q: "A body of mass m is placed on an elevator floor moving downwards with deceleration a. The reaction force on the body is:",
+        options: ["m (g + a)", "m (g - a)", "m g", "m a"],
+        ans: 0,
+        exp: "Deceleration downwards means acceleration is directed upwards (+a). Thus N = m(g + a)."
+      },
+      {
+        q: "A bullet of mass 10 g enters a sandbag with velocity 300 m/s and emerges with velocity 100 m/s. The thickness of the sandbag is 20 cm. The average resistance force offered by the sand is:",
+        options: ["2000 N", "4000 N", "1000 N", "3000 N"],
+        ans: 0,
+        exp: "v² = u² - 2as ⇒ (100)² = (300)² - 2a(0.2) ⇒ 0.4 a = 90000 - 10000 = 80000 ⇒ a = 200,000 m/s². Force F = m a = 0.010 × 200,000 = 2000 N."
+      },
+      {
+        q: "A block of mass m is projected with velocity v₀ on a long rough horizontal plank of mass M placed on a smooth table. When slipping ceases, the common final velocity of the system is:",
+        options: ["m v₀ / (M + m)", "M v₀ / (M + m)", "v₀ / 2", "m v₀ / M"],
+        ans: 0,
+        exp: "Friction between block and plank is internal to the (M + m) system. Momentum is conserved: m v₀ = (M + m) V ⇒ V = m v₀ / (M + m)."
+      },
+      {
+        q: "A body of mass 5 kg is suspended by a string. If the string is pulled horizontally by a force F such that the string makes an angle of 45° with the vertical, the value of F is (take g = 10 m/s²):",
+        options: ["50 N", "25 N", "70.7 N", "35.3 N"],
+        ans: 0,
+        exp: "T sin 45° = F and T cos 45° = mg. Dividing gives F = mg tan 45° = 5(10)(1) = 50 N."
+      },
+      {
+        q: "A 1 kg stone at the end of a 1 m string is whirled in a horizontal circle at 60 rpm on a smooth table. The tension in the string is:",
+        options: ["39.5 N", "19.7 N", "4.0 N", "360 N"],
+        ans: 0,
+        exp: "ω = 2π (60/60) = 2π rad/s. Tension T = m ω² r = 1 × (2π)² × 1 = 4π² ≈ 39.5 N."
+      },
+      {
+        q: "A body of mass m is kept on an inclined plane of angle θ. The minimum coefficient of static friction μ_s required to keep it from sliding is:",
+        options: ["tan θ", "sin θ", "cos θ", "cot θ"],
+        ans: 0,
+        exp: "mg sin θ ≤ μ_s mg cos θ ⇒ μ_s ≥ tan θ."
+      },
+      {
+        q: "A 100 kg vehicle climbing a 1 in 10 slope (sin θ = 0.1) at a constant speed of 10 m/s requires an engine thrust of (neglect friction, take g = 10 m/s²):",
+        options: ["100 N", "1000 N", "10 N", "500 N"],
+        ans: 0,
+        exp: "F = mg sin θ = 100 × 10 × 0.1 = 100 N."
+      },
+      {
+        q: "A constant force F acts on a body of mass m for duration t starting from rest. The kinetic energy acquired by the body is:",
+        options: ["F² t² / (2m)", "F t / (2m)", "F² t / m", "1/2 F t²"],
+        ans: 0,
+        exp: "Momentum p = F t. Kinetic energy KE = p² / (2m) = (F t)² / (2m) = F² t² / (2m)."
+      },
+      {
+        q: "A bullet penetrates three identical wooden planks before coming to rest. If it loses equal velocity in each plank, the ratio of thickness of the three planks must be:",
+        options: ["5 : 3 : 1", "1 : 1 : 1", "3 : 2 : 1", "9 : 4 : 1"],
+        ans: 0,
+        exp: "Let entry speed be 3u, and speed decreases by u after each plank (2u, u, 0). Thicknesses s ∝ (v_i² - v_f²): s₁ ∝ 9u² - 4u² = 5u², s₂ ∝ 4u² - u² = 3u², s₃ ∝ u² - 0 = u². Ratio s₁ : s₂ : s₃ = 5 : 3 : 1."
+      },
+      {
+        q: "A 500 kg elevator car is descending at 4 m/s. It is brought to rest in a distance of 2 m by braking. The tension in the supporting cable during braking is (take g = 10 m/s²):",
+        options: ["7000 N", "5000 N", "3000 N", "9000 N"],
+        ans: 0,
+        exp: "v² = u² - 2as ⇒ 0 = 16 - 2a(2) ⇒ a = 4 m/s² (upwards). Cable tension T = m(g + a) = 500(10 + 4) = 7000 N."
+      },
+      {
+        q: "A ball of mass m strikes a smooth horizontal floor with speed v at angle θ with the vertical. If the coefficient of restitution is e = 1 (elastic collision), the angle of reflection with the vertical is:",
+        options: ["θ", "90° - θ", "2θ", "0°"],
+        ans: 0,
+        exp: "The horizontal velocity component v sin θ is unaffected by the smooth floor. The vertical velocity component reverses from v cos θ to v cos θ. The angle with the normal remains θ."
+      },
+      {
+        q: "A block of mass 10 kg is placed on a rough horizontal floor with static friction coefficient μ_s = 0.5. A force of 40 N acts at 30° below the horizontal. Will the block move? (take g = 10 m/s²)",
+        options: ["No, applied horizontal force (34.6 N) < limiting friction (60 N)", "Yes, it accelerates at 1 m/s²", "Yes, it just begins to slide", "No, normal force is zero"],
+        ans: 0,
+        exp: "Normal force N = mg + F sin 30° = 100 + 40(0.5) = 120 N. Limiting friction f_max = 0.5 × 120 = 60 N. Applied horizontal force = F cos 30° = 40 × 0.866 = 34.6 N. Since 34.6 N < 60 N, the block does not move."
+      },
+      {
+        q: "Newton's second law of motion in terms of momentum states that force is:",
+        options: ["Directly proportional to rate of change of momentum", "Equal to mass times velocity", "Inversely proportional to momentum", "Equal to change of momentum"],
+        ans: 0,
+        exp: "Newton's second law formally states F = dp/dt (rate of change of linear momentum)."
+      }
+    ]
+  }
   { id:'c9-gravitation', classGroup:'9', title:'Gravitation', desc:'Universal law, free fall, weight, mass', duration:5,
     questions:[
       {q:"The value of g on the surface of the Earth is approximately:", options:["8.9 m/s²","9.8 m/s²","10.8 m/s²","11.2 m/s²"], ans:1, exp:"Standard value of g ≈ 9.8 m/s²"},
