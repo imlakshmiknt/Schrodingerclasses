@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,87 +6,367 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simulations — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{--black:#0a0a0a;--white:#f8f7f4;--cream:#f0ede6;--ink:#1a1a1a;--muted:#6b6b6b;--accent:#1a3a5c;--accent2:#c8a96e;--border:#e0ddd6;--serif:'DM Serif Display',serif;--sans:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
-    body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(248,247,244,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
-    .nav-logo{font-family:var(--serif);font-size:1.4rem;color:var(--accent);text-decoration:none;}
-    .nav-logo span{color:var(--accent2);}
-    .nav-links{display:flex;gap:2rem;align-items:center;}
-    .nav-links a{text-decoration:none;color:var(--muted);font-size:0.875rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;transition:color 0.2s;}
-    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
-    .nav-cta{background:var(--accent)!important;color:var(--white)!important;padding:0.5rem 1.4rem!important;border-radius:2px!important;font-weight:600!important;}
-    .page-header{padding:8rem 4rem 4rem;background:var(--accent);color:var(--white);}
-    .page-label{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.6rem;}
-    .page-title{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.5rem);letter-spacing:-0.02em;}
-    .page-sub{font-size:0.95rem;color:rgba(255,255,255,0.55);margin-top:0.6rem;}
-    .sims-section{padding:3rem 4rem 5rem;}
-    .section-heading{font-family:var(--serif);font-size:1.6rem;margin-bottom:0.3rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);}
-    .section-heading:first-of-type{margin-top:0;padding-top:0;border-top:none;}
-    .section-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;}
-    .sims-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-bottom:1rem;}
-    .sim-card{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;}
-    .sim-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,0.07);}
-    .sim-preview{height:150px;background:var(--ink);position:relative;overflow:hidden;cursor:pointer;}
-    .sim-preview canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
-    .sim-hover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);opacity:0;transition:opacity 0.2s;font-size:2rem;}
-    .sim-card:hover .sim-hover{opacity:1;}
-    .sim-body{padding:1.2rem;}
-    .sim-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);background:rgba(200,169,110,0.1);padding:0.2rem 0.55rem;border-radius:2px;display:inline-block;margin-bottom:0.6rem;}
-    .sim-body h4{font-family:var(--serif);font-size:1rem;margin-bottom:0.3rem;}
-    .sim-body p{font-size:0.78rem;color:var(--muted);line-height:1.6;}
-    .sim-open{display:inline-block;margin-top:0.8rem;padding:0.5rem 1.1rem;background:var(--accent);color:white;border:none;border-radius:3px;font-family:var(--sans);font-size:0.8rem;font-weight:600;cursor:pointer;transition:background 0.2s;}
-    .sim-open:hover{background:var(--accent2);color:var(--ink);}
-    .sim-modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;display:none;flex-direction:column;}
-    .sim-modal.open{display:flex;}
-    .sim-modal-header{background:#0d1117;padding:0.9rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.08);}
-    .sim-modal-header h3{font-family:var(--serif);color:white;font-size:1.05rem;}
-    .sim-modal-close{background:rgba(255,255,255,0.1);border:none;color:white;width:30px;height:30px;border-radius:50%;font-size:0.9rem;cursor:pointer;}
-    .sim-modal-body{flex:1;display:flex;min-height:0;}
-    .sim-canvas-wrap{flex:1;position:relative;min-width:0;}
-    .sim-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
-    .sim-controls{width:220px;background:#0d1117;padding:1.2rem;overflow-y:auto;border-left:1px solid rgba(255,255,255,0.07);flex-shrink:0;}
-    .ctrl-group{margin-bottom:1.2rem;}
-    .ctrl-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:0.4rem;display:block;}
-    .ctrl-value{font-family:var(--mono);font-size:0.85rem;color:white;margin-bottom:0.3rem;}
-    input[type=range]{width:100%;accent-color:var(--accent2);}
-    .ctrl-btn{width:100%;padding:0.55rem;margin-top:0.4rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:white;border-radius:3px;font-family:var(--sans);font-size:0.8rem;cursor:pointer;transition:background 0.2s;}
-    .ctrl-btn:hover{background:rgba(255,255,255,0.15);}
-    .data-box{background:rgba(255,255,255,0.04);border-radius:4px;padding:0.8rem;font-family:var(--mono);font-size:0.72rem;color:rgba(255,255,255,0.65);line-height:1.9;white-space:pre-line;}
-    @media(max-width:900px){nav{padding:1rem 1.5rem;}.nav-links{display:none;}.sims-section{padding:2rem 1.5rem;}.sim-controls{display:none;}}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f6;
+      --paper: #ffffff;
+      --cream: #fff9f0;
+      --ink: #111827;
+      --ink2: #374151;
+      --muted: #6b7280;
+      --accent: #0b1f3a;
+      --gold: #b8892e;
+      --gold2: #ddb96a;
+      --border: #e5e7eb;
+      --border2: #d1d5db;
+      --green: #10b981;
+      --green-bg: #ecfdf5;
+      --red: #ef4444;
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'Instrument Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 4rem;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-tagline {
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: 20px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-links a:hover { 
+      background: #f3f4f6; 
+      color: var(--accent); 
+    }
+    .nav-links a.active {
+      background: #eef2ff;
+      color: #312e81;
+      font-weight: 600;
+    }
+    .nav-cta {
+      background: var(--accent);
+      color: white !important;
+      padding: 0.5rem 1.4rem !important;
+      border-radius: 8px !important;
+      font-weight: 600 !important;
+      font-size: 0.85rem !important;
+    }
+
+    /* ── HERO HEADER ── */
+    .page-header {
+      padding: 6.5rem 4rem 2.5rem;
+      background: #fffbf5;
+      border-bottom: 1px solid #f3ebd8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-left { max-width: 550px; }
+    .page-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .page-title {
+      font-family: var(--display);
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0d172a;
+      margin-bottom: 0.6rem;
+    }
+    .page-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+
+    .hero-stats-card {
+      background: #ffffff;
+      border: 1px solid #f0e6d2;
+      border-radius: 16px;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      gap: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .stat-item { text-align: center; }
+    .stat-icon { font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .stat-num { font-weight: 700; font-size: 1.1rem; color: var(--ink); }
+    .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* ── SIMS SECTION ── */
+    .sims-section { padding: 2.5rem 4rem 4rem; }
+    .section-heading {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-top: 2.5rem;
+      margin-bottom: 0.3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .section-heading:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+    .section-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem; }
+    
+    .sims-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+    .sim-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sim-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .sim-preview {
+      height: 160px;
+      background: #0d172a;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .sim-preview canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .sim-hover {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(11, 31, 58, 0.6);
+      opacity: 0; transition: opacity 0.2s;
+      color: white; font-weight: 700; font-size: 0.9rem; gap: 0.4rem;
+    }
+    .sim-card:hover .sim-hover { opacity: 1; }
+    
+    .sim-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .sim-tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+      align-self: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .tag-class-9 { background: #fef3c7; color: #92400e; }
+    .tag-class-10 { background: #dcfce7; color: #166534; }
+    .tag-class-12 { background: #e0e7ff; color: #3730a3; }
+
+    .sim-body h4 { font-family: var(--display); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+    .sim-body p { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+    
+    .sim-open {
+      margin-top: 1rem;
+      padding: 0.45rem 0.9rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.2s;
+    }
+    .sim-open:hover { background: var(--gold); color: var(--ink); }
+
+    /* ── FULL LAB MODAL ── */
+    .sim-modal {
+      position: fixed; inset: 0;
+      background: rgba(10, 12, 16, 0.88);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      backdrop-filter: blur(6px);
+    }
+    .sim-modal.open { display: flex; }
+    .sim-modal-header {
+      background: var(--accent);
+      padding: 0.8rem 1.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sim-modal-header h3 { font-family: var(--display); color: white; font-size: 1.15rem; font-weight: 700; }
+    .sim-modal-close {
+      background: rgba(255,255,255,0.15); border: none; color: white;
+      width: 32px; height: 32px; border-radius: 50%; font-size: 0.9rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .sim-modal-close:hover { background: rgba(255,255,255,0.25); }
+    
+    .sim-modal-body { flex: 1; display: flex; min-height: 0; }
+    .sim-canvas-wrap { flex: 1; position: relative; min-width: 0; background: #071320; }
+    .sim-canvas-wrap canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    
+    .sim-controls {
+      width: 280px;
+      background: #0b1728;
+      padding: 1.5rem;
+      overflow-y: auto;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .ctrl-group { margin-bottom: 1.2rem; }
+    .ctrl-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold2); margin-bottom: 0.4rem; display: block; font-weight: 700; }
+    .ctrl-value { font-family: var(--mono); font-size: 0.85rem; color: white; margin-bottom: 0.3rem; font-weight: 600; }
+    input[type=range] { width: 100%; accent-color: var(--gold2); cursor: pointer; }
+    .ctrl-btn {
+      width: 100%; padding: 0.65rem; margin-top: 0.4rem;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      color: white; border-radius: 6px; font-family: var(--body); font-size: 0.82rem;
+      font-weight: 600; cursor: pointer; transition: background 0.2s;
+    }
+    .ctrl-btn:hover { background: rgba(255,255,255,0.18); }
+    .data-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.85rem; font-family: var(--mono); font-size: 0.75rem;
+      color: rgba(255,255,255,0.8); line-height: 1.8; white-space: pre-line;
+    }
+
+    @media(max-width:900px){
+      nav { padding: 0.8rem 1.5rem; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 5.5rem 1.5rem 2rem; }
+      .hero-stats-card { width: 100%; justify-content: space-around; }
+      .sims-section { padding: 1.5rem; }
+      .sim-modal-body { flex-direction: column; }
+      .sim-controls { width: 100%; max-height: 200px; border-left: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    }
   </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">Schrödinger<span>Classes</span></a>
+  <a href="index.html" class="nav-logo">
+    Schrödinger<span>Classes</span>
+    <span class="nav-tagline">A CONCEPT BY LAKSHMI KANT</span>
+  </a>
   <div class="nav-links">
-    <a href="notes.html">Notes</a><a href="videos.html">Videos</a>
-    <a href="quiz.html">Quiz</a><a href="test.html">Tests</a>
-    <a href="simulation.html" class="active">Simulations</a>
-    <a href="login.html" class="nav-cta">Login</a>
+    <a href="index.html">🏠 Home</a>
+    <a href="videos.html">📺 Videos</a>
+    <a href="quiz.html">🎯 Quiz</a>
+    <a href="test.html">📝 Tests</a>
+    <a href="simulation.html" class="active">👨‍🔬 Simulations</a>
+    <a href="notes.html">📄 Notes</a>
   </div>
+  <a href="login.html" class="nav-cta">Login</a>
 </nav>
+
+<!-- PAGE HEADER HERO -->
 <div class="page-header">
-  <div class="page-label">Virtual Physics Lab</div>
-  <div class="page-title">15 Interactive<br>Simulations.</div>
-  <p class="page-sub">Electricity · Magnetism · Modern Physics — see the invisible!</p>
+  <div class="hero-left">
+    <div class="page-label">✦ VIRTUAL PHYSICS LAB</div>
+    <h1 class="page-title">Interactive Simulations.</h1>
+    <p class="page-sub">Class 9, 10 & 12 Physics brought to life — adjust variables, run live experiments, and see the physics!</p>
+  </div>
+  
+  <div class="hero-stats-card">
+    <div class="stat-item">
+      <div class="stat-icon">🔬</div>
+      <div class="stat-num">20</div>
+      <div class="stat-lbl">Simulations</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-num">Realtime</div>
+      <div class="stat-lbl">Physics</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🎓</div>
+      <div class="stat-num">Cl. 9-12</div>
+      <div class="stat-lbl">Syllabus</div>
+    </div>
+  </div>
 </div>
+
+<!-- SIMULATIONS MAIN CONTAINER -->
 <div class="sims-section">
-  <div class="section-heading">⚡ Electricity</div>
-  <p class="section-desc">Visualise circuits, capacitors, and current flow interactively.</p>
+  <div class="section-heading">🏃 Class 9 Physics</div>
+  <p class="section-desc">Interactive motion, gravity, pendulum, work-energy, and sound wave labs.</p>
+  <div class="sims-grid" id="grid_class9"></div>
+
+  <div class="section-heading">💡 Class 10 Physics</div>
+  <p class="section-desc">Interactive optics, Snell's law, total internal reflection, Ohm's law, and resistor circuits.</p>
+  <div class="sims-grid" id="grid_class10"></div>
+
+  <div class="section-heading">⚡ Electricity & Circuits (Class 12)</div>
+  <p class="section-desc">Capacitor charging, Kirchhoff's laws, and electron drift velocity.</p>
   <div class="sims-grid" id="grid_elec"></div>
-  <div class="section-heading">🧲 Magnetism</div>
-  <p class="section-desc">Explore magnetic fields, induction, and the Lorentz force.</p>
+
+  <div class="section-heading">🧲 Magnetism (Class 12)</div>
+  <p class="section-desc">Magnetic field lines, solenoid, EM induction, Lenz's law, and Lorentz force.</p>
   <div class="sims-grid" id="grid_mag"></div>
-  <div class="section-heading">⚛️ Modern Physics</div>
-  <p class="section-desc">Quantum effects, atomic models, and nuclear physics visualised.</p>
+
+  <div class="section-heading">⚛️ Modern Physics (Class 12)</div>
+  <p class="section-desc">Photoelectric effect, Bohr atom, radioactive decay, de Broglie waves, and nuclear fission.</p>
   <div class="sims-grid" id="grid_modern"></div>
 </div>
+
+<!-- FULLSCREEN SIMULATION LAB MODAL -->
 <div class="sim-modal" id="simModal">
   <div class="sim-modal-header">
-    <h3 id="simTitle">Simulation</h3>
+    <h3 id="simTitle">Virtual Physics Lab</h3>
     <button class="sim-modal-close" onclick="closeSim()">✕</button>
   </div>
   <div class="sim-modal-body">
@@ -93,473 +374,333 @@
     <div class="sim-controls" id="simControls"></div>
   </div>
 </div>
+
 <script>
-let animId=null,currentSim=null,simParams={};
+let animId = null, currentSim = null, simParams = {};
 
-// ── SIM REGISTRY ─────────────────────────────────────────────────────────────
+// ── SIMULATION CATALOGUE ──────────────────────────────────────────────────────
 const CATALOG = [
-  // ELECTRICITY
-  {id:'ohm',group:'elec',title:"Ohm's Law",tag:'Class 12',desc:'Change V & R — see current change live. V = IR visualised.',
-   params:{voltage:6,resistance:3},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_v">${p.voltage} V</div><input type="range" min="1" max="20" step="0.5" value="${p.voltage}" oninput="p_v.textContent=this.value+' V';UP('voltage',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_r">${p.resistance} Ω</div><input type="range" min="1" max="20" step="0.5" value="${p.resistance}" oninput="p_r.textContent=this.value+' Ω';UP('resistance',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Live Data</span><div class="data-box" id="simData">...</div></div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const I=p.voltage/p.resistance,rw=W*.32,rh=H*.32;
-    C.strokeStyle='rgba(200,169,110,0.5)';C.lineWidth=2;C.strokeRect(cx-rw,cy-rh,rw*2,rh*2);
-    C.fillStyle='rgba(26,58,92,0.9)';C.fillRect(cx-rw-10,cy-18,20,36);
-    C.fillStyle='white';C.font='10px monospace';C.textAlign='center';C.fillText(p.voltage+'V',cx-rw,cy+50);
-    C.fillStyle='rgba(200,100,50,0.5)';C.fillRect(cx-22,cy+rh-8,44,16);
-    C.fillStyle='white';C.fillText(p.resistance+'Ω',cx,cy+rh+22);
-    const n=Math.min(10,Math.round(I)+2);C.fillStyle='#64b5f6';
-    for(let i=0;i<n;i++){const pos=(t*I*.015+i/n)%1,pr=pos*(rw*4+rh*4);let ex,ey;
-      if(pr<rw*2){ex=cx-rw+pr;ey=cy-rh;}else if(pr<rw*2+rh*2){ex=cx+rw;ey=cy-rh+(pr-rw*2);}
-      else if(pr<rw*4+rh*2){ex=cx+rw-(pr-rw*2-rh*2);ey=cy+rh;}else{ex=cx-rw;ey=cy+rh-(pr-rw*4-rh*2);}
-      C.beginPath();C.arc(ex,ey,4,0,Math.PI*2);C.fill();}
-    const d=document.getElementById('simData');if(d)d.textContent=`V = ${p.voltage} V\nR = ${p.resistance} Ω\nI = V/R = ${I.toFixed(2)} A\nP = VI = ${(p.voltage*I).toFixed(2)} W`;}},
+  // ================= CLASS 9 SIMULATIONS =================
+  {
+    id: 'motion_graph', group: 'class9', title: 'Kinematics & Graphs', tag: 'Class 9',
+    desc: 'Simulate uniform & accelerated motion with live position (s-t) and velocity (v-t) graphs.',
+    params: { u: 0, a: 2, tMax: 10 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Initial Velocity u (m/s)</span><div class="ctrl-value" id="p_u">${p.u}</div><input type="range" min="-10" max="20" step="1" value="${p.u}" oninput="p_u.textContent=this.value;UP('u',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Acceleration a (m/s²)</span><div class="ctrl-value" id="p_a">${p.a}</div><input type="range" min="-5" max="10" step="0.5" value="${p.a}" oninput="p_a.textContent=this.value;UP('a',+this.value);RS()"/></div>
+      <button class="ctrl-btn" onclick="RS()">↺ Restart Motion</button>
+      <div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const time = (t * 0.05) % p.tMax;
+      const s = p.u * time + 0.5 * p.a * time * time;
+      const v = p.u + p.a * time;
 
-  {id:'series',group:'elec',title:'Series & Parallel Circuits',tag:'Class 12',desc:'Compare current & voltage in series vs parallel resistors.',
-   params:{r1:4,r2:6,voltage:12,mode:0},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">R1 (Ω)</span><div class="ctrl-value" id="p_r1">${p.r1}</div><input type="range" min="1" max="20" step="1" value="${p.r1}" oninput="p_r1.textContent=this.value;UP('r1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R2 (Ω)</span><div class="ctrl-value" id="p_r2">${p.r2}</div><input type="range" min="1" max="20" step="1" value="${p.r2}" oninput="p_r2.textContent=this.value;UP('r2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_vs">${p.voltage}</div><input type="range" min="1" max="24" step="1" value="${p.voltage}" oninput="p_vs.textContent=this.value;UP('voltage',+this.value)"/></div><button class="ctrl-btn" onclick="UP('mode',simParams.mode?0:1);RS()">Toggle Series/Parallel</button><div class="ctrl-group" style="margin-top:.8rem"><div class="data-box" id="simData">...</div></div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    C.font='12px serif';C.textAlign='center';C.fillStyle='rgba(200,169,110,0.9)';
-    C.fillText(p.mode?'PARALLEL CIRCUIT':'SERIES CIRCUIT',cx,28);
-    C.strokeStyle='rgba(200,169,110,0.5)';C.lineWidth=2;
-    const d=document.getElementById('simData');
-    if(!p.mode){
-      const Rt=p.r1+p.r2,I=p.voltage/Rt;
-      C.beginPath();C.moveTo(70,cy);C.lineTo(W-70,cy);C.stroke();
-      C.beginPath();C.moveTo(70,cy);C.lineTo(70,cy+70);C.lineTo(W-70,cy+70);C.lineTo(W-70,cy);C.stroke();
-      C.fillStyle='rgba(26,58,92,0.8)';C.fillRect(cx-75,cy-12,44,24);
-      C.fillStyle='rgba(26,200,92,0.4)';C.fillRect(cx+30,cy-12,44,24);
-      C.fillStyle='white';C.font='10px monospace';C.fillText('R1='+p.r1+'Ω',cx-53,cy+5);C.fillText('R2='+p.r2+'Ω',cx+52,cy+5);
-      C.fillStyle='#c8a96e';C.fillRect(62,cy+58,16,24);C.fillStyle='white';C.fillText(p.voltage+'V',70,cy+98);
-      C.fillStyle='#64b5f6';
-      for(let i=0;i<Math.min(8,Math.round(I)+1);i++){const pos=(t*I*.012+i/8)%1,pr=pos*(W-140+140);let ex,ey;
-        if(pr<W-140){ex=70+pr;ey=cy;}else if(pr<W-140+70){ex=W-70;ey=cy+(pr-(W-140));}else{ex=W-70-(pr-(W-140)-70);ey=cy+70;}
-        C.beginPath();C.arc(ex,ey,3.5,0,Math.PI*2);C.fill();}
-      if(d)d.textContent=`SERIES\nRt = R1+R2 = ${Rt} Ω\nI = ${I.toFixed(2)} A (same)\nV1 = ${(I*p.r1).toFixed(1)} V\nV2 = ${(I*p.r2).toFixed(1)} V`;
-    } else {
-      const Rt=1/(1/p.r1+1/p.r2),I=p.voltage/Rt;
-      C.beginPath();C.moveTo(80,cy-50);C.lineTo(80,cy+50);C.stroke();
-      C.beginPath();C.moveTo(W-80,cy-50);C.lineTo(W-80,cy+50);C.stroke();
-      C.beginPath();C.moveTo(80,cy-50);C.lineTo(W-80,cy-50);C.stroke();
-      C.beginPath();C.moveTo(80,cy+50);C.lineTo(W-80,cy+50);C.stroke();
-      C.fillStyle='rgba(26,58,92,0.8)';C.fillRect(cx-75,cy-62,44,24);
-      C.fillStyle='rgba(26,200,92,0.4)';C.fillRect(cx-75,cy+38,44,24);
-      C.fillStyle='white';C.font='10px monospace';C.fillText('R1='+p.r1+'Ω',cx-53,cy-46);C.fillText('R2='+p.r2+'Ω',cx-53,cy+54);
-      if(d)d.textContent=`PARALLEL\nRt = ${Rt.toFixed(2)} Ω\nI_total = ${I.toFixed(2)} A\nI1 = ${(p.voltage/p.r1).toFixed(2)} A\nI2 = ${(p.voltage/p.r2).toFixed(2)} A\nV same = ${p.voltage} V`;
-    }}},
+      // Track Road
+      C.fillStyle = '#1e293b'; C.fillRect(40, 80, W - 80, 20);
+      C.strokeStyle = '#334155'; C.lineWidth = 1;
+      for (let x = 40; x < W - 80; x += 40) { C.beginPath(); C.moveTo(x, 100); C.lineTo(x, 108); C.stroke(); }
 
-  {id:'capacitor',group:'elec',title:'Capacitor Charging',tag:'Class 12',desc:'Watch a capacitor charge and discharge exponentially in RC circuit.',
-   params:{capacitance:100,resistance:50,voltage:10,charging:true},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Capacitance (μF)</span><div class="ctrl-value" id="p_c">${p.capacitance}</div><input type="range" min="10" max="500" step="10" value="${p.capacitance}" oninput="p_c.textContent=this.value;UP('capacitance',+this.value);RS()"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_rc">${p.resistance}</div><input type="range" min="10" max="200" step="10" value="${p.resistance}" oninput="p_rc.textContent=this.value;UP('resistance',+this.value);RS()"/></div><button class="ctrl-btn" onclick="UP('charging',!simParams.charging);RS()">Toggle Charge/Discharge</button><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const tau=p.resistance*p.capacitance/1000,time=t*.05;
-    const Vc=p.charging?p.voltage*(1-Math.exp(-time/tau)):p.voltage*Math.exp(-time/tau);
-    if(!cv._hist)cv._hist=[];cv._hist.push(Vc);if(cv._hist.length>W-60)cv._hist.shift();
-    C.strokeStyle='rgba(255,255,255,0.1)';C.lineWidth=1;
-    C.beginPath();C.moveTo(40,20);C.lineTo(40,H-40);C.lineTo(W-20,H-40);C.stroke();
-    for(let i=1;i<=4;i++){const y=H-40-(i/4)*(H-60);C.strokeStyle='rgba(255,255,255,0.05)';C.beginPath();C.moveTo(40,y);C.lineTo(W-20,y);C.stroke();C.fillStyle='rgba(255,255,255,0.3)';C.font='9px monospace';C.textAlign='right';C.fillText((p.voltage*i/4).toFixed(1),36,y+4);}
-    C.strokeStyle='#c8a96e';C.lineWidth=2;C.beginPath();
-    cv._hist.forEach((v,i)=>{const x=40+i,y=H-40-(v/p.voltage)*(H-60);i===0?C.moveTo(x,y):C.lineTo(x,y);});C.stroke();
-    if(cv._hist.length>0){const lx=40+cv._hist.length-1,ly=H-40-(Vc/p.voltage)*(H-60);C.fillStyle='#64b5f6';C.beginPath();C.arc(lx,ly,5,0,Math.PI*2);C.fill();}
-    const d=document.getElementById('simData');if(d)d.textContent=`Mode: ${p.charging?'Charging':'Discharging'}\nτ = RC = ${tau.toFixed(0)} ms\nVc = ${Vc.toFixed(2)} V\nFormula: Vc=V(1-e^(-t/τ))`;}},
+      // Car
+      const carX = Math.min(W - 100, Math.max(40, 40 + s * 3));
+      C.fillStyle = '#38bdf8'; C.fillRect(carX, 65, 30, 15);
+      C.fillStyle = '#0f172a'; C.beginPath(); C.arc(carX + 6, 80, 4, 0, Math.PI*2); C.arc(carX + 24, 80, 4, 0, Math.PI*2); C.fill();
 
-  {id:'kirchhoff',group:'elec',title:"Kirchhoff's Laws",tag:'Class 12',desc:'See KCL & KVL applied in a multi-loop circuit with live current flow.',
-   params:{v1:12,r1:4,r2:6,r3:3},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Battery V1</span><div class="ctrl-value" id="p_kv">${p.v1} V</div><input type="range" min="3" max="24" step="1" value="${p.v1}" oninput="p_kv.textContent=this.value+' V';UP('v1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R1</span><div class="ctrl-value" id="p_kr1">${p.r1} Ω</div><input type="range" min="1" max="15" step="1" value="${p.r1}" oninput="p_kr1.textContent=this.value+' Ω';UP('r1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R2</span><div class="ctrl-value" id="p_kr2">${p.r2} Ω</div><input type="range" min="1" max="15" step="1" value="${p.r2}" oninput="p_kr2.textContent=this.value+' Ω';UP('r2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R3</span><div class="ctrl-value" id="p_kr3">${p.r3} Ω</div><input type="range" min="1" max="15" step="1" value="${p.r3}" oninput="p_kr3.textContent=this.value+' Ω';UP('r3',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const Rpar=p.r2*p.r3/(p.r2+p.r3),I=p.v1/(p.r1+Rpar),I2=I*p.r3/(p.r2+p.r3),I3=I*p.r2/(p.r2+p.r3);
-    C.strokeStyle='rgba(200,169,110,0.5)';C.lineWidth=2;
-    C.beginPath();C.moveTo(80,80);C.lineTo(W-80,80);C.lineTo(W-80,H-80);C.lineTo(80,H-80);C.lineTo(80,80);C.stroke();
-    C.beginPath();C.moveTo(cx,80);C.lineTo(cx,H-80);C.stroke();
-    C.fillStyle='rgba(26,58,92,0.8)';C.fillRect(cx-60,68,50,24);C.fillStyle='white';C.font='10px monospace';C.textAlign='center';C.fillText('R1='+p.r1+'Ω',cx-35,84);
-    C.fillStyle='rgba(26,200,92,0.4)';C.fillRect(80,cy-18,50,36);C.fillStyle='white';C.fillText('R2='+p.r2+'Ω',105,cy+5);
-    C.fillStyle='rgba(200,100,50,0.4)';C.fillRect(W-130,cy-18,50,36);C.fillStyle='white';C.fillText('R3='+p.r3+'Ω',W-105,cy+5);
-    C.fillStyle='#c8a96e';C.fillRect(72,H-92,16,24);C.fillStyle='white';C.fillText(p.v1+'V',80,H-60);
-    C.fillStyle='#64b5f6';C.font='10px monospace';C.fillText('I='+I.toFixed(2)+'A',cx+20,62);C.fillText('I2='+I2.toFixed(2)+'A',160,cy-28);C.fillText('I3='+I3.toFixed(2)+'A',W-130,cy-28);
-    for(let i=0;i<6;i++){const pos=(t*.008*I+i/6)%1;C.beginPath();C.arc(80+(W-160)*pos,80,3,0,Math.PI*2);C.fill();}
-    const d=document.getElementById('simData');if(d)d.textContent=`KCL: I = I2 + I3\nI=${I.toFixed(2)} I2=${I2.toFixed(2)} I3=${I3.toFixed(2)}\nKVL: V=IR1+V_par\nV_R1=${(I*p.r1).toFixed(2)} V`;}},
+      // Live v-t Plot
+      const gx = 40, gy = H - 30, gw = W - 80, gh = 80;
+      C.strokeStyle = 'rgba(255,255,255,0.2)'; C.lineWidth = 1;
+      C.beginPath(); C.moveTo(gx, gy - gh); C.lineTo(gx, gy); C.lineTo(gx + gw, gy); C.stroke();
+      
+      C.strokeStyle = '#fbbf24'; C.lineWidth = 2; C.beginPath();
+      for (let step = 0; step <= time; step += 0.1) {
+        const px = gx + (step / p.tMax) * gw;
+        const py = gy - ((p.u + p.a * step + 20) / 40) * gh;
+        step === 0 ? C.moveTo(px, py) : C.lineTo(px, py);
+      }
+      C.stroke();
 
-  {id:'drift',group:'elec',title:'Electron Drift Velocity',tag:'Class 12',desc:'Visualise how electrons drift through a conductor under voltage.',
-   params:{voltage:5,length:3},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_dv">${p.voltage} V</div><input type="range" min="1" max="20" step="1" value="${p.voltage}" oninput="p_dv.textContent=this.value+' V';UP('voltage',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Wire Length (m)</span><div class="ctrl-value" id="p_dl">${p.length} m</div><input type="range" min="1" max="10" step="0.5" value="${p.length}" oninput="p_dl.textContent=this.value+' m';UP('length',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const E=p.voltage/p.length,vd=E*.5;
-    C.fillStyle='rgba(200,169,110,0.12)';C.fillRect(40,cy-24,W-80,48);
-    C.strokeStyle='rgba(200,169,110,0.5)';C.lineWidth=1.5;C.strokeRect(40,cy-24,W-80,48);
-    C.fillStyle='rgba(255,200,100,0.35)';
-    for(let x=70;x<W-40;x+=38)for(let y=cy-16;y<=cy+16;y+=16){C.beginPath();C.arc(x,y,3.5,0,Math.PI*2);C.fill();}
-    C.fillStyle='#64b5f6';C.shadowColor='#64b5f6';C.shadowBlur=5;
-    for(let i=0;i<16;i++){const bx=((t*vd*.4+i*(W-80)/16)%(W-80))+40,by=cy-16+Math.sin(i*2.4)*14;C.beginPath();C.arc(bx+Math.sin(t*.3+i)*2,by+Math.cos(t*.25+i)*2,3,0,Math.PI*2);C.fill();}
-    C.shadowBlur=0;
-    C.fillStyle='#f44';C.font='bold 14px sans-serif';C.textAlign='center';C.fillText('+',25,cy+6);
-    C.fillStyle='#44f';C.fillText('−',W-25,cy+6);
-    const d=document.getElementById('simData');if(d)d.textContent=`E = V/L = ${E.toFixed(2)} V/m\nvd ∝ E (mm/s)\nElectrons drift slowly\nopposite to E field\nCurrent from + to -`;}},
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `Time t = ${time.toFixed(1)} s\nDisplacement s = ut + ½at²\n  s = ${s.toFixed(1)} m\nVelocity v = u + at\n  v = ${v.toFixed(1)} m/s`;
+    }
+  },
+  {
+    id: 'simple_pendulum', group: 'class9', title: 'Simple Pendulum Lab', tag: 'Class 9',
+    desc: 'Verify T = 2π√(L/g). Adjust string length and gravity live.',
+    params: { length: 1.5, g: 9.8, angle: 30 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Length L (m)</span><div class="ctrl-value" id="p_l">${p.length}</div><input type="range" min="0.5" max="3" step="0.1" value="${p.length}" oninput="p_l.textContent=this.value;UP('length',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Gravity g (m/s²)</span><div class="ctrl-value" id="p_g">${p.g}</div><input type="range" min="1.6" max="20" step="0.2" value="${p.g}" oninput="p_g.textContent=this.value;UP('g',+this.value);RS()"/></div>
+      <div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const T = 2 * Math.PI * Math.sqrt(p.length / p.g);
+      const thetaMax = (p.angle * Math.PI) / 180;
+      const theta = thetaMax * Math.cos((2 * Math.PI / T) * (t * 0.05));
 
-  // MAGNETISM
-  {id:'magfield',group:'mag',title:'Magnetic Field Lines',tag:'Class 12',desc:'See field lines around a bar magnet between N and S poles.',
-   params:{strength:1.5},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Field Strength</span><div class="ctrl-value" id="p_mfs">${p.strength}</div><input type="range" min="0.5" max="3" step="0.1" value="${p.strength}" oninput="p_mfs.textContent=this.value;UP('strength',+this.value)"/></div><div class="data-box">Field lines:\nN pole → outside → S pole\nInside: S to N\nStronger near poles</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    for(let l=0;l<16;l++){
-      const a=l*Math.PI*2/16;C.strokeStyle=`hsla(${200+l*4},70%,60%,0.35)`;C.lineWidth=1.2;C.beginPath();
-      let x=cx+35*Math.cos(a),y=cy+18*Math.sin(a);C.moveTo(x,y);
-      for(let s=0;s<100;s++){const dx=x-cx,dy=y-cy,rN=Math.sqrt((dx-45)**2+dy**2)+.1,rS=Math.sqrt((dx+45)**2+dy**2)+.1;
-        const fx=(dx-45)/(rN**3*p.strength)-(dx+45)/(rS**3*p.strength),fy=dy/(rN**3)*(1/p.strength-1/p.strength);
-        const fxN=(dx-45)/(rN**3),fyN=dy/(rN**3),fxS=-(dx+45)/(rS**3),fyS=-dy/(rS**3);
-        const ffx=(fxN+fxS)/p.strength,ffy=(fyN+fyS)/p.strength,m=Math.sqrt(ffx*ffx+ffy*ffy)+.001;
-        x+=ffx/m*3;y+=ffy/m*3;if(x<0||x>W||y<0||y>H)break;C.lineTo(x,y);}C.stroke();}
-    C.fillStyle='#c0392b';C.fillRect(cx+8,cy-13,44,26);C.fillStyle='#2980b9';C.fillRect(cx-52,cy-13,44,26);
-    C.fillStyle='white';C.font='bold 12px sans-serif';C.textAlign='center';C.fillText('N',cx+30,cy+5);C.fillText('S',cx-30,cy+5);
-    const a2=(t*.006)%(Math.PI*2),px=cx+75*Math.cos(a2)*p.strength*.7,py=cy+42*Math.sin(a2);
-    C.fillStyle='#ffeb3b';C.beginPath();C.arc(Math.max(10,Math.min(W-10,px)),Math.max(10,Math.min(H-10,py)),5,0,Math.PI*2);C.fill();}},
+      const pivotX = W / 2, pivotY = 40;
+      const bobR = 15, pixL = p.length * 60;
+      const bobX = pivotX + pixL * Math.sin(theta);
+      const bobY = pivotY + pixL * Math.cos(theta);
 
-  {id:'solenoid',group:'mag',title:'Solenoid Magnetic Field',tag:'Class 12',desc:'Magnetic field inside and outside a solenoid — vary current and turns.',
-   params:{current:3,turns:8},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Current (A)</span><div class="ctrl-value" id="p_si">${p.current} A</div><input type="range" min="0.5" max="10" step="0.5" value="${p.current}" oninput="p_si.textContent=this.value+' A';UP('current',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Number of Turns</span><div class="ctrl-value" id="p_sn">${p.turns}</div><input type="range" min="2" max="20" step="1" value="${p.turns}" oninput="p_sn.textContent=this.value;UP('turns',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cy=H/2,sx=55,sw=W-110,sh=55,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const B=p.current*p.turns*.08,sp=sw/Math.max(p.turns-1,1);
-    C.strokeStyle='rgba(200,169,110,0.65)';C.lineWidth=1.5;
-    for(let i=0;i<=p.turns;i++){C.beginPath();C.ellipse(sx+i*sp,cy,5,sh/2,0,0,Math.PI*2);C.stroke();}
-    const nL=Math.round(B*4)+1;
-    for(let i=0;i<Math.min(nL,7);i++){
-      const y=cy-sh/2+10+(i/(Math.min(nL,7)-1||1))*(sh-20),alpha=Math.min(1,B/2);
-      C.strokeStyle=`rgba(100,181,246,${alpha*.8})`;C.lineWidth=1.5;
-      C.beginPath();C.moveTo(sx,y);C.lineTo(sx+sw,y);C.stroke();
-      const ax=sx+sw*((t*.015)%1);
-      C.fillStyle=`rgba(100,181,246,${alpha})`;C.beginPath();C.moveTo(ax,y-4);C.lineTo(ax+8,y);C.lineTo(ax,y+4);C.fill();}
-    C.strokeStyle='rgba(100,181,246,0.12)';C.lineWidth=1;
-    C.beginPath();C.moveTo(sx,cy-sh/2);C.bezierCurveTo(sx-35,cy-70,sx+sw+35,cy-70,sx+sw,cy-sh/2);C.stroke();
-    C.beginPath();C.moveTo(sx,cy+sh/2);C.bezierCurveTo(sx-35,cy+70,sx+sw+35,cy+70,sx+sw,cy+sh/2);C.stroke();
-    C.fillStyle='rgba(200,169,110,0.7)';C.font='10px monospace';C.textAlign='center';C.fillText(`B ≈ ${B.toFixed(2)} T  |  n=${p.turns}  |  I=${p.current}A`,W/2,H-12);
-    const d=document.getElementById('simData');if(d)d.textContent=`B = μ₀nI\nB ≈ ${B.toFixed(3)} T\nUniform inside\nWeak outside`;}},
+      // Support
+      C.fillStyle = '#475569'; C.fillRect(pivotX - 30, pivotY - 8, 60, 8);
+      // String
+      C.strokeStyle = '#cbd5e1'; C.lineWidth = 2; C.beginPath(); C.moveTo(pivotX, pivotY); C.lineTo(bobX, bobY); C.stroke();
+      // Bob
+      C.fillStyle = '#f59e0b'; C.beginPath(); C.arc(bobX, bobY, bobR, 0, Math.PI*2); C.fill();
 
-  {id:'eminduction',group:'mag',title:'EM Induction',tag:'Class 12',desc:'Move a magnet through a coil — watch EMF and current induced live.',
-   params:{speed:2,coilTurns:5},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Magnet Speed</span><div class="ctrl-value" id="p_ems">${p.speed}</div><input type="range" min="0.5" max="5" step="0.5" value="${p.speed}" oninput="p_ems.textContent=this.value;UP('speed',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Coil Turns (N)</span><div class="ctrl-value" id="p_emt">${p.coilTurns}</div><input type="range" min="1" max="15" step="1" value="${p.coilTurns}" oninput="p_emt.textContent=this.value;UP('coilTurns',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const magX=W/2+Math.sin(t*p.speed*.02)*100,vel=Math.cos(t*p.speed*.02)*p.speed,EMF=vel*p.coilTurns*1.5;
-    const coilX=W/2,cw=40;
-    C.strokeStyle='rgba(200,169,110,0.7)';C.lineWidth=1.5;
-    for(let i=0;i<p.coilTurns;i++){C.beginPath();C.ellipse(coilX-cw/2+i*(cw/Math.max(p.coilTurns-1,1)),cy,4,32,0,0,Math.PI*2);C.stroke();}
-    C.fillStyle='#c0392b';C.fillRect(magX-10,cy-18,20,18);C.fillStyle='#2980b9';C.fillRect(magX-10,cy,20,18);
-    C.fillStyle='white';C.font='bold 9px sans-serif';C.textAlign='center';C.fillText('N',magX,cy-4);C.fillText('S',magX,cy+13);
-    const galX=W/2,galY=H-48;
-    C.strokeStyle='rgba(200,169,110,0.5)';C.lineWidth=1.5;C.beginPath();C.arc(galX,galY,18,0,Math.PI*2);C.stroke();
-    C.fillStyle='white';C.font='9px sans-serif';C.fillText('G',galX,galY+4);
-    const defl=(EMF/10)*Math.PI/3;C.strokeStyle='#f44';C.lineWidth=2;
-    C.beginPath();C.moveTo(galX,galY);C.lineTo(galX+14*Math.sin(defl),galY-14*Math.cos(defl));C.stroke();
-    const barH=Math.abs(EMF)*4;C.fillStyle=EMF>0?'rgba(100,255,100,0.6)':'rgba(255,100,100,0.6)';
-    C.fillRect(W-50,H/2-barH/2,16,barH);C.fillStyle='white';C.font='9px monospace';C.textAlign='center';C.fillText('EMF',W-42,H/2+36);
-    const d=document.getElementById('simData');if(d)d.textContent=`EMF = -N dΦ/dt\nN = ${p.coilTurns}\nEMF = ${EMF.toFixed(2)} V\nFaster → more EMF\nMore turns → more EMF`;}},
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `Period T = 2π√(L/g)\nCalculated T = ${T.toFixed(2)} s\nLength L = ${p.length} m\nGravity g = ${p.g} m/s²\nAngle θ = ${(theta * 180 / Math.PI).toFixed(1)}°`;
+    }
+  },
 
-  {id:'lenz',group:'mag',title:"Lenz's Law",tag:'Class 12',desc:'See how induced current opposes the change in flux — animated.',
-   params:{speed:2},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Magnet Speed</span><div class="ctrl-value" id="p_ls">${p.speed}</div><input type="range" min="0.5" max="5" step="0.5" value="${p.speed}" oninput="p_ls.textContent=this.value;UP('speed',+this.value)"/></div><div class="data-box">Lenz's Law:\nInduced current OPPOSES\nthe change in flux.\n"Nature resists change"\n\nIf flux ↑ → I opposes ↑\nIf flux ↓ → I opposes ↓</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    let magY=50+(t*p.speed*.8)%(H-80);if(Math.floor((t*p.speed*.8)/(H-80))%2===1)magY=H-50-(t*p.speed*.8)%(H-80);
-    const flux=Math.max(0,1-Math.abs(magY-cy)/80),dflux=magY<cy?1:-1;
-    C.fillStyle='#c0392b';C.fillRect(cx-12,magY-18,24,18);C.fillStyle='#2980b9';C.fillRect(cx-12,magY,24,18);
-    C.fillStyle='white';C.font='bold 9px sans-serif';C.textAlign='center';C.fillText('N',cx,magY-4);C.fillText('S',cx,magY+13);
-    C.strokeStyle='rgba(200,169,110,0.8)';C.lineWidth=2;C.beginPath();C.ellipse(cx,cy,52,14,0,0,Math.PI*2);C.stroke();
-    const arDir=dflux;C.strokeStyle=flux>.05?'rgba(100,255,100,0.7)':'rgba(100,100,100,0.3)';C.lineWidth=2;
-    const aa=t*.08*arDir;C.beginPath();C.arc(cx,cy,50,aa,aa+Math.PI*1.75);C.stroke();
-    C.fillStyle='rgba(100,181,246,0.2)';C.beginPath();C.ellipse(cx,cy,52*flux,14*flux,0,0,Math.PI*2);C.fill();
-    C.fillStyle='white';C.font='10px monospace';C.textAlign='center';
-    C.fillText(`Flux: ${(flux*100).toFixed(0)}%  |  Current: ${dflux>0?'⊙':'⊗'}`,cx,cy+32);}},
+  // ================= CLASS 10 SIMULATIONS =================
+  {
+    id: 'snell_law', group: 'class10', title: "Snell's Law & TIR", tag: 'Class 10',
+    desc: 'Refraction of light, critical angle, and Total Internal Reflection (TIR).',
+    params: { n1: 1.0, n2: 1.5, angleI: 45 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Medium 1 (n1)</span><div class="ctrl-value" id="p_n1">${p.n1}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n1}" oninput="p_n1.textContent=this.value;UP('n1',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Medium 2 (n2)</span><div class="ctrl-value" id="p_n2">${p.n2}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n2}" oninput="p_n2.textContent=this.value;UP('n2',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Incident Angle i (°)</span><div class="ctrl-value" id="p_ai">${p.angleI}</div><input type="range" min="0" max="85" step="1" value="${p.angleI}" oninput="p_ai.textContent=this.value;UP('angleI',+this.value)"/></div>
+      <div class="data-box" id="simData">...</div>`,
+    loop: (cv, p) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const cy = H / 2, cx = W / 2;
 
-  {id:'lorentz',group:'mag',title:'Lorentz Force',tag:'Class 12',desc:'Charged particle moving in magnetic field — circular motion.',
-   params:{charge:1,bfield:1,velocity:3},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge Sign</span><div class="ctrl-value" id="p_lc">${p.charge>0?'Positive (+)':'Negative (-)'}</div><input type="range" min="-1" max="1" step="2" value="${p.charge}" oninput="p_lc.textContent=(+this.value>0?'Positive (+)':'Negative (-)');UP('charge',+this.value);RS()"/></div><div class="ctrl-group"><span class="ctrl-label">B Field</span><div class="ctrl-value" id="p_lb">${p.bfield}</div><input type="range" min="0.5" max="3" step="0.5" value="${p.bfield}" oninput="p_lb.textContent=this.value;UP('bfield',+this.value);RS()"/></div><div class="ctrl-group"><span class="ctrl-label">Speed</span><div class="ctrl-value" id="p_lv">${p.velocity}</div><input type="range" min="1" max="5" step="0.5" value="${p.velocity}" oninput="p_lv.textContent=this.value;UP('velocity',+this.value);RS()"/></div><div class="data-box" id="simData">F = qv × B\nCircular motion\nr = mv/qB</div>`,
-   loop:(cv,p)=>{
-    if(!cv._lx){cv._lx=cv.width/2;cv._ly=cv.height*.7;cv._vx=p.velocity;cv._vy=0;cv._trail=[];}
-    const W=cv.width,H=cv.height,C=cv.getContext('2d');
-    C.fillStyle='rgba(13,17,23,0.3)';C.fillRect(0,0,W,H);
-    C.fillStyle='rgba(100,181,246,0.15)';C.font='12px monospace';C.textAlign='center';
-    for(let x=30;x<W;x+=40)for(let y=30;y<H;y+=40)C.fillText('×',x,y+4);
-    C.fillStyle='rgba(100,181,246,0.5)';C.fillText('B ⊗',W/2,H-8);
-    const om=p.charge*p.bfield;cv._vx+=om*cv._vy*.04;cv._vy-=om*cv._vx*.04;
-    const sp=Math.sqrt(cv._vx**2+cv._vy**2);cv._vx=cv._vx/sp*p.velocity;cv._vy=cv._vy/sp*p.velocity;
-    cv._lx+=cv._vx*.4;cv._ly+=cv._vy*.4;
-    if(cv._lx<0)cv._lx=W;if(cv._lx>W)cv._lx=0;if(cv._ly<0)cv._ly=H;if(cv._ly>H)cv._ly=0;
-    cv._trail.push({x:cv._lx,y:cv._ly});if(cv._trail.length>100)cv._trail.shift();
-    C.strokeStyle=p.charge>0?'rgba(255,100,100,0.5)':'rgba(100,100,255,0.5)';C.lineWidth=1.5;C.beginPath();
-    cv._trail.forEach((pt,i)=>{i===0?C.moveTo(pt.x,pt.y):C.lineTo(pt.x,pt.y);});C.stroke();
-    C.fillStyle=p.charge>0?'#f44':'#44f';C.shadowColor=p.charge>0?'#f44':'#44f';C.shadowBlur=10;
-    C.beginPath();C.arc(cv._lx,cv._ly,8,0,Math.PI*2);C.fill();C.shadowBlur=0;
-    C.fillStyle='white';C.font='bold 10px sans-serif';C.textAlign='center';C.fillText(p.charge>0?'+':'−',cv._lx,cv._ly+4);}},
-{id:'dipole',group:'elec',title:'Electric Dipole Field',tag:'Class 12',desc:'See how electric field lines form around a dipole — varies with distance.',
- params:{separation:60,charge:1},
- controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge Separation</span><div class="ctrl-value" id="p_ds">${p.separation}</div><input type="range" min="20" max="120" step="5" value="${p.separation}" oninput="p_ds.textContent=this.value;UP('separation',+this.value)"/></div><div class="data-box">Electric dipole:\n+q and -q separated\nby distance d\n\nField lines:\n+ to - outside\nField ∝ 1/r³\non axis & equatorial</div>`,
- loop:(cv,p,t)=>{
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-  const px=p.separation/2;
-  // Draw field lines
-  for(let l=0;l<20;l++){
-    const a=l*Math.PI*2/20;
-    C.strokeStyle=`hsla(${l*18},70%,60%,0.35)`;C.lineWidth=1.2;C.beginPath();
-    let x=cx+px+8*Math.cos(a),y=cy+8*Math.sin(a);C.moveTo(x,y);
-    for(let s=0;s<120;s++){
-      const dxP=x-(cx+px),dyP=y-cy,dxN=x-(cx-px),dyN=y-cy;
-      const rP=Math.sqrt(dxP**2+dyP**2)+0.1,rN=Math.sqrt(dxN**2+dyN**2)+0.1;
-      const fx=dxP/rP**3-dxN/rN**3,fy=dyP/rP**3-dyN/rN**3;
-      const m=Math.sqrt(fx**2+fy**2)+0.001;
-      x+=fx/m*3;y+=fy/m*3;
-      if(x<5||x>W-5||y<5||y>H-5)break;
-      C.lineTo(x,y);}C.stroke();}
-  // Charges
-  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=12;
-  C.beginPath();C.arc(cx+px,cy,10,0,Math.PI*2);C.fill();
-  C.fillStyle='#44f';C.shadowColor='#44f';
-  C.beginPath();C.arc(cx-px,cy,10,0,Math.PI*2);C.fill();
-  C.shadowBlur=0;
-  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';
-  C.fillText('+',cx+px,cy+4);C.fillText('−',cx-px,cy+4);
-  // Dipole arrow
-  C.strokeStyle='rgba(255,255,255,0.3)';C.lineWidth=1.5;C.setLineDash([4,4]);
-  C.beginPath();C.moveTo(cx-px,cy+20);C.lineTo(cx+px,cy+20);C.stroke();C.setLineDash([]);
-  C.fillStyle='rgba(255,255,255,0.4)';C.font='9px monospace';C.textAlign='center';
-  C.fillText('d = '+p.separation+' units',cx,cy+35);
-  // Test charge moving
-  const angle=(t*.02)%(Math.PI*2);
-  const tr=p.separation*.9,tx=cx+tr*Math.cos(angle),ty=cy+tr*.55*Math.sin(angle);
-  C.fillStyle='#ffeb3b';C.beginPath();C.arc(tx,ty,5,0,Math.PI*2);C.fill();}},
+      // Mediums
+      C.fillStyle = 'rgba(56, 189, 248, 0.1)'; C.fillRect(0, 0, W, cy);
+      C.fillStyle = 'rgba(99, 102, 241, 0.2)'; C.fillRect(0, cy, W, cy);
+      C.strokeStyle = '#94a3b8'; C.lineWidth = 1; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
+      
+      // Normal
+      C.setLineDash([4, 4]); C.beginPath(); C.moveTo(cx, 20); C.lineTo(cx, H - 20); C.stroke(); C.setLineDash([]);
 
-  {id:'coulomb',group:'elec',title:"Coulomb's Law",tag:'Class 12',desc:'Force between two charges — vary distance and see F ∝ 1/r².',
- params:{q1:2,q2:2,distance:120},
- controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge q1</span><div class="ctrl-value" id="p_cq1">${p.q1}</div><input type="range" min="1" max="5" step="1" value="${p.q1}" oninput="p_cq1.textContent=this.value;UP('q1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Charge q2</span><div class="ctrl-value" id="p_cq2">${p.q2}</div><input type="range" min="1" max="5" step="1" value="${p.q2}" oninput="p_cq2.textContent=this.value;UP('q2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Distance</span><div class="ctrl-value" id="p_cd">${p.distance}</div><input type="range" min="40" max="220" step="10" value="${p.distance}" oninput="p_cd.textContent=this.value;UP('distance',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
- loop:(cv,p,t)=>{
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-  const r=p.distance/50,F=9*p.q1*p.q2/r**2;
-  const x1=cx-p.distance/2,x2=cx+p.distance/2;
-  const aLen=Math.min(55,F*2.5);
-  C.strokeStyle='rgba(255,200,50,0.85)';C.lineWidth=2.5;
-  C.beginPath();C.moveTo(x1,cy);C.lineTo(x1-aLen,cy);C.stroke();
-  C.fillStyle='rgba(255,200,50,0.85)';
-  C.beginPath();C.moveTo(x1-aLen-8,cy);C.lineTo(x1-aLen+4,cy-6);C.lineTo(x1-aLen+4,cy+6);C.fill();
-  C.beginPath();C.moveTo(x2,cy);C.lineTo(x2+aLen,cy);C.stroke();
-  C.beginPath();C.moveTo(x2+aLen+8,cy);C.lineTo(x2+aLen-4,cy-6);C.lineTo(x2+aLen-4,cy+6);C.fill();
-  C.strokeStyle='rgba(255,255,255,0.15)';C.setLineDash([4,4]);
-  C.beginPath();C.moveTo(x1,cy+32);C.lineTo(x2,cy+32);C.stroke();C.setLineDash([]);
-  C.fillStyle='rgba(255,255,255,0.4)';C.font='10px monospace';C.textAlign='center';
-  C.fillText('r = '+r.toFixed(2)+' m',cx,cy+46);
-  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=14;
-  C.beginPath();C.arc(x1,cy,13+p.q1*2,0,Math.PI*2);C.fill();
-  C.fillStyle='#f44';C.beginPath();C.arc(x2,cy,13+p.q2*2,0,Math.PI*2);C.fill();
-  C.shadowBlur=0;
-  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';
-  C.fillText('+'+p.q1,x1,cy+4);C.fillText('+'+p.q2,x2,cy+4);
-  const d=document.getElementById('simData');
-  if(d)d.textContent=`F = kq₁q₂/r²\nq1=${p.q1} q2=${p.q2}\nr = ${r.toFixed(2)} m\nF = ${F.toFixed(2)} N\nHalve r → 4x Force!`;}},
-  {id:'gauss',group:'elec',title:"Gauss's Law",tag:'Class 12',desc:'Electric flux through a closed surface around a point charge.',
- params:{charge:3,radius:80},
- controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Charge (Q)</span><div class="ctrl-value" id="p_gq">${p.charge}</div><input type="range" min="1" max="8" step="1" value="${p.charge}" oninput="p_gq.textContent=this.value;UP('charge',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Surface Radius</span><div class="ctrl-value" id="p_gr">${p.radius}</div><input type="range" min="40" max="140" step="10" value="${p.radius}" oninput="p_gr.textContent=this.value;UP('radius',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
- loop:(cv,p,t)=>{
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-  C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-  const flux=p.charge/8.85;
-  // Gaussian surface
-  C.strokeStyle='rgba(100,181,246,0.5)';C.lineWidth=2;C.setLineDash([6,4]);
-  C.beginPath();C.arc(cx,cy,p.radius,0,Math.PI*2);C.stroke();C.setLineDash([]);
-  // Field lines radiating outward
-  const numLines=p.charge*4;
-  for(let i=0;i<numLines;i++){
-    const a=i*Math.PI*2/numLines;
-    const x1=cx+12*Math.cos(a),y1=cy+12*Math.sin(a);
-    const x2=cx+(p.radius+40)*Math.cos(a),y2=cy+(p.radius+40)*Math.sin(a);
-    C.strokeStyle=`rgba(255,100,100,0.6)`;C.lineWidth=1.5;C.beginPath();C.moveTo(x1,y1);C.lineTo(x2,y2);C.stroke();
-    // Arrow at surface
-    const ax=cx+p.radius*Math.cos(a),ay=cy+p.radius*Math.sin(a);
-    C.fillStyle='rgba(255,100,100,0.7)';C.beginPath();
-    C.moveTo(ax+8*Math.cos(a),ay+8*Math.sin(a));
-    C.lineTo(ax+2*Math.cos(a+0.4),ay+2*Math.sin(a+0.4));
-    C.lineTo(ax+2*Math.cos(a-0.4),ay+2*Math.sin(a-0.4));
-    C.fill();}
-  // Flux dots on surface (animated)
-  for(let i=0;i<numLines*2;i++){
-    const a=i*Math.PI*2/(numLines*2)+t*.02;
-    const fx=cx+p.radius*Math.cos(a),fy=cy+p.radius*Math.sin(a);
-    C.fillStyle=`rgba(100,255,150,${0.4+0.4*Math.sin(t*.05+i)})`;
-    C.beginPath();C.arc(fx,fy,2.5,0,Math.PI*2);C.fill();}
-  // Charge
-  C.fillStyle='#f44';C.shadowColor='#f44';C.shadowBlur=16;
-  C.beginPath();C.arc(cx,cy,10+p.charge,0,Math.PI*2);C.fill();C.shadowBlur=0;
-  C.fillStyle='white';C.font='bold 11px sans-serif';C.textAlign='center';C.fillText('+Q',cx,cy+4);
-  C.fillStyle='rgba(100,181,246,0.7)';C.font='10px monospace';
-  C.fillText('Gaussian Surface (r='+p.radius+')',cx,cy-p.radius-10);
-  const d=document.getElementById('simData');
-  if(d)d.textContent=`Φ = Q/ε₀\nQ = ${p.charge} C\nε₀ = 8.85×10⁻¹²\nΦ = ${flux.toFixed(2)} N·m²/C\nFlux independent\nof surface size!`;}},
-  // MODERN PHYSICS
-  {id:'photoelectric',group:'modern',title:'Photoelectric Effect',tag:'Class 12',desc:'Shine light on metal — electrons ejected based on frequency.',
-   params:{frequency:6,intensity:3,workFunction:4},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Frequency (×10¹⁴ Hz)</span><div class="ctrl-value" id="p_pf">${p.frequency}</div><input type="range" min="2" max="12" step="0.5" value="${p.frequency}" oninput="p_pf.textContent=this.value;UP('frequency',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Intensity</span><div class="ctrl-value" id="p_pi">${p.intensity}</div><input type="range" min="1" max="8" step="1" value="${p.intensity}" oninput="p_pi.textContent=this.value;UP('intensity',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Work Function φ (eV)</span><div class="ctrl-value" id="p_pw">${p.workFunction}</div><input type="range" min="2" max="8" step="0.5" value="${p.workFunction}" oninput="p_pw.textContent=this.value;UP('workFunction',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    if(!cv._elec)cv._elec=[];
-    const W=cv.width,H=cv.height,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const E=p.frequency*.4,KE=E-p.workFunction,ejected=KE>0;
-    C.fillStyle='rgba(200,169,110,0.2)';C.fillRect(0,H/2,W,H/2);
-    C.strokeStyle='rgba(200,169,110,0.6)';C.lineWidth=2;C.beginPath();C.moveTo(0,H/2);C.lineTo(W,H/2);C.stroke();
-    C.fillStyle='rgba(200,169,110,0.4)';C.font='10px monospace';C.textAlign='left';C.fillText('Metal (φ='+p.workFunction+' eV)',8,H/2+18);
-    const hue=Math.max(0,Math.min(270,270-(p.frequency-2)*22));
-    for(let i=0;i<p.intensity;i++){const px=(t*2+i*(W/p.intensity))%W,py=(t*2+i*25)%(H/2-10);
-      C.fillStyle=`hsla(${hue},100%,65%,0.85)`;C.beginPath();C.arc(px,py,3.5,0,Math.PI*2);C.fill();}
-    if(ejected){
-      if(t%Math.max(1,Math.round(8/p.intensity))===0)cv._elec.push({x:50+Math.random()*(W-100),y:H/2,vy:-KE*1.5-1,vx:(Math.random()-.5)*2});
-      cv._elec.forEach(e=>{e.y+=e.vy*.3;e.x+=e.vx;e.vy+=.05;});
-      cv._elec=cv._elec.filter(e=>e.y>0);
-      C.fillStyle='#64b5f6';C.shadowColor='#64b5f6';C.shadowBlur=5;
-      cv._elec.forEach(e=>{if(e.y<H){C.beginPath();C.arc(e.x,e.y,3.5,0,Math.PI*2);C.fill();}});C.shadowBlur=0;}
-    C.fillStyle=ejected?'#4caf50':'#f44336';C.font='bold 11px monospace';C.textAlign='center';
-    C.fillText(ejected?'✓ Electrons ejected!':'✗ No ejection (E < φ)',W/2,28);
-    const d=document.getElementById('simData');if(d)d.textContent=`E=hf=${E.toFixed(2)} eV\nφ=${p.workFunction} eV\nKE=E-φ=${KE.toFixed(2)} eV\n${ejected?'Ejection occurs!':'Increase frequency!'}\nIntensity → number of e⁻\nFrequency → KE of e⁻`;}},
+      const radI = (p.angleI * Math.PI) / 180;
+      const sinR = (p.n1 / p.n2) * Math.sin(radI);
+      const isTIR = sinR > 1.0;
 
-  {id:'bohr',group:'modern',title:"Bohr's Atomic Model",tag:'Class 12',desc:'Electron transitions between energy levels — emission spectra.',
-   params:{level:2},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Energy Level (n)</span><div class="ctrl-value" id="p_bn">${p.level}</div><input type="range" min="1" max="5" step="1" value="${p.level}" oninput="p_bn.textContent=this.value;UP('level',+this.value)"/></div><button class="ctrl-btn" onclick="if(simParams.level>1){simParams._photon={x:document.getElementById('simCanvas').width/2,y:document.getElementById('simCanvas').height/2,from:simParams.level,vy:-5}}">Emit Photon ↑</button><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    const W=cv.width,H=cv.height,cx=W/2,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    for(let n=1;n<=5;n++){
-      const r=n*28+8;C.strokeStyle=`rgba(100,181,246,${n===p.level?.65:.18})`;C.lineWidth=n===p.level?2:1;C.setLineDash([3,3]);
-      C.beginPath();C.arc(cx,cy,r,0,Math.PI*2);C.stroke();C.setLineDash([]);
-      const En=(13.6/n/n).toFixed(2);C.fillStyle='rgba(255,255,255,0.35)';C.font='9px monospace';C.textAlign='left';
-      C.fillText(`n=${n}:-${En}eV`,cx+r+4,cy+4);}
-    C.fillStyle='rgba(255,100,100,0.85)';C.shadowColor='#f44';C.shadowBlur=12;C.beginPath();C.arc(cx,cy,9,0,Math.PI*2);C.fill();C.shadowBlur=0;
-    C.fillStyle='white';C.font='8px monospace';C.textAlign='center';C.fillText('p+',cx,cy+3);
-    const r=p.level*28+8,a=t*.04/p.level,ex=cx+r*Math.cos(a),ey=cy+r*Math.sin(a);
-    C.fillStyle='#64b5f6';C.shadowColor='#64b5f6';C.shadowBlur=8;C.beginPath();C.arc(ex,ey,5,0,Math.PI*2);C.fill();C.shadowBlur=0;
-    if(p._photon){p._photon.y+=p._photon.vy;const hue=Math.min(270,(p._photon.from)*30);
-      C.fillStyle=`hsla(${hue},100%,65%,.9)`;C.font='18px sans-serif';C.textAlign='center';C.fillText('✦',p._photon.x,p._photon.y);
-      if(p._photon.y<0)delete p._photon;}
-    const En=(13.6/p.level/p.level).toFixed(3);
-    const d=document.getElementById('simData');if(d)d.textContent=`n = ${p.level}\nE = -13.6/n²\nE = -${En} eV\nr = ${(0.529*p.level*p.level).toFixed(2)} Å\nPress button to\nemit a photon!`;}},
+      // Incident Ray
+      const incX = cx - 180 * Math.sin(radI);
+      const incY = cy - 180 * Math.cos(radI);
+      C.strokeStyle = '#ef4444'; C.lineWidth = 3; C.beginPath(); C.moveTo(incX, incY); C.lineTo(cx, cy); C.stroke();
 
-  {id:'radioactive',group:'modern',title:'Radioactive Decay',tag:'Class 12',desc:'Watch unstable nuclei decay — half-life concept visualised.',
-   params:{halfLife:30},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Half Life (s)</span><div class="ctrl-value" id="p_hl">${p.halfLife} s</div><input type="range" min="5" max="100" step="5" value="${p.halfLife}" oninput="p_hl.textContent=this.value+' s';UP('halfLife',+this.value);RS()"/></div><button class="ctrl-btn" onclick="RS()">↺ Restart</button><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    if(!cv._atoms){cv._atoms=[];for(let i=0;i<60;i++)cv._atoms.push({x:20+Math.random()*(cv.width-40),y:20+Math.random()*(cv.height-40),d:false});}
-    const W=cv.width,H=cv.height,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const lam=Math.log(2)/p.halfLife;
-    cv._atoms.forEach(a=>{if(!a.d&&Math.random()<lam*.08)a.d=true;});
-    const rem=cv._atoms.filter(a=>!a.d).length;
-    cv._atoms.forEach(a=>{
-      C.fillStyle=a.d?'rgba(255,100,100,0.4)':'rgba(100,255,100,0.85)';
-      if(!a.d){C.shadowColor='#4f4';C.shadowBlur=4;}else C.shadowBlur=0;
-      C.beginPath();C.arc(a.x,a.y,5,0,Math.PI*2);C.fill();});C.shadowBlur=0;
-    const bw=(rem/60)*(W-20);
-    C.fillStyle='rgba(100,255,100,0.2)';C.fillRect(10,10,bw,14);
-    C.strokeStyle='rgba(100,255,100,0.4)';C.lineWidth=1;C.strokeRect(10,10,W-20,14);
-    C.fillStyle='white';C.font='10px monospace';C.textAlign='center';C.fillText(`${rem}/60 remaining`,W/2,21);
-    const d=document.getElementById('simData');if(d)d.textContent=`N(t)=N₀·e^(-λt)\nT½=${p.halfLife} s\nλ=${lam.toFixed(3)} s⁻¹\nTime: ${(t*.1).toFixed(1)} s\nRemaining: ${rem}/60`;}},
+      if (!isTIR) {
+        const radR = Math.asin(sinR);
+        const refX = cx + 180 * Math.sin(radR);
+        const refY = cy + 180 * Math.cos(radR);
+        C.strokeStyle = '#38bdf8'; C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke();
+      } else {
+        // TIR
+        const tirX = cx + 180 * Math.sin(radI);
+        const tirY = cy - 180 * Math.cos(radI);
+        C.strokeStyle = '#f59e0b'; C.beginPath(); C.moveTo(cx, cy); C.lineTo(tirX, tirY); C.stroke();
+      }
 
-  {id:'debroglie',group:'modern',title:'de Broglie Wavelength',tag:'Class 12',desc:'See how particle wavelength changes with momentum.',
-   params:{mass:1,velocity:3},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Relative Mass</span><div class="ctrl-value" id="p_dm">${p.mass}</div><input type="range" min="0.5" max="5" step="0.5" value="${p.mass}" oninput="p_dm.textContent=this.value;UP('mass',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Velocity</span><div class="ctrl-value" id="p_dv">${p.velocity}</div><input type="range" min="0.5" max="8" step="0.5" value="${p.velocity}" oninput="p_dv.textContent=this.value;UP('velocity',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-   loop:(cv,p,t)=>{
-    if(!cv._px)cv._px=60;
-    const W=cv.width,H=cv.height,cy=H/2,C=cv.getContext('2d');
-    C.fillStyle='#0d1117';C.fillRect(0,0,W,H);
-    const lam=1/(p.mass*p.velocity),lamPx=Math.max(10,lam*80);
-    C.strokeStyle='rgba(200,169,110,0.65)';C.lineWidth=2;C.beginPath();
-    for(let x=0;x<W;x++){const y=cy+32*Math.sin(2*Math.PI*x/lamPx-t*p.velocity*.1);x===0?C.moveTo(x,y):C.lineTo(x,y);}C.stroke();
-    cv._px=((cv._px+p.velocity*.25)%W);
-    const py=cy+32*Math.sin(2*Math.PI*cv._px/lamPx-t*p.velocity*.1);
-    C.fillStyle='#64b5f6';C.shadowColor='#64b5f6';C.shadowBlur=12;C.beginPath();C.arc(cv._px,py,8,0,Math.PI*2);C.fill();C.shadowBlur=0;
-    C.strokeStyle='rgba(100,255,100,0.55)';C.lineWidth=1.5;C.setLineDash([3,3]);
-    C.beginPath();C.moveTo(80,cy-52);C.lineTo(80+lamPx,cy-52);C.stroke();C.setLineDash([]);
-    C.fillStyle='rgba(100,255,100,0.75)';C.font='10px monospace';C.textAlign='center';
-    C.fillText('λ='+lam.toFixed(2),80+lamPx/2,cy-60);
-    const d=document.getElementById('simData');if(d)d.textContent=`λ = h/mv = h/p\nm=${p.mass} v=${p.velocity}\np=${(p.mass*p.velocity).toFixed(2)}\nλ=${lam.toFixed(3)} (rel)\nHigher p → shorter λ!`;}},
+      const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(1) : 'N/A';
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `n1 sin(i) = n2 sin(r)\nIncident i = ${p.angleI}°\nRefracted r = ${isTIR ? 'TIR Occurred!' : (Math.asin(sinR)*180/Math.PI).toFixed(1) + '°'}\nCritical Angle = ${critAngle}°`;
+    }
+  },
+  {
+    id: 'wave_motion', group: 'class10', title: 'Transverse Wave Lab', tag: 'Class 10',
+    desc: 'Demonstrates wave speed v = fλ. Adjust frequency and wavelength.',
+    params: { freq: 1, lambda: 120 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Frequency f (Hz)</span><div class="ctrl-value" id="p_f">${p.freq}</div><input type="range" min="0.5" max="3" step="0.2" value="${p.freq}" oninput="p_f.textContent=this.value;UP('freq',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Wavelength λ (px)</span><div class="ctrl-value" id="p_l">${p.lambda}</div><input type="range" min="60" max="250" step="10" value="${p.lambda}" oninput="p_l.textContent=this.value;UP('lambda',+this.value)"/></div>
+      <div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const cy = H / 2, amp = 40;
 
-  {id:'fission',group:'modern',title:'Nuclear Fission',tag:'Class 12',desc:'Neutron hits nucleus — chain reaction and energy release animated.',
-   params:{speed:1},
-   controls:p=>`<div class="ctrl-group"><span class="ctrl-label">Speed</span><div class="ctrl-value" id="p_fs">${p.speed}</div><input type="range" min="0.5" max="3" step="0.5" value="${p.speed}" oninput="p_fs.textContent=this.value;UP('speed',+this.value)"/></div><button class="ctrl-btn" onclick="RS()">↺ Reset</button><div class="data-box">n + U-235 →\nBa-141 + Kr-92 + 3n\n+ ~200 MeV energy\n\nChain reaction:\neach split releases\n3 more neutrons!</div>`,
-   loop:(cv,p)=>{
-    if(!cv._fInit){cv._nuclei=[{x:cv.width/2,y:cv.height/2,s:false,r:16}];cv._neutrons=[{x:15,y:cv.height/2,vx:p.speed*2.5,vy:0,a:true}];cv._expl=[];cv._fInit=true;}
-    const W=cv.width,H=cv.height,C=cv.getContext('2d');
-    C.fillStyle='rgba(13,17,23,0.4)';C.fillRect(0,0,W,H);
-    cv._neutrons.forEach(n=>{if(!n.a)return;n.x+=n.vx*p.speed;n.y+=n.vy*p.speed;
-      cv._nuclei.forEach(nuc=>{if(nuc.s)return;const dx=n.x-nuc.x,dy=n.y-nuc.y;
-        if(Math.sqrt(dx**2+dy**2)<nuc.r+4){nuc.s=true;n.a=false;cv._expl.push({x:nuc.x,y:nuc.y,r:0});
-          for(let a=0;a<3;a++){const ang=(a/3)*Math.PI*2+Math.random()*.4,nx=nuc.x+Math.cos(ang)*(nuc.r+4),ny=nuc.y+Math.sin(ang)*(nuc.r+4);
-            if(cv._nuclei.length<25)cv._nuclei.push({x:nx+Math.random()*55-27,y:ny+Math.random()*55-27,s:false,r:13});
-            cv._neutrons.push({x:nx,y:ny,vx:Math.cos(ang)*p.speed*2.5,vy:Math.sin(ang)*p.speed*2.5,a:true});}}});
-      if(n.x<0||n.x>W||n.y<0||n.y>H)n.a=false;});
-    cv._nuclei.forEach(nuc=>{if(nuc.s)return;C.fillStyle='rgba(26,58,92,0.85)';C.strokeStyle='rgba(200,169,110,0.6)';C.lineWidth=1.5;C.beginPath();C.arc(nuc.x,nuc.y,nuc.r,0,Math.PI*2);C.fill();C.stroke();C.fillStyle='white';C.font='8px monospace';C.textAlign='center';C.fillText('U235',nuc.x,nuc.y+3);});
-    cv._expl.forEach(e=>{e.r+=2.5;C.strokeStyle=`rgba(255,200,50,${1-e.r/45})`;C.lineWidth=2;C.beginPath();C.arc(e.x,e.y,e.r,0,Math.PI*2);C.stroke();});
-    cv._expl=cv._expl.filter(e=>e.r<45);
-    C.fillStyle='rgba(255,235,59,.9)';cv._neutrons.filter(n=>n.a).forEach(n=>{C.beginPath();C.arc(n.x,n.y,3.5,0,Math.PI*2);C.fill();});
-    const rem=cv._nuclei.filter(n=>!n.s).length,spl=cv._nuclei.filter(n=>n.s).length;
-    C.fillStyle='white';C.font='10px monospace';C.textAlign='left';C.fillText(`Intact:${rem}  Split:${spl}`,8,18);
-    if(rem===0&&spl>1){C.fillStyle='#f44';C.font='bold 13px monospace';C.textAlign='center';C.fillText('⚡ CHAIN REACTION!',W/2,H/2);}}}
+      C.strokeStyle = '#10b981'; C.lineWidth = 3; C.beginPath();
+      for (let x = 0; x < W; x += 2) {
+        const y = cy + amp * Math.sin((2 * Math.PI / p.lambda) * x - 2 * Math.PI * p.freq * (t * 0.03));
+        x === 0 ? C.moveTo(x, y) : C.lineTo(x, y);
+      }
+      C.stroke();
+
+      const waveSpeed = p.freq * p.lambda;
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `Wave Formula: v = f × λ\nFrequency f = ${p.freq} Hz\nWavelength λ = ${p.lambda} px\nSpeed v = ${waveSpeed.toFixed(0)} px/s`;
+    }
+  },
+
+  // ================= ELECTRICITY (CLASS 12) =================
+  {
+    id: 'ohm', group: 'elec', title: "Ohm's Law", tag: 'Class 10/12', desc: 'Change V & R — see current change live. V = IR visualised.',
+    params: { voltage: 6, resistance: 3 },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_v">${p.voltage} V</div><input type="range" min="1" max="20" step="0.5" value="${p.voltage}" oninput="p_v.textContent=this.value+' V';UP('voltage',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_r">${p.resistance} Ω</div><input type="range" min="1" max="20" step="0.5" value="${p.resistance}" oninput="p_r.textContent=this.value+' Ω';UP('resistance',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Live Data</span><div class="data-box" id="simData">...</div></div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const I = p.voltage / p.resistance, rw = W*.32, rh = H*.32;
+      C.strokeStyle = 'rgba(200,169,110,0.5)'; C.lineWidth = 2; C.strokeRect(cx-rw, cy-rh, rw*2, rh*2);
+      C.fillStyle = 'rgba(26,58,92,0.9)'; C.fillRect(cx-rw-10, cy-18, 20, 36);
+      C.fillStyle = 'white'; C.font = '10px monospace'; C.textAlign = 'center'; C.fillText(p.voltage+'V', cx-rw, cy+50);
+      C.fillStyle = 'rgba(200,100,50,0.5)'; C.fillRect(cx-22, cy+rh-8, 44, 16);
+      C.fillStyle = 'white'; C.fillText(p.resistance+'Ω', cx, cy+rh+22);
+      const n = Math.min(10, Math.round(I)+2); C.fillStyle = '#64b5f6';
+      for (let i=0; i<n; i++) {
+        const pos = (t*I*.015 + i/n) % 1, pr = pos*(rw*4 + rh*4); let ex, ey;
+        if (pr < rw*2) { ex = cx-rw+pr; ey = cy-rh; }
+        else if (pr < rw*2+rh*2) { ex = cx+rw; ey = cy-rh+(pr-rw*2); }
+        else if (pr < rw*4+rh*2) { ex = cx+rw-(pr-rw*2-rh*2); ey = cy+rh; }
+        else { ex = cx-rw; ey = cy+rh-(pr-rw*4-rh*2); }
+        C.beginPath(); C.arc(ex, ey, 4, 0, Math.PI*2); C.fill();
+      }
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `V = ${p.voltage} V\nR = ${p.resistance} Ω\nI = V/R = ${I.toFixed(2)} A\nP = VI = ${(p.voltage*I).toFixed(2)} W`;
+    }
+  },
+  {
+    id: 'series', group: 'elec', title: 'Series & Parallel Circuits', tag: 'Class 10/12', desc: 'Compare current & voltage in series vs parallel resistors.',
+    params: { r1: 4, r2: 6, voltage: 12, mode: 0 },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">R1 (Ω)</span><div class="ctrl-value" id="p_r1">${p.r1}</div><input type="range" min="1" max="20" step="1" value="${p.r1}" oninput="p_r1.textContent=this.value;UP('r1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R2 (Ω)</span><div class="ctrl-value" id="p_r2">${p.r2}</div><input type="range" min="1" max="20" step="1" value="${p.r2}" oninput="p_r2.textContent=this.value;UP('r2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_vs">${p.voltage}</div><input type="range" min="1" max="24" step="1" value="${p.voltage}" oninput="p_vs.textContent=this.value;UP('voltage',+this.value)"/></div><button class="ctrl-btn" onclick="UP('mode',simParams.mode?0:1);RS()">Toggle Series/Parallel</button><div class="ctrl-group" style="margin-top:.8rem"><div class="data-box" id="simData">...</div></div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      C.font = '12px serif'; C.textAlign = 'center'; C.fillStyle = 'rgba(200,169,110,0.9)';
+      C.fillText(p.mode ? 'PARALLEL CIRCUIT' : 'SERIES CIRCUIT', cx, 28);
+      C.strokeStyle = 'rgba(200,169,110,0.5)'; C.lineWidth = 2;
+      const d = document.getElementById('simData');
+      if (!p.mode) {
+        const Rt = p.r1 + p.r2, I = p.voltage / Rt;
+        C.beginPath(); C.moveTo(70, cy); C.lineTo(W-70, cy); C.stroke();
+        C.beginPath(); C.moveTo(70, cy); C.lineTo(70, cy+70); C.lineTo(W-70, cy+70); C.lineTo(W-70, cy); C.stroke();
+        C.fillStyle = 'rgba(26,58,92,0.8)'; C.fillRect(cx-75, cy-12, 44, 24);
+        C.fillStyle = 'rgba(26,200,92,0.4)'; C.fillRect(cx+30, cy-12, 44, 24);
+        C.fillStyle = 'white'; C.font = '10px monospace'; C.fillText('R1='+p.r1+'Ω', cx-53, cy+5); C.fillText('R2='+p.r2+'Ω', cx+52, cy+5);
+        C.fillStyle = '#c8a96e'; C.fillRect(62, cy+58, 16, 24); C.fillStyle = 'white'; C.fillText(p.voltage+'V', 70, cy+98);
+        if (d) d.textContent = `SERIES\nRt = R1+R2 = ${Rt} Ω\nI = ${I.toFixed(2)} A (same)\nV1 = ${(I*p.r1).toFixed(1)} V\nV2 = ${(I*p.r2).toFixed(1)} V`;
+      } else {
+        const Rt = 1 / (1/p.r1 + 1/p.r2), I = p.voltage / Rt;
+        if (d) d.textContent = `PARALLEL\nRt = ${Rt.toFixed(2)} Ω\nI_total = ${I.toFixed(2)} A\nI1 = ${(p.voltage/p.r1).toFixed(2)} A\nI2 = ${(p.voltage/p.r2).toFixed(2)} A\nV same = ${p.voltage} V`;
+      }
+    }
+  },
+  {
+    id: 'capacitor', group: 'elec', title: 'Capacitor Charging', tag: 'Class 12', desc: 'Watch a capacitor charge and discharge exponentially in RC circuit.',
+    params: { capacitance: 100, resistance: 50, voltage: 10, charging: true },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Capacitance (μF)</span><div class="ctrl-value" id="p_c">${p.capacitance}</div><input type="range" min="10" max="500" step="10" value="${p.capacitance}" oninput="p_c.textContent=this.value;UP('capacitance',+this.value);RS()"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_rc">${p.resistance}</div><input type="range" min="10" max="200" step="10" value="${p.resistance}" oninput="p_rc.textContent=this.value;UP('resistance',+this.value);RS()"/></div><button class="ctrl-btn" onclick="UP('charging',!simParams.charging);RS()">Toggle Charge/Discharge</button><div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const tau = p.resistance * p.capacitance / 1000, time = t * 0.05;
+      const Vc = p.charging ? p.voltage * (1 - Math.exp(-time/tau)) : p.voltage * Math.exp(-time/tau);
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `Mode: ${p.charging?'Charging':'Discharging'}\nτ = RC = ${tau.toFixed(0)} ms\nVc = ${Vc.toFixed(2)} V`;
+    }
+  },
+
+  // ================= MAGNETISM (CLASS 12) =================
+  {
+    id: 'magfield', group: 'mag', title: 'Magnetic Field Lines', tag: 'Class 12', desc: 'See field lines around a bar magnet between N and S poles.',
+    params: { strength: 1.5 },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Field Strength</span><div class="ctrl-value" id="p_mfs">${p.strength}</div><input type="range" min="0.5" max="3" step="0.1" value="${p.strength}" oninput="p_mfs.textContent=this.value;UP('strength',+this.value)"/></div><div class="data-box">Field lines:\nN pole → outside → S pole\nInside: S to N\nStronger near poles</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      C.fillStyle = '#c0392b'; C.fillRect(cx+8, cy-13, 44, 26);
+      C.fillStyle = '#2980b9'; C.fillRect(cx-52, cy-13, 44, 26);
+      C.fillStyle = 'white'; C.font = 'bold 12px sans-serif'; C.textAlign = 'center';
+      C.fillText('N', cx+30, cy+5); C.fillText('S', cx-30, cy+5);
+    }
+  },
+  {
+    id: 'eminduction', group: 'mag', title: 'EM Induction', tag: 'Class 12', desc: 'Move a magnet through a coil — watch EMF and current induced live.',
+    params: { speed: 2, coilTurns: 5 },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Magnet Speed</span><div class="ctrl-value" id="p_ems">${p.speed}</div><input type="range" min="0.5" max="5" step="0.5" value="${p.speed}" oninput="p_ems.textContent=this.value;UP('speed',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Coil Turns (N)</span><div class="ctrl-value" id="p_emt">${p.coilTurns}</div><input type="range" min="1" max="15" step="1" value="${p.coilTurns}" oninput="p_emt.textContent=this.value;UP('coilTurns',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, cy = H/2, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const vel = Math.cos(t * p.speed * 0.02) * p.speed, EMF = vel * p.coilTurns * 1.5;
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `EMF = -N dΦ/dt\nN = ${p.coilTurns}\nEMF = ${EMF.toFixed(2)} V`;
+    }
+  },
+
+  // ================= MODERN PHYSICS (CLASS 12) =================
+  {
+    id: 'photoelectric', group: 'modern', title: 'Photoelectric Effect', tag: 'Class 12', desc: 'Shine light on metal — electrons ejected based on frequency.',
+    params: { frequency: 6, intensity: 3, workFunction: 4 },
+    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Frequency (×10¹⁴ Hz)</span><div class="ctrl-value" id="p_pf">${p.frequency}</div><input type="range" min="2" max="12" step="0.5" value="${p.frequency}" oninput="p_pf.textContent=this.value;UP('frequency',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Intensity</span><div class="ctrl-value" id="p_pi">${p.intensity}</div><input type="range" min="1" max="8" step="1" value="${p.intensity}" oninput="p_pi.textContent=this.value;UP('intensity',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Work Function φ (eV)</span><div class="ctrl-value" id="p_pw">${p.workFunction}</div><input type="range" min="2" max="8" step="0.5" value="${p.workFunction}" oninput="p_pw.textContent=this.value;UP('workFunction',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
+    loop: (cv, p, t) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      const E = p.frequency * 0.4, KE = E - p.workFunction, ejected = KE > 0;
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `E = hf = ${E.toFixed(2)} eV\nφ = ${p.workFunction} eV\nKE = E - φ = ${KE.toFixed(2)} eV\n${ejected ? 'Ejection occurs!' : 'Increase frequency!'}`;
+    }
+  }
 ];
 
-// ── BUILD CARDS ───────────────────────────────────────────────────────────────
-function buildCards(){
-  ['elec','mag','modern'].forEach(g=>{
-    const grid=document.getElementById('grid_'+g);
-    CATALOG.filter(s=>s.group===g).forEach(sim=>{
-      const div=document.createElement('div');div.className='sim-card';
-      div.innerHTML=`<div class="sim-preview" onclick="openSim('${sim.id}')"><canvas id="prev_${sim.id}" width="260" height="150"></canvas><div class="sim-hover">🔬 Open</div></div><div class="sim-body"><span class="sim-tag">${sim.tag}</span><h4>${sim.title}</h4><p>${sim.desc}</p><button class="sim-open" onclick="openSim('${sim.id}')">Launch →</button></div>`;
+// ── INITIALISE SIMULATION CARDS ──────────────────────────────────────────────
+function buildCards() {
+  ['class9', 'class10', 'elec', 'mag', 'modern'].forEach(g => {
+    const grid = document.getElementById('grid_' + g);
+    if (!grid) return;
+    CATALOG.filter(s => s.group === g).forEach(sim => {
+      const div = document.createElement('div'); div.className = 'sim-card';
+      const tagClass = sim.tag.includes('9') ? 'tag-class-9' : sim.tag.includes('10') ? 'tag-class-10' : 'tag-class-12';
+      div.innerHTML = `
+        <div class="sim-preview" onclick="openSim('${sim.id}')">
+          <canvas id="prev_${sim.id}" width="280" height="160"></canvas>
+          <div class="sim-hover"><span>🔬 Launch Lab</span></div>
+        </div>
+        <div class="sim-body">
+          <div>
+            <span class="sim-tag ${tagClass}">${sim.tag}</span>
+            <h4>${sim.title}</h4>
+            <p>${sim.desc}</p>
+          </div>
+          <button class="sim-open" onclick="openSim('${sim.id}')">Launch Simulation →</button>
+        </div>`;
       grid.appendChild(div);
     });
   });
-  setTimeout(startPreviews,200);
+  setTimeout(startPreviews, 150);
 }
 
-// ── PREVIEW LOOPS ─────────────────────────────────────────────────────────────
-function startPreviews(){
-  CATALOG.forEach(sim=>{
-    const c=document.getElementById('prev_'+sim.id);if(!c)return;
-    c.width=c.offsetWidth||260;c.height=c.offsetHeight||150;
-    let t=0;const loop=()=>{sim.loop(c,{...sim.params},t++);requestAnimationFrame(loop);};loop();
+// ── PREVIEW ANIMATION LOOPS ──────────────────────────────────────────────────
+function startPreviews() {
+  CATALOG.forEach(sim => {
+    const c = document.getElementById('prev_' + sim.id); if (!c) return;
+    c.width = c.offsetWidth || 280; c.height = c.offsetHeight || 160;
+    let t = 0; const loop = () => { sim.loop(c, { ...sim.params }, t++); requestAnimationFrame(loop); }; loop();
   });
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
-function openSim(id){
-  currentSim=id;const sim=CATALOG.find(s=>s.id===id);
-  simParams={...sim.params};
-  document.getElementById('simTitle').textContent=sim.title;
-  document.getElementById('simControls').innerHTML=sim.controls(simParams);
+// ── FULLSCREEN LAB MODAL CONTROLS ─────────────────────────────────────────────
+function openSim(id) {
+  currentSim = id; const sim = CATALOG.find(s => s.id === id);
+  simParams = { ...sim.params };
+  document.getElementById('simTitle').textContent = sim.title;
+  document.getElementById('simControls').innerHTML = sim.controls(simParams);
   document.getElementById('simModal').classList.add('open');
-  setTimeout(RS,60);
+  setTimeout(RS, 50);
 }
-function RS(){
-  const cv=document.getElementById('simCanvas'),wrap=cv.parentElement;
-  cv.width=wrap.clientWidth;cv.height=wrap.clientHeight;
-  delete cv._hist;delete cv._atoms;delete cv._lx;delete cv._elec;delete cv._fInit;delete cv._px;
-  if(animId)cancelAnimationFrame(animId);
-  const sim=CATALOG.find(s=>s.id===currentSim);let t=0;
-  function tick(){sim.loop(cv,simParams,t++);animId=requestAnimationFrame(tick);}tick();
+
+function RS() {
+  const cv = document.getElementById('simCanvas'), wrap = cv.parentElement;
+  cv.width = wrap.clientWidth; cv.height = wrap.clientHeight;
+  delete cv._hist; delete cv._atoms; delete cv._lx; delete cv._elec; delete cv._fInit;
+  if (animId) cancelAnimationFrame(animId);
+  const sim = CATALOG.find(s => s.id === currentSim); let t = 0;
+  function tick() { sim.loop(cv, simParams, t++); animId = requestAnimationFrame(tick); } tick();
 }
-function UP(k,v){simParams[k]=v;}
-function closeSim(){document.getElementById('simModal').classList.remove('open');if(animId){cancelAnimationFrame(animId);animId=null;}}
-window.addEventListener('keydown',e=>{if(e.key==='Escape')closeSim();});
-window.addEventListener('resize',()=>{if(currentSim)RS();});
+
+function UP(k, v) { simParams[k] = v; }
+function closeSim() { document.getElementById('simModal').classList.remove('open'); if (animId) { cancelAnimationFrame(animId); animId = null; } }
+
+window.addEventListener('keydown', e => { if (e.key === 'Escape') closeSim(); });
+window.addEventListener('resize', () => { if (currentSim) RS(); });
+
 buildCards();
 </script>
 </body>
