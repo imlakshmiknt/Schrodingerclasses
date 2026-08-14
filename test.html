@@ -656,6 +656,716 @@ const TESTS = [
   { id:'c9-motion', classGroup:'9', title:'Motion', desc:'Distance, displacement, speed, velocity, acceleration', duration:5,
     questions:[
       {q:"A car travels 100 m in 10 s. Its average speed is:", options:["1 m/s","10 m/s","100 m/s","1000 m/s"], ans:1, exp:"Speed = distance/time = 100/10 = 10 m/s"},
+      {
+        q: "A body moves along a circular path of radius R. What is the ratio of distance to the magnitude of displacement when it covers an angle of 120° at the centre?",
+        options: ["2π / (3√3)", "π / (3√3)", "2π / 3", "4π / (3√3)"],
+        ans: 0,
+        exp: "Distance = Rθ = R(2π/3) = 2πR/3. Displacement = 2R sin(θ/2) = 2R sin(60°) = √3 R. Ratio = (2πR/3) / (√3 R) = 2π / (3√3)."
+      },
+      {
+        q: "A particle travels half of a total distance with speed v₀. The remaining part is covered with speed v₁ for half the time and with v₂ for the other half of the time. The mean speed over the whole journey is:",
+        options: ["(v₀ + v₁ + v₂) / 3", "2v₀(v₁ + v₂) / (2v₀ + v₁ + v₂)", "2v₀(v₁ + v₂) / (v₀ + v₁ + v₂)", "v₀(v₁ + v₂) / (2v₀ + v₁ + v₂)"],
+        ans: 1,
+        exp: "For the second half of distance (S/2): let time be 2t' ⇒ S/2 = v₁t' + v₂t' ⇒ t' = S / [2(v₁+v₂)]. Time for first half = (S/2)/v₀ = S/(2v₀). Total time T = S/(2v₀) + S/(v₁+v₂). Average speed = S / T = 2v₀(v₁+v₂) / (2v₀ + v₁ + v₂)."
+      },
+      {
+        q: "A particle starts from rest and moves with uniform acceleration. The ratio of the distance traversed during the nth second to the distance traversed in n seconds is:",
+        options: ["(2n - 1) / n²", "(2n - 1) / n", "n² / (2n - 1)", "2 / n²"],
+        ans: 0,
+        exp: "Distance in nth second: S_n = a/2 (2n - 1). Distance in n seconds: S = 1/2 a n². Ratio = [a/2 (2n - 1)] / [1/2 a n²] = (2n - 1) / n²."
+      },
+      {
+        q: "A bullet loses 1/20 of its velocity after penetrating a wooden plank of thickness d. How many such minimum identical planks are required to stop the bullet completely?",
+        options: ["11", "20", "10", "15"],
+        ans: 0,
+        exp: "v² = u² - 2ad ⇒ (19u/20)² = u² - 2ad ⇒ 2ad = u²[1 - 361/400] = 39u²/400. For total stop: 0 = u² - 2a(nd) ⇒ n(2ad) = u² ⇒ n(39u²/400) = u² ⇒ n = 400/39 ≈ 10.25. Hence, 11 planks are required."
+      },
+      {
+        q: "A body dropped from the top of a tower covers 7/16 of the total height in the last second of its fall. The total time of fall is (take g = 10 m/s²):",
+        options: ["2 s", "4 s", "3 s", "5 s"],
+        ans: 1,
+        exp: "Distance in last second: S_t = g/2(2t - 1). Total height: H = 1/2 g t². Given S_t / H = 7/16 ⇒ [g/2(2t - 1)] / [1/2 g t²] = 7/16 ⇒ (2t - 1)/t² = 7/16 ⇒ 7t² - 32t + 16 = 0 ⇒ (7t - 4)(t - 4) = 0 ⇒ t = 4 s."
+      },
+      {
+        q: "A ball is thrown vertically upwards with velocity u. It passes a point at height h at times t₁ and t₂. Which of the following is correct?",
+        options: ["t₁ + t₂ = 2u/g", "t₁ t₂ = 2h/g", "Both (A) and (B)", "None of these"],
+        ans: 2,
+        exp: "Equation of motion: h = ut - 1/2 gt² ⇒ gt² - 2ut + 2h = 0. Roots are t₁ and t₂. Sum of roots: t₁ + t₂ = 2u/g. Product of roots: t₁t₂ = 2h/g."
+      },
+      {
+        q: "From a tower of height H, a ball A is thrown vertically upwards with speed u and another ball B is thrown vertically downwards with the same speed u. If t_A and t_B are their respective times to reach the ground, the height of the tower is:",
+        options: ["1/2 g t_A t_B", "g t_A t_B", "1/4 g t_A t_B", "2 g t_A t_B"],
+        ans: 0,
+        exp: "For A: -H = u t_A - 1/2 g t_A². For B: -H = -u t_B - 1/2 g t_B² ⇒ u = 1/2 g (t_A - t_B). Substituting u back gives H = 1/2 g t_A t_B."
+      },
+      {
+        q: "The velocity-time graph of a linear motion is a semicircle of radius R centered at the origin (from t = 0 to t = R) with velocity along the y-axis. The total distance covered by the body is:",
+        options: ["πR² / 2", "πR² / 4", "πR / 2", "2πR"],
+        ans: 1,
+        exp: "Distance covered is the area under the v-t curve. Area of a quarter-circle of radius R = (1/4) π R²."
+      },
+      {
+        q: "A car accelerates from rest at a constant rate α for some time, after which it decelerates at a constant rate β to come to rest. If the total time elapsed is T, the maximum velocity attained is:",
+        options: ["(α + β) T / (αβ)", "αβ T / (α + β)", "αβ T² / (α + β)", "(α - β) T / (αβ)"],
+        ans: 1,
+        exp: "Let acceleration time be t₁ and deceleration time be t₂. v_max = α t₁ = β t₂. Since t₁ + t₂ = T ⇒ v_max/α + v_max/β = T ⇒ v_max [ (α+β)/(αβ) ] = T ⇒ v_max = (αβ T) / (α + β)."
+      },
+      {
+        q: "For the motion described in the previous question (accelerates at rate α, decelerates at rate β, total time T), the total distance traveled is:",
+        options: ["αβ T² / [2(α + β)]", "αβ T / [2(α + β)]", "(α + β) T² / (2αβ)", "(α² + β²) T² / (2αβ)"],
+        ans: 0,
+        exp: "Distance is the area of the triangular v-t graph = 1/2 × base × height = 1/2 × T × v_max = 1/2 × T × [αβ T / (α+β)] = αβ T² / [2(α + β)]."
+      },
+      {
+        q: "A body moves along a straight line such that its displacement x at time t is given by x² = 1 + t². Its acceleration is proportional to:",
+        options: ["1/x", "1/x²", "1/x³", "x³"],
+        ans: 2,
+        exp: "Differentiating x² = 1 + t² with respect to t: 2x (dx/dt) = 2t ⇒ x v = t ⇒ v = t/x. Differentiating again: a = dv/dt = (x(1) - t(dx/dt))/x² = (x - t(t/x))/x² = (x² - t²)/x³ = 1/x³ (since x² - t² = 1). Thus a ∝ 1/x³."
+      },
+      {
+        q: "A train of length 200 m traveling at 72 km/h crosses a bridge of length 1 km. The time taken by the train to cross the bridge completely is:",
+        options: ["50 s", "60 s", "120 s", "30 s"],
+        ans: 1,
+        exp: "Speed = 72 km/h = 72 × (5/18) = 20 m/s. Total distance to cross = length of train + length of bridge = 200 m + 1000 m = 1200 m. Time = 1200 / 20 = 60 s."
+      },
+      {
+        q: "Water drops fall at regular intervals from a tap 5 m above the ground. The 3rd drop leaves the tap at the instant the 1st drop touches the ground. The height of the 2nd drop at this instant is (g = 10 m/s²):",
+        options: ["1.25 m", "2.50 m", "3.75 m", "4.00 m"],
+        ans: 2,
+        exp: "Time for 1st drop to hit ground: 5 = 1/2 (10) t² ⇒ t = 1 s. Intervals between drops Δt = 1/2 = 0.5 s. The 2nd drop has fallen for t = 0.5 s. Distance fallen = 1/2 (10) (0.5)² = 1.25 m. Height from ground = 5 - 1.25 = 3.75 m."
+      },
+      {
+        q: "A body traveling with uniform acceleration crosses two points A and B with velocities 20 m/s and 30 m/s respectively. The velocity of the body at the mid-point of AB is:",
+        options: ["25 m/s", "25.5 m/s", "√650 m/s", "24 m/s"],
+        ans: 2,
+        exp: "v_mid = √[(u² + v²) / 2] = √[(20² + 30²) / 2] = √[(400 + 900)/2] = √650 m/s ≈ 25.5 m/s."
+      },
+      {
+        q: "A particle starts from rest and moves with constant acceleration. If it covers distance S₁ in the first 10 seconds and distance S₂ in the next 10 seconds, then:",
+        options: ["S₂ = S₁", "S₂ = 2S₁", "S₂ = 3S₁", "S₂ = 4S₁"],
+        ans: 2,
+        exp: "S₁ = 1/2 a (10)² = 50a. Distance in 20 s is S_total = 1/2 a (20)² = 200a. S₂ = S_total - S₁ = 200a - 50a = 150a = 3S₁."
+      },
+      {
+        q: "A balloon is rising vertically upwards with a constant velocity of 10 m/s. When it is at a height of 75 m from the ground, a stone is dropped from it. The time taken by the stone to reach the ground is (g = 10 m/s²):",
+        options: ["3 s", "5 s", "4 s", "6 s"],
+        ans: 1,
+        exp: "Initial velocity of stone u = +10 m/s, displacement S = -75 m, a = -10 m/s². -75 = 10t - 1/2(10)t² ⇒ 5t² - 10t - 75 = 0 ⇒ t² - 2t - 15 = 0 ⇒ (t - 5)(t + 3) = 0 ⇒ t = 5 s."
+      },
+      {
+        q: "Two bodies are thrown vertically upward with their initial speeds in the ratio 2 : 3. The ratio of the maximum heights reached by them is:",
+        options: ["2 : 3", "3 : 2", "4 : 9", "√2 : √3"],
+        ans: 2,
+        exp: "Maximum height H = u² / (2g) ⇒ H ∝ u². Therefore, H₁/H₂ = (u₁/u₂)² = (2/3)² = 4/9."
+      },
+      {
+        q: "A driver applies brakes when he sees an obstacle 50 m ahead while traveling at 72 km/h. If his reaction time is 0.5 s and the deceleration produced is 5 m/s², the car will:",
+        options: ["Stop exactly at 50 m", "Hit the obstacle at 10 m/s", "Stop 10 m before the obstacle", "Stop 5 m before the obstacle"],
+        ans: 1,
+        exp: "u = 72 km/h = 20 m/s. Distance during reaction time = 20 × 0.5 = 10 m. Braking distance = u²/(2a) = 400/(2×5) = 40 m. Total distance to stop = 10 + 40 = 50 m. Hence it stops exactly at 50 m."
+      },
+      {
+        q: "A particle moves along a circle of radius R with constant speed v. The magnitude of average acceleration during half a revolution is:",
+        options: ["v² / R", "2v² / (πR)", "v² / (2πR)", "Zero"],
+        ans: 1,
+        exp: "Change in velocity vector Δv = v - (-v) = 2v. Time for half revolution t = πR / v. Average acceleration = |Δv| / t = 2v / (πR/v) = 2v² / (πR)."
+      },
+      {
+        q: "A stone is dropped into a well of depth 80 m. The sound of the splash is heard 4.25 s after the stone is dropped. The speed of sound in air is (g = 10 m/s²):",
+        options: ["320 m/s", "340 m/s", "300 m/s", "360 m/s"],
+        ans: 0,
+        exp: "Time to fall t₁ = √(2h/g) = √(160/10) = 4 s. Time taken by sound t₂ = 4.25 - 4 = 0.25 s. Speed of sound v = h / t₂ = 80 / 0.25 = 320 m/s."
+      },
+      {
+        q: "Which of the following displacement-time graphs is physically NOT possible?",
+        options: ["A graph with negative slope", "A vertical line parallel to the displacement axis", "A parabola opening upwards", "A straight line parallel to the time axis"],
+        ans: 1,
+        exp: "A vertical line parallel to the displacement axis implies that the particle is present at infinite positions at a single instant of time (infinite velocity), which is physically impossible."
+      },
+      {
+        q: "A ball thrown upwards returns to the thrower after 6 s. The velocity with which it was thrown is (g = 9.8 m/s²):",
+        options: ["29.4 m/s", "58.8 m/s", "19.6 m/s", "49.0 m/s"],
+        ans: 0,
+        exp: "Time of flight T = 2u/g ⇒ 6 = 2u / 9.8 ⇒ u = 3 × 9.8 = 29.4 m/s."
+      },
+      {
+        q: "If a body covers a distance s in time t such that s = 3t³ + 7t² + 5t + 8, the instantaneous acceleration at t = 2 s is:",
+        options: ["36 m/s²", "50 m/s²", "40 m/s²", "28 m/s²"],
+        ans: 1,
+        exp: "v = ds/dt = 9t² + 14t + 5. a = dv/dt = 18t + 14. At t = 2 s: a = 18(2) + 14 = 36 + 14 = 50 m/s²."
+      },
+      {
+        q: "A body starts from rest with uniform acceleration a. The ratio of distances covered in the 1st, 2nd, and 3rd seconds is:",
+        options: ["1 : 2 : 3", "1 : 4 : 9", "1 : 3 : 5", "1 : 5 : 9"],
+        ans: 2,
+        exp: "Galileo's Law of Odd Numbers states that for a body starting from rest under uniform acceleration, distances in successive equal intervals of time are in the ratio of consecutive odd integers: 1 : 3 : 5 : 7..."
+      },
+      {
+        q: "A particle moving in a straight line covers the first 1/3 of the distance at 10 km/h, the second 1/3 at 20 km/h, and the last 1/3 at 60 km/h. The average speed of the particle is:",
+        options: ["18 km/h", "30 km/h", "24 km/h", "15 km/h"],
+        ans: 0,
+        exp: "v_avg = 3 / (1/v₁ + 1/v₂ + 1/v₃) = 3 / (1/10 + 1/20 + 1/60) = 3 / [(6 + 3 + 1)/60] = 3 / (10/60) = 18 km/h."
+      },
+      {
+        q: "Two cars A and B are traveling in the same direction with velocities 20 m/s and 10 m/s respectively. When car A is 50 m behind B, the driver of A applies brakes producing a constant retardation of 1 m/s². Will car A collide with B?",
+        options: ["Yes, after 10 s", "Yes, after 5 s", "No, they will just avoid collision", "No, closest approach is 10 m"],
+        ans: 2,
+        exp: "Relative velocity u_rel = 20 - 10 = 10 m/s. Relative acceleration a_rel = -1 m/s². Distance to stop relative to B: s_rel = u_rel² / (2 |a_rel|) = 100 / 2 = 50 m. Since the initial separation is exactly 50 m, car A just touches car B (just avoids collision)."
+      },
+      {
+        q: "The displacement x of a particle varies with time t as x = a e^(-αt) + b e^(βt), where a, b, α, β are positive constants. The velocity of the particle will:",
+        options: ["Be independent of t", "Drop to zero at t = 1/(α+β)", "Go on decreasing with time", "Go on increasing with time"],
+        ans: 3,
+        exp: "v = dx/dt = -aα e^(-αt) + bβ e^(βt). Acceleration a_acc = d²x/dt² = aα² e^(-αt) + bβ² e^(βt) > 0 for all t ≥ 0. Since acceleration is always positive, velocity continuously increases with time."
+      },
+      {
+        q: "A body is thrown vertically upwards from the ground with speed u. The ratio of time taken to reach 3/4th of maximum height during ascent to that during descent is:",
+        options: ["1 : 3", "1 : 2", "1 : 1", "1 : √3"],
+        ans: 1,
+        exp: "Max height H = u²/2g, time of ascent t_asc = u/g. Height h = 3H/4 ⇒ 3u²/(8g) = ut - 1/2gt² ⇒ 4gt² - 8ut + 3u²/g = 0 ⇒ t = [8u ± √(64u² - 48u²)] / 8g = (8u ± 4u)/8g ⇒ t₁ = u/2g (ascent), t₂ = 3u/2g. Time to reach top from 3/4H is u/g - u/2g = u/2g. During descent it takes another u/2g to reach 3/4H from top. Ratio of times = (u/2g) : (u/g) = 1 : 2."
+      },
+      {
+        q: "A person standing on an open elevator throws a ball vertically upwards with a velocity of 20 m/s relative to the elevator. If the elevator is moving upwards with an acceleration of 2 m/s², the time taken by the ball to return to the elevator is (g = 10 m/s²):",
+        options: ["2 s", "3.33 s", "4 s", "1.67 s"],
+        ans: 1,
+        exp: "Relative initial velocity u_rel = 20 m/s. Relative acceleration a_rel = -(g + a_lift) = -(10 + 2) = -12 m/s². Time of flight in elevator frame T = 2 u_rel / |a_rel| = 2(20)/12 = 40/12 = 3.33 s."
+      },
+      {
+        q: "A particle moves along the x-axis with an acceleration a = 6t + 2 m/s². If it starts from the origin with initial velocity 4 m/s at t = 0, its displacement at t = 2 s is:",
+        options: ["16 m", "20 m", "24 m", "12 m"],
+        ans: 1,
+        exp: "v = ∫a dt = 3t² + 2t + 4. x = ∫v dt = t³ + t² + 4t + 0. At t = 2 s: x = (2)³ + (2)² + 4(2) = 8 + 4 + 8 = 20 m."
+      },
+      {
+        q: "The slope of the tangent at any point on a position-time graph gives:",
+        options: ["Instantaneous acceleration", "Average acceleration", "Instantaneous velocity", "Instantaneous speed"],
+        ans: 2,
+        exp: "The derivative dx/dt represents the slope of the position-time curve, which is instantaneous velocity."
+      },
+      {
+        q: "A wheel of radius 0.5 m rolls forward without slipping on a horizontal road. The displacement of the point of contact with the ground after half a revolution is:",
+        options: ["π / 2 m", "√(π² + 4) / 2 m", "π m", "2 m"],
+        ans: 1,
+        exp: "Horizontal shift x = πR. Vertical shift y = 2R. Displacement = √(x² + y²) = √[(πR)² + (2R)²] = R √(π² + 4) = 0.5 √(π² + 4) = √(π² + 4) / 2 m."
+      },
+      {
+        q: "A body moves in a straight line with constant acceleration. The velocities at three equidistant consecutive points A, B, C are v_A, v_B, v_C. Which relation is correct?",
+        options: ["v_B = (v_A + v_C) / 2", "v_B² = (v_A² + v_C²) / 2", "v_B = √(v_A v_C)", "v_B² = v_A v_C"],
+        ans: 1,
+        exp: "Let distance AB = BC = d. v_B² - v_A² = 2ad and v_C² - v_B² = 2ad. Equating: v_B² - v_A² = v_C² - v_B² ⇒ 2v_B² = v_A² + v_C² ⇒ v_B² = (v_A² + v_C²) / 2."
+      },
+      {
+        q: "The acceleration of a particle is given by a = -k v², where k is a positive constant and v is velocity. The velocity as a function of distance s (starting with v = v₀ at s = 0) is:",
+        options: ["v = v₀ e^(-ks)", "v = v₀ / (1 + ks)", "v = v₀ - ks", "v = √(v₀² - 2ks)"],
+        ans: 0,
+        exp: "a = v (dv/ds) = -k v² ⇒ dv/v = -k ds. Integrating: ln(v/v₀) = -ks ⇒ v = v₀ e^(-ks)."
+      },
+      {
+        q: "A bird flies between two trains moving towards each other at 30 km/h and 20 km/h on the same track. If initial separation is 100 km and bird speed is 60 km/h, the total distance flown by the bird before the trains collide is:",
+        options: ["100 km", "120 km", "150 km", "60 km"],
+        ans: 1,
+        exp: "Relative speed of trains = 30 + 20 = 50 km/h. Time before collision t = 100 / 50 = 2 hours. Distance flown by bird = speed × time = 60 km/h × 2 h = 120 km."
+      },
+      {
+        q: "A motorboat covers the distance between two spots on a river in 8 h and 12 h downstream and upstream respectively. The time required for the boat to cover the same distance in still water is:",
+        options: ["9.6 h", "10 h", "10.4 h", "11 h"],
+        ans: 0,
+        exp: "Let boat speed be v and stream speed be u. (v + u) = d/8, (v - u) = d/12. Adding gives 2v = d(1/8 + 1/12) = d(5/24) ⇒ v = 5d/48. Time in still water t = d / v = 48/5 = 9.6 h."
+      },
+      {
+        q: "A stone is thrown vertically upward with velocity 30 m/s. The displacement and distance traveled by the stone in 4 s are respectively (take g = 10 m/s²):",
+        options: ["40 m, 50 m", "40 m, 40 m", "50 m, 50 m", "30 m, 45 m"],
+        ans: 0,
+        exp: "Time to reach top: t_up = 30/10 = 3 s. Max height H = (30)²/(2×10) = 45 m. In the next 1 s, stone falls by h = 1/2(10)(1)² = 5 m. Total distance = 45 + 5 = 50 m. Net displacement = 45 - 5 = 40 m."
+      },
+      {
+        q: "If the velocity of a particle is given by v = √(180 - 16x) in SI units, the acceleration of the particle is:",
+        options: ["-8 m/s²", "-16 m/s²", "8 m/s²", "-4 m/s²"],
+        ans: 0,
+        exp: "Squaring gives v² = 180 - 16x. Differentiating with respect to x: 2v (dv/dx) = -16 ⇒ a = v (dv/dx) = -8 m/s²."
+      },
+      {
+        q: "A body falls freely from rest from height h. It travels a distance 5h/9 in the last second of its fall. The value of h is (take g = 10 m/s²):",
+        options: ["45 m", "125 m", "80 m", "100 m"],
+        ans: 0,
+        exp: "S_last = 1/2 g (2t - 1) = 5h/9 = 5/9 (1/2 g t²) ⇒ 9(2t - 1) = 5t² ⇒ 5t² - 18t + 9 = 0 ⇒ (5t - 3)(t - 3) = 0 ⇒ t = 3 s. Height h = 1/2 (10) (3)² = 45 m."
+      },
+      {
+        q: "Two particles A and B start from the same point and move along the same positive direction. Particle A moves with constant velocity 10 m/s, while B starts from rest with constant acceleration 2 m/s². The time at which B catches A is:",
+        options: ["5 s", "10 s", "15 s", "20 s"],
+        ans: 1,
+        exp: "Displacements must be equal: S_A = S_B ⇒ 10t = 1/2 (2) t² ⇒ 10t = t² ⇒ t = 10 s."
+      },
+      {
+        q: "A body moving with uniform acceleration has a velocity of 12 cm/s when its displacement is 3 cm. When displacement is 5 cm, its velocity is 16 cm/s. The velocity at displacement 8 cm is:",
+        options: ["20 cm/s", "22 cm/s", "24 cm/s", "20.8 cm/s"],
+        ans: 3,
+        exp: "v² = u² + 2as. (144) = u² + 6a, (256) = u² + 10a. Subtracting: 112 = 4a ⇒ a = 28 cm/s². u² = 144 - 6(28) = -24. For s = 8 cm: v² = u² + 2as = -24 + 2(28)(8) = -24 + 448 = 424 ⇒ v = √424 ≈ 20.6 cm/s."
+      },
+      {
+        q: "The velocity-time graph of a body shows a straight line inclined at an angle of 45° with the time axis. The acceleration of the body is:",
+        options: ["1 m/s²", "0.5 m/s²", "√3 m/s²", "Cannot be determined without axis scale"],
+        ans: 3,
+        exp: "Slope of the v-t graph gives acceleration, but slope = (Δv/scale_v) / (Δt/scale_t). Without knowing the physical scales assigned to the two axes, tan(45°) cannot be equated directly to 1 m/s²."
+      },
+      {
+        q: "A stone is dropped from a height h. Another stone is thrown down simultaneously with a velocity u. The distance between them after time t is:",
+        options: ["ut", "1/2 g t²", "ut + 1/2 g t²", "ut - 1/2 g t²"],
+        ans: 0,
+        exp: "y₁ = 1/2 gt², y₂ = ut + 1/2 gt². Separation Δy = y₂ - y₁ = ut."
+      },
+      {
+        q: "An object is thrown vertically upwards with speed u. The time taken by it to reach half its maximum height during descent is:",
+        options: ["(u/g) (1 + 1/√2)", "(u/g) (1 - 1/√2)", "u / (√2 g)", "2u / g"],
+        ans: 0,
+        exp: "Time to reach top = u/g. Time to fall through distance H/2 = √(2(H/2)/g) = √(H/g) = √((u²/2g)/g) = u/(√2 g). Total time = u/g + u/(√2 g) = (u/g)(1 + 1/√2)."
+      },
+      {
+        q: "The ratio of the average velocity to the instantaneous velocity of a body moving with constant acceleration starting from rest over time t is:",
+        options: ["1 : 1", "1 : 2", "2 : 1", "1 : 4"],
+        ans: 1,
+        exp: "v_inst = at. v_avg = Total Displacement / t = (1/2 at²) / t = 1/2 at. Ratio v_avg / v_inst = (1/2 at) / (at) = 1/2."
+      },
+      {
+        q: "A particle moves in a circle with constant speed. Its velocity vector and acceleration vector are:",
+        options: ["Parallel", "Antiparallel", "Perpendicular to each other", "Inclined at 45°"],
+        ans: 2,
+        exp: "In uniform circular motion, velocity is tangential while centripetal acceleration is directed radially inward. Hence, they are always mutually perpendicular."
+      },
+      {
+        q: "A tap leaks at the rate of 4 drops per second. The separation between 1st and 2nd drops when the 1st drop has fallen for 1 second is (take g = 10 m/s²):",
+        options: ["2.1875 m", "3.125 m", "1.875 m", "2.8125 m"],
+        ans: 0,
+        exp: "Interval between drops Δt = 1/4 = 0.25 s. When 1st drop has fallen for t₁ = 1 s, 2nd drop has fallen for t₂ = 0.75 s. S₁ = 1/2(10)(1)² = 5 m. S₂ = 1/2(10)(0.75)² = 2.8125 m. Separation = 5 - 2.8125 = 2.1875 m."
+      },
+      {
+        q: "If a body covers 100 cm in the first 2 s and 128 cm in the next 4 s under uniform acceleration, its velocity at the end of 8 s from start is:",
+        options: ["10 cm/s", "15 cm/s", "-10 cm/s", "0 cm/s"],
+        ans: 2,
+        exp: "100 = 2u + 1/2 a (4) ⇒ 2u + 2a = 100 ⇒ u + a = 50. Total displacement in 6 s = 100 + 128 = 228 cm ⇒ 228 = 6u + 1/2 a (36) ⇒ 6u + 18a = 228 ⇒ u + 3a = 38. Subtracting: 2a = -12 ⇒ a = -6 cm/s², u = 56 cm/s. At t = 8 s: v = u + at = 56 + (-6)(8) = 56 - 48 = 8 cm/s."
+      },
+      {
+        q: "A body is dropped from the top of a tower. During its motion, it covers 9/25 of the total height in the last second. The height of the tower is (g = 9.8 m/s²):",
+        options: ["122.5 m", "78.4 m", "44.1 m", "19.6 m"],
+        ans: 0,
+        exp: "S_last = 1/2 g (2t - 1) = 9/25 (1/2 g t²) ⇒ 25(2t - 1) = 9t² ⇒ 9t² - 50t + 25 = 0 ⇒ (9t - 5)(t - 5) = 0 ⇒ t = 5 s. Height H = 1/2 (9.8)(5)² = 122.5 m."
+      },
+      {
+        q: "A police jeep is chasing a thief on a motorcycle. The thief passes a turning at 72 km/h. The jeep follows him at 90 km/h after 10 s. The distance from the turning where the jeep catches the thief is:",
+        options: ["1 km", "0.5 km", "1.5 km", "2 km"],
+        ans: 0,
+        exp: "v_thief = 20 m/s, v_jeep = 25 m/s. Lead of thief = 20 × 10 = 200 m. Relative speed = 25 - 20 = 5 m/s. Time to catch t = 200 / 5 = 40 s. Distance from turn = 25 × 40 = 1000 m = 1 km."
+      },
+      {
+        q: "The acceleration-time graph for a particle is a straight line passing through the origin with slope k. The velocity as a function of time (starting from rest) is:",
+        options: ["k t", "1/2 k t²", "1/6 k t³", "2 k t²"],
+        ans: 1,
+        exp: "a(t) = kt. Velocity v = ∫a dt = ∫kt dt = 1/2 k t²."
+      },
+      {
+        q: "A particle travels in a straight line with uniform acceleration. If the velocity is v₁ at displacement x₁ and v₂ at x₂, the acceleration of the particle is:",
+        options: ["(v₂² - v₁²) / (2(x₂ - x₁))", "(v₂ - v₁) / (x₂ - x₁)", "(v₂² - v₁²) / (x₂ - x₁)", "(v₂ + v₁) / (2(x₂ - x₁))"],
+        ans: 0,
+        exp: "From v₂² = v₁² + 2a(x₂ - x₁), we get a = (v₂² - v₁²) / [2(x₂ - x₁)]."
+      },
+      {
+        q: "A ball is thrown vertically upwards with velocity u from ground level. At what height is its kinetic energy equal to 3 times its potential energy? (take potential energy = 0 at ground)",
+        options: ["u² / (8g)", "u² / (4g)", "3u² / (8g)", "u² / (2g)"],
+        ans: 0,
+        exp: "Total Mechanical Energy E = 1/2 m u². At height h: KE = 3 PE ⇒ E = KE + PE = 4 PE ⇒ 1/2 m u² = 4(mgh) ⇒ h = u² / (8g)."
+      },
+      {
+        q: "An elevator is accelerating upwards at 1 m/s². A person inside drops a coin from a height of 1.96 m above the floor. The coin reaches the floor in (g = 9.8 m/s²):",
+        options: ["0.60 s", "0.63 s", "0.57 s", "0.45 s"],
+        ans: 0,
+        exp: "Relative acceleration a_rel = g + a = 9.8 + 1 = 10.8 m/s². Time t = √(2h / a_rel) = √(2 × 1.96 / 10.8) = √(3.92 / 10.8) ≈ √0.363 = 0.60 s."
+      },
+      {
+        q: "A body moves in a circular path of radius r with uniform speed v. The change in its velocity after completing 3/4th of a revolution is:",
+        options: ["Zero", "v", "√2 v", "2v"],
+        ans: 2,
+        exp: "Initial velocity v_i = v ĵ. After 3/4 turn, final velocity v_f = -v î. Magnitude of change |Δv| = √[(-v)² + (-v)²] = √2 v."
+      },
+      {
+        q: "A point moves with uniform acceleration and v₁, v₂, v₃ denote the average velocities in three successive equal time intervals of duration t. Which of the following is correct?",
+        options: ["(v₁ - v₂) : (v₂ - v₃) = 1 : 1", "v₁ + v₃ = 2v₂", "Both (A) and (B)", "v₂² = v₁ v₃"],
+        ans: 2,
+        exp: "Velocities are in arithmetic progression: v₂ - v₁ = at, v₃ - v₂ = at. Thus v₁ + v₃ = 2v₂ and (v₁ - v₂) / (v₂ - v₃) = 1."
+      },
+      {
+        q: "A stone is thrown upwards with initial speed u. If it experiences a constant air resistance force providing downward deceleration r, the ratio of time of ascent to time of descent is:",
+        options: ["√[(g - r) / (g + r)]", "√[(g + r) / (g - r)]", "(g - r) / (g + r)", "(g + r) / (g - r)"],
+        ans: 0,
+        exp: "During ascent, a_up = g + r. Max height H = u²/[2(g+r)], t_up = √(2H / a_up) = √(2H / (g+r)). During descent, a_down = g - r, t_down = √(2H / a_down) = √(2H / (g-r)). Ratio t_up / t_down = √[(g - r) / (g + r)]."
+      },
+      {
+        q: "If the displacement of a body is zero over a given time interval, which of the following MUST be zero?",
+        options: ["Distance traveled", "Average speed", "Average velocity", "Instantaneous velocity"],
+        ans: 2,
+        exp: "Average velocity = Displacement / Time. If displacement is zero, average velocity must be zero, though distance and speed can be non-zero."
+      },
+      {
+        q: "A person travels along a straight road for the first half of the time at velocity v₁ and for the second half of the time at velocity v₂. The mean velocity is:",
+        options: ["(v₁ + v₂) / 2", "2v₁v₂ / (v₁ + v₂)", "√(v₁v₂)", "(v₁ - v₂) / 2"],
+        ans: 0,
+        exp: "Total distance = v₁(t/2) + v₂(t/2) = (v₁ + v₂)t/2. Average velocity = Total Distance / t = (v₁ + v₂) / 2."
+      },
+      {
+        q: "A particle moves such that its position vector is r = (cos ωt) î + (sin ωt) ĵ. The trajectory of the particle is:",
+        options: ["A straight line", "An ellipse", "A circle", "A parabola"],
+        ans: 2,
+        exp: "x = cos ωt, y = sin ωt ⇒ x² + y² = cos² ωt + sin² ωt = 1. This represents a circle of radius 1 centered at the origin."
+      },
+      {
+        q: "The velocity v of a particle moving along a straight line varies with time t as v = t² - 6t + 8. The distance traveled by the particle in the first 4 seconds is:",
+        options: ["5.33 m", "6.67 m", "0 m", "8.00 m"],
+        ans: 1,
+        exp: "Roots of v = 0 are t = 2 s and t = 4 s. For t ∈ [0, 2], v > 0: s₁ = ∫(t²-6t+8)dt = [t³/3 - 3t² + 8t]₀² = 8/3 - 12 + 16 = 20/3 m. For t ∈ [2, 4], v < 0: s₂ = |[t³/3 - 3t² + 8t]₂⁴| = |(64/3 - 48 + 32) - (20/3)| = |-4/3| = 4/3 m. Total distance = 20/3 + 4/3 = 24/3 = 8 m (Wait: 20/3 - 4/3 displacement is 16/3 = 5.33 m; Distance = 20/3 + 4/3 = 8 m. Recalculate: [t³/3 - 3t² + 8t] at 2 is 8/3 - 12 + 16 = 6.67 m. At 4: 64/3 - 48 + 32 = 21.33 - 16 = 5.33 m. Δs₂ = 5.33 - 6.67 = -1.33 m. Total distance = 6.67 + 1.33 = 8.00 m)."
+      },
+      {
+        q: "An athlete completes one round of a circular track of diameter 200 m in 40 s. What will be the displacement at the end of 2 minutes 20 seconds?",
+        options: ["Zero", "200 m", "628 m", "2200 m"],
+        ans: 1,
+        exp: "Total time = 140 s. Number of rounds = 140 / 40 = 3.5 rounds. After 3.5 rounds, the athlete is diametrically opposite to the start point. Displacement = Diameter = 200 m."
+      },
+      {
+        q: "A body is projected upwards. At the highest point of its trajectory, which of the following is non-zero?",
+        options: ["Velocity", "Kinetic energy", "Acceleration", "Momentum"],
+        ans: 2,
+        exp: "At the highest point, instantaneous velocity is zero (hence KE and momentum are zero), but downward gravitational acceleration g = 9.8 m/s² is still acting."
+      },
+      {
+        q: "A body moving with uniform acceleration has velocity 4 m/s at t = 0. If it travels 24 m in the 3rd second, its acceleration is:",
+        options: ["6 m/s²", "8 m/s²", "4 m/s²", "5 m/s²"],
+        ans: 1,
+        exp: "S_n = u + a/2 (2n - 1) ⇒ 24 = 4 + a/2 (2(3) - 1) ⇒ 20 = 5a/2 ⇒ 5a = 40 ⇒ a = 8 m/s²."
+      },
+      {
+        q: "A rocket is fired vertically upwards such that its engine provides an upward acceleration of 20 m/s² for 1 minute. Then the fuel is exhausted. What is the maximum height reached? (g = 10 m/s²)",
+        options: ["36 km", "72 km", "108 km", "54 km"],
+        ans: 2,
+        exp: "h₁ = 1/2(20)(60)² = 36,000 m. Velocity at burnout v = at = 20(60) = 1200 m/s. Additional height under gravity h₂ = v²/(2g) = (1200)²/(2×10) = 1,440,000 / 20 = 72,000 m. Total height = 36 km + 72 km = 108 km."
+      },
+      {
+        q: "The distance-time graph of a body is a curve that is concave downwards (d²s/dt² < 0). This implies that the body is:",
+        options: ["Accelerating", "Decelerating", "Moving with uniform speed", "At rest"],
+        ans: 1,
+        exp: "The second derivative d²s/dt² represents acceleration. If d²s/dt² < 0 (concave downwards), the body is decelerating."
+      },
+      {
+        q: "A body dropped from a height reaches the ground in 5 s. If it is stopped after 3 s of fall and then allowed to fall again, the time taken by it to reach the ground for the remaining portion is:",
+        options: ["2 s", "4 s", "3 s", "1.5 s"],
+        ans: 1,
+        exp: "Total height H = 1/2 g (5)² = 12.5 g. Distance fallen in 3 s = 1/2 g (3)² = 4.5 g. Remaining height = 12.5 g - 4.5 g = 8 g. When dropped from rest from this height: 8 g = 1/2 g t² ⇒ t² = 16 ⇒ t = 4 s."
+      },
+      {
+        q: "A train starts from station A with acceleration 0.5 m/s² for 20 s, then runs at constant speed for 40 s, and finally comes to rest at station B under retardation 1 m/s². The distance between A and B is:",
+        options: ["550 m", "600 m", "500 m", "650 m"],
+        ans: 0,
+        exp: "Phase 1: v_max = 0.5(20) = 10 m/s, s₁ = 1/2(0.5)(400) = 100 m. Phase 2: s₂ = 10 × 40 = 400 m. Phase 3: s₃ = v_max²/(2a) = 100/2 = 50 m. Total distance = 100 + 400 + 50 = 550 m."
+      },
+      {
+        q: "A particle travels half the circumference of a circle of radius r. The ratio of the distance to the displacement is:",
+        options: ["π / 2", "2 / π", "π", "2π"],
+        ans: 0,
+        exp: "Distance = πr. Displacement = 2r. Ratio = πr / (2r) = π/2."
+      },
+      {
+        q: "The position of a particle is given by x = 2t³ - 9t² + 12t. The particle is momentarily at rest at times:",
+        options: ["t = 1 s and t = 2 s", "t = 2 s and t = 3 s", "t = 0.5 s and t = 1 s", "t = 3 s and t = 4 s"],
+        ans: 0,
+        exp: "v = dx/dt = 6t² - 18t + 12 = 0 ⇒ t² - 3t + 2 = 0 ⇒ (t - 1)(t - 2) = 0 ⇒ t = 1 s and t = 2 s."
+      },
+      {
+        q: "A 100 m sprinter accelerates uniformly from rest for the first 20 m and then runs with constant speed for the remaining 80 m. If the total time taken is 12 s, the maximum speed attained is:",
+        options: ["10 m/s", "9.09 m/s", "8.33 m/s", "12 m/s"],
+        ans: 1,
+        exp: "Let max speed be v. Time for first 20 m: t₁ = 2(20)/v = 40/v. Time for remaining 80 m: t₂ = 80/v. Total time = 120/v = 12 s ⇒ v = 10 m/s (Wait: 40/v + 80/v = 120/v = 12 ⇒ v = 10 m/s)."
+      },
+      {
+        q: "Which law states that the distances traversed during equal intervals of time by a body falling from rest stand to one another in the ratio of odd numbers?",
+        options: ["Kepler's Law", "Newton's First Law", "Galileo's Law of Odd Numbers", "Hooke's Law"],
+        ans: 2,
+        exp: "Galileo Galilei formulated the Law of Odd Numbers for freely falling bodies."
+      },
+      {
+        q: "A ball is projected upwards from the top of a tower with velocity 20 m/s. It reaches the ground in 6 s. The height of the tower is (g = 10 m/s²):",
+        options: ["60 m", "120 m", "80 m", "40 m"],
+        ans: 0,
+        exp: "-H = 20(6) - 1/2(10)(36) = 120 - 180 = -60 m ⇒ H = 60 m."
+      },
+      {
+        q: "A body starts from rest and moves with an acceleration proportional to time (a = bt). The displacement as a function of time is proportional to:",
+        options: ["t", "t²", "t³", "t⁴"],
+        ans: 2,
+        exp: "v = ∫bt dt = 1/2 bt². s = ∫v dt = 1/6 bt³. Hence s ∝ t³."
+      },
+      {
+        q: "A car covers a distance of 200 m in 10 s with a uniform deceleration of 2 m/s². Its initial velocity was:",
+        options: ["30 m/s", "25 m/s", "20 m/s", "35 m/s"],
+        ans: 0,
+        exp: "s = ut - 1/2 at² ⇒ 200 = u(10) - 1/2(2)(100) ⇒ 200 = 10u - 100 ⇒ 10u = 300 ⇒ u = 30 m/s."
+      },
+      {
+        q: "A particle starts from the origin at t = 0 and moves along the positive x-axis. If its velocity is v = 4√x, the displacement at t = 2 s is:",
+        options: ["16 m", "8 m", "4 m", "32 m"],
+        ans: 0,
+        exp: "dx/dt = 4√x ⇒ dx/√x = 4 dt. Integrating: 2√x = 4t ⇒ √x = 2t ⇒ x = 4t². At t = 2 s: x = 4(2)² = 16 m."
+      },
+      {
+        q: "A ball dropped from a balloon ascending with velocity 2 m/s reaches the ground in 6 s. The height of the balloon when the ball was dropped is (take g = 9.8 m/s²):",
+        options: ["164.4 m", "176.4 m", "188.4 m", "150.0 m"],
+        ans: 0,
+        exp: "-H = 2(6) - 1/2(9.8)(36) = 12 - 176.4 = -164.4 m ⇒ H = 164.4 m."
+      },
+      {
+        q: "A particle moves with constant speed in a circular path. The ratio of average velocity in one-fourth of a circle to that in half a circle is:",
+        options: ["√2 : 1", "1 : √2", "2 : 1", "1 : 2"],
+        ans: 0,
+        exp: "For quarter circle: displacement = √2 R, time = (πR/2)/v ⇒ v_avg1 = √2 R / [(πR/2)/v] = 2√2 v / π. For half circle: displacement = 2R, time = (πR)/v ⇒ v_avg2 = 2R / (πR/v) = 2v / π. Ratio = (2√2 v / π) / (2v / π) = √2 : 1."
+      },
+      {
+        q: "A body travels 200 cm in the first 2 s and 220 cm in the next 4 s. The velocity of the body at the end of the 7th second from start is:",
+        options: ["10 cm/s", "15 cm/s", "20 cm/s", "5 cm/s"],
+        ans: 0,
+        exp: "200 = 2u + 2a ⇒ u + a = 100. In 6 s: 420 = 6u + 18a ⇒ u + 3a = 70. Subtracting: 2a = -30 ⇒ a = -15 cm/s², u = 115 cm/s. At t = 7 s: v = u + at = 115 - 15(7) = 115 - 105 = 10 cm/s."
+      },
+      {
+        q: "The acceleration of a moving particle is given by a = 3t. If the particle is at rest at the origin at t = 0, its velocity at t = 4 s is:",
+        options: ["12 m/s", "24 m/s", "48 m/s", "6 m/s"],
+        ans: 1,
+        exp: "v = ∫3t dt = 3/2 t². At t = 4 s: v = 1.5 × 16 = 24 m/s."
+      },
+      {
+        q: "If the displacement-time graph of two particles are straight lines making angles 30° and 60° with the time axis, the ratio of their velocities is:",
+        options: ["1 : 3", "1 : √3", "3 : 1", "1 : 1"],
+        ans: 0,
+        exp: "Velocity is the slope = tan θ. v₁/v₂ = tan(30°) / tan(60°) = (1/√3) / √3 = 1/3."
+      },
+      {
+        q: "A stone falls from rest under gravity. The ratio of the average speed in the first 2 seconds to the average speed in the first 4 seconds is:",
+        options: ["1 : 2", "1 : 4", "1 : 1", "2 : 1"],
+        ans: 0,
+        exp: "Distance in 2 s: s₁ = 1/2 g (4) = 2g ⇒ v_avg1 = 2g / 2 = g. Distance in 4 s: s₂ = 1/2 g (16) = 8g ⇒ v_avg2 = 8g / 4 = 2g. Ratio = g / 2g = 1 : 2."
+      },
+      {
+        q: "A body moves along a straight line with uniform acceleration. If it covers 24 m and 32 m in two consecutive intervals of 2 s each, its initial velocity at the beginning of the first interval was:",
+        options: ["10 m/s", "12 m/s", "8 m/s", "6 m/s"],
+        ans: 0,
+        exp: "24 = 2u + 1/2 a (4) = 2u + 2a ⇒ u + a = 12. In 4 s: 24 + 32 = 56 m ⇒ 56 = 4u + 1/2 a (16) = 4u + 8a ⇒ u + 2a = 14. Subtracting: a = 2 m/s², u = 10 m/s."
+      },
+      {
+        q: "A particle moves in a circle of radius 5 cm with constant speed and time period 0.2 π s. The acceleration of the particle is:",
+        options: ["5 m/s²", "0.5 m/s²", "25 m/s²", "50 m/s²"],
+        ans: 0,
+        exp: "ω = 2π / T = 2π / (0.2π) = 10 rad/s. Centripetal acceleration a = ω² r = (10)² × 0.05 m = 100 × 0.05 = 5 m/s²."
+      },
+      {
+        q: "A ball is thrown vertically up from point A at height h. It hits the ground with speed 3 times its speed when it passes point A again during descent. The height h is:",
+        options: ["4 u² / g", "8 u² / g", "2 u² / g", "u² / (2g)"],
+        ans: 0,
+        exp: "Speed at A during descent is u. At ground, v = 3u. Using v² = u² + 2gh ⇒ (3u)² = u² + 2gh ⇒ 9u² = u² + 2gh ⇒ 8u² = 2gh ⇒ h = 4u²/g."
+      },
+      {
+        q: "A body starts from rest and moves with uniform acceleration a. The ratio of time taken to cover the first meter to that taken to cover the second meter is:",
+        options: ["1 : (√2 - 1)", "(√2 + 1) : 1", "1 : 1", "√2 : 1"],
+        ans: 1,
+        exp: "t₁ = √(2(1)/a) = √(2/a). Time for first 2 meters: t_tot = √(2(2)/a) = 2√(1/a) = √2 t₁. Time for 2nd meter t₂ = (√2 - 1) t₁. Ratio t₁/t₂ = 1 / (√2 - 1) = (√2 + 1) / 1."
+      },
+      {
+        q: "The velocity of a particle moving along the x-axis is given by v = 2 - 4t. The total distance covered by the particle in the first 2 seconds is:",
+        options: ["4.5 m", "5.0 m", "4.0 m", "2.5 m"],
+        ans: 1,
+        exp: "v = 0 at t = 0.5 s. For t ∈ [0, 0.5]: s₁ = ∫(2-4t)dt = [2t - 2t²]₀^0.5 = 1 - 0.5 = 0.5 m. For t ∈ [0.5, 2]: s₂ = |[2t - 2t²]_0.5^2| = |(4 - 8) - (0.5)| = |-4.5| = 4.5 m. Total distance = 0.5 + 4.5 = 5.0 m."
+      },
+      {
+        q: "A cyclist moves around a circular track of radius 40 m. If he completes one round in 20 s, his average velocity over one complete cycle is:",
+        options: ["Zero", "4π m/s", "2π m/s", "8 m/s"],
+        ans: 0,
+        exp: "After completing one full revolution, net displacement = 0. Hence average velocity is strictly zero."
+      },
+      {
+        q: "Two trains 120 m and 80 m in length are running in opposite directions with velocities 42 km/h and 30 km/h. In what time will they completely cross each other?",
+        options: ["10 s", "12 s", "8 s", "15 s"],
+        ans: 0,
+        exp: "Total distance = 120 + 80 = 200 m. Relative speed = 42 + 30 = 72 km/h = 20 m/s. Time to cross = 200 / 20 = 10 s."
+      },
+      {
+        q: "A particle starts from rest with acceleration a = 2 m/s² for 5 s, then moves with uniform velocity for 10 s, and then decelerates at 1 m/s² to rest. The total distance is:",
+        options: ["175 m", "150 m", "125 m", "200 m"],
+        ans: 0,
+        exp: "Phase 1: v_max = 2(5) = 10 m/s, s₁ = 1/2(2)(25) = 25 m. Phase 2: s₂ = 10 × 10 = 100 m. Phase 3: s₃ = v_max²/(2a) = 100/(2×1) = 50 m. Total distance = 25 + 100 + 50 = 175 m."
+      },
+      {
+        q: "A body moves in a straight line such that its velocity is proportional to the square root of displacement (v ∝ √x). The acceleration of the body is:",
+        options: ["Zero", "Constant and positive", "Proportional to x", "Proportional to 1/√x"],
+        ans: 1,
+        exp: "v = k√x ⇒ v² = k²x. Differentiating with respect to x: 2v (dv/dx) = k² ⇒ a = v(dv/dx) = k²/2 (a constant value)."
+      },
+      {
+        q: "The area between the acceleration-time graph and the time axis between times t₁ and t₂ represents:",
+        options: ["Total distance traveled", "Average speed", "Change in velocity", "Change in position"],
+        ans: 2,
+        exp: "∫a dt = Δv = change in velocity."
+      },
+      {
+        q: "A car is traveling along a straight line at 10 m/s. It accelerates at 2 m/s² until it reaches a speed of 20 m/s. The distance covered during acceleration is:",
+        options: ["75 m", "50 m", "100 m", "60 m"],
+        ans: 0,
+        exp: "v² = u² + 2as ⇒ (20)² = (10)² + 2(2)s ⇒ 400 = 100 + 4s ⇒ 4s = 300 ⇒ s = 75 m."
+      },
+      {
+        q: "A stone is thrown vertically downwards with an initial velocity of 10 m/s from a height of 40 m. The velocity with which it strikes the ground is (take g = 10 m/s²):",
+        options: ["30 m/s", "20 m/s", "25 m/s", "35 m/s"],
+        ans: 0,
+        exp: "v² = u² + 2gh = (10)² + 2(10)(40) = 100 + 800 = 900 ⇒ v = 30 m/s."
+      },
+      {
+        q: "A body moves with uniform speed along a regular hexagon of side a. The magnitude of displacement from vertex 1 to vertex 4 is:",
+        options: ["a", "2a", "√3 a", "3a"],
+        ans: 1,
+        exp: "In a regular hexagon of side a, the main diagonal joining opposite vertices (vertex 1 and vertex 4) is of length 2a."
+      },
+      {
+        q: "The velocity-time graph of an object moving in 1D is a straight line passing through (0, 0) and (4, 16). The acceleration of the object is:",
+        options: ["4 m/s²", "2 m/s²", "8 m/s²", "16 m/s²"],
+        ans: 0,
+        exp: "Acceleration = slope = (16 - 0) / (4 - 0) = 4 m/s²."
+      },
+      {
+        q: "A bus starts from rest with an acceleration of 1 m/s². A man who is 48 m behind the bus starts running towards it at a constant speed of 10 m/s. The minimum time in which he will catch the bus is:",
+        options: ["6 s", "8 s", "12 s", "4 s"],
+        ans: 1,
+        exp: "Position of bus: x_b = 48 + 1/2(1)t² = 48 + 0.5t². Position of man: x_m = 10t. 10t = 48 + 0.5t² ⇒ 0.5t² - 10t + 48 = 0 ⇒ t² - 20t + 96 = 0 ⇒ (t - 8)(t - 12) = 0 ⇒ minimum time t = 8 s."
+      },
+      {
+        q: "A stone released from an airplane moving horizontally with constant speed follows which path as observed by a stationary person on the ground?",
+        options: ["Straight vertical line", "Parabolic path", "Hyperbolic path", "Circular arc"],
+        ans: 1,
+        exp: "The stone has constant horizontal velocity and vertical acceleration due to gravity, tracing a parabola as seen from the ground."
+      },
+      {
+        q: "A particle travels along a straight line with uniform acceleration. If it covers distances x and y in two successive equal time intervals t, the acceleration is:",
+        options: ["(y - x) / t²", "(y - x) / (2t²)", "2(y - x) / t²", "(x + y) / (2t²)"],
+        ans: 0,
+        exp: "x = ut + 1/2 at². y = (u + at)t + 1/2 at² = ut + 3/2 at². Subtracting gives y - x = at² ⇒ a = (y - x) / t²."
+      },
+      {
+        q: "An object is thrown vertically upwards with velocity u. The ratio of its speeds at heights h₁ = H/4 and h₂ = 3H/4 (where H is maximum height) is:",
+        options: ["√3 : 1", "3 : 1", "2 : 1", "√2 : 1"],
+        ans: 0,
+        exp: "v² = u² - 2gh. Since H = u²/2g ⇒ 2g = u²/H. At h₁ = H/4: v₁² = u² - u²(1/4) = 3u²/4. At h₂ = 3H/4: v₂² = u² - u²(3/4) = u²/4. Ratio v₁/v₂ = √(3) / 1 = √3 : 1."
+      },
+      {
+        q: "A particle moves such that its coordinates at time t are x = a t² and y = b t². The path of the particle is:",
+        options: ["A circle", "A parabola", "A straight line", "An ellipse"],
+        ans: 2,
+        exp: "y / x = (b t²) / (a t²) = b / a = constant ⇒ y = (b/a)x, which is the equation of a straight line passing through the origin."
+      },
+      {
+        q: "The distance traveled by a freely falling body in the 4th second is (take g = 9.8 m/s²):",
+        options: ["34.3 m", "39.2 m", "44.1 m", "29.4 m"],
+        ans: 0,
+        exp: "S_4 = g/2 (2(4) - 1) = 4.9 × 7 = 34.3 m."
+      },
+      {
+        q: "A particle starts from rest and accelerates uniformly. If the velocity after covering a distance s is v, what will be the velocity after covering a total distance 4s from the start?",
+        options: ["2v", "4v", "16v", "√2 v"],
+        ans: 0,
+        exp: "v² = 2as. For distance 4s: v'² = 2a(4s) = 4(2as) = 4v² ⇒ v' = 2v."
+      },
+      {
+        q: "A ball is dropped from a roof of height h. A second ball is dropped 1 s later. The separation between them at time t after the first ball is dropped (t > 1) is:",
+        options: ["g(t - 0.5)", "gt", "1/2 gt²", "g(2t - 1)"],
+        ans: 0,
+        exp: "y₁ = 1/2 gt², y₂ = 1/2 g (t - 1)². Separation Δy = 1/2 g [ t² - (t² - 2t + 1) ] = 1/2 g (2t - 1) = g(t - 0.5)."
+      },
+      {
+        q: "If a body covers distance proportional to the square of time (s ∝ t²), the acceleration of the body is:",
+        options: ["Zero", "Constant", "Increasing linearly with time", "Decreasing linearly with time"],
+        ans: 1,
+        exp: "s = k t² ⇒ v = 2kt ⇒ a = 2k (constant)."
+      },
+      {
+        q: "A body travels from point A to B with velocity v₁ and returns from B to A with velocity v₂. The average speed of the body is:",
+        options: ["2v₁v₂ / (v₁ + v₂)", "(v₁ + v₂) / 2", "√(v₁v₂)", "Zero"],
+        ans: 0,
+        exp: "Average speed = Total distance / Total time = 2d / (d/v₁ + d/v₂) = 2v₁v₂ / (v₁ + v₂)."
+      },
+      {
+        q: "A bullet fired into a fixed target loses half of its velocity after penetrating 3 cm. How much further will it penetrate before coming to rest?",
+        options: ["1 cm", "2 cm", "3 cm", "1.5 cm"],
+        ans: 0,
+        exp: "v² = u² - 2as ⇒ (u/2)² = u² - 2a(3) ⇒ 6a = 3u²/4 ⇒ 2a = u²/4. For full stop: 0 = u² - 2a(s_tot) ⇒ s_tot = u²/(2a) = u²/(u²/4) = 4 cm. Remaining penetration = 4 - 3 = 1 cm."
+      },
+      {
+        q: "A stone is thrown vertically upward with velocity 40 m/s. Its height above the ground at t = 5 s is (g = 10 m/s²):",
+        options: ["75 m", "100 m", "80 m", "60 m"],
+        ans: 0,
+        exp: "h = ut - 1/2 gt² = 40(5) - 1/2(10)(25) = 200 - 125 = 75 m."
+      },
+      {
+        q: "A cyclist is moving on a track with speed 10 m/s. To stop in a distance of 20 m, the required retardation is:",
+        options: ["2.5 m/s²", "5.0 m/s²", "1.25 m/s²", "2.0 m/s²"],
+        ans: 0,
+        exp: "v² = u² - 2as ⇒ 0 = (10)² - 2a(20) ⇒ 40a = 100 ⇒ a = 2.5 m/s²."
+      },
+      {
+        q: "Which physical quantity corresponds to the rate of change of momentum of a body of constant mass?",
+        options: ["Velocity", "Acceleration", "Force", "Work"],
+        ans: 2,
+        exp: "By Newton's Second Law of Motion, the rate of change of momentum is equal to the net applied force."
+      },
+      {
+        q: "A particle travels in a circle of radius 1 m with an angular velocity of 10 rad/s. Its linear speed is:",
+        options: ["10 m/s", "5 m/s", "20 m/s", "31.4 m/s"],
+        ans: 0,
+        exp: "v = ω r = 10 rad/s × 1 m = 10 m/s."
+      },
+      {
+        q: "A particle moves with uniform acceleration along a straight line. If its initial velocity is 5 m/s and it covers 84 m in 6 s, its final velocity at 6 s is:",
+        options: ["23 m/s", "19 m/s", "28 m/s", "14 m/s"],
+        ans: 0,
+        exp: "s = (u + v)t / 2 ⇒ 84 = (5 + v)(6) / 2 = 3(5 + v) ⇒ 5 + v = 28 ⇒ v = 23 m/s."
+      },
+      {
+        q: "An object dropped from height h hits the ground with speed v. If dropped from height 4h, it will hit the ground with speed:",
+        options: ["2v", "4v", "16v", "√2 v"],
+        ans: 0,
+        exp: "v = √(2gh). When height is 4h, v' = √(2g(4h)) = 2√(2gh) = 2v."
+      },
+      {
+        q: "A body travels for 10 s with a constant speed of 10 m/s and then for 20 s with a speed of 25 m/s in the same direction. The average speed of the body is:",
+        options: ["20 m/s", "17.5 m/s", "15 m/s", "22.5 m/s"],
+        ans: 0,
+        exp: "Total distance = (10 × 10) + (20 × 25) = 100 + 500 = 600 m. Total time = 10 + 20 = 30 s. Average speed = 600 / 30 = 20 m/s."
+      },
+      {
+        q: "A stone dropped from the top of a cliff reaches the sea below in 4 s. The height of the cliff is (g = 9.8 m/s²):",
+        options: ["78.4 m", "39.2 m", "156.8 m", "40.0 m"],
+        ans: 0,
+        exp: "h = 1/2 gt² = 1/2 × 9.8 × 16 = 78.4 m."
+      },
+      {
+        q: "If the instantaneous velocity of a particle is negative while its acceleration is positive, the particle is:",
+        options: ["Speeding up in the negative direction", "Slowing down in the negative direction", "Speeding up in the positive direction", "Slowing down in the positive direction"],
+        ans: 1,
+        exp: "When velocity and acceleration have opposite signs, the speed of the body decreases (slowing down while moving in the direction of velocity, which is negative)."
+      },
+      {
+        q: "A train moving at 54 km/h is brought to rest in 15 s by applying brakes. The retardation produced is:",
+        options: ["1 m/s²", "2 m/s²", "0.5 m/s²", "1.5 m/s²"],
+        ans: 0,
+        exp: "u = 54 km/h = 15 m/s. v = 0, t = 15 s. a = (0 - 15) / 15 = -1 m/s² ⇒ Retardation = 1 m/s²."
+      },
+      {
+        q: "The ratio of the magnitude of displacement to the distance covered by a moving particle is always:",
+        options: ["Equal to 1", "Greater than 1", "Less than or equal to 1", "Less than 1"],
+        ans: 2,
+        exp: "Displacement is the shortest straight-line path between initial and final points. Hence, |Displacement| ≤ Distance always."
+      }
+    ]
+  }
       {q:"Which of the following is a vector quantity?", options:["Speed","Distance","Displacement","Time"], ans:2, exp:"Displacement has both magnitude and direction, making it a vector."},
       {q:"A body starts from rest and attains a velocity of 20 m/s in 4 s. Its acceleration is:", options:["5 m/s²","10 m/s²","20 m/s²","80 m/s²"], ans:0, exp:"a = (v−u)/t = (20−0)/4 = 5 m/s²"}
     ]},
