@@ -653,9 +653,13 @@
 <script>
 const TESTS = [
   /* ═══ CLASS 9 ═══ */
-  { id:'c9-motion', classGroup:'9', title:'Motion', desc:'Distance, displacement, speed, velocity, acceleration', duration:5,
-    questions:[
-      {q:"A car travels 100 m in 10 s. Its average speed is:", options:["1 m/s","10 m/s","100 m/s","1000 m/s"], ans:1, exp:"Speed = distance/time = 100/10 = 10 m/s"},
+  {
+    id: 'c9-motion',
+    classGroup: '9',
+    title: 'Motion',
+    desc: 'Distance, displacement, speed, velocity, uniform acceleration, graphs & motion under gravity',
+    duration: 90,
+    questions: [
       {
         q: "A body moves along a circular path of radius R. What is the ratio of distance to the magnitude of displacement when it covers an angle of 120° at the centre?",
         options: ["2π / (3√3)", "π / (3√3)", "2π / 3", "4π / (3√3)"],
@@ -761,7 +765,7 @@ const TESTS = [
       {
         q: "A driver applies brakes when he sees an obstacle 50 m ahead while traveling at 72 km/h. If his reaction time is 0.5 s and the deceleration produced is 5 m/s², the car will:",
         options: ["Stop exactly at 50 m", "Hit the obstacle at 10 m/s", "Stop 10 m before the obstacle", "Stop 5 m before the obstacle"],
-        ans: 1,
+        ans: 0,
         exp: "u = 72 km/h = 20 m/s. Distance during reaction time = 20 × 0.5 = 10 m. Braking distance = u²/(2a) = 400/(2×5) = 40 m. Total distance to stop = 10 + 40 = 50 m. Hence it stops exactly at 50 m."
       },
       {
@@ -822,7 +826,7 @@ const TESTS = [
         q: "A body is thrown vertically upwards from the ground with speed u. The ratio of time taken to reach 3/4th of maximum height during ascent to that during descent is:",
         options: ["1 : 3", "1 : 2", "1 : 1", "1 : √3"],
         ans: 1,
-        exp: "Max height H = u²/2g, time of ascent t_asc = u/g. Height h = 3H/4 ⇒ 3u²/(8g) = ut - 1/2gt² ⇒ 4gt² - 8ut + 3u²/g = 0 ⇒ t = [8u ± √(64u² - 48u²)] / 8g = (8u ± 4u)/8g ⇒ t₁ = u/2g (ascent), t₂ = 3u/2g. Time to reach top from 3/4H is u/g - u/2g = u/2g. During descent it takes another u/2g to reach 3/4H from top. Ratio of times = (u/2g) : (u/g) = 1 : 2."
+        exp: "Max height H = u²/2g, time of ascent t_asc = u/g. Height h = 3H/4 ⇒ 3u²/(8g) = ut - 1/2gt² ⇒ 4gt² - 8ut + 3u²/g = 0 ⇒ t₁ = u/2g (ascent), t₂ = 3u/2g (time to reach same level on way down from start). Time spent above 3/4H is (3u/2g - u/2g) = u/g. Ratio of time to reach 3/4H going up to going down = (u/2g) : (u/g) = 1 : 2."
       },
       {
         q: "A person standing on an open elevator throws a ball vertically upwards with a velocity of 20 m/s relative to the elevator. If the elevator is moving upwards with an acceleration of 2 m/s², the time taken by the ball to return to the elevator is (g = 10 m/s²):",
@@ -898,7 +902,7 @@ const TESTS = [
       },
       {
         q: "A body moving with uniform acceleration has a velocity of 12 cm/s when its displacement is 3 cm. When displacement is 5 cm, its velocity is 16 cm/s. The velocity at displacement 8 cm is:",
-        options: ["20 cm/s", "22 cm/s", "24 cm/s", "20.8 cm/s"],
+        options: ["20 cm/s", "22 cm/s", "24 cm/s", "20.6 cm/s"],
         ans: 3,
         exp: "v² = u² + 2as. (144) = u² + 6a, (256) = u² + 10a. Subtracting: 112 = 4a ⇒ a = 28 cm/s². u² = 144 - 6(28) = -24. For s = 8 cm: v² = u² + 2as = -24 + 2(28)(8) = -24 + 448 = 424 ⇒ v = √424 ≈ 20.6 cm/s."
       },
@@ -940,7 +944,7 @@ const TESTS = [
       },
       {
         q: "If a body covers 100 cm in the first 2 s and 128 cm in the next 4 s under uniform acceleration, its velocity at the end of 8 s from start is:",
-        options: ["10 cm/s", "15 cm/s", "-10 cm/s", "0 cm/s"],
+        options: ["10 cm/s", "15 cm/s", "8 cm/s", "0 cm/s"],
         ans: 2,
         exp: "100 = 2u + 1/2 a (4) ⇒ 2u + 2a = 100 ⇒ u + a = 50. Total displacement in 6 s = 100 + 128 = 228 cm ⇒ 228 = 6u + 1/2 a (36) ⇒ 6u + 18a = 228 ⇒ u + 3a = 38. Subtracting: 2a = -12 ⇒ a = -6 cm/s², u = 56 cm/s. At t = 8 s: v = u + at = 56 + (-6)(8) = 56 - 48 = 8 cm/s."
       },
@@ -1019,8 +1023,8 @@ const TESTS = [
       {
         q: "The velocity v of a particle moving along a straight line varies with time t as v = t² - 6t + 8. The distance traveled by the particle in the first 4 seconds is:",
         options: ["5.33 m", "6.67 m", "0 m", "8.00 m"],
-        ans: 1,
-        exp: "Roots of v = 0 are t = 2 s and t = 4 s. For t ∈ [0, 2], v > 0: s₁ = ∫(t²-6t+8)dt = [t³/3 - 3t² + 8t]₀² = 8/3 - 12 + 16 = 20/3 m. For t ∈ [2, 4], v < 0: s₂ = |[t³/3 - 3t² + 8t]₂⁴| = |(64/3 - 48 + 32) - (20/3)| = |-4/3| = 4/3 m. Total distance = 20/3 + 4/3 = 24/3 = 8 m (Wait: 20/3 - 4/3 displacement is 16/3 = 5.33 m; Distance = 20/3 + 4/3 = 8 m. Recalculate: [t³/3 - 3t² + 8t] at 2 is 8/3 - 12 + 16 = 6.67 m. At 4: 64/3 - 48 + 32 = 21.33 - 16 = 5.33 m. Δs₂ = 5.33 - 6.67 = -1.33 m. Total distance = 6.67 + 1.33 = 8.00 m)."
+        ans: 3,
+        exp: "v = 0 at t = 2 and t = 4. Distance = ∫|v| dt = ∫₀² (t² - 6t + 8) dt + ∫₂⁴ -(t² - 6t + 8) dt = [t³/3 - 3t² + 8t]₀² - [t³/3 - 3t² + 8t]₂⁴ = (20/3) - (-4/3) = 24/3 = 8.00 m."
       },
       {
         q: "An athlete completes one round of a circular track of diameter 200 m in 40 s. What will be the displacement at the end of 2 minutes 20 seconds?",
@@ -1079,8 +1083,8 @@ const TESTS = [
       {
         q: "A 100 m sprinter accelerates uniformly from rest for the first 20 m and then runs with constant speed for the remaining 80 m. If the total time taken is 12 s, the maximum speed attained is:",
         options: ["10 m/s", "9.09 m/s", "8.33 m/s", "12 m/s"],
-        ans: 1,
-        exp: "Let max speed be v. Time for first 20 m: t₁ = 2(20)/v = 40/v. Time for remaining 80 m: t₂ = 80/v. Total time = 120/v = 12 s ⇒ v = 10 m/s (Wait: 40/v + 80/v = 120/v = 12 ⇒ v = 10 m/s)."
+        ans: 0,
+        exp: "Let max speed be v. Time for first 20 m: t₁ = 2(20)/v = 40/v. Time for remaining 80 m: t₂ = 80/v. Total time = 120/v = 12 s ⇒ v = 10 m/s."
       },
       {
         q: "Which law states that the distances traversed during equal intervals of time by a body falling from rest stand to one another in the ratio of odd numbers?",
@@ -1365,10 +1369,7 @@ const TESTS = [
         exp: "Displacement is the shortest straight-line path between initial and final points. Hence, |Displacement| ≤ Distance always."
       }
     ]
-  }
-      {q:"Which of the following is a vector quantity?", options:["Speed","Distance","Displacement","Time"], ans:2, exp:"Displacement has both magnitude and direction, making it a vector."},
-      {q:"A body starts from rest and attains a velocity of 20 m/s in 4 s. Its acceleration is:", options:["5 m/s²","10 m/s²","20 m/s²","80 m/s²"], ans:0, exp:"a = (v−u)/t = (20−0)/4 = 5 m/s²"}
-    ]},
+  },
   { id:'c9-force', classGroup:'9', title:'Force and Laws of Motion', desc:"Newton's laws, momentum, inertia", duration:5,
     questions:[
       {q:"Newton's first law is also known as the:", options:["Law of inertia","Law of momentum","Law of action-reaction","Law of gravitation"], ans:0, exp:"A body continues in its state of rest or motion unless acted upon by a net force — this is inertia."},
