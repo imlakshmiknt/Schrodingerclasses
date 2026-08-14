@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simulations — Schrödinger Classes</title>
+  <title>Virtual Physics Lab — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,15 +80,8 @@
       align-items: center;
       gap: 0.4rem;
     }
-    .nav-links a:hover { 
-      background: #f3f4f6; 
-      color: var(--accent); 
-    }
-    .nav-links a.active {
-      background: #eef2ff;
-      color: #312e81;
-      font-weight: 600;
-    }
+    .nav-links a:hover { background: #f3f4f6; color: var(--accent); }
+    .nav-links a.active { background: #eef2ff; color: #312e81; font-weight: 600; }
     .nav-cta {
       background: var(--accent);
       color: white !important;
@@ -108,7 +100,7 @@
       align-items: center;
       justify-content: space-between;
     }
-    .hero-left { max-width: 550px; }
+    .hero-left { max-width: 580px; }
     .page-label {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -155,12 +147,12 @@
       border-top: 1px solid var(--border);
     }
     .section-heading:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
-    .section-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .section-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; }
     
     .sims-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.3rem;
     }
     .sim-card {
       background: var(--paper);
@@ -175,12 +167,12 @@
     }
     .sim-card:hover {
       border-color: #cbd5e1;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
     }
     .sim-preview {
-      height: 160px;
-      background: #0d172a;
+      height: 170px;
+      background: #070f1e;
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -189,13 +181,13 @@
     .sim-hover {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(11, 31, 58, 0.6);
+      background: rgba(11, 31, 58, 0.7);
       opacity: 0; transition: opacity 0.2s;
-      color: white; font-weight: 700; font-size: 0.9rem; gap: 0.4rem;
+      color: white; font-weight: 700; font-size: 0.88rem; gap: 0.4rem;
     }
     .sim-card:hover .sim-hover { opacity: 1; }
     
-    .sim-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .sim-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
     .sim-tag {
       font-family: var(--mono);
       font-size: 0.6rem;
@@ -212,55 +204,55 @@
     .tag-class-10 { background: #dcfce7; color: #166534; }
     .tag-class-12 { background: #e0e7ff; color: #3730a3; }
 
-    .sim-body h4 { font-family: var(--display); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
-    .sim-body p { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+    .sim-body h4 { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+    .sim-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
     
     .sim-open {
       margin-top: 1rem;
-      padding: 0.45rem 0.9rem;
+      padding: 0.5rem 1rem;
       background: var(--accent);
       color: white;
       border: none;
       border-radius: 6px;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       align-self: flex-start;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
     .sim-open:hover { background: var(--gold); color: var(--ink); }
 
     /* ── FULL LAB MODAL ── */
     .sim-modal {
       position: fixed; inset: 0;
-      background: rgba(10, 12, 16, 0.88);
+      background: rgba(5, 10, 20, 0.92);
       z-index: 200;
       display: none;
       flex-direction: column;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
     }
     .sim-modal.open { display: flex; }
     .sim-modal-header {
-      background: var(--accent);
-      padding: 0.8rem 1.8rem;
+      background: #0b1d33;
+      padding: 0.85rem 2rem;
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .sim-modal-header h3 { font-family: var(--display); color: white; font-size: 1.15rem; font-weight: 700; }
+    .sim-modal-header h3 { font-family: var(--display); color: white; font-size: 1.2rem; font-weight: 700; }
     .sim-modal-close {
       background: rgba(255,255,255,0.15); border: none; color: white;
-      width: 32px; height: 32px; border-radius: 50%; font-size: 0.9rem;
+      width: 34px; height: 34px; border-radius: 50%; font-size: 0.95rem;
       cursor: pointer; transition: background 0.2s;
     }
-    .sim-modal-close:hover { background: rgba(255,255,255,0.25); }
+    .sim-modal-close:hover { background: rgba(255,255,255,0.3); }
     
     .sim-modal-body { flex: 1; display: flex; min-height: 0; }
-    .sim-canvas-wrap { flex: 1; position: relative; min-width: 0; background: #071320; }
+    .sim-canvas-wrap { flex: 1; position: relative; min-width: 0; background: #050d1a; }
     .sim-canvas-wrap canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     
     .sim-controls {
-      width: 280px;
-      background: #0b1728;
+      width: 300px;
+      background: #081426;
       padding: 1.5rem;
       overflow-y: auto;
       border-left: 1px solid rgba(255,255,255,0.08);
@@ -268,20 +260,20 @@
     }
     .ctrl-group { margin-bottom: 1.2rem; }
     .ctrl-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold2); margin-bottom: 0.4rem; display: block; font-weight: 700; }
-    .ctrl-value { font-family: var(--mono); font-size: 0.85rem; color: white; margin-bottom: 0.3rem; font-weight: 600; }
+    .ctrl-value { font-family: var(--mono); font-size: 0.88rem; color: white; margin-bottom: 0.3rem; font-weight: 600; }
     input[type=range] { width: 100%; accent-color: var(--gold2); cursor: pointer; }
     .ctrl-btn {
-      width: 100%; padding: 0.65rem; margin-top: 0.4rem;
+      width: 100%; padding: 0.75rem; margin-top: 0.4rem;
       background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
       color: white; border-radius: 6px; font-family: var(--body); font-size: 0.82rem;
       font-weight: 600; cursor: pointer; transition: background 0.2s;
     }
     .ctrl-btn:hover { background: rgba(255,255,255,0.18); }
     .data-box {
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.4);
       border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
-      padding: 0.85rem; font-family: var(--mono); font-size: 0.75rem;
-      color: rgba(255,255,255,0.8); line-height: 1.8; white-space: pre-line;
+      padding: 0.9rem; font-family: var(--mono); font-size: 0.75rem;
+      color: rgba(255,255,255,0.85); line-height: 1.8; white-space: pre-line;
     }
 
     @media(max-width:900px){
@@ -290,7 +282,7 @@
       .hero-stats-card { width: 100%; justify-content: space-around; }
       .sims-section { padding: 1.5rem; }
       .sim-modal-body { flex-direction: column; }
-      .sim-controls { width: 100%; max-height: 200px; border-left: none; border-top: 1px solid rgba(255,255,255,0.1); }
+      .sim-controls { width: 100%; max-height: 220px; border-left: none; border-top: 1px solid rgba(255,255,255,0.1); }
     }
   </style>
 </head>
@@ -316,51 +308,43 @@
 <!-- PAGE HEADER HERO -->
 <div class="page-header">
   <div class="hero-left">
-    <div class="page-label">✦ VIRTUAL PHYSICS LAB</div>
-    <h1 class="page-title">Interactive Simulations.</h1>
-    <p class="page-sub">Class 9, 10 & 12 Physics brought to life — adjust variables, run live experiments, and see the physics!</p>
+    <div class="page-label">✦ HIGH-PRECISION PHYSICS ENGINE</div>
+    <h1 class="page-title">Interactive Virtual Lab.</h1>
+    <p class="page-sub">Class 9 to 12 physics simulations with real-time vector graphics, particle motion, live graph telemetry, and parameter controls!</p>
   </div>
   
   <div class="hero-stats-card">
     <div class="stat-item">
-      <div class="stat-icon">🔬</div>
-      <div class="stat-num">20</div>
-      <div class="stat-lbl">Simulations</div>
-    </div>
-    <div class="stat-item">
       <div class="stat-icon">⚡</div>
-      <div class="stat-num">Realtime</div>
-      <div class="stat-lbl">Physics</div>
+      <div class="stat-num">7 Labs</div>
+      <div class="stat-lbl">Interactive</div>
     </div>
     <div class="stat-item">
-      <div class="stat-icon">🎓</div>
+      <div class="stat-icon">📊</div>
+      <div class="stat-num">60 FPS</div>
+      <div class="stat-lbl">Engine</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🎯</div>
       <div class="stat-num">Cl. 9-12</div>
-      <div class="stat-lbl">Syllabus</div>
+      <div class="stat-lbl">Coverage</div>
     </div>
   </div>
 </div>
 
-<!-- SIMULATIONS MAIN CONTAINER -->
+<!-- SIMULATIONS CONTAINER -->
 <div class="sims-section">
-  <div class="section-heading">🏃 Class 9 Physics</div>
-  <p class="section-desc">Interactive motion, gravity, pendulum, work-energy, and sound wave labs.</p>
+  <div class="section-heading">🏃 Class 9 Mechanics & Waves</div>
+  <p class="section-desc">Vector velocity tracks, damped pendulum energy conservation, and mechanical wave motion.</p>
   <div class="sims-grid" id="grid_class9"></div>
 
-  <div class="section-heading">💡 Class 10 Physics</div>
-  <p class="section-desc">Interactive optics, Snell's law, total internal reflection, Ohm's law, and resistor circuits.</p>
+  <div class="section-heading">💡 Class 10 Light & Circuits</div>
+  <p class="section-desc">Snell's Law, Critical Angle, Total Internal Reflection, and animated Ohm's Law circuits.</p>
   <div class="sims-grid" id="grid_class10"></div>
 
-  <div class="section-heading">⚡ Electricity & Circuits (Class 12)</div>
-  <p class="section-desc">Capacitor charging, Kirchhoff's laws, and electron drift velocity.</p>
-  <div class="sims-grid" id="grid_elec"></div>
-
-  <div class="section-heading">🧲 Magnetism (Class 12)</div>
-  <p class="section-desc">Magnetic field lines, solenoid, EM induction, Lenz's law, and Lorentz force.</p>
-  <div class="sims-grid" id="grid_mag"></div>
-
-  <div class="section-heading">⚛️ Modern Physics (Class 12)</div>
-  <p class="section-desc">Photoelectric effect, Bohr atom, radioactive decay, de Broglie waves, and nuclear fission.</p>
-  <div class="sims-grid" id="grid_modern"></div>
+  <div class="section-heading">⚛️ Class 11 & 12 Advanced Physics</div>
+  <p class="section-desc">Magnetic dipole fields, Photoelectric effect, and quantum mechanics visualisations.</p>
+  <div class="sims-grid" id="grid_senior"></div>
 </div>
 
 <!-- FULLSCREEN SIMULATION LAB MODAL -->
@@ -378,271 +362,352 @@
 <script>
 let animId = null, currentSim = null, simParams = {};
 
-// ── SIMULATION CATALOGUE ──────────────────────────────────────────────────────
+// ── ADVANCED SIMULATION CATALOGUE ─────────────────────────────────────────────
 const CATALOG = [
   // ================= CLASS 9 SIMULATIONS =================
   {
-    id: 'motion_graph', group: 'class9', title: 'Kinematics & Graphs', tag: 'Class 9',
-    desc: 'Simulate uniform & accelerated motion with live position (s-t) and velocity (v-t) graphs.',
-    params: { u: 0, a: 2, tMax: 10 },
+    id: 'kinematics_v2', group: 'class9', title: 'Interactive Kinematics Engine', tag: 'Class 9',
+    desc: 'Simulate 1D motion with velocity vectors, acceleration arrows, and live position/velocity telemetry graphs.',
+    params: { u: 5, a: 2, tMax: 10 },
     controls: p => `
-      <div class="ctrl-group"><span class="ctrl-label">Initial Velocity u (m/s)</span><div class="ctrl-value" id="p_u">${p.u}</div><input type="range" min="-10" max="20" step="1" value="${p.u}" oninput="p_u.textContent=this.value;UP('u',+this.value);RS()"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Acceleration a (m/s²)</span><div class="ctrl-value" id="p_a">${p.a}</div><input type="range" min="-5" max="10" step="0.5" value="${p.a}" oninput="p_a.textContent=this.value;UP('a',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Initial Velocity u (m/s)</span><div class="ctrl-value" id="p_u">${p.u} m/s</div><input type="range" min="-10" max="20" step="1" value="${p.u}" oninput="p_u.textContent=this.value+' m/s';UP('u',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Acceleration a (m/s²)</span><div class="ctrl-value" id="p_a">${p.a} m/s²</div><input type="range" min="-5" max="10" step="0.5" value="${p.a}" oninput="p_a.textContent=this.value+' m/s²';UP('a',+this.value);RS()"/></div>
       <button class="ctrl-btn" onclick="RS()">↺ Restart Motion</button>
       <div class="data-box" id="simData">...</div>`,
     loop: (cv, p, t) => {
       const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const time = (t * 0.05) % p.tMax;
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      
+      const time = (t * 0.04) % p.tMax;
       const s = p.u * time + 0.5 * p.a * time * time;
       const v = p.u + p.a * time;
 
       // Track Road
-      C.fillStyle = '#1e293b'; C.fillRect(40, 80, W - 80, 20);
-      C.strokeStyle = '#334155'; C.lineWidth = 1;
-      for (let x = 40; x < W - 80; x += 40) { C.beginPath(); C.moveTo(x, 100); C.lineTo(x, 108); C.stroke(); }
+      const roadY = H * 0.35;
+      C.fillStyle = '#1e293b'; C.fillRect(30, roadY, W - 60, 24);
+      C.strokeStyle = '#475569'; C.lineWidth = 1;
+      for (let x = 30; x <= W - 60; x += 40) {
+        C.beginPath(); C.moveTo(x, roadY); C.lineTo(x, roadY + 24); C.stroke();
+      }
 
-      // Car
-      const carX = Math.min(W - 100, Math.max(40, 40 + s * 3));
-      C.fillStyle = '#38bdf8'; C.fillRect(carX, 65, 30, 15);
-      C.fillStyle = '#0f172a'; C.beginPath(); C.arc(carX + 6, 80, 4, 0, Math.PI*2); C.arc(carX + 24, 80, 4, 0, Math.PI*2); C.fill();
+      // Vehicle
+      const posX = Math.min(W - 80, Math.max(40, 40 + s * 3.5));
+      C.fillStyle = '#38bdf8'; C.shadowColor = '#38bdf8'; C.shadowBlur = 10;
+      C.fillRect(posX, roadY - 18, 36, 18); C.shadowBlur = 0;
+      C.fillStyle = '#0f172a'; C.beginPath(); C.arc(posX + 8, roadY, 5, 0, Math.PI*2); C.arc(posX + 28, roadY, 5, 0, Math.PI*2); C.fill();
 
-      // Live v-t Plot
-      const gx = 40, gy = H - 30, gw = W - 80, gh = 80;
-      C.strokeStyle = 'rgba(255,255,255,0.2)'; C.lineWidth = 1;
+      // Vectors
+      // Velocity Vector (Green Arrow)
+      C.strokeStyle = '#10b981'; C.lineWidth = 2.5; C.beginPath();
+      C.moveTo(posX + 18, roadY - 9); C.lineTo(posX + 18 + v * 4, roadY - 9); C.stroke();
+      
+      // Acceleration Vector (Gold Arrow)
+      C.strokeStyle = '#fbbf24'; C.lineWidth = 2.5; C.beginPath();
+      C.moveTo(posX + 18, roadY - 24); C.lineTo(posX + 18 + p.a * 8, roadY - 24); C.stroke();
+
+      // Telemetry Graph (Bottom Area)
+      const gx = 40, gy = H - 25, gw = W - 80, gh = H * 0.38;
+      C.fillStyle = 'rgba(15, 23, 42, 0.6)'; C.fillRect(gx - 10, gy - gh - 10, gw + 20, gh + 20);
+      C.strokeStyle = 'rgba(255,255,255,0.15)'; C.lineWidth = 1;
       C.beginPath(); C.moveTo(gx, gy - gh); C.lineTo(gx, gy); C.lineTo(gx + gw, gy); C.stroke();
       
-      C.strokeStyle = '#fbbf24'; C.lineWidth = 2; C.beginPath();
+      // Live Position Curve
+      C.strokeStyle = '#38bdf8'; C.lineWidth = 2; C.beginPath();
       for (let step = 0; step <= time; step += 0.1) {
         const px = gx + (step / p.tMax) * gw;
-        const py = gy - ((p.u + p.a * step + 20) / 40) * gh;
+        const curS = p.u * step + 0.5 * p.a * step * step;
+        const py = gy - Math.min(gh, Math.max(0, (curS / 150) * gh));
         step === 0 ? C.moveTo(px, py) : C.lineTo(px, py);
       }
       C.stroke();
 
       const d = document.getElementById('simData');
-      if (d) d.textContent = `Time t = ${time.toFixed(1)} s\nDisplacement s = ut + ½at²\n  s = ${s.toFixed(1)} m\nVelocity v = u + at\n  v = ${v.toFixed(1)} m/s`;
+      if (d) d.textContent = `Elapsed Time: ${time.toFixed(1)} s\nDisplacement s = ${s.toFixed(1)} m\nVelocity v = ${v.toFixed(1)} m/s\nAcceleration a = ${p.a} m/s²\n\n🟢 Velocity Vector\n🟡 Acceleration Vector`;
     }
   },
   {
-    id: 'simple_pendulum', group: 'class9', title: 'Simple Pendulum Lab', tag: 'Class 9',
-    desc: 'Verify T = 2π√(L/g). Adjust string length and gravity live.',
-    params: { length: 1.5, g: 9.8, angle: 30 },
+    id: 'pendulum_energy', group: 'class9', title: 'Simple Pendulum & Energy Conservation', tag: 'Class 9',
+    desc: 'Verify T = 2π√(L/g) with dynamic kinetic & potential energy bar telemetry charts.',
+    params: { length: 1.8, g: 9.8, angle: 35 },
     controls: p => `
-      <div class="ctrl-group"><span class="ctrl-label">Length L (m)</span><div class="ctrl-value" id="p_l">${p.length}</div><input type="range" min="0.5" max="3" step="0.1" value="${p.length}" oninput="p_l.textContent=this.value;UP('length',+this.value);RS()"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Gravity g (m/s²)</span><div class="ctrl-value" id="p_g">${p.g}</div><input type="range" min="1.6" max="20" step="0.2" value="${p.g}" oninput="p_g.textContent=this.value;UP('g',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Length L (m)</span><div class="ctrl-value" id="p_l">${p.length} m</div><input type="range" min="0.5" max="3" step="0.1" value="${p.length}" oninput="p_l.textContent=this.value+' m';UP('length',+this.value);RS()"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Gravity g (m/s²)</span><div class="ctrl-value" id="p_g">${p.g} m/s²</div><input type="range" min="1.6" max="20" step="0.2" value="${p.g}" oninput="p_g.textContent=this.value+' m/s²';UP('g',+this.value);RS()"/></div>
       <div class="data-box" id="simData">...</div>`,
     loop: (cv, p, t) => {
       const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      
       const T = 2 * Math.PI * Math.sqrt(p.length / p.g);
       const thetaMax = (p.angle * Math.PI) / 180;
-      const theta = thetaMax * Math.cos((2 * Math.PI / T) * (t * 0.05));
+      const omega = 2 * Math.PI / T;
+      const theta = thetaMax * Math.cos(omega * (t * 0.04));
+      const thetaDot = -thetaMax * omega * Math.sin(omega * (t * 0.04));
 
-      const pivotX = W / 2, pivotY = 40;
-      const bobR = 15, pixL = p.length * 60;
+      const pivotX = W * 0.4, pivotY = 50;
+      const pixL = p.length * 65;
       const bobX = pivotX + pixL * Math.sin(theta);
       const bobY = pivotY + pixL * Math.cos(theta);
 
-      // Support
-      C.fillStyle = '#475569'; C.fillRect(pivotX - 30, pivotY - 8, 60, 8);
-      // String
-      C.strokeStyle = '#cbd5e1'; C.lineWidth = 2; C.beginPath(); C.moveTo(pivotX, pivotY); C.lineTo(bobX, bobY); C.stroke();
-      // Bob
-      C.fillStyle = '#f59e0b'; C.beginPath(); C.arc(bobX, bobY, bobR, 0, Math.PI*2); C.fill();
-
-      const d = document.getElementById('simData');
-      if (d) d.textContent = `Period T = 2π√(L/g)\nCalculated T = ${T.toFixed(2)} s\nLength L = ${p.length} m\nGravity g = ${p.g} m/s²\nAngle θ = ${(theta * 180 / Math.PI).toFixed(1)}°`;
-    }
-  },
-
-  // ================= CLASS 10 SIMULATIONS =================
-  {
-    id: 'snell_law', group: 'class10', title: "Snell's Law & TIR", tag: 'Class 10',
-    desc: 'Refraction of light, critical angle, and Total Internal Reflection (TIR).',
-    params: { n1: 1.0, n2: 1.5, angleI: 45 },
-    controls: p => `
-      <div class="ctrl-group"><span class="ctrl-label">Medium 1 (n1)</span><div class="ctrl-value" id="p_n1">${p.n1}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n1}" oninput="p_n1.textContent=this.value;UP('n1',+this.value)"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Medium 2 (n2)</span><div class="ctrl-value" id="p_n2">${p.n2}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n2}" oninput="p_n2.textContent=this.value;UP('n2',+this.value)"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Incident Angle i (°)</span><div class="ctrl-value" id="p_ai">${p.angleI}</div><input type="range" min="0" max="85" step="1" value="${p.angleI}" oninput="p_ai.textContent=this.value;UP('angleI',+this.value)"/></div>
-      <div class="data-box" id="simData">...</div>`,
-    loop: (cv, p) => {
-      const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const cy = H / 2, cx = W / 2;
-
-      // Mediums
-      C.fillStyle = 'rgba(56, 189, 248, 0.1)'; C.fillRect(0, 0, W, cy);
-      C.fillStyle = 'rgba(99, 102, 241, 0.2)'; C.fillRect(0, cy, W, cy);
-      C.strokeStyle = '#94a3b8'; C.lineWidth = 1; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
+      // Support & String
+      C.fillStyle = '#334155'; C.fillRect(pivotX - 35, pivotY - 8, 70, 8);
+      C.strokeStyle = '#94a3b8'; C.lineWidth = 2; C.beginPath(); C.moveTo(pivotX, pivotY); C.lineTo(bobX, bobY); C.stroke();
       
-      // Normal
-      C.setLineDash([4, 4]); C.beginPath(); C.moveTo(cx, 20); C.lineTo(cx, H - 20); C.stroke(); C.setLineDash([]);
+      // Bob
+      C.fillStyle = '#fbbf24'; C.shadowColor = '#fbbf24'; C.shadowBlur = 12;
+      C.beginPath(); C.arc(bobX, bobY, 16, 0, Math.PI*2); C.fill(); C.shadowBlur = 0;
 
-      const radI = (p.angleI * Math.PI) / 180;
-      const sinR = (p.n1 / p.n2) * Math.sin(radI);
-      const isTIR = sinR > 1.0;
+      // Energy Telemetry Bars
+      const h = p.length * (1 - Math.cos(theta));
+      const PE = p.g * h;
+      const KE = 0.5 * Math.pow(p.length * thetaDot, 2);
+      const TotalE = PE + KE;
 
-      // Incident Ray
-      const incX = cx - 180 * Math.sin(radI);
-      const incY = cy - 180 * Math.cos(radI);
-      C.strokeStyle = '#ef4444'; C.lineWidth = 3; C.beginPath(); C.moveTo(incX, incY); C.lineTo(cx, cy); C.stroke();
+      const bx = W * 0.75, by = 60, bw = 24, bh = 140;
+      C.fillStyle = 'rgba(15,23,42,0.6)'; C.fillRect(bx - 10, by - 10, 100, bh + 40);
+      
+      // PE Bar
+      const peH = (PE / TotalE) * bh;
+      C.fillStyle = '#38bdf8'; C.fillRect(bx, by + bh - peH, bw, peH);
+      
+      // KE Bar
+      const keH = (KE / TotalE) * bh;
+      C.fillStyle = '#10b981'; C.fillRect(bx + 40, by + bh - keH, bw, keH);
 
-      if (!isTIR) {
-        const radR = Math.asin(sinR);
-        const refX = cx + 180 * Math.sin(radR);
-        const refY = cy + 180 * Math.cos(radR);
-        C.strokeStyle = '#38bdf8'; C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke();
-      } else {
-        // TIR
-        const tirX = cx + 180 * Math.sin(radI);
-        const tirY = cy - 180 * Math.cos(radI);
-        C.strokeStyle = '#f59e0b'; C.beginPath(); C.moveTo(cx, cy); C.lineTo(tirX, tirY); C.stroke();
-      }
+      C.fillStyle = 'white'; C.font = '10px monospace';
+      C.fillText('PE', bx + 4, by + bh + 15);
+      C.fillText('KE', bx + 44, by + bh + 15);
 
-      const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(1) : 'N/A';
       const d = document.getElementById('simData');
-      if (d) d.textContent = `n1 sin(i) = n2 sin(r)\nIncident i = ${p.angleI}°\nRefracted r = ${isTIR ? 'TIR Occurred!' : (Math.asin(sinR)*180/Math.PI).toFixed(1) + '°'}\nCritical Angle = ${critAngle}°`;
+      if (d) d.textContent = `Period T = 2π√(L/g)\n  T = ${T.toFixed(2)} s\n\nPotential E = ${PE.toFixed(2)} J\nKinetic E = ${KE.toFixed(2)} J\nTotal Energy = ${TotalE.toFixed(2)} J\n\n🔵 Potential Energy\n🟢 Kinetic Energy`;
     }
   },
   {
-    id: 'wave_motion', group: 'class10', title: 'Transverse Wave Lab', tag: 'Class 10',
-    desc: 'Demonstrates wave speed v = fλ. Adjust frequency and wavelength.',
-    params: { freq: 1, lambda: 120 },
+    id: 'transverse_wave', group: 'class9', title: 'Transverse Wave Propagation', tag: 'Class 9',
+    desc: 'Simulate wave velocity v = fλ with particle oscillation grid and crest/trough indicators.',
+    params: { freq: 1.2, lambda: 140 },
     controls: p => `
-      <div class="ctrl-group"><span class="ctrl-label">Frequency f (Hz)</span><div class="ctrl-value" id="p_f">${p.freq}</div><input type="range" min="0.5" max="3" step="0.2" value="${p.freq}" oninput="p_f.textContent=this.value;UP('freq',+this.value)"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Wavelength λ (px)</span><div class="ctrl-value" id="p_l">${p.lambda}</div><input type="range" min="60" max="250" step="10" value="${p.lambda}" oninput="p_l.textContent=this.value;UP('lambda',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Frequency f (Hz)</span><div class="ctrl-value" id="p_f">${p.freq} Hz</div><input type="range" min="0.5" max="3" step="0.1" value="${p.freq}" oninput="p_f.textContent=this.value+' Hz';UP('freq',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Wavelength λ (px)</span><div class="ctrl-value" id="p_l">${p.lambda} px</div><input type="range" min="60" max="250" step="10" value="${p.lambda}" oninput="p_l.textContent=this.value+' px';UP('lambda',+this.value)"/></div>
       <div class="data-box" id="simData">...</div>`,
     loop: (cv, p, t) => {
       const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const cy = H / 2, amp = 40;
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      const cy = H / 2, amp = 45;
 
-      C.strokeStyle = '#10b981'; C.lineWidth = 3; C.beginPath();
-      for (let x = 0; x < W; x += 2) {
+      // Connecting Line
+      C.strokeStyle = '#38bdf8'; C.lineWidth = 2.5; C.beginPath();
+      for (let x = 0; x < W; x += 3) {
         const y = cy + amp * Math.sin((2 * Math.PI / p.lambda) * x - 2 * Math.PI * p.freq * (t * 0.03));
         x === 0 ? C.moveTo(x, y) : C.lineTo(x, y);
       }
       C.stroke();
 
+      // Oscillating Particles
+      for (let x = 20; x < W; x += 25) {
+        const y = cy + amp * Math.sin((2 * Math.PI / p.lambda) * x - 2 * Math.PI * p.freq * (t * 0.03));
+        C.fillStyle = '#fbbf24'; C.beginPath(); C.arc(x, y, 4.5, 0, Math.PI*2); C.fill();
+      }
+
       const waveSpeed = p.freq * p.lambda;
       const d = document.getElementById('simData');
-      if (d) d.textContent = `Wave Formula: v = f × λ\nFrequency f = ${p.freq} Hz\nWavelength λ = ${p.lambda} px\nSpeed v = ${waveSpeed.toFixed(0)} px/s`;
+      if (d) d.textContent = `Wave Equation: v = f × λ\nFrequency f = ${p.freq} Hz\nWavelength λ = ${p.lambda} px\nWave Speed v = ${waveSpeed.toFixed(0)} px/s`;
     }
   },
 
-  // ================= ELECTRICITY (CLASS 12) =================
+  // ================= CLASS 10 SIMULATIONS =================
   {
-    id: 'ohm', group: 'elec', title: "Ohm's Law", tag: 'Class 10/12', desc: 'Change V & R — see current change live. V = IR visualised.',
-    params: { voltage: 6, resistance: 3 },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_v">${p.voltage} V</div><input type="range" min="1" max="20" step="0.5" value="${p.voltage}" oninput="p_v.textContent=this.value+' V';UP('voltage',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_r">${p.resistance} Ω</div><input type="range" min="1" max="20" step="0.5" value="${p.resistance}" oninput="p_r.textContent=this.value+' Ω';UP('resistance',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Live Data</span><div class="data-box" id="simData">...</div></div>`,
+    id: 'snell_law_advanced', group: 'class10', title: "Snell's Law & Total Internal Reflection", tag: 'Class 10',
+    desc: 'Simulate light refraction, critical angle $\\theta_c$, and Total Internal Reflection with laser beam graphics.',
+    params: { n1: 1.0, n2: 1.5, angleI: 45 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Medium 1 Refractive Index (n1)</span><div class="ctrl-value" id="p_n1">${p.n1}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n1}" oninput="p_n1.textContent=this.value;UP('n1',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Medium 2 Refractive Index (n2)</span><div class="ctrl-value" id="p_n2">${p.n2}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n2}" oninput="p_n2.textContent=this.value;UP('n2',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Incident Angle i (°)</span><div class="ctrl-value" id="p_ai">${p.angleI}°</div><input type="range" min="0" max="85" step="1" value="${p.angleI}" oninput="p_ai.textContent=this.value+'°';UP('angleI',+this.value)"/></div>
+      <div class="data-box" id="simData">...</div>`,
+    loop: (cv, p) => {
+      const W = cv.width, H = cv.height, C = cv.getContext('2d');
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      const cy = H / 2, cx = W / 2;
+
+      // Medium 1 (Top)
+      C.fillStyle = 'rgba(56, 189, 248, 0.08)'; C.fillRect(0, 0, W, cy);
+      // Medium 2 (Bottom)
+      C.fillStyle = 'rgba(99, 102, 241, 0.2)'; C.fillRect(0, cy, W, cy);
+      
+      // Interface Line
+      C.strokeStyle = '#94a3b8'; C.lineWidth = 1.5; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
+      
+      // Normal Line
+      C.strokeStyle = 'rgba(255,255,255,0.3)'; C.setLineDash([5, 5]);
+      C.beginPath(); C.moveTo(cx, 20); C.lineTo(cx, H - 20); C.stroke(); C.setLineDash([]);
+
+      const radI = (p.angleI * Math.PI) / 180;
+      const sinR = (p.n1 / p.n2) * Math.sin(radI);
+      const isTIR = sinR > 1.0;
+
+      // Incident Laser Beam
+      const incX = cx - 200 * Math.sin(radI);
+      const incY = cy - 200 * Math.cos(radI);
+      C.strokeStyle = '#ef4444'; C.shadowColor = '#ef4444'; C.shadowBlur = 10;
+      C.lineWidth = 3; C.beginPath(); C.moveTo(incX, incY); C.lineTo(cx, cy); C.stroke(); C.shadowBlur = 0;
+
+      if (!isTIR) {
+        const radR = Math.asin(sinR);
+        const refX = cx + 200 * Math.sin(radR);
+        const refY = cy + 200 * Math.cos(radR);
+        C.strokeStyle = '#38bdf8'; C.shadowColor = '#38bdf8'; C.shadowBlur = 10;
+        C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke(); C.shadowBlur = 0;
+      } else {
+        // Total Internal Reflection
+        const tirX = cx + 200 * Math.sin(radI);
+        const tirY = cy - 200 * Math.cos(radI);
+        C.strokeStyle = '#fbbf24'; C.shadowColor = '#fbbf24'; C.shadowBlur = 12;
+        C.beginPath(); C.moveTo(cx, cy); C.lineTo(tirX, tirY); C.stroke(); C.shadowBlur = 0;
+      }
+
+      const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(1) + '°' : 'None (n1 < n2)';
+      const d = document.getElementById('simData');
+      if (d) d.textContent = `Snell's Law: n1 sin(i) = n2 sin(r)\nIncident Angle i = ${p.angleI}°\nRefracted Angle r = ${isTIR ? 'TIR Occurred!' : (Math.asin(sinR)*180/Math.PI).toFixed(1) + '°'}\nCritical Angle θc = ${critAngle}`;
+    }
+  },
+  {
+    id: 'ohm_circuit', group: 'class10', title: "Ohm's Law & Circuit Lab", tag: 'Class 10',
+    desc: 'Adjust battery potential and wire resistance to watch current electron velocity and light bulb glow.',
+    params: { voltage: 6, resistance: 4 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Voltage V (Volts)</span><div class="ctrl-value" id="p_v">${p.voltage} V</div><input type="range" min="1" max="24" step="1" value="${p.voltage}" oninput="p_v.textContent=this.value+' V';UP('voltage',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Resistance R (Ohms)</span><div class="ctrl-value" id="p_r">${p.resistance} Ω</div><input type="range" min="1" max="20" step="1" value="${p.resistance}" oninput="p_r.textContent=this.value+' Ω';UP('resistance',+this.value)"/></div>
+      <div class="data-box" id="simData">...</div>`,
     loop: (cv, p, t) => {
-      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const I = p.voltage / p.resistance, rw = W*.32, rh = H*.32;
-      C.strokeStyle = 'rgba(200,169,110,0.5)'; C.lineWidth = 2; C.strokeRect(cx-rw, cy-rh, rw*2, rh*2);
-      C.fillStyle = 'rgba(26,58,92,0.9)'; C.fillRect(cx-rw-10, cy-18, 20, 36);
-      C.fillStyle = 'white'; C.font = '10px monospace'; C.textAlign = 'center'; C.fillText(p.voltage+'V', cx-rw, cy+50);
-      C.fillStyle = 'rgba(200,100,50,0.5)'; C.fillRect(cx-22, cy+rh-8, 44, 16);
-      C.fillStyle = 'white'; C.fillText(p.resistance+'Ω', cx, cy+rh+22);
-      const n = Math.min(10, Math.round(I)+2); C.fillStyle = '#64b5f6';
-      for (let i=0; i<n; i++) {
-        const pos = (t*I*.015 + i/n) % 1, pr = pos*(rw*4 + rh*4); let ex, ey;
-        if (pr < rw*2) { ex = cx-rw+pr; ey = cy-rh; }
-        else if (pr < rw*2+rh*2) { ex = cx+rw; ey = cy-rh+(pr-rw*2); }
-        else if (pr < rw*4+rh*2) { ex = cx+rw-(pr-rw*2-rh*2); ey = cy+rh; }
-        else { ex = cx-rw; ey = cy+rh-(pr-rw*4-rh*2); }
+      const W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, C = cv.getContext('2d');
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+
+      const I = p.voltage / p.resistance;
+      const P = p.voltage * I;
+      const rw = W * 0.35, rh = H * 0.28;
+
+      // Wire Loop
+      C.strokeStyle = '#94a3b8'; C.lineWidth = 3; C.strokeRect(cx - rw, cy - rh, rw * 2, rh * 2);
+
+      // Battery (Left Side)
+      C.fillStyle = '#0f172a'; C.fillRect(cx - rw - 12, cy - 20, 24, 40);
+      C.fillStyle = '#f59e0b'; C.fillRect(cx - rw - 8, cy - 16, 16, 32);
+      C.fillStyle = 'white'; C.font = '10px monospace'; C.textAlign = 'center'; C.fillText(p.voltage + 'V', cx - rw, cy + 35);
+
+      // Light Bulb (Top Wire)
+      const bulbGlow = Math.min(35, P * 0.8);
+      C.fillStyle = `rgba(251, 191, 36, ${Math.min(1, P / 40)})`; C.shadowColor = '#fbbf24'; C.shadowBlur = bulbGlow;
+      C.beginPath(); C.arc(cx, cy - rh, 14, 0, Math.PI*2); C.fill(); C.shadowBlur = 0;
+
+      // Flowing Electron Particles
+      const numE = Math.min(16, Math.round(I * 2) + 2);
+      C.fillStyle = '#38bdf8';
+      for (let i = 0; i < numE; i++) {
+        const pos = (t * I * 0.012 + i / numE) % 1;
+        const totalPerim = rw * 4 + rh * 4;
+        const dist = pos * totalPerim;
+        let ex, ey;
+        if (dist < rw * 2) { ex = cx - rw + dist; ey = cy - rh; }
+        else if (dist < rw * 2 + rh * 2) { ex = cx + rw; ey = cy - rh + (dist - rw * 2); }
+        else if (dist < rw * 4 + rh * 2) { ex = cx + rw - (dist - rw * 2 - rh * 2); ey = cy + rh; }
+        else { ex = cx - rw; ey = cy + rh - (dist - rw * 4 - rh * 2); }
+        
         C.beginPath(); C.arc(ex, ey, 4, 0, Math.PI*2); C.fill();
       }
+
       const d = document.getElementById('simData');
-      if (d) d.textContent = `V = ${p.voltage} V\nR = ${p.resistance} Ω\nI = V/R = ${I.toFixed(2)} A\nP = VI = ${(p.voltage*I).toFixed(2)} W`;
+      if (d) d.textContent = `Ohm's Law: V = I × R\nVoltage V = ${p.voltage} V\nResistance R = ${p.resistance} Ω\nCurrent I = ${I.toFixed(2)} A\nPower P = ${P.toFixed(1)} W`;
     }
   },
+
+  // ================= CLASS 11 & 12 ADVANCED SIMULATIONS =================
   {
-    id: 'series', group: 'elec', title: 'Series & Parallel Circuits', tag: 'Class 10/12', desc: 'Compare current & voltage in series vs parallel resistors.',
-    params: { r1: 4, r2: 6, voltage: 12, mode: 0 },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">R1 (Ω)</span><div class="ctrl-value" id="p_r1">${p.r1}</div><input type="range" min="1" max="20" step="1" value="${p.r1}" oninput="p_r1.textContent=this.value;UP('r1',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">R2 (Ω)</span><div class="ctrl-value" id="p_r2">${p.r2}</div><input type="range" min="1" max="20" step="1" value="${p.r2}" oninput="p_r2.textContent=this.value;UP('r2',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Voltage (V)</span><div class="ctrl-value" id="p_vs">${p.voltage}</div><input type="range" min="1" max="24" step="1" value="${p.voltage}" oninput="p_vs.textContent=this.value;UP('voltage',+this.value)"/></div><button class="ctrl-btn" onclick="UP('mode',simParams.mode?0:1);RS()">Toggle Series/Parallel</button><div class="ctrl-group" style="margin-top:.8rem"><div class="data-box" id="simData">...</div></div>`,
-    loop: (cv, p, t) => {
-      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      C.font = '12px serif'; C.textAlign = 'center'; C.fillStyle = 'rgba(200,169,110,0.9)';
-      C.fillText(p.mode ? 'PARALLEL CIRCUIT' : 'SERIES CIRCUIT', cx, 28);
-      C.strokeStyle = 'rgba(200,169,110,0.5)'; C.lineWidth = 2;
-      const d = document.getElementById('simData');
-      if (!p.mode) {
-        const Rt = p.r1 + p.r2, I = p.voltage / Rt;
-        C.beginPath(); C.moveTo(70, cy); C.lineTo(W-70, cy); C.stroke();
-        C.beginPath(); C.moveTo(70, cy); C.lineTo(70, cy+70); C.lineTo(W-70, cy+70); C.lineTo(W-70, cy); C.stroke();
-        C.fillStyle = 'rgba(26,58,92,0.8)'; C.fillRect(cx-75, cy-12, 44, 24);
-        C.fillStyle = 'rgba(26,200,92,0.4)'; C.fillRect(cx+30, cy-12, 44, 24);
-        C.fillStyle = 'white'; C.font = '10px monospace'; C.fillText('R1='+p.r1+'Ω', cx-53, cy+5); C.fillText('R2='+p.r2+'Ω', cx+52, cy+5);
-        C.fillStyle = '#c8a96e'; C.fillRect(62, cy+58, 16, 24); C.fillStyle = 'white'; C.fillText(p.voltage+'V', 70, cy+98);
-        if (d) d.textContent = `SERIES\nRt = R1+R2 = ${Rt} Ω\nI = ${I.toFixed(2)} A (same)\nV1 = ${(I*p.r1).toFixed(1)} V\nV2 = ${(I*p.r2).toFixed(1)} V`;
-      } else {
-        const Rt = 1 / (1/p.r1 + 1/p.r2), I = p.voltage / Rt;
-        if (d) d.textContent = `PARALLEL\nRt = ${Rt.toFixed(2)} Ω\nI_total = ${I.toFixed(2)} A\nI1 = ${(p.voltage/p.r1).toFixed(2)} A\nI2 = ${(p.voltage/p.r2).toFixed(2)} A\nV same = ${p.voltage} V`;
+    id: 'dipole_field', group: 'senior', title: 'Magnetic Dipole Field Lines', tag: 'Class 12',
+    desc: '3D-like magnetic field lines generated between N and S poles of a bar magnet.',
+    params: { separation: 80 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Pole Separation</span><div class="ctrl-value" id="p_ds">${p.separation} px</div><input type="range" min="40" max="140" step="5" value="${p.separation}" oninput="p_ds.textContent=this.value+' px';UP('separation',+this.value)"/></div>
+      <div class="data-box">Magnetic Dipole:\nField lines flow externally\nfrom North (+) to South (-).\nIntensity scales with distance r³.</div>`,
+    loop: (cv, p) => {
+      const W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, C = cv.getContext('2d');
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      const sep = p.separation / 2;
+
+      // Field Lines Integration
+      for (let l = 0; l < 18; l++) {
+        const a = (l * Math.PI * 2) / 18;
+        C.strokeStyle = `hsla(${l * 20}, 70%, 65%, 0.35)`; C.lineWidth = 1.2; C.beginPath();
+        let x = cx + sep + 10 * Math.cos(a), y = cy + 10 * Math.sin(a); C.moveTo(x, y);
+        for (let step = 0; step < 100; step++) {
+          const dxP = x - (cx + sep), dyP = y - cy;
+          const dxN = x - (cx - sep), dyN = y - cy;
+          const rP = Math.sqrt(dxP*dxP + dyP*dyP) + 0.1, rN = Math.sqrt(dxN*dxN + dyN*dyN) + 0.1;
+          const fx = dxP / (rP*rP*rP) - dxN / (rN*rN*rN);
+          const fy = dyP / (rP*rP*rP) - dyN / (rN*rN*rN);
+          const m = Math.sqrt(fx*fx + fy*fy) + 0.001;
+          x += (fx / m) * 3.5; y += (fy / m) * 3.5;
+          if (x < 5 || x > W - 5 || y < 5 || y > H - 5) break;
+          C.lineTo(x, y);
+        }
+        C.stroke();
       }
+
+      // Bar Magnet
+      C.fillStyle = '#ef4444'; C.fillRect(cx + sep - 20, cy - 12, 35, 24);
+      C.fillStyle = '#3b82f6'; C.fillRect(cx - sep - 15, cy - 12, 35, 24);
+      C.fillStyle = 'white'; C.font = 'bold 10px monospace'; C.textAlign = 'center';
+      C.fillText('N', cx + sep, cy + 4); C.fillText('S', cx - sep, cy + 4);
     }
   },
   {
-    id: 'capacitor', group: 'elec', title: 'Capacitor Charging', tag: 'Class 12', desc: 'Watch a capacitor charge and discharge exponentially in RC circuit.',
-    params: { capacitance: 100, resistance: 50, voltage: 10, charging: true },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Capacitance (μF)</span><div class="ctrl-value" id="p_c">${p.capacitance}</div><input type="range" min="10" max="500" step="10" value="${p.capacitance}" oninput="p_c.textContent=this.value;UP('capacitance',+this.value);RS()"/></div><div class="ctrl-group"><span class="ctrl-label">Resistance (Ω)</span><div class="ctrl-value" id="p_rc">${p.resistance}</div><input type="range" min="10" max="200" step="10" value="${p.resistance}" oninput="p_rc.textContent=this.value;UP('resistance',+this.value);RS()"/></div><button class="ctrl-btn" onclick="UP('charging',!simParams.charging);RS()">Toggle Charge/Discharge</button><div class="data-box" id="simData">...</div>`,
+    id: 'photoelectric_advanced', group: 'senior', title: 'Photoelectric Effect Lab', tag: 'Class 12',
+    desc: 'Shine variable frequency light onto a metal target to eject photoelectrons above threshold frequency.',
+    params: { freq: 7, intensity: 4, workFunc: 4.2 },
+    controls: p => `
+      <div class="ctrl-group"><span class="ctrl-label">Frequency f (×10¹⁴ Hz)</span><div class="ctrl-value" id="p_pf">${p.freq}</div><input type="range" min="2" max="14" step="0.5" value="${p.freq}" oninput="p_pf.textContent=this.value;UP('freq',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Intensity</span><div class="ctrl-value" id="p_pi">${p.intensity}</div><input type="range" min="1" max="8" step="1" value="${p.intensity}" oninput="p_pi.textContent=this.value;UP('intensity',+this.value)"/></div>
+      <div class="ctrl-group"><span class="ctrl-label">Work Function Φ (eV)</span><div class="ctrl-value" id="p_pw">${p.workFunc} eV</div><input type="range" min="2" max="8" step="0.2" value="${p.workFunc}" oninput="p_pw.textContent=this.value+' eV';UP('workFunc',+this.value)"/></div>
+      <div class="data-box" id="simData">...</div>`,
     loop: (cv, p, t) => {
       const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const tau = p.resistance * p.capacitance / 1000, time = t * 0.05;
-      const Vc = p.charging ? p.voltage * (1 - Math.exp(-time/tau)) : p.voltage * Math.exp(-time/tau);
-      const d = document.getElementById('simData');
-      if (d) d.textContent = `Mode: ${p.charging?'Charging':'Discharging'}\nτ = RC = ${tau.toFixed(0)} ms\nVc = ${Vc.toFixed(2)} V`;
-    }
-  },
+      C.fillStyle = '#050d1a'; C.fillRect(0, 0, W, H);
+      
+      const energy = p.freq * 0.41;
+      const KE = energy - p.workFunc;
+      const isEjected = KE > 0;
 
-  // ================= MAGNETISM (CLASS 12) =================
-  {
-    id: 'magfield', group: 'mag', title: 'Magnetic Field Lines', tag: 'Class 12', desc: 'See field lines around a bar magnet between N and S poles.',
-    params: { strength: 1.5 },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Field Strength</span><div class="ctrl-value" id="p_mfs">${p.strength}</div><input type="range" min="0.5" max="3" step="0.1" value="${p.strength}" oninput="p_mfs.textContent=this.value;UP('strength',+this.value)"/></div><div class="data-box">Field lines:\nN pole → outside → S pole\nInside: S to N\nStronger near poles</div>`,
-    loop: (cv, p, t) => {
-      const W = cv.width, H = cv.height, cx = W/2, cy = H/2, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      C.fillStyle = '#c0392b'; C.fillRect(cx+8, cy-13, 44, 26);
-      C.fillStyle = '#2980b9'; C.fillRect(cx-52, cy-13, 44, 26);
-      C.fillStyle = 'white'; C.font = 'bold 12px sans-serif'; C.textAlign = 'center';
-      C.fillText('N', cx+30, cy+5); C.fillText('S', cx-30, cy+5);
-    }
-  },
-  {
-    id: 'eminduction', group: 'mag', title: 'EM Induction', tag: 'Class 12', desc: 'Move a magnet through a coil — watch EMF and current induced live.',
-    params: { speed: 2, coilTurns: 5 },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Magnet Speed</span><div class="ctrl-value" id="p_ems">${p.speed}</div><input type="range" min="0.5" max="5" step="0.5" value="${p.speed}" oninput="p_ems.textContent=this.value;UP('speed',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Coil Turns (N)</span><div class="ctrl-value" id="p_emt">${p.coilTurns}</div><input type="range" min="1" max="15" step="1" value="${p.coilTurns}" oninput="p_emt.textContent=this.value;UP('coilTurns',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-    loop: (cv, p, t) => {
-      const W = cv.width, H = cv.height, cy = H/2, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const vel = Math.cos(t * p.speed * 0.02) * p.speed, EMF = vel * p.coilTurns * 1.5;
-      const d = document.getElementById('simData');
-      if (d) d.textContent = `EMF = -N dΦ/dt\nN = ${p.coilTurns}\nEMF = ${EMF.toFixed(2)} V`;
-    }
-  },
+      // Metal Target
+      C.fillStyle = '#334155'; C.fillRect(60, H * 0.3, 20, H * 0.4);
+      C.fillStyle = '#94a3b8'; C.fillRect(W - 80, H * 0.3, 20, H * 0.4);
 
-  // ================= MODERN PHYSICS (CLASS 12) =================
-  {
-    id: 'photoelectric', group: 'modern', title: 'Photoelectric Effect', tag: 'Class 12', desc: 'Shine light on metal — electrons ejected based on frequency.',
-    params: { frequency: 6, intensity: 3, workFunction: 4 },
-    controls: p => `<div class="ctrl-group"><span class="ctrl-label">Frequency (×10¹⁴ Hz)</span><div class="ctrl-value" id="p_pf">${p.frequency}</div><input type="range" min="2" max="12" step="0.5" value="${p.frequency}" oninput="p_pf.textContent=this.value;UP('frequency',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Intensity</span><div class="ctrl-value" id="p_pi">${p.intensity}</div><input type="range" min="1" max="8" step="1" value="${p.intensity}" oninput="p_pi.textContent=this.value;UP('intensity',+this.value)"/></div><div class="ctrl-group"><span class="ctrl-label">Work Function φ (eV)</span><div class="ctrl-value" id="p_pw">${p.workFunction}</div><input type="range" min="2" max="8" step="0.5" value="${p.workFunction}" oninput="p_pw.textContent=this.value;UP('workFunction',+this.value)"/></div><div class="data-box" id="simData">...</div>`,
-    loop: (cv, p, t) => {
-      const W = cv.width, H = cv.height, C = cv.getContext('2d');
-      C.fillStyle = '#071320'; C.fillRect(0, 0, W, H);
-      const E = p.frequency * 0.4, KE = E - p.workFunction, ejected = KE > 0;
+      // Light Photons
+      const hue = Math.max(0, Math.min(270, 270 - (p.freq - 2) * 20));
+      for (let i = 0; i < p.intensity; i++) {
+        const px = (t * 3 + i * (W / p.intensity)) % (W / 2);
+        const py = H * 0.35 + i * 15;
+        C.fillStyle = `hsla(${hue}, 100%, 65%, 0.8)`;
+        C.beginPath(); C.arc(px, py, 3.5, 0, Math.PI*2); C.fill();
+      }
+
+      // Photoelectrons
+      if (isEjected) {
+        for (let i = 0; i < p.intensity; i++) {
+          const ex = 80 + ((t * KE * 2 + i * 40) % (W - 160));
+          const ey = H * 0.35 + i * 15;
+          C.fillStyle = '#38bdf8'; C.shadowColor = '#38bdf8'; C.shadowBlur = 8;
+          C.beginPath(); C.arc(ex, ey, 4, 0, Math.PI*2); C.fill(); C.shadowBlur = 0;
+        }
+      }
+
       const d = document.getElementById('simData');
-      if (d) d.textContent = `E = hf = ${E.toFixed(2)} eV\nφ = ${p.workFunction} eV\nKE = E - φ = ${KE.toFixed(2)} eV\n${ejected ? 'Ejection occurs!' : 'Increase frequency!'}`;
+      if (d) d.textContent = `Einstein Photoelectric Equation:\n  E = hf = ${energy.toFixed(2)} eV\n  Work Function Φ = ${p.workFunc} eV\n  Max KE = E - Φ = ${isEjected ? KE.toFixed(2) + ' eV' : '0 eV (No Emission)'}\n\n${isEjected ? '✅ Photoelectrons Ejected!' : '❌ Frequency below Threshold!'}`;
     }
   }
 ];
 
 // ── INITIALISE SIMULATION CARDS ──────────────────────────────────────────────
 function buildCards() {
-  ['class9', 'class10', 'elec', 'mag', 'modern'].forEach(g => {
+  ['class9', 'class10', 'senior'].forEach(g => {
     const grid = document.getElementById('grid_' + g);
     if (!grid) return;
     CATALOG.filter(s => s.group === g).forEach(sim => {
@@ -650,8 +715,8 @@ function buildCards() {
       const tagClass = sim.tag.includes('9') ? 'tag-class-9' : sim.tag.includes('10') ? 'tag-class-10' : 'tag-class-12';
       div.innerHTML = `
         <div class="sim-preview" onclick="openSim('${sim.id}')">
-          <canvas id="prev_${sim.id}" width="280" height="160"></canvas>
-          <div class="sim-hover"><span>🔬 Launch Lab</span></div>
+          <canvas id="prev_${sim.id}" width="310" height="170"></canvas>
+          <div class="sim-hover"><span>🔬 Launch Physics Lab</span></div>
         </div>
         <div class="sim-body">
           <div>
@@ -671,7 +736,7 @@ function buildCards() {
 function startPreviews() {
   CATALOG.forEach(sim => {
     const c = document.getElementById('prev_' + sim.id); if (!c) return;
-    c.width = c.offsetWidth || 280; c.height = c.offsetHeight || 160;
+    c.width = c.offsetWidth || 310; c.height = c.offsetHeight || 170;
     let t = 0; const loop = () => { sim.loop(c, { ...sim.params }, t++); requestAnimationFrame(loop); }; loop();
   });
 }
