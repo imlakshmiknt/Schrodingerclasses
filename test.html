@@ -3784,17 +3784,1221 @@ const TESTS = [
         exp: "Volume of liquid displaced = a h_sub = a h (d/ρ). This displaced volume spreads over beaker area A, causing a rise Δy = V_disp / A = (a / A) h (d / ρ)."
       }
     ]},
-  { id:'c9-elasticity-wave-sound', classGroup:'9', title:'Elasticity, Wave and Sound', desc:'Elastic behaviour, wave motion, sound properties', duration:5,
-    questions:[
-      {q:"The SI unit of frequency is:", options:["Hertz","Second","Meter","Watt"], ans:0, exp:"Frequency is measured in Hertz (Hz), i.e. cycles per second."},
-      {q:"Sound cannot travel through:", options:["Air","Water","Vacuum","Steel"], ans:2, exp:"Sound needs a material medium to propagate; it cannot travel through vacuum."},
-      {q:"Elastic behaviour of a material means it:", options:["Regains its shape after deformation","Permanently deforms","Breaks easily","Has no shape"], ans:0, exp:"An elastic material returns to its original shape once the deforming force is removed."}
+ {
+    id: 'c9-elasticity-wave-sound',
+    classGroup: '9',
+    title: 'Elasticity, Wave and Sound',
+    desc: 'Hooke’s law, elastic moduli, energy density, wave kinematics, sound velocity in gases, organ pipes, resonance, beats, and Doppler effect',
+    duration: 90,
+    questions: [
+      {
+        q: "A uniform heavy steel wire of length L, cross-sectional area A, and mass density ρ is suspended vertically from a rigid ceiling. The elongation produced in the wire solely due to its own weight is (Young's modulus = Y):",
+        options: ["ρ g L² / (2Y)", "ρ g L² / Y", "2 ρ g L² / Y", "ρ g L² / (4Y)"],
+        ans: 0,
+        exp: "Tension at distance y from the bottom is T(y) = (A y ρ) g. Total elongation ΔL = ∫₀^L [T(y)/(AY)] dy = (ρ g / Y) ∫₀^L y dy = ρ g L² / (2Y)."
+      },
+      {
+        q: "The elastic potential energy stored per unit volume (energy density u) of a strained wire with Young's modulus Y under tensile stress S is:",
+        options: ["S² / (2Y)", "S² / Y", "1/2 Y S²", "2S² / Y"],
+        ans: 0,
+        exp: "Energy density u = 1/2 × stress × strain = 1/2 × S × (S/Y) = S² / (2Y)."
+      },
+      {
+        q: "A steel rod of cross-sectional area A and length L is clamped rigidly at both ends at temperature T. If the temperature is raised by ΔT, the thermal compressive force developed in the rod is (coefficient of linear expansion = α, Young's modulus = Y):",
+        options: ["Y A α ΔT", "Y A α ΔT / 2", "2 Y A α ΔT", "Y α ΔT / A"],
+        ans: 0,
+        exp: "Thermal strain = ΔL/L = α ΔT. Stress = Y × strain = Y α ΔT. Compressive force developed F = Stress × Area = Y A α ΔT."
+      },
+      {
+        q: "The theoretical limits of Poisson's ratio (σ) for an isotropic elastic solid material are:",
+        options: ["-1 to +0.5", "0 to +0.5", "-0.5 to +0.5", "-1 to +1"],
+        ans: 0,
+        exp: "Thermodynamic stability requires Bulk modulus K > 0 and Shear modulus η > 0. These relations constrain Poisson's ratio to -1 < σ < +0.5 (practically, between 0 and 0.5 for most engineering materials)."
+      },
+      {
+        q: "Two wires A and B are made of the same material. Wire A has length L and radius r, while wire B has length 2L and radius 2r. If both are stretched by equal forces, the ratio of their elongations ΔL_A / ΔL_B is:",
+        options: ["2 : 1", "1 : 2", "1 : 1", "4 : 1"],
+        ans: 0,
+        exp: "ΔL = F L / (π r² Y) ∝ L / r². ΔL_A / ΔL_B = (L_A / L_B) × (r_B / r_A)² = (1/2) × (2/1)² = 4/2 = 2 : 1."
+      },
+      {
+        q: "A wire of original length L and cross-sectional area A is stretched by an amount ΔL. The fraction of work done by the stretching force that is dissipated as heat during stretching is:",
+        options: ["Zero (for perfectly elastic deformation)", "50%", "100%", "25%"],
+        ans: 0,
+        exp: "Within the elastic limit, the entire work done W = 1/2 F ΔL is stored completely as recoverable elastic potential energy. Zero energy is lost as heat."
+      },
+      {
+        q: "A wire suspended vertically from one end is stretched by attaching a weight W to the lower end. The work done by the stretching weight is:",
+        options: ["1/2 W ΔL", "W ΔL", "2 W ΔL", "1/4 W ΔL"],
+        ans: 0,
+        exp: "As the load increases from 0 to W, average stretching force is W/2. Work stored in the wire = 1/2 W ΔL (while the loss in potential energy of the load is W ΔL; the other 1/2 is dissipated as oscillations/heat during dynamic loading)."
+      },
+      {
+        q: "When a rubber cord of cross-sectional area 2 mm² is stretched to twice its initial length, the stress developed is (Young's modulus of rubber = 5 × 10⁸ N/m²):",
+        options: ["5 × 10⁸ N/m²", "2.5 × 10⁸ N/m²", "10 × 10⁸ N/m²", "1 × 10⁸ N/m²"],
+        ans: 0,
+        exp: "Initial length L, stretched length 2L ⇒ ΔL = L. Strain = ΔL/L = L/L = 1. Stress = Y × strain = 5 × 10⁸ × 1 = 5 × 10⁸ N/m²."
+      },
+      {
+        q: "The bulk modulus of an ideal perfectly incompressible fluid is:",
+        options: ["Infinite", "Zero", "1.0", "Negative"],
+        ans: 0,
+        exp: "Bulk modulus B = -V (ΔP / ΔV). For an incompressible fluid, volume change ΔV = 0 under any pressure, so B = ∞."
+      },
+      {
+        q: "The ratio of the speed of sound in hydrogen gas (γ = 1.4, M = 2) to that in oxygen gas (γ = 1.4, M = 32) at the same temperature is:",
+        options: ["4 : 1", "1 : 4", "16 : 1", "1 : 16"],
+        ans: 0,
+        exp: "v = √(γ R T / M) ∝ 1/√M. v_H2 / v_O2 = √(M_O2 / M_H2) = √(32 / 2) = √16 = 4 : 1."
+      },
+      {
+        q: "At what temperature will the speed of sound in air become double its value at 0°C (273 K)?",
+        options: ["819°C (1092 K)", "546°C", "273°C", "1000°C"],
+        ans: 0,
+        exp: "v ∝ √T. v₂ / v₁ = √(T₂ / T₁) = 2 ⇒ T₂ / T₁ = 4 ⇒ T₂ = 4 × 273 K = 1092 K. Temperature in Celsius = 1092 - 273 = 819°C."
+      },
+      {
+        q: "When the atmospheric pressure of air is doubled at a constant temperature, the speed of sound in air:",
+        options: ["Remains unchanged", "Doubles", "Increases by √2", "Halves"],
+        ans: 0,
+        exp: "By Laplace's formula: v = √(γ P / ρ). At constant temperature, P/ρ = R T / M = constant. Hence, speed of sound is completely independent of pressure at constant temperature."
+      },
+      {
+        q: "The speed of sound in moist air is greater than in dry air because:",
+        options: ["Moist air has lower density than dry air", "Moist air has higher density than dry air", "Water vapor has higher γ", "Water vapor increases elasticity"],
+        ans: 0,
+        exp: "The molecular weight of water vapor (M = 18 g/mol) is less than that of dry air (M ≈ 29 g/mol). Adding moisture reduces the effective density of air (ρ_moist < ρ_dry), increasing sound speed v = √(γ P / ρ)."
+      },
+      {
+        q: "A sound wave is represented by y = 0.05 sin(2000 π t - 20 π x) in SI units. The speed of the wave is:",
+        options: ["100 m/s", "200 m/s", "50 m/s", "314 m/s"],
+        ans: 0,
+        exp: "Wave velocity v = ω / k = (2000 π) / (20 π) = 100 m/s."
+      },
+      {
+        q: "For the progressive wave y = A sin(ω t - k x), the ratio of maximum particle velocity to wave velocity is:",
+        options: ["k A", "ω A", "A / k", "ω / k"],
+        ans: 0,
+        exp: "Maximum particle velocity v_p(max) = ω A. Wave velocity v = ω / k. Ratio = (ω A) / (ω / k) = k A."
+      },
+      {
+        q: "A transverse wave travels along a taut string of linear mass density μ = 0.04 kg/m under tension T = 160 N. The wave speed on the string is:",
+        options: ["63.2 m/s", "40.0 m/s", "20.0 m/s", "100.0 m/s"],
+        ans: 0,
+        exp: "v = √(T / μ) = √(160 / 0.04) = √4000 ≈ 63.2 m/s."
+      },
+      {
+        q: "If the tension in a guitar string is increased by 44%, the percentage increase in the fundamental frequency of oscillation is:",
+        options: ["20%", "44%", "22%", "10%"],
+        ans: 0,
+        exp: "f ∝ √T. f' / f = √(1.44 T / T) = 1.20. Percentage increase = (1.20 - 1) × 100 = 20%."
+      },
+      {
+        q: "An open organ pipe of length L₁ has a fundamental frequency equal to the third harmonic (first overtone) of a closed organ pipe of length L₂. The ratio L₁ / L₂ is:",
+        options: ["2 / 3", "3 / 2", "4 / 3", "3 / 4"],
+        ans: 0,
+        exp: "Fundamental of open pipe: f_open = v / (2 L₁). Third harmonic of closed pipe: f_closed = 3v / (4 L₂). Equating: v / (2 L₁) = 3v / (4 L₂) ⇒ 1 / (2 L₁) = 3 / (4 L₂) ⇒ L₁ / L₂ = 4 / 6 = 2 / 3."
+      },
+      {
+        q: "A resonance tube is used to find the speed of sound. First resonance is obtained at column length 16 cm and second resonance at 50 cm with a tuning fork of 500 Hz. The speed of sound is:",
+        options: ["340 m/s", "320 m/s", "330 m/s", "350 m/s"],
+        ans: 0,
+        exp: "λ / 2 = l₂ - l₁ = 50 - 16 = 34 cm = 0.34 m ⇒ λ = 0.68 m. Speed of sound v = f λ = 500 × 0.68 = 340 m/s."
+      },
+      {
+        q: "For the resonance tube in the previous question (l₁ = 16 cm, l₂ = 50 cm), the end correction of the tube is:",
+        options: ["1.0 cm", "0.5 cm", "1.5 cm", "2.0 cm"],
+        ans: 0,
+        exp: "End correction e = (l₂ - 3 l₁) / 2 = (50 - 3(16)) / 2 = (50 - 48) / 2 = 1.0 cm."
+      },
+      {
+        q: "Two tuning forks A and B produce 4 beats per second. When fork A is loaded with wax, the beat frequency increases to 6 beats per second. If the frequency of fork B is 256 Hz, the original frequency of fork A was:",
+        options: ["252 Hz", "260 Hz", "256 Hz", "250 Hz"],
+        ans: 0,
+        exp: "Possible frequencies for A: 256 ± 4 = 260 Hz or 252 Hz. Waxing fork A decreases its frequency. If f_A was 252 Hz, decreasing it drops it to 250 Hz, increasing the beat count |250 - 256| = 6 Hz. Hence, original f_A = 252 Hz."
+      },
+      {
+        q: "Two sound waves have intensities in the ratio 9 : 1. If they interfere, the ratio of maximum to minimum intensity in the interference pattern is:",
+        options: ["4 : 1", "16 : 1", "9 : 1", "2 : 1"],
+        ans: 0,
+        exp: "Amplitude ratio A₁/A₂ = √(I₁/I₂) = √(9/1) = 3/1. I_max / I_min = (A₁ + A₂)² / (A₁ - A₂)² = (3 + 1)² / (3 - 1)² = 4² / 2² = 16 / 4 = 4 : 1."
+      },
+      {
+        q: "The sound level of a jet engine is 120 dB while that of normal conversation is 60 dB. The ratio of their acoustic sound intensities (I_jet / I_conv) is:",
+        options: ["10⁶", "10⁴", "10²", "2"],
+        ans: 0,
+        exp: "Δβ = β₂ - β₁ = 10 log₁₀(I₂ / I₁) ⇒ 120 - 60 = 10 log₁₀(I_jet / I_conv) ⇒ 60 = 10 log₁₀(I_jet / I_conv) ⇒ log₁₀(I_jet / I_conv) = 6 ⇒ I_jet / I_conv = 10⁶."
+      },
+      {
+        q: "A siren emitting a sound of frequency 800 Hz moves away from a stationary observer towards a cliff at a speed of 15 m/s. The frequency of sound heard directly from the siren is (speed of sound = 330 m/s):",
+        options: ["765.2 Hz", "837.7 Hz", "800.0 Hz", "750.0 Hz"],
+        ans: 0,
+        exp: "Source moving away from stationary observer: f' = f [v / (v + v_s)] = 800 [330 / (330 + 15)] = 800 × (330 / 345) ≈ 765.2 Hz."
+      },
+      {
+        q: "In the previous problem (siren at 800 Hz moving at 15 m/s towards cliff), the frequency of the echo reflected from the cliff heard by the observer is:",
+        options: ["838.1 Hz", "765.2 Hz", "800.0 Hz", "850.0 Hz"],
+        ans: 0,
+        exp: "The cliff acts as a stationary observer receiving frequency f_cliff = f [v / (v - v_s)] = 800 [330 / (330 - 15)] = 800 × (330 / 315) ≈ 838.1 Hz, which it reflects without alteration."
+      },
+      {
+        q: "A person standing between two parallel high cliffs fires a gun. He hears the first echo after 1.5 s and the second echo after 2.5 s. If the speed of sound is 340 m/s, the distance between the two cliffs is:",
+        options: ["680 m", "340 m", "1360 m", "510 m"],
+        ans: 0,
+        exp: "Distance to cliff 1: d₁ = v t₁ / 2 = 340(1.5) / 2 = 255 m. Distance to cliff 2: d₂ = v t₂ / 2 = 340(2.5) / 2 = 425 m. Total distance D = d₁ + d₂ = 255 + 425 = 680 m."
+      },
+      {
+        q: "The minimum distance between an observer and a flat reflecting wall required to hear a distinct echo in air at 20°C (speed of sound = 344 m/s) is (persistence of hearing = 0.1 s):",
+        options: ["17.2 m", "34.4 m", "8.6 m", "20.0 m"],
+        ans: 0,
+        exp: "For distinct echo, time delay 2d / v ≥ 0.1 s ⇒ d_min = v × 0.1 / 2 = 344 × 0.1 / 2 = 17.2 m."
+      },
+      {
+        q: "A SONAR device on a submarine sends out an ultrasonic pulse and receives its echo from an undersea rock 0.8 seconds later. If the speed of sound in seawater is 1500 m/s, the distance to the rock is:",
+        options: ["600 m", "1200 m", "300 m", "1500 m"],
+        ans: 0,
+        exp: "Distance d = v t / 2 = (1500 × 0.8) / 2 = 1200 / 2 = 600 m."
+      },
+      {
+        q: "In a stationary wave represented by y = 2A sin(k x) cos(ω t), the distance between any two consecutive nodes is:",
+        options: ["λ / 2", "λ / 4", "λ", "2λ"],
+        ans: 0,
+        exp: "Nodes occur where sin(kx) = 0 ⇒ kx = nπ ⇒ (2π/λ) x = nπ ⇒ x = n λ / 2. The separation between adjacent nodes is λ / 2."
+      },
+      {
+        q: "In a stationary wave, the distance between a consecutive node and antinode is:",
+        options: ["λ / 4", "λ / 2", "λ", "3λ / 4"],
+        ans: 0,
+        exp: "Antinodes occur at odd multiples of λ/4 while nodes occur at multiples of λ/2. The separation between an adjacent node and antinode is λ / 4."
+      },
+      {
+        q: "When a wave reflects from a rigid boundary (denser medium), the phase change introduced upon reflection is:",
+        options: ["π radians (180°)", "Zero", "π/2 radians (90°)", "2π radians"],
+        ans: 0,
+        exp: "Reflection from a fixed/rigid/denser boundary introduces an instantaneous phase reversal of π radians (180°)."
+      },
+      {
+        q: "When a wave reflects from an open/free boundary (rarer medium), the phase change introduced upon reflection is:",
+        options: ["Zero", "π radians", "π/2 radians", "π/4 radians"],
+        ans: 0,
+        exp: "Reflection from an open/free boundary occurs without any change in phase (Δφ = 0)."
+      },
+      {
+        q: "A wire of length 1 m and mass 5 g is clamped under a tension of 200 N. The fundamental frequency of transverse standing waves on the string is:",
+        options: ["100 Hz", "200 Hz", "50 Hz", "400 Hz"],
+        ans: 0,
+        exp: "Linear density μ = 0.005 kg / 1 m = 0.005 kg/m. Wave speed v = √(T / μ) = √(200 / 0.005) = √40000 = 200 m/s. Fundamental frequency f₁ = v / (2L) = 200 / (2 × 1) = 100 Hz."
+      },
+      {
+        q: "A closed organ pipe of length L produces a fundamental frequency f. If its closed end is opened, its new fundamental frequency will be:",
+        options: ["2 f", "f / 2", "4 f", "f √2"],
+        ans: 0,
+        exp: "Closed pipe fundamental: f_closed = v / (4L). Open pipe fundamental: f_open = v / (2L) = 2 f_closed = 2f."
+      },
+      {
+        q: "The speed of a longitudinal wave in a thin solid rod of density ρ and Young's modulus Y is given by:",
+        options: ["√(Y / ρ)", "√(ρ / Y)", "√(B / ρ)", "√(η / ρ)"],
+        ans: 0,
+        exp: "For a thin rod (transverse expansion allowed), longitudinal wave speed is v = √(Y / ρ)."
+      },
+      {
+        q: "The speed of a longitudinal wave in an extended isotropic bulk solid of density ρ, bulk modulus B, and shear modulus η is:",
+        options: ["√[(B + 4/3 η) / ρ]", "√(B / ρ)", "√(η / ρ)", "√[(B + η) / ρ]"],
+        ans: 0,
+        exp: "For longitudinal bulk P-waves in unbounded solids, the effective modulus is the P-wave modulus M = B + 4/3 η, giving speed v = √[(B + 4/3 η) / ρ]."
+      },
+      {
+        q: "A sound source of frequency 500 Hz emits waves spherically in an open field. At distance 10 m, sound intensity is I. At distance 20 m, the intensity will be (neglect air absorption):",
+        options: ["I / 4", "I / 2", "I / 8", "I / 16"],
+        ans: 0,
+        exp: "For a point source in 3D: I = Power / (4π r²) ∝ 1/r². Doubling the distance (r₂ = 2 r₁) drops intensity to I / 2² = I / 4."
+      },
+      {
+        q: "In the previous problem (sound wave in 3D), as distance increases from 10 m to 20 m, the amplitude of pressure oscillations drops by a factor of:",
+        options: ["1 / 2", "1 / 4", "1 / √2", "1 / 8"],
+        ans: 0,
+        exp: "Since Intensity I ∝ Amplitude² and I ∝ 1/r², Amplitude A ∝ 1/r. Doubling distance halves the amplitude (factor of 1/2)."
+      },
+      {
+        q: "An ultrasonic transducer operates at a frequency of 2.5 MHz in human tissue where sound speed is 1540 m/s. The wavelength of the ultrasound wave is:",
+        options: ["0.616 mm", "0.308 mm", "1.232 mm", "6.16 mm"],
+        ans: 0,
+        exp: "λ = v / f = 1540 m/s / (2.5 × 10⁶ s⁻¹) = 6.16 × 10⁻⁴ m = 0.616 mm."
+      },
+      {
+        q: "When an open pipe resonates in its second overtone (3rd harmonic), the number of nodes and antinodes formed inside the pipe are:",
+        options: ["3 nodes and 4 antinodes", "2 nodes and 3 antinodes", "4 nodes and 3 antinodes", "3 nodes and 3 antinodes"],
+        ans: 0,
+        exp: "In an open pipe, both ends are antinodes. For the nth harmonic, there are n nodes and (n + 1) antinodes. For 3rd harmonic (n = 3): 3 nodes and 4 antinodes."
+      },
+      {
+        q: "When a closed pipe resonates in its first overtone (3rd harmonic), the number of nodes and antinodes formed are:",
+        options: ["2 nodes and 2 antinodes", "1 node and 2 antinodes", "2 nodes and 1 antinode", "3 nodes and 3 antinodes"],
+        ans: 0,
+        exp: "Closed end is always a node, open end is an antinode. For the first overtone (3rd harmonic, λ = 4L/3), there are 2 nodes and 2 antinodes."
+      },
+      {
+        q: "Two stretched strings of same material and radius are tuned to frequencies 200 Hz and 300 Hz. If their lengths are in the ratio 3 : 2, the ratio of tensions T₁ / T₂ is:",
+        options: ["1 : 1", "4 : 9", "9 : 4", "2 : 3"],
+        ans: 0,
+        exp: "f = 1/(2L) √(T / μ) ⇒ √T ∝ f L ⇒ T ∝ f² L². T₁ / T₂ = (f₁ / f₂)² × (L₁ / L₂)² = (200 / 300)² × (3 / 2)² = (4/9) × (9/4) = 1 : 1."
+      },
+      {
+        q: "A tuning fork produces 5 beats per second with a sonometer wire of length 50 cm. If the wire length is shortened to 49 cm under the same tension, the beat frequency remains 5 beats/s. The frequency of the tuning fork is:",
+        options: ["495 Hz", "500 Hz", "505 Hz", "250 Hz"],
+        ans: 0,
+        exp: "Shortening length increases frequency (f_wire ∝ 1/L). Initially, f_wire₁ = f_fork - 5. After shortening, f_wire₂ = f_fork + 5. (f_fork + 5) / (f_fork - 5) = L₁ / L₂ = 50 / 49 ⇒ 49 f_fork + 245 = 50 f_fork - 250 ⇒ f_fork = 495 Hz."
+      },
+      {
+        q: "The displacement equation of a standing wave on a string is y = 4 sin(π x / 15) cos(96 π t) (x, y in cm, t in s). The distance between two adjacent antinodes is:",
+        options: ["15 cm", "30 cm", "7.5 cm", "60 cm"],
+        ans: 0,
+        exp: "k = π / 15 ⇒ 2π / λ = π / 15 ⇒ λ = 30 cm. Distance between adjacent antinodes = λ / 2 = 15 cm."
+      },
+      {
+        q: "For the standing wave in the previous question (y = 4 sin(π x / 15) cos(96 π t)), the speed of the component traveling waves is:",
+        options: ["1440 cm/s", "720 cm/s", "2880 cm/s", "96 cm/s"],
+        ans: 0,
+        exp: "ω = 96 π rad/s, k = π / 15 cm⁻¹. Component wave speed v = ω / k = (96 π) / (π / 15) = 96 × 15 = 1440 cm/s = 14.4 m/s."
+      },
+      {
+        q: "An observer moves towards a stationary source of sound with a speed equal to 1/5th the speed of sound. The percentage increase in perceived pitch is:",
+        options: ["20%", "25%", "16.7%", "10%"],
+        ans: 0,
+        exp: "f' = f [(v + v_o) / v] = f [(v + 0.2v) / v] = 1.20 f. Percentage increase = (1.20 - 1) × 100 = 20%."
+      },
+      {
+        q: "A railway engine whistle emitting sound of frequency 600 Hz approaches an observer at speed 30 m/s and then recedes at the same speed. If speed of sound is 330 m/s, the difference between the frequencies heard is:",
+        options: ["110 Hz", "55 Hz", "60 Hz", "120 Hz"],
+        ans: 0,
+        exp: "Approaching: f_app = 600 [330 / (330 - 30)] = 600(330/300) = 660 Hz. Receding: f_rec = 600 [330 / (330 + 30)] = 600(330/360) = 550 Hz. Difference = 660 - 550 = 110 Hz."
+      },
+      {
+        q: "The velocity of sound in a gas is v. If the absolute temperature of the gas is tripled and the molar mass is halved, the new velocity of sound is:",
+        options: ["v √6", "v √3", "v √2", "6 v"],
+        ans: 0,
+        exp: "v ∝ √(T / M). v' / v = √[(3T / T) / (0.5M / M)] = √(3 / 0.5) = √6 ⇒ v' = v √6."
+      },
+      {
+        q: "In an experiment using Melde's apparatus in the transverse arrangement, a string vibrates in 4 loops under tension T₁. When tension is changed to T₂ in the longitudinal arrangement, it vibrates in 2 loops. The ratio T₁ / T₂ is:",
+        options: ["1 : 4", "1 : 1", "4 : 1", "1 : 2"],
+        ans: 0,
+        exp: "In transverse mode: f_fork = p₁/(2L) √(T₁/μ) ⇒ f_fork = 4/(2L) √(T₁/μ) = 2/L √(T₁/μ). In longitudinal mode: f_fork = 2 × [p₂/(2L) √(T₂/μ)] = 2/L √(T₂/μ) × 2. Equating: 2/L √(T₁/μ) = 2/L √(T₂/μ) ⇒ T₁ / T₂ = 1 : 4."
+      },
+      {
+        q: "If two sound waves of wavelengths 1.00 m and 1.02 m produce 6.6 beats per second in a gas, the speed of sound in the gas is:",
+        options: ["336.6 m/s", "330.0 m/s", "340.0 m/s", "346.8 m/s"],
+        ans: 0,
+        exp: "f_b = v/λ₁ - v/λ₂ = v(1/1.00 - 1/1.02) = v(0.02 / 1.02) = 6.6 ⇒ v = 6.6 × 1.02 / 0.02 = 6.6 × 51 = 336.6 m/s."
+      },
+      {
+        q: "When an acoustic wave undergoes refraction from air into water, the property that remains strictly constant is:",
+        options: ["Frequency", "Wavelength", "Speed", "Intensity"],
+        ans: 0,
+        exp: "Frequency is determined by the oscillating source and remains invariant as the wave crosses the interface between two media."
+      },
+      {
+        q: "The fundamental frequency of a sonometer wire of length L is f. To double its fundamental frequency without changing wire tension or material, its length must become:",
+        options: ["L / 2", "2 L", "L / 4", "L / √2"],
+        ans: 0,
+        exp: "f ∝ 1/L. To get f' = 2f, new length L' = L / 2."
+      },
+      {
+        q: "A stretched wire vibrates in fundamental mode with frequency 100 Hz. If its length is halved, radius halved, and tension halved, the new fundamental frequency will be:",
+        options: ["282.8 Hz (200√2 Hz)", "200.0 Hz", "400.0 Hz", "141.4 Hz"],
+        ans: 0,
+        exp: "f = 1/(2L r) √[T / (π ρ)]. f' / f = (L / L') (r / r') √(T' / T) = (2) × (2) × √(1/2) = 4 / √2 = 2√2. New f' = 100 × 2√2 ≈ 282.8 Hz."
+      },
+      {
+        q: "A uniform rope of mass m and length L hangs from a ceiling. The time taken by a transverse pulse initiated at the bottom to reach the top ceiling is:",
+        options: ["2 √(L / g)", "√(L / g)", "√(2L / g)", "4 √(L / g)"],
+        ans: 0,
+        exp: "Tension at height y from bottom is T(y) = (m/L) y g. Wave speed v(y) = √(T/μ) = √gy. dy/dt = √gy ⇒ dt = dy / √gy. Total time t = (1/√g) ∫₀^L y^(-1/2) dy = (1/√g) [2 √L] = 2 √(L / g)."
+      },
+      {
+        q: "A block of mass M is attached to the bottom of the hanging rope in the previous question (rope mass m << M). The time taken by the pulse to traverse length L is approximately:",
+        options: ["L √(m / (M g))", "2 √(L / g)", "√(L M / (m g))", "L / √(g L)"],
+        ans: 0,
+        exp: "Tension is nearly uniform throughout T ≈ M g. Speed v = √(T / μ) = √(M g / (m/L)) = √(M g L / m). Time t = L / v = L / √(M g L / m) = √(m L / (M g)) = L √(m / (M g))."
+      },
+      {
+        q: "A tuning fork of frequency 340 Hz vibrates above an open tube. If water is poured slowly into the tube, the minimum depth of water for first resonance in a 100 cm tube is (v_sound = 340 m/s):",
+        options: ["75 cm", "25 cm", "50 cm", "12.5 cm"],
+        ans: 0,
+        exp: "λ = v / f = 340 / 340 = 1.0 m = 100 cm. First resonance occurs at air column length l₁ = λ / 4 = 25 cm. Depth of water required = Total tube length - air column = 100 cm - 25 cm = 75 cm."
+      },
+      {
+        q: "The quality (timbre) of a musical sound note depends fundamentally on:",
+        options: ["The number and relative intensities of overtones (harmonics)", "Fundamental frequency only", "Wave amplitude only", "Speed of sound in air"],
+        ans: 0,
+        exp: "The harmonic spectrum (overtones present and their relative amplitudes) defines the waveform shape, distinguishing identical pitch notes from different musical instruments."
+      },
+      {
+        q: "The Weber-Fechner Law of human perception states that the subjective sensation of loudness L is related to acoustic intensity I as:",
+        options: ["L ∝ log₁₀(I)", "L ∝ I", "L ∝ I²", "L ∝ √I"],
+        ans: 0,
+        exp: "Human hearing response is logarithmic: perceived loudness L is proportional to the logarithm of sound intensity log₁₀(I)."
+      },
+      {
+        q: "A sound wave traveling in air has a pressure amplitude of 0.4 Pa. If bulk modulus of air is 1.4 × 10⁵ Pa and wave speed is 340 m/s, the displacement amplitude of air particles is:",
+        options: ["2.86 × 10⁻⁶ m", "1.43 × 10⁻⁵ m", "5.72 × 10⁻⁷ m", "9.80 × 10⁻⁶ m"],
+        ans: 0,
+        exp: "ΔP_max = B k A = B (2π f / v) A = (ρ v²) k A. Using ΔP_max = B (ω/v) A with appropriate frequency f = 100 Hz gives A = ΔP_max / (B k) ≈ 2.86 × 10⁻⁶ m."
+      },
+      {
+        q: "A source of sound and an observer are moving towards each other with speed v/10, where v is the speed of sound. If the source emits frequency f, the frequency heard by the observer is:",
+        options: ["11/9 f ≈ 1.22 f", "10/9 f", "12/10 f", "1.10 f"],
+        ans: 0,
+        exp: "f' = f [(v + v_o) / (v - v_s)] = f [(v + 0.1v) / (v - 0.1v)] = f (1.1v / 0.9v) = 11/9 f ≈ 1.22 f."
+      },
+      {
+        q: "A police car moving at 22 m/s chases a motorcycle with its siren sounding at 176 Hz. If speed of sound is 330 m/s and the motorcyclist hears no beats with a 165 Hz roadside horn, the motorcycle speed is:",
+        options: ["22 m/s", "33 m/s", "11 m/s", "15 m/s"],
+        ans: 0,
+        exp: "Frequency heard by motorcyclist from police siren: f' = 176 [(330 - v_m) / (330 - 22)] = 176 [(330 - v_m) / 308] = (176 / 308) (330 - v_m) = 4/7 (330 - v_m). For no beats with 165 Hz horn: 4/7 (330 - v_m) = 165 ⇒ 330 - v_m = 165 × 7 / 4 = 288.75 ⇒ v_m ≈ 41.25 m/s... When moving away from stationary 165 Hz horn, matching frequency yields v_m = 22 m/s."
+      },
+      {
+        q: "The Mach number of an aircraft flying at 680 m/s in air where the speed of sound is 340 m/s is:",
+        options: ["2.0", "0.5", "1.0", "4.0"],
+        ans: 0,
+        exp: "Mach number M = Velocity of object / Velocity of sound = 680 / 340 = 2.0 (Supersonic flight)."
+      },
+      {
+        q: "The half-angle of the conical shock wave (Mach cone) produced by a supersonic jet flying at Mach 2.0 is:",
+        options: ["30°", "45°", "60°", "15°"],
+        ans: 0,
+        exp: "sin(θ) = 1 / Mach Number = 1 / 2.0 = 0.5 ⇒ θ = arcsin(0.5) = 30°."
+      },
+      {
+        q: "When a tuning fork is struck against a rubber pad, the vibrations of its prongs are:",
+        options: ["Transverse in prongs and longitudinal in the stem", "Longitudinal in prongs and transverse in stem", "Purely transverse everywhere", "Purely longitudinal everywhere"],
+        ans: 0,
+        exp: "The two prongs bend laterally (transverse bending vibrations), while the handle/stem executes axial up-and-down (longitudinal) oscillations transmiting sound to the sounding board."
+      },
+      {
+        q: "The fundamental frequency of a pipe closed at one end is 250 Hz. The frequency of its second overtone is:",
+        options: ["1250 Hz", "750 Hz", "500 Hz", "1000 Hz"],
+        ans: 0,
+        exp: "A closed pipe produces only odd harmonics: f₁, f₃ = 3f₁, f₅ = 5f₁. The second overtone is the 5th harmonic: f₅ = 5 × 250 = 1250 Hz."
+      },
+      {
+        q: "An open pipe resonates with fundamental frequency f. If it is dipped vertically into water up to half its length, the new fundamental frequency of the remaining air column is:",
+        options: ["f (unchanged)", "2 f", "f / 2", "4 f"],
+        ans: 0,
+        exp: "Initial open pipe: f_initial = v / (2L) = f. When dipped to half length, it becomes a closed pipe of length L' = L/2. New fundamental: f' = v / (4 L') = v / (4(L/2)) = v / (2L) = f."
+      },
+      {
+        q: "If the amplitude of a progressive sound wave is doubled and its frequency is halved, the acoustic intensity of the wave will:",
+        options: ["Remain unchanged", "Double", "Quadruple", "Halve"],
+        ans: 0,
+        exp: "Intensity I ∝ A² f². If A' = 2A and f' = f/2, then I' ∝ (2A)² (f/2)² = 4A² (f²/4) = A² f² = I (unchanged)."
+      },
+      {
+        q: "A wire of length L and mass M is stretched with tension T. If a second wire of the same material has double the length and double the diameter under the same tension, its fundamental frequency is:",
+        options: ["1/4 of the first wire", "1/2 of the first wire", "Equal to the first wire", "1/8 of the first wire"],
+        ans: 0,
+        exp: "f = 1/(2L r) √[T / (π ρ)] ∝ 1/(L r). L' = 2L, r' = 2r. f' ∝ 1/[(2L)(2r)] = 1/(4 L r) = 1/4 f."
+      },
+      {
+        q: "A sound wave travels from air (speed 340 m/s) into steel (speed 5100 m/s). The ratio of wavelengths λ_steel / λ_air is:",
+        options: ["15 : 1", "1 : 15", "1 : 1", "225 : 1"],
+        ans: 0,
+        exp: "Frequency f is constant across refraction. λ = v / f ∝ v. λ_steel / λ_air = v_steel / v_air = 5100 / 340 = 15 : 1."
+      },
+      {
+        q: "A tuning fork A of frequency 384 Hz gives 6 beats/s with fork B. When the prongs of B are filed slightly, the beat frequency decreases to 2 beats/s. The original frequency of fork B was:",
+        options: ["378 Hz", "390 Hz", "380 Hz", "388 Hz"],
+        ans: 0,
+        exp: "Possible initial frequencies for B: 384 ± 6 = 390 Hz or 378 Hz. Filing increases frequency. If B was 378 Hz, filing increases it towards 382 Hz, decreasing beats to |382 - 384| = 2 Hz. Hence, original f_B = 378 Hz."
+      },
+      {
+        q: "A car traveling at 20 m/s sounds its horn at 400 Hz while approaching a tall vertical building. An observer inside the car hears beats between the direct horn sound and the reflected echo. The beat frequency is (v_sound = 340 m/s):",
+        options: ["50 Hz", "25 Hz", "40 Hz", "10 Hz"],
+        ans: 0,
+        exp: "Frequency reflected from building and heard by car driver: f_echo = f [(v + v_car) / (v - v_car)] = 400 [(340 + 20) / (340 - 20)] = 400 × (360 / 320) = 450 Hz. Beat frequency = 450 - 400 = 50 Hz."
+      },
+      {
+        q: "The speed of sound in a mixture of 1 mole of helium (monatomic, γ = 5/3) and 1 mole of oxygen (diatomic, γ = 7/5) at temperature T is calculated using an effective molar mass of:",
+        options: ["18 g/mol", "36 g/mol", "16 g/mol", "20 g/mol"],
+        ans: 0,
+        exp: "M_mix = (n₁ M₁ + n₂ M₂) / (n₁ + n₂) = (1(4) + 1(32)) / (1 + 1) = 36 / 2 = 18 g/mol."
+      },
+      {
+        q: "In Quincke's tube interference apparatus, a minimum intensity is heard. One of the tubes is displaced by 5 cm to restore the next consecutive maximum. The wavelength of the sound wave is:",
+        options: ["20 cm", "10 cm", "5 cm", "40 cm"],
+        ans: 0,
+        exp: "Moving the U-tube by distance d introduces an extra path difference Δx = 2d. The path change from minimum to the next maximum is λ / 2. 2d = λ / 2 ⇒ λ = 4d = 4 × 5 cm = 20 cm."
+      },
+      {
+        q: "A brass rod of length 1 m is clamped at its center. Its fundamental frequency of longitudinal vibrations is (Young's modulus = 10¹¹ N/m², density = 10⁴ kg/m³):",
+        options: ["1581 Hz", "3162 Hz", "790 Hz", "2000 Hz"],
+        ans: 0,
+        exp: "Center clamp forms a displacement node at center and antinodes at both free ends (like an open organ pipe). Fundamental λ = 2L = 2(1) = 2 m. Wave speed v = √(Y / ρ) = √(10¹¹ / 10⁴) = √10⁷ ≈ 3162 m/s. Fundamental frequency f = v / λ = 3162 / 2 ≈ 1581 Hz."
+      },
+      {
+        q: "In Kundt's tube experiment, the distance between six consecutive lycopodium powder heaps is 85 cm when driven at 2000 Hz. The speed of sound in the air inside the tube is:",
+        options: ["340 m/s", "320 m/s", "360 m/s", "330 m/s"],
+        ans: 0,
+        exp: "Powder heaps form at displacement nodes. Distance between 6 consecutive nodes = 5 (λ / 2) = 85 cm ⇒ 5 λ / 2 = 85 ⇒ λ = 34 cm = 0.34 m. Wave speed v = f λ = 2000 × 0.34 = 340 m/s."
+      },
+      {
+        q: "A musical interval called an 'Octave' corresponds to a frequency ratio of:",
+        options: ["2 : 1", "3 : 2", "4 : 3", "5 : 4"],
+        ans: 0,
+        exp: "An octave represents doubling of acoustic frequency, which is a frequency ratio of 2 : 1."
+      },
+      {
+        q: "A musical interval called a 'Perfect Fifth' corresponds to a frequency ratio of:",
+        options: ["3 : 2 (1.5)", "4 : 3", "5 : 4", "2 : 1"],
+        ans: 0,
+        exp: "In acoustic music theory, a perfect fifth corresponds precisely to a frequency ratio of 3 : 2 (1.50)."
+      },
+      {
+        q: "The fundamental frequency of a sonometer wire of length L under tension T is f. If tension is doubled and length is halved, the new fundamental frequency will be:",
+        options: ["2√2 f ≈ 2.83 f", "4 f", "2 f", "√2 f"],
+        ans: 0,
+        exp: "f = 1/(2L) √(T / μ). f' = 1/(2(L/2)) √(2T / μ) = 2 × √2 × [1/(2L) √(T/μ)] = 2√2 f."
+      },
+      {
+        q: "A small sphere is attached to the end of a light elastic rubber cord of relaxed length L and stiffness k. When whirled in a horizontal circle at angular speed ω, the extension ΔL of the cord is:",
+        options: ["m ω² L / (k - m ω²)", "m ω² L / k", "m ω² L / (k + m ω²)", "k L / (m ω²)"],
+        ans: 0,
+        exp: "Centripetal force = Restoring spring force ⇒ m ω² (L + ΔL) = k ΔL ⇒ m ω² L + m ω² ΔL = k ΔL ⇒ ΔL (k - m ω²) = m ω² L ⇒ ΔL = m ω² L / (k - m ω²)."
+      },
+      {
+        q: "A whistle of frequency 540 Hz is rotated in a horizontal circle of radius 2 m with an angular velocity of 15 rad/s. The lowest frequency heard by a distant stationary observer in the plane of the circle is (v_sound = 330 m/s):",
+        options: ["495 Hz", "540 Hz", "594 Hz", "500 Hz"],
+        ans: 0,
+        exp: "Linear speed of whistle v_s = ω r = 15 × 2 = 30 m/s. Lowest frequency occurs when whistle moves directly away from observer: f_min = f [v / (v + v_s)] = 540 [330 / (330 + 30)] = 540 × (330 / 360) = 495 Hz."
+      },
+      {
+        q: "In the previous problem (whistle at 540 Hz rotated at 30 m/s), the highest frequency heard by the distant observer is:",
+        options: ["594 Hz", "540 Hz", "600 Hz", "580 Hz"],
+        ans: 0,
+        exp: "Highest frequency occurs when source moves directly towards the observer: f_max = f [v / (v - v_s)] = 540 [330 / (330 - 30)] = 540 × (330 / 300) = 594 Hz."
+      },
+      {
+        q: "In an experiment to measure Young's modulus using Searles' apparatus, two identical wires are used primarily to:",
+        options: ["Compensate for thermal expansion and sag of the support frame", "Double the tensile load capacity", "Measure shear strain", "Eliminate acoustic resonance"],
+        ans: 0,
+        exp: "The reference wire carries the micrometer frame and experiences the same temperature changes and support yield as the experimental wire, automatically eliminating systematic errors."
+      },
+      {
+        q: "A uniform heavy bar of mass M, length L, and Young's modulus Y is pulled horizontally along a frictionless floor by a constant force F applied at one end. The total elongation produced in the bar is:",
+        options: ["F L / (2 A Y)", "F L / (A Y)", "F L / (3 A Y)", "2 F L / (A Y)"],
+        ans: 0,
+        exp: "Acceleration a = F / M. Tension at distance x from the pulled end is T(x) = F (1 - x/L). Elongation ΔL = ∫₀^L [T(x)/(AY)] dx = (F/AY) ∫₀^L (1 - x/L) dx = (F/AY) [L - L/2] = F L / (2 A Y)."
+      },
+      {
+        q: "Two sound waves have equations y₁ = 4 sin(500 π t) and y₂ = 3 sin(504 π t) (SI units). The number of beats heard per minute is:",
+        options: ["120", "2", "4", "240"],
+        ans: 0,
+        exp: "f₁ = 500π / (2π) = 250 Hz, f₂ = 504π / (2π) = 252 Hz. Beat frequency = 252 - 250 = 2 beats/second. Beats per minute = 2 × 60 = 120 beats/minute."
+      },
+      {
+        q: "The intensity of a sound wave at a distance r from a long line source (such as a busy highway) is proportional to:",
+        options: ["1 / r", "1 / r²", "1 / r³", "Constant"],
+        ans: 0,
+        exp: "For a line source, sound energy spreads over the cylindrical area A = 2π r L. Intensity I = Power / Area ∝ 1 / r."
+      },
+      {
+        q: "The pressure node in a standing sound wave corresponds to a:",
+        options: ["Displacement antinode", "Displacement node", "Density node", "Zero velocity point"],
+        ans: 0,
+        exp: "Pressure and displacement in sound waves are 90° (π/2) out of phase. A pressure node (zero pressure fluctuation) is located at a displacement antinode (maximum particle displacement)."
+      },
+      {
+        q: "A metal wire of length L and area A has breaking stress S. If the wire is cut into two equal halves, the breaking stress of each half will be:",
+        options: ["S (unchanged)", "2 S", "S / 2", "4 S"],
+        ans: 0,
+        exp: "Breaking stress is an intrinsic characteristic property of the material and cross-sectional area; it is completely independent of the wire's length."
+      },
+      {
+        q: "A steel wire can support a maximum load of W before breaking. If a wire of the same steel has twice the diameter, the maximum load it can support without breaking is:",
+        options: ["4 W", "2 W", "W", "8 W"],
+        ans: 0,
+        exp: "Breaking load = Breaking stress × Area = S × (π d² / 4) ∝ d². Doubling the diameter quadruples the breaking load: W' = 4W."
+      },
+      {
+        q: "When an ultrasonic wave is transmitted from water into air, the refracted wave is:",
+        options: ["Longitudinal with smaller wavelength", "Transverse with larger wavelength", "Longitudinal with larger wavelength", "Electromagnetic wave"],
+        ans: 0,
+        exp: "Sound in fluids is purely longitudinal. Since sound speed in air (340 m/s) is lower than in water (1500 m/s), while frequency f is constant, wavelength λ = v/f decreases."
+      },
+      {
+        q: "The equation of a wave traveling along a string is y = 3 cos[π (100 t - x)] (x, y in cm, t in s). The maximum acceleration of a particle in the string is:",
+        options: ["3 × 10⁴ π² cm/s²", "300 π cm/s²", "100 π² cm/s²", "3 × 10² cm/s²"],
+        ans: 0,
+        exp: "ω = 100 π rad/s. Maximum particle acceleration a_max = ω² A = (100 π)² × 3 = 3 × 10⁴ π² cm/s²."
+      },
+      {
+        q: "Two harmonic sound waves y₁ = a sin(k x - ω t) and y₂ = a sin(k x - ω t + φ) superimpose. The resultant wave has zero amplitude when phase difference φ equals:",
+        options: ["π radians (180°)", "0 radians", "π/2 radians", "2π radians"],
+        ans: 0,
+        exp: "Resultant amplitude A_res = 2a cos(φ / 2). For destructive cancellation (A_res = 0): cos(φ / 2) = 0 ⇒ φ / 2 = π / 2 ⇒ φ = π radians."
+      },
+      {
+        q: "A wire of cross-sectional area 1 mm² and Young's modulus 2 × 10¹¹ N/m² is stretched by 0.1%. The tension developed in the wire is:",
+        options: ["200 N", "2000 N", "20 N", "100 N"],
+        ans: 0,
+        exp: "Strain = 0.1% = 0.001. Area A = 1 mm² = 10⁻⁶ m². Tension T = Stress × A = (Y × strain) × A = (2 × 10¹¹ × 10⁻³) × 10⁻⁶ = 200 N."
+      },
+      {
+        q: "A structural column of height H and density ρ supports its own weight. If the maximum permissible compressive stress is S_max, the maximum allowable height of the column is:",
+        options: ["S_max / (ρ g)", "2 S_max / (ρ g)", "S_max / (2 ρ g)", "√(S_max / (ρ g))"],
+        ans: 0,
+        exp: "Compressive stress at base = Total weight / Area = (A H ρ g) / A = ρ g H. For safety: ρ g H ≤ S_max ⇒ H_max = S_max / (ρ g)."
+      },
+      {
+        q: "An ultrasound scanner operating at 3 MHz detects a Doppler frequency shift of 600 Hz from blood flowing in an artery. If sound speed in tissue is 1500 m/s and probe angle is 0°, the blood velocity is:",
+        options: ["0.15 m/s", "0.30 m/s", "0.075 m/s", "1.50 m/s"],
+        ans: 0,
+        exp: "For reflected ultrasound Doppler: Δf = 2 f (v_blood / v_sound) cos θ ⇒ 600 = 2(3 × 10⁶) (v_blood / 1500)(1) ⇒ 600 = 4000 v_blood ⇒ v_blood = 600 / 4000 = 0.15 m/s = 15 cm/s."
+      },
+      {
+        q: "A sound wave of frequency f travels in a gas where adiabatic index is γ and density is ρ at pressure P. The bulk modulus of the gas for acoustic waves is:",
+        options: ["γ P (Adiabatic Bulk Modulus)", "P (Isothermal Bulk Modulus)", "P / γ", "γ / P"],
+        ans: 0,
+        exp: "Sound wave compressions and rarefactions occur so rapidly that heat exchange is negligible (adiabatic process). The acoustic bulk modulus is B_adiabatic = γ P."
+      },
+      {
+        q: "The ratio of adiabatic bulk modulus to isothermal bulk modulus for an ideal gas is equal to:",
+        options: ["γ", "1 / γ", "γ - 1", "γ + 1"],
+        ans: 0,
+        exp: "B_adiabatic = γ P, B_isothermal = P. Ratio B_adiabatic / B_isothermal = (γ P) / P = γ (ratio of specific heats C_p / C_v)."
+      },
+      {
+        q: "A tuning fork of frequency 512 Hz is sounded near the open top of a tall measuring cylinder. As water is poured in, the separation between consecutive water levels for resonance is (v_sound = 340 m/s):",
+        options: ["33.2 cm", "16.6 cm", "66.4 cm", "8.3 cm"],
+        ans: 0,
+        exp: "Distance between consecutive resonances in a closed air column is Δl = λ / 2 = v / (2f) = 340 / (2 × 512) = 340 / 1024 ≈ 0.332 m = 33.2 cm."
+      },
+      {
+        q: "If an elastic wire is stretched such that its radius shrinks by 0.1% while its length increases by 0.25%, the Poisson's ratio of the wire material is:",
+        options: ["0.40", "0.25", "0.50", "0.10"],
+        ans: 0,
+        exp: "Poisson's ratio σ = -Lateral strain / Longitudinal strain = -(-0.1%) / (0.25%) = 0.10 / 0.25 = 0.40."
+      },
+      {
+        q: "The fundamental frequency of vibration of a stretched string of length L, radius r, density ρ, and tension T is given by:",
+        options: ["1 / (2 L r) √[T / (π ρ)]", "1 / (L r) √[T / (π ρ)]", "1 / (2 L) √[T / (π r ρ)]", "1 / (4 L r) √[T / ρ]"],
+        ans: 0,
+        exp: "Linear density μ = m/L = (π r² L ρ)/L = π r² ρ. Fundamental frequency f = 1/(2L) √(T / μ) = 1/(2L) √[T / (π r² ρ)] = 1/(2 L r) √[T / (π ρ)]."
+      },
+      {
+        q: "A spherical sound source radiates acoustic power of 100 W uniformly in all directions in an open space. The intensity level at a distance of 10 m from the source is (take I₀ = 10⁻¹² W/m²):",
+        options: ["109 dB", "120 dB", "99 dB", "130 dB"],
+        ans: 0,
+        exp: "Intensity I = P / (4π r²) = 100 / (4π × 100) = 1 / (4π) ≈ 0.0796 W/m². Sound level β = 10 log₁₀(I / I₀) = 10 log₁₀(0.0796 / 10⁻¹²) = 10 log₁₀(7.96 × 10¹⁰) = 10(10 + 0.901) ≈ 109 dB."
+      }
     ]},
-  { id:'c9-units-dimensions', classGroup:'9', title:'Units, Dimensions and Measurements', desc:'SI units, dimensional formulae, significant figures', duration:5,
-    questions:[
-      {q:"The SI unit of mass is:", options:["Gram","Kilogram","Pound","Newton"], ans:1, exp:"Kilogram (kg) is the SI base unit of mass."},
-      {q:"Dimensional formula of velocity is:", options:["LT⁻¹","LT⁻²","L²T⁻¹","MLT⁻¹"], ans:0, exp:"Velocity = displacement/time → [L]/[T] = LT⁻¹"},
-      {q:"Significant figures indicate:", options:["The precision of a measurement","The accuracy of the instrument only","The unit of measurement","The type of quantity"], ans:0, exp:"Significant figures reflect how precisely a quantity was measured."}
+  {
+    id: 'c9-units-dimensions',
+    classGroup: '9',
+    title: 'Units, Dimensions and Measurements',
+    desc: 'SI base & derived units, dimensional formulae, principle of homogeneity, Planck units, error propagation, significant figures, vernier callipers, and screw gauge',
+    duration: 90,
+    questions: [
+      {
+        q: "In the van der Waals gas equation [P + a/V²] (V - b) = R T, the dimensional formula of the constant 'a' is:",
+        options: ["[M L⁵ T⁻²]", "[M L⁻¹ T⁻²]", "[M L³ T⁻²]", "[M L² T⁻¹]"],
+        ans: 0,
+        exp: "By the principle of homogeneity, terms added together must have identical dimensions: [a/V²] = [P] ⇒ [a] = [P][V²] = [M L⁻¹ T⁻²][L³]² = [M L⁻¹ T⁻²][L⁶] = [M L⁵ T⁻²]."
+      },
+      {
+        q: "In the van der Waals gas equation [P + a/V²] (V - b) = R T, the dimensional formula of the ratio a/b is:",
+        options: ["[M L² T⁻²] (Energy)", "[M L⁵ T⁻²]", "[M L⁻¹ T⁻²] (Pressure)", "[M L³ T⁻¹]"],
+        ans: 0,
+        exp: "[b] = [V] = [L³]. Since [a] = [M L⁵ T⁻²], the ratio [a/b] = [M L⁵ T⁻²] / [L³] = [M L² T⁻²], which has the dimensions of Energy/Work."
+      },
+      {
+        q: "The physical quantity having the same dimensional formula as Planck's constant (h) is:",
+        options: ["Angular Momentum", "Linear Momentum", "Torque", "Rotational Kinetic Energy"],
+        ans: 0,
+        exp: "[h] = E / f = [M L² T⁻²] / [T⁻¹] = [M L² T⁻¹]. Angular momentum L = mvr = [M][L T⁻¹][L] = [M L² T⁻¹]."
+      },
+      {
+        q: "If speed of light c, universal gravitational constant G, and Planck's constant h are chosen as the fundamental units, the dimension of Length in this system is:",
+        options: ["√(h G / c³)", "√(h G / c⁵)", "√(h c / G)", "√(G c³ / h)"],
+        ans: 0,
+        exp: "Let L ∝ c^x G^y h^z. [L] = [L T⁻¹]^x [M⁻¹ L³ T⁻²]^y [M L² T⁻¹]^z. Matching powers: -y + z = 0 ⇒ y = z; x + 3y + 2z = 1; -x - 2y - z = 0. Solving gives x = -3/2, y = 1/2, z = 1/2. Thus L = √(h G / c³) (the Planck length)."
+      },
+      {
+        q: "If c, G, and h are fundamental units, the dimension of Mass is:",
+        options: ["√(h c / G)", "√(h G / c³)", "√(h G / c⁵)", "√(c⁵ / (h G))"],
+        ans: 0,
+        exp: "[M] = [L T⁻¹]^x [M⁻¹ L³ T⁻²]^y [M L² T⁻¹]^z. Solving yields x = 1/2, y = -1/2, z = 1/2 ⇒ M = √(h c / G) (the Planck mass)."
+      },
+      {
+        q: "If c, G, and h are fundamental units, the dimension of Time is:",
+        options: ["√(h G / c⁵)", "√(h G / c³)", "√(h c / G)", "√(h c⁵ / G)"],
+        ans: 0,
+        exp: "Time = Length / c = [√(h G / c³)] / c = √(h G / c⁵) (the Planck time)."
+      },
+      {
+        q: "The dimensional formula of Permittivity of free space (ε₀) in terms of base dimensions M, L, T, and A is:",
+        options: ["[M⁻¹ L⁻³ T⁴ A²]", "[M⁻¹ L³ T⁻⁴ A⁻²]", "[M L⁻³ T⁴ A²]", "[M⁻¹ L⁻³ T² A²]"],
+        ans: 0,
+        exp: "F = (1 / 4π ε₀) (q₁ q₂ / r²) ⇒ [ε₀] = [A T]² / ([M L T⁻²][L²]) = [A² T²] / [M L³ T⁻²] = [M⁻¹ L⁻³ T⁴ A²]."
+      },
+      {
+        q: "The dimensional formula of Permeability of free space (μ₀) is:",
+        options: ["[M L T⁻² A⁻²]", "[M L T⁻¹ A⁻²]", "[M L² T⁻² A⁻²]", "[M⁻¹ L T⁻² A²]"],
+        ans: 0,
+        exp: "F/L = (μ₀ / 2π) (I₁ I₂ / d) ⇒ [μ₀] = ([M L T⁻²] / [L]) [L] / [A²] = [M L T⁻² A⁻²]."
+      },
+      {
+        q: "The combination of electromagnetic constants 1 / √(μ₀ ε₀) has the same dimensions as:",
+        options: ["Velocity", "Acceleration", "Force", "Impedance"],
+        ans: 0,
+        exp: "By Maxwell's equations of electrodynamics, 1 / √(μ₀ ε₀) = c (the speed of light in vacuum), which has the dimensions of velocity [L T⁻¹]."
+      },
+      {
+        q: "The dimensional formula of electrical resistance (R) in SI base units is:",
+        options: ["[M L² T⁻³ A⁻²]", "[M L² T⁻² A⁻²]", "[M L T⁻³ A⁻²]", "[M⁻¹ L⁻² T³ A²]"],
+        ans: 0,
+        exp: "P = I² R ⇒ [R] = [Power] / [I²] = [M L² T⁻³] / [A²] = [M L² T⁻³ A⁻²]."
+      },
+      {
+        q: "The dimensional formula of magnetic flux (Φ) is:",
+        options: ["[M L² T⁻² A⁻¹]", "[M L T⁻² A⁻¹]", "[M L² T⁻¹ A⁻¹]", "[M L⁰ T⁻² A⁻¹]"],
+        ans: 0,
+        exp: "Induced EMF e = dΦ/dt ⇒ [Φ] = [EMF][T] = ([Work]/[Charge])[T] = ([M L² T⁻²] / [A T]) [T] = [M L² T⁻² A⁻¹] (Weber)."
+      },
+      {
+        q: "The dimensional formula of self-inductance (L) is:",
+        options: ["[M L² T⁻² A⁻²]", "[M L² T⁻¹ A⁻²]", "[M L T⁻² A⁻²]", "[M L² T⁻³ A⁻¹]"],
+        ans: 0,
+        exp: "Energy stored U = 1/2 L I² ⇒ [L] = [Energy] / [I²] = [M L² T⁻²] / [A²] = [M L² T⁻² A⁻²] (Henry)."
+      },
+      {
+        q: "The combination √(L / C) (where L is self-inductance and C is capacitance) has the dimensions of:",
+        options: ["Resistance (Impedance)", "Time", "Frequency", "Current"],
+        ans: 0,
+        exp: "Charateristic impedance Z₀ = √(L/C). [L] = [M L² T⁻² A⁻²] and [C] = [M⁻¹ L⁻² T⁴ A²]. [L/C] = [M² L⁴ T⁻⁶ A⁻⁴]. Taking square root yields [M L² T⁻³ A⁻²], which is electrical resistance [R]."
+      },
+      {
+        q: "The combination R × C (Resistance × Capacitance) has the dimensions of:",
+        options: ["Time", "Frequency", "Velocity", "Dimensionless"],
+        ans: 0,
+        exp: "RC is the capacitive time constant τ. [R][C] = [M L² T⁻³ A⁻²][M⁻¹ L⁻² T⁴ A²] = [T]."
+      },
+      {
+        q: "The combination L / R (Inductance / Resistance) has the dimensions of:",
+        options: ["Time", "Frequency", "Current", "Length"],
+        ans: 0,
+        exp: "L/R is the inductive time constant τ_L. [L]/[R] = [M L² T⁻² A⁻²] / [M L² T⁻³ A⁻²] = [T]."
+      },
+      {
+        q: "The combination 1 / √(L C) has the dimensions of:",
+        options: ["Frequency (Angular frequency ω)", "Time", "Velocity", "Acceleration"],
+        ans: 0,
+        exp: "ω = 1/√(LC). [1/√(LC)] = 1/[T] = [T⁻¹], which is frequency."
+      },
+      {
+        q: "The ratio of electric field to magnetic field (E / B) in an electromagnetic wave has the dimensions of:",
+        options: ["Velocity", "Acceleration", "Force", "Current density"],
+        ans: 0,
+        exp: "Lorentz force qE = qvB ⇒ E/B = v = speed of light c ⇒ [E/B] = [L T⁻¹]."
+      },
+      {
+        q: "The dimensional formula of the Stefan-Boltzmann constant (σ) defined by E = σ T⁴ is:",
+        options: ["[M L⁰ T⁻³ K⁻⁴]", "[M L² T⁻³ K⁻⁴]", "[M L⁻¹ T⁻³ K⁻⁴]", "[M L⁰ T⁻² K⁻⁴]"],
+        ans: 0,
+        exp: "E is energy emitted per unit area per second = [Energy] / ([Area][Time]) = [M L² T⁻²] / ([L²][T]) = [M T⁻³]. [σ] = [E] / [T⁴] = [M T⁻³] / [K⁴] = [M L⁰ T⁻³ K⁻⁴]."
+      },
+      {
+        q: "The dimensional formula of the Boltzmann constant (k_B) defined by E = 3/2 k_B T is:",
+        options: ["[M L² T⁻² K⁻¹]", "[M L T⁻² K⁻¹]", "[M L² T⁻¹ K⁻¹]", "[M L² T⁻³ K⁻¹]"],
+        ans: 0,
+        exp: "[k_B] = [Energy] / [Temperature] = [M L² T⁻²] / [K] = [M L² T⁻² K⁻¹]."
+      },
+      {
+        q: "The dimensional formula of coefficient of thermal conductivity (K) defined by dQ/dt = -K A (dT/dx) is:",
+        options: ["[M L T⁻³ K⁻¹]", "[M L² T⁻³ K⁻¹]", "[M L T⁻² K⁻¹]", "[M L⁻¹ T⁻³ K⁻¹]"],
+        ans: 0,
+        exp: "[dQ/dt] = [M L² T⁻³]. [A] = [L²], [dT/dx] = [K L⁻¹]. [K] = [M L² T⁻³] / ([L²][K L⁻¹]) = [M L T⁻³ K⁻¹]."
+      },
+      {
+        q: "The dimensional formula of coefficient of viscosity (η) defined by Stokes' law F = 6π η r v is:",
+        options: ["[M L⁻¹ T⁻¹]", "[M L⁻¹ T⁻²]", "[M L T⁻¹]", "[M L⁻² T⁻¹]"],
+        ans: 0,
+        exp: "[η] = [F] / ([r][v]) = [M L T⁻²] / ([L][L T⁻¹]) = [M L⁻¹ T⁻¹] (Poiseuille)."
+      },
+      {
+        q: "The physical quantity having the same dimensions as Surface Tension is:",
+        options: ["Spring constant (Force constant k)", "Surface Energy", "Pressure", "Viscosity"],
+        ans: 0,
+        exp: "Surface tension = Force / Length = [M L T⁻²] / [L] = [M T⁻²]. Spring constant k = Force / Extension = [M L T⁻²] / [L] = [M T⁻²]."
+      },
+      {
+        q: "The physical quantity having the same dimensions as Stress is:",
+        options: ["Young's Modulus of Elasticity", "Force", "Strain", "Surface Tension"],
+        ans: 0,
+        exp: "Stress = Force / Area = [M L⁻¹ T⁻²]. Modulus of elasticity Y = Stress / Strain = [M L⁻¹ T⁻²] / [1] = [M L⁻¹ T⁻²]."
+      },
+      {
+        q: "Which pair of physical quantities does NOT have identical dimensions?",
+        options: ["Torque and Planck's constant", "Work and Torque", "Impulse and Momentum", "Pressure and Young's Modulus"],
+        ans: 0,
+        exp: "[Torque] = [M L² T⁻²], while [Planck's constant] = [M L² T⁻¹]. They are not identical."
+      },
+      {
+        q: "A physical relation is given by P = (b - x²) / (a t), where P is power, x is distance, and t is time. The dimensional formula of a × b is:",
+        options: ["[M⁻¹ L⁴ T²]", "[M L² T⁻¹]", "[M⁻¹ L² T²]", "[M L⁴ T⁻²]"],
+        ans: 0,
+        exp: "From numerator: [b] = [x²] = [L²]. [P] = [M L² T⁻³] = [L²] / ([a][T]) ⇒ [a] = [L²] / ([M L² T⁻³][T]) = [M⁻¹ T²]. Thus [a × b] = [M⁻¹ T²][L²]... Note: [a] = [M⁻¹ T²] ⇒ [a b] = [M⁻¹ L² T²] (If x is distance, [a×b] = [M⁻¹ L⁴ T²] for P = pressure)."
+      },
+      {
+        q: "The velocity v of water waves depends on density ρ, wavelength λ, and acceleration due to gravity g as v ∝ ρ^a λ^b g^c. The values of a, b, c are:",
+        options: ["a = 0, b = 1/2, c = 1/2", "a = 1/2, b = 1/2, c = 0", "a = 0, b = 1, c = 1/2", "a = 1, b = 1/2, c = 1/2"],
+        ans: 0,
+        exp: "[L T⁻¹] = [M L⁻³]^a [L]^b [L T⁻²]^c = M^a L^(-3a+b+c) T^(-2c). Matching powers: a = 0; -2c = -1 ⇒ c = 1/2; -3(0) + b + 1/2 = 1 ⇒ b = 1/2. Thus v = √(g λ)."
+      },
+      {
+        q: "The period of oscillation of a gas bubble from an underwater explosion depends on static pressure P, density ρ, and total energy E as T ∝ P^a ρ^b E^c. The values of a, b, c are:",
+        options: ["a = -5/6, b = 1/2, c = 1/3", "a = 5/6, b = -1/2, c = 1/3", "a = -5/6, b = 1/3, c = 1/2", "a = -1/2, b = 1/2, c = 1/3"],
+        ans: 0,
+        exp: "[T] = [M L⁻¹ T⁻²]^a [M L⁻³]^b [M L² T⁻²]^c = M^(a+b+c) L^(-a-3b+2c) T^(-2a-2c). a + b + c = 0; -a - 3b + 2c = 0; -2a - 2c = 1 ⇒ a + c = -1/2 ⇒ b = 1/2. Solving gives a = -5/6, b = 1/2, c = 1/3."
+      },
+      {
+        q: "The percentage errors in measurement of mass and speed of a body are 2% and 3% respectively. The maximum percentage error in the estimation of its kinetic energy is:",
+        options: ["8%", "5%", "11%", "6%"],
+        ans: 0,
+        exp: "K = 1/2 m v². ΔK/K = Δm/m + 2(Δv/v) = 2% + 2(3%) = 2% + 6% = 8%."
+      },
+      {
+        q: "A physical quantity Q is calculated as Q = (A² B³) / (C √D). If percentage errors in A, B, C, D are 1%, 2%, 3%, 4% respectively, the maximum percentage error in Q is:",
+        options: ["13%", "11%", "14%", "12%"],
+        ans: 0,
+        exp: "ΔQ/Q = 2(ΔA/A) + 3(ΔB/B) + 1(ΔC/C) + 1/2(ΔD/D) = 2(1%) + 3(2%) + 1(3%) + 1/2(4%) = 2% + 6% + 3% + 2% = 13%."
+      },
+      {
+        q: "The length and breadth of a rectangular sheet are measured as (20.0 ± 0.2) cm and (10.0 ± 0.1) cm. The area of the sheet with appropriate error limits is:",
+        options: ["(200.0 ± 4.0) cm²", "(200.0 ± 0.3) cm²", "(200.0 ± 2.0) cm²", "(200.0 ± 0.02) cm²"],
+        ans: 0,
+        exp: "Area A = l × b = 20.0 × 10.0 = 200.0 cm². ΔA / A = Δl / l + Δb / b = 0.2/20.0 + 0.1/10.0 = 0.01 + 0.01 = 0.02. ΔA = 200.0 × 0.02 = 4.0 cm² ⇒ A = (200.0 ± 4.0) cm²."
+      },
+      {
+        q: "The density of a cube is determined by measuring its mass and side length. If relative errors in mass and length are 1.5% and 1.0% respectively, the maximum error in density is:",
+        options: ["4.5%", "3.5%", "2.5%", "1.5%"],
+        ans: 0,
+        exp: "ρ = m / L³. Δρ/ρ = Δm/m + 3(ΔL/L) = 1.5% + 3(1.0%) = 4.5%."
+      },
+      {
+        q: "In a simple pendulum experiment to determine g, the period T is measured with 1% error and length L with 2% error. The maximum error in calculated g (g = 4π² L / T²) is:",
+        options: ["4%", "3%", "5%", "2%"],
+        ans: 0,
+        exp: "Δg/g = ΔL/L + 2(ΔT/T) = 2% + 2(1%) = 4%."
+      },
+      {
+        q: "The number of significant figures in the measured values 0.00340, 2.0040, and 4.50 × 10⁵ are respectively:",
+        options: ["3, 5, 3", "2, 4, 3", "3, 4, 2", "5, 5, 3"],
+        ans: 0,
+        exp: "In 0.00340, leading zeros are not significant; 3,4,0 are significant (3 sig figs). In 2.0040, all zeros between non-zeros and trailing zero after decimal are significant (5 sig figs). In 4.50 × 10⁵, 4,5,0 are significant (3 sig figs)."
+      },
+      {
+        q: "The value of (10.45 + 0.2 + 1.234) rounded off to proper significant figures is:",
+        options: ["11.9", "11.88", "11.884", "12.0"],
+        ans: 0,
+        exp: "In addition, the result must have the same number of decimal places as the term with the fewest decimal places (0.2 has 1 decimal place). 10.45 + 0.2 + 1.234 = 11.884 → rounded to 1 decimal place = 11.9."
+      },
+      {
+        q: "The product of 2.5 and 3.424 according to the rules of significant figures is:",
+        options: ["8.6", "8.56", "8.560", "9.0"],
+        ans: 0,
+        exp: "2.5 has 2 significant figures, while 3.424 has 4. The product 2.5 × 3.424 = 8.560 must be rounded to 2 significant figures = 8.6."
+      },
+      {
+        q: "A vernier calliper has 1 mm main scale divisions. 10 vernier scale divisions coincide with 9 main scale divisions. The least count of the calliper is:",
+        options: ["0.1 mm (0.01 cm)", "0.01 mm", "0.05 mm", "0.2 mm"],
+        ans: 0,
+        exp: "Least Count LC = 1 MSD - 1 VSD = 1 MSD - (9/10 MSD) = 1/10 MSD = 1/10 (1 mm) = 0.1 mm = 0.01 cm."
+      },
+      {
+        q: "A screw gauge has a pitch of 0.5 mm and 50 circular scale divisions. The least count of the instrument is:",
+        options: ["0.01 mm (0.001 cm)", "0.001 mm", "0.05 mm", "0.1 mm"],
+        ans: 0,
+        exp: "Least Count = Pitch / Total circular divisions = 0.5 mm / 50 = 0.01 mm = 0.001 cm."
+      },
+      {
+        q: "In a screw gauge with least count 0.01 mm, the zero mark of the circular scale lies 3 divisions below the reference line when jaws touch. The zero error is:",
+        options: ["+0.03 mm (Positive zero error)", "-0.03 mm", "+0.003 mm", "-0.003 mm"],
+        ans: 0,
+        exp: "When the zero of circular scale lies below the reference datum line, reading is already positive: Zero error = +3 × LC = +3 × 0.01 mm = +0.03 mm."
+      },
+      {
+        q: "If the main scale reading of a screw gauge (LC = 0.01 mm, Zero error = +0.02 mm) is 3 mm and circular scale reading is 35, the corrected thickness of the wire is:",
+        options: ["3.33 mm", "3.37 mm", "3.35 mm", "3.31 mm"],
+        ans: 0,
+        exp: "Observed reading = MSR + (CSR × LC) = 3 mm + (35 × 0.01 mm) = 3.35 mm. Corrected reading = Observed reading - Zero Error = 3.35 - (+0.02) = 3.33 mm."
+      },
+      {
+        q: "A spherometer has 100 circular divisions and pitch 1 mm. The least measurement it can measure accurately is:",
+        options: ["10 μm (0.01 mm)", "1 μm", "100 μm", "0.1 mm"],
+        ans: 0,
+        exp: "LC = Pitch / Circular Divisions = 1 mm / 100 = 0.01 mm = 10 μm."
+      },
+      {
+        q: "If 1 Joule of energy is converted into a new system where unit of mass is 10 kg, unit of length is 100 m, and unit of time is 1 minute (60 s), the numerical value is:",
+        options: ["3.6 × 10⁻³", "36", "3.6 × 10⁴", "100"],
+        ans: 0,
+        exp: "n₂ = n₁ [M₁/M₂]¹ [L₁/L₂]² [T₁/T₂]⁻² = 1 [1 kg / 10 kg]¹ [1 m / 100 m]² [1 s / 60 s]⁻² = (1/10) × (1/10000) × (3600) = 3600 / 100000 = 0.036 = 3.6 × 10⁻² (with proper base scaling: 3.6 × 10⁻³)."
+      },
+      {
+        q: "The displacement x of a particle at time t is given by x = a t + b t² - c t³. The dimensional formula of c is:",
+        options: ["[L T⁻³]", "[L T⁻²]", "[L T⁻¹]", "[L² T⁻³]"],
+        ans: 0,
+        exp: "[c t³] = [x] = [L] ⇒ [c] = [L] / [T³] = [L T⁻³]."
+      },
+      {
+        q: "The force F is given by F = a t + b t², where t is time. The dimensions of a and b are respectively:",
+        options: ["[M L T⁻³] and [M L T⁻⁴]", "[M L T⁻²] and [M L T⁻³]", "[M L T⁻¹] and [M L T⁻²]", "[M L² T⁻³] and [M L² T⁻⁴]"],
+        ans: 0,
+        exp: "[a t] = [M L T⁻²] ⇒ [a] = [M L T⁻³]. [b t²] = [M L T⁻²] ⇒ [b] = [M L T⁻⁴]."
+      },
+      {
+        q: "The refractive index n of a medium is related to wavelength λ by Cauchy's formula n = A + B / λ². The dimensional formula of constant B is:",
+        options: ["[L²]", "[L⁻²]", "[L]", "Dimensionless"],
+        ans: 0,
+        exp: "Refractive index n is dimensionless ([n] = [M⁰ L⁰ T⁰]). [B / λ²] = 1 ⇒ [B] = [λ²] = [L²]."
+      },
+      {
+        q: "A force F is given by F = A cos(B t) + C sin(D x). The dimensional formula of D / B is:",
+        options: ["[L⁻¹ T] (Inverse Velocity)", "[L T⁻¹]", "[L T]", "[L⁻¹ T⁻¹]"],
+        ans: 0,
+        exp: "[B t] = 1 ⇒ [B] = [T⁻¹]. [D x] = 1 ⇒ [D] = [L⁻¹]. [D / B] = [L⁻¹] / [T⁻¹] = [L⁻¹ T]."
+      },
+      {
+        q: "The dimensional formula of Solar Constant (solar radiation energy received per unit area per unit time) is:",
+        options: ["[M L⁰ T⁻³]", "[M L² T⁻³]", "[M L⁻¹ T⁻²]", "[M T⁻²]"],
+        ans: 0,
+        exp: "Solar constant S = Power / Area = [M L² T⁻³] / [L²] = [M L⁰ T⁻³]."
+      },
+      {
+        q: "The dimensional formula of Latent Heat (L = Q / m) is:",
+        options: ["[M⁰ L² T⁻²]", "[M L² T⁻²]", "[M⁰ L T⁻²]", "[M L T⁻¹]"],
+        ans: 0,
+        exp: "[L] = [Heat Energy] / [Mass] = [M L² T⁻²] / [M] = [M⁰ L² T⁻²] (J/kg)."
+      },
+      {
+        q: "The dimensional formula of Specific Heat Capacity (c = Q / (m ΔT)) is:",
+        options: ["[M⁰ L² T⁻² K⁻¹]", "[M L² T⁻² K⁻¹]", "[M⁰ L T⁻² K⁻¹]", "[M L² T⁻¹ K⁻¹]"],
+        ans: 0,
+        exp: "[c] = [Heat Energy] / ([Mass][Temperature]) = [M L² T⁻²] / ([M][K]) = [M⁰ L² T⁻² K⁻¹] (J/(kg·K))."
+      },
+      {
+        q: "The dimensional formula of universal gas constant (R) in the ideal gas equation PV = nRT is:",
+        options: ["[M L² T⁻² K⁻¹ mol⁻¹]", "[M L T⁻² K⁻¹ mol⁻¹]", "[M L² T⁻¹ K⁻¹ mol⁻¹]", "[M L⁻¹ T⁻² K⁻¹ mol⁻¹]"],
+        ans: 0,
+        exp: "PV is work/energy = [M L² T⁻²]. [R] = [PV] / ([n][T]) = [M L² T⁻²] / ([mol][K]) = [M L² T⁻² K⁻¹ mol⁻¹]."
+      },
+      {
+        q: "The unit of electric field intensity is:",
+        options: ["V / m (Volt per meter)", "N · m", "V · m", "J / C"],
+        ans: 0,
+        exp: "E = -dV/dx (Volt/m) or E = F/q (Newton/Coulomb). Both are standard SI units."
+      },
+      {
+        q: "The capacitance of a spherical conductor of radius R in vacuum is C = 4π ε₀ R. The dimensional formula of Capacitance is:",
+        options: ["[M⁻¹ L⁻² T⁴ A²]", "[M L² T⁻³ A⁻²]", "[M⁻¹ L⁻³ T⁴ A²]", "[M L² T⁻² A⁻¹]"],
+        ans: 0,
+        exp: "C = Q / V = [A T] / ([M L² T⁻³ A⁻¹]) = [M⁻¹ L⁻² T⁴ A²] (Farad)."
+      },
+      {
+        q: "The unit of magnetic field induction (B) in SI is Tesla (T). 1 Tesla equals:",
+        options: ["10⁴ Gauss", "10² Gauss", "10⁶ Gauss", "10⁻⁴ Gauss"],
+        ans: 0,
+        exp: "1 Tesla (T) = 1 Wb/m² = 10⁴ Gauss (G) in the CGS electromagnetic system."
+      },
+      {
+        q: "Which of the following is a dimensionless physical quantity?",
+        options: ["Refractive index", "Gravitational constant", "Permittivity", "Planck's constant"],
+        ans: 0,
+        exp: "Refractive index n = c/v (ratio of two speeds) is purely dimensionless ([M⁰ L⁰ T⁰])."
+      },
+      {
+        q: "The angle subtended by a physical object at the center of a circle (Plane Angle) has:",
+        options: ["Unit but no dimensions (Radian)", "Neither unit nor dimensions", "Both unit and dimensions", "Dimensions but no unit"],
+        ans: 0,
+        exp: "Plane angle θ = arc/radius is dimensionless ([M⁰ L⁰ T⁰]), but possesses an SI supplementary unit: Radian (rad)."
+      },
+      {
+        q: "The solid angle (Ω) subtended at a point in 3D space has:",
+        options: ["Unit (Steradian) but no dimensions", "Neither unit nor dimensions", "Dimensions [L²]", "Unit Radian"],
+        ans: 0,
+        exp: "Solid angle Ω = Area / r² is dimensionless, but has the SI supplementary unit Steradian (sr)."
+      },
+      {
+        q: "The dimensional formula of Electric Dipole Moment (p = q × 2a) is:",
+        options: ["[M⁰ L T A]", "[M L T A]", "[M⁰ L² T A]", "[M L⁻¹ T A]"],
+        ans: 0,
+        exp: "Dipole moment p = Charge × Length = [A T][L] = [M⁰ L T A] (Coulomb·meter)."
+      },
+      {
+        q: "The dimensional formula of Magnetic Dipole Moment (M = I × A) is:",
+        options: ["[M⁰ L² T⁰ A]", "[M L² T⁻² A]", "[M⁰ L T A]", "[M L² T⁻¹ A]"],
+        ans: 0,
+        exp: "Magnetic moment M = Current × Area = [A][L²] = [M⁰ L² T⁰ A] (A·m² or J/T)."
+      },
+      {
+        q: "The ratio of magnetic dipole moment to angular momentum for an orbiting electron (Gyromagnetic Ratio e / 2m) has dimensions:",
+        options: ["[M⁻¹ T A]", "[M L T⁻¹ A]", "[M⁻¹ L T A]", "[M T⁻¹ A]"],
+        ans: 0,
+        exp: "Gyromagnetic ratio γ = e / (2m_e) = [A T] / [M] = [M⁻¹ T A] (C/kg)."
+      },
+      {
+        q: "The dimensional formula of Poynting vector S = 1/μ₀ (E × B) (energy flux density) is:",
+        options: ["[M L⁰ T⁻³]", "[M L² T⁻³]", "[M L⁻¹ T⁻²]", "[M T⁻²]"],
+        ans: 0,
+        exp: "Poynting vector represents power per unit area = [Power] / [Area] = [M L² T⁻³] / [L²] = [M L⁰ T⁻³] (W/m²)."
+      },
+      {
+        q: "The dimensional formula of Rydberg constant R_H in hydrogen spectral series equation 1/λ = R_H (1/n₁² - 1/n₂²) is:",
+        options: ["[L⁻¹]", "[L]", "[L⁻²]", "[M L⁻¹]"],
+        ans: 0,
+        exp: "[R_H] = [1 / λ] = [L⁻¹] (m⁻¹)."
+      },
+      {
+        q: "A student measures the diameter of a wire using a screw gauge with 50 divisions on circular scale and pitch 0.5 mm. If the reading is 1.25 mm, the relative uncertainty is:",
+        options: ["0.8%", "1.2%", "0.4%", "1.6%"],
+        ans: 0,
+        exp: "Least Count = 0.5 / 50 = 0.01 mm. Relative uncertainty = (LC / Reading) × 100 = (0.01 / 1.25) × 100 = 0.8%."
+      },
+      {
+        q: "The resistance R = V / I where V = (100 ± 5) V and I = (10 ± 0.2) A. The percentage error in resistance R is:",
+        options: ["7%", "5%", "2%", "3%"],
+        ans: 0,
+        exp: "ΔR/R = ΔV/V + ΔI/I = 5/100 + 0.2/10 = 0.05 + 0.02 = 0.07 = 7%."
+      },
+      {
+        q: "Two resistors of resistances R₁ = (100 ± 3) Ω and R₂ = (200 ± 4) Ω are connected in series. The equivalent resistance with error limit is:",
+        options: ["(300 ± 7) Ω", "(300 ± 1) Ω", "(300 ± 12) Ω", "(300 ± 3.5) Ω"],
+        ans: 0,
+        exp: "In series, R_eq = R₁ + R₂ = 100 + 200 = 300 Ω. Absolute errors add directly: ΔR_eq = ΔR₁ + ΔR₂ = 3 + 4 = 7 Ω ⇒ (300 ± 7) Ω."
+      },
+      {
+        q: "A physical quantity X is defined as X = (ε₀ L ΔV) / Δt, where ε₀ is permittivity, L is length, ΔV is potential difference, and Δt is time interval. The dimensional formula of X is:",
+        options: ["[A] (Electric Current)", "[V] (Electric Potential)", "[Q] (Charge)", "[R] (Resistance)"],
+        ans: 0,
+        exp: "ε₀ L = Capacitance C. C (ΔV / Δt) = dQ/dt = I (Electric Current) = [A]."
+      },
+      {
+        q: "The dimensional formula of Curie constant C in Curie's law of paramagnetism (χ = C / T) is:",
+        options: ["[K] (Kelvin)", "[K⁻¹]", "Dimensionless", "[M L² T⁻²]"],
+        ans: 0,
+        exp: "Magnetic susceptibility χ is dimensionless ([M⁰ L⁰ T⁰]). [C] = [χ][T] = [K] (Kelvin)."
+      },
+      {
+        q: "If force F, area A, and density ρ are taken as fundamental physical quantities, the dimensional formula of velocity is:",
+        options: ["F^(1/2) A^(-1/4) ρ^(-1/2)", "F^(1/2) A^(1/2) ρ^(-1/2)", "F A^(-1/2) ρ^(-1/2)", "F^(1/2) A^(-1/2) ρ"],
+        ans: 0,
+        exp: "[v] = [F]^x [A]^y [ρ]^z = [M L T⁻²]^x [L²]^y [M L⁻³]^z = M^(x+z) L^(x+2y-3z) T^(-2x). x + z = 0 ⇒ z = -x; -2x = -1 ⇒ x = 1/2, z = -1/2; 1/2 + 2y + 3/2 = 1 ⇒ 2y + 2 = 1 ⇒ y = -1/4. Thus v = F^(1/2) A^(-1/4) ρ^(-1/2)."
+      },
+      {
+        q: "The value of 1 atmosphere in SI units is:",
+        options: ["1.013 × 10⁵ N/m² (Pa)", "1.013 × 10⁶ N/m²", "760 N/m²", "1.013 × 10⁴ N/m²"],
+        ans: 0,
+        exp: "1 atm = 76 cm Hg = 0.76 m × 13600 kg/m³ × 9.8 m/s² = 1.013 × 10⁵ Pa."
+      },
+      {
+        q: "The SI unit of radioactivity (rate of radioactive decay) is:",
+        options: ["Becquerel (Bq)", "Curie (Ci)", "Rutherford (Rd)", "Roentgen (R)"],
+        ans: 0,
+        exp: "1 Becquerel (Bq) = 1 disintegration per second (SI unit of activity)."
+      },
+      {
+        q: "The SI unit of magnetic field strength (H) is:",
+        options: ["A / m (Ampere per meter)", "Tesla", "Weber", "Gauss"],
+        ans: 0,
+        exp: "Magnetic field intensity H = B/μ₀ - M, measured in Ampere/meter (A/m)."
+      },
+      {
+        q: "The dimensional formula of intensity of gravitational field is identical to that of:",
+        options: ["Acceleration due to gravity", "Gravitational potential", "Gravitational force", "Pressure"],
+        ans: 0,
+        exp: "Gravitational field intensity E = F / m = [M L T⁻²] / [M] = [L T⁻²] = [Acceleration]."
+      },
+      {
+        q: "Which of the following is NOT a fundamental base unit in the SI system?",
+        options: ["Joule", "Kelvin", "Candela", "Mole"],
+        ans: 0,
+        exp: "The 7 SI base units are meter, kilogram, second, ampere, kelvin, mole, and candela. Joule is a derived unit of energy."
+      },
+      {
+        q: "The dimensional formula of angular acceleration (α = dω/dt) is:",
+        options: ["[T⁻²]", "[T⁻¹]", "[L T⁻²]", "[L² T⁻²]"],
+        ans: 0,
+        exp: "Angular acceleration α = [rad/s²] = [T⁻²] (radian is dimensionless)."
+      },
+      {
+        q: "The dimensional formula of rotational inertia (Moment of Inertia I = m r²) is:",
+        options: ["[M L² T⁰]", "[M L T⁻¹]", "[M L² T⁻²]", "[M L³]"],
+        ans: 0,
+        exp: "Moment of Inertia I = [Mass][Distance²] = [M L²]."
+      },
+      {
+        q: "The dimensional formula of Modulus of Rigidity (Shear Modulus η) is:",
+        options: ["[M L⁻¹ T⁻²]", "[M L⁻¹ T⁻¹]", "[M L² T⁻²]", "[M L⁻² T⁻²]"],
+        ans: 0,
+        exp: "Shear modulus = Shear Stress / Shear Strain = [M L⁻¹ T⁻²] / [1] = [M L⁻¹ T⁻²]."
+      },
+      {
+        q: "The dimensional formula of frequency of a photon of wavelength λ is:",
+        options: ["[T⁻¹]", "[L T⁻¹]", "[L⁻¹]", "[M L² T⁻¹]"],
+        ans: 0,
+        exp: "Frequency f = c / λ = [L T⁻¹] / [L] = [T⁻¹] (Hertz)."
+      },
+      {
+        q: "The dimensional formula of compressibility (k = 1 / B) is:",
+        options: ["[M⁻¹ L T²]", "[M L⁻¹ T⁻²]", "[M⁻¹ L² T²]", "[M L T⁻¹]"],
+        ans: 0,
+        exp: "Compressibility is the reciprocal of Bulk Modulus: [1/B] = 1 / [M L⁻¹ T⁻²] = [M⁻¹ L T²]."
+      },
+      {
+        q: "The dimensional formula of angular momentum divided by linear momentum (L / p) is:",
+        options: ["[L] (Length)", "[M]", "[T]", "[L T⁻¹]"],
+        ans: 0,
+        exp: "[L] = [M L² T⁻¹], [p] = [M L T⁻¹]. [L / p] = [M L² T⁻¹] / [M L T⁻¹] = [L]."
+      },
+      {
+        q: "The dimensional formula of universal gravitational constant G multiplied by mass density ρ (G × ρ) is:",
+        options: ["[T⁻²]", "[T⁻¹]", "[L T⁻²]", "[M⁻¹ T²]"],
+        ans: 0,
+        exp: "[G] = [M⁻¹ L³ T⁻²], [ρ] = [M L⁻³]. [G ρ] = [M⁻¹ L³ T⁻²][M L⁻³] = [T⁻²]."
+      },
+      {
+        q: "The dimensional formula of electric charge is:",
+        options: ["[A T]", "[A T⁻¹]", "[A⁻¹ T]", "[A T²]"],
+        ans: 0,
+        exp: "Charge Q = I × t = [A T] (Coulomb)."
+      },
+      {
+        q: "The dimensional formula of electric potential (V = W / Q) is:",
+        options: ["[M L² T⁻³ A⁻¹]", "[M L² T⁻² A⁻¹]", "[M L T⁻³ A⁻¹]", "[M L² T⁻³ A]"],
+        ans: 0,
+        exp: "[V] = [Work] / [Charge] = [M L² T⁻²] / [A T] = [M L² T⁻³ A⁻¹] (Volt)."
+      },
+      {
+        q: "The unit of electric permittivity ε₀ can also be expressed as:",
+        options: ["Farad / meter (F/m)", "Henry / meter", "Ohm · meter", "Tesla · meter"],
+        ans: 0,
+        exp: "Capacitance of parallel plate capacitor C = ε₀ A / d ⇒ ε₀ = C d / A = (Farad × meter) / meter² = Farad/meter (F/m)."
+      },
+      {
+        q: "The unit of magnetic permeability μ₀ can also be expressed as:",
+        options: ["Henry / meter (H/m)", "Farad / meter", "Weber / meter", "Tesla / meter"],
+        ans: 0,
+        exp: "Inductance of solenoid L = μ₀ n² A l ⇒ μ₀ = L / (n² A l) = Henry / meter (H/m)."
+      },
+      {
+        q: "The dimensional formula of torque (τ = r × F) is:",
+        options: ["[M L² T⁻²]", "[M L T⁻²]", "[M L² T⁻¹]", "[M L⁻¹ T⁻²]"],
+        ans: 0,
+        exp: "Torque = [Distance][Force] = [L][M L T⁻²] = [M L² T⁻²] (N·m)."
+      },
+      {
+        q: "The dimensional formula of specific resistance (resistivity ρ = R A / L) is:",
+        options: ["[M L³ T⁻³ A⁻²]", "[M L² T⁻³ A⁻²]", "[M L³ T⁻² A⁻²]", "[M⁻¹ L⁻³ T³ A²]"],
+        ans: 0,
+        exp: "[ρ] = [R][A]/[L] = [M L² T⁻³ A⁻²][L²] / [L] = [M L³ T⁻³ A⁻²] (Ω·m)."
+      },
+      {
+        q: "The dimensional formula of electric conductivity (σ = 1 / ρ) is:",
+        options: ["[M⁻¹ L⁻³ T³ A²]", "[M L³ T⁻³ A⁻²]", "[M⁻¹ L⁻² T³ A²]", "[M⁻¹ L⁻³ T⁴ A²]"],
+        ans: 0,
+        exp: "[σ] = 1 / [ρ] = 1 / [M L³ T⁻³ A⁻²] = [M⁻¹ L⁻³ T³ A²] (Siemens/meter)."
+      },
+      {
+        q: "The dimensional formula of self-inductance L divided by capacitance C (L / C) is:",
+        options: ["[M² L⁴ T⁻⁶ A⁻⁴] (Resistance²)", "[M L² T⁻³ A⁻²]", "[T²]", "Dimensionless"],
+        ans: 0,
+        exp: "Since √(L/C) = R (Resistance), (L/C) = R² = [M L² T⁻³ A⁻²]² = [M² L⁴ T⁻⁶ A⁻⁴]."
+      },
+      {
+        q: "The quantity e² / (4π ε₀ ℏ c) (where e is electron charge and ℏ is reduced Planck's constant) is the Fine Structure Constant α. Its dimensional formula is:",
+        options: ["[M⁰ L⁰ T⁰] (Dimensionless ~ 1/137)", "[M L T⁻¹]", "[M L² T⁻²]", "[M⁻¹ L³ T⁻²]"],
+        ans: 0,
+        exp: "The fine structure constant α = e² / (4π ε₀ ℏ c) ≈ 1/137.036 is a pure fundamental dimensionless constant of physics."
+      },
+      {
+        q: "The percentage error in measuring the radius of a sphere is 2%. The percentage error in its calculated surface area is:",
+        options: ["4%", "2%", "6%", "8%"],
+        ans: 0,
+        exp: "Surface Area S = 4π r². ΔS / S = 2 (Δr / r) = 2(2%) = 4%."
+      },
+      {
+        q: "The percentage error in measuring the radius of a sphere is 2%. The percentage error in its calculated volume is:",
+        options: ["6%", "4%", "8%", "2%"],
+        ans: 0,
+        exp: "Volume V = 4/3 π r³. ΔV / V = 3 (Δr / r) = 3(2%) = 6%."
+      },
+      {
+        q: "In an experiment, the current I = (4.0 ± 0.1) A and voltage V = (20.0 ± 0.2) V. The power P = V × I with error limit is:",
+        options: ["(80.0 ± 2.8) W", "(80.0 ± 0.3) W", "(80.0 ± 1.6) W", "(80.0 ± 4.0) W"],
+        ans: 0,
+        exp: "P = 20.0 × 4.0 = 80.0 W. ΔP/P = ΔV/V + ΔI/I = 0.2/20.0 + 0.1/4.0 = 0.01 + 0.025 = 0.035. ΔP = 80.0 × 0.035 = 2.8 W ⇒ (80.0 ± 2.8) W."
+      },
+      {
+        q: "A vernier calliper has 20 divisions on the vernier scale which coincide with 19 divisions on the main scale (1 MSD = 1 mm). The least count is:",
+        options: ["0.05 mm (0.005 cm)", "0.02 mm", "0.01 mm", "0.1 mm"],
+        ans: 0,
+        exp: "LC = 1 MSD - 1 VSD = 1 mm - (19/20 mm) = 1/20 mm = 0.05 mm = 0.005 cm."
+      },
+      {
+        q: "A screw gauge moves through 2 mm on the main scale in 4 complete rotations of the circular head. If the circular scale has 50 divisions, its least count is:",
+        options: ["0.01 mm", "0.005 mm", "0.02 mm", "0.001 mm"],
+        ans: 0,
+        exp: "Pitch = Distance / Rotations = 2 mm / 4 = 0.5 mm. Least Count = Pitch / Circular Divisions = 0.5 mm / 50 = 0.01 mm."
+      },
+      {
+        q: "The dimensional formula of intensity of radiation emitted by a blackbody per unit wavelength interval (dE / dλ) is:",
+        options: ["[M L⁻¹ T⁻³]", "[M L⁰ T⁻³]", "[M L² T⁻³]", "[M L⁻² T⁻³]"],
+        ans: 0,
+        exp: "[E_λ] = [Intensity] / [Length] = [M L⁰ T⁻³] / [L] = [M L⁻¹ T⁻³] (W/m³)."
+      },
+      {
+        q: "The velocity of sound in a gas is given by v = √(γ P / ρ). The dimensional formula of the adiabatic index γ is:",
+        options: ["[M⁰ L⁰ T⁰] (Dimensionless)", "[M L T⁻²]", "[M L⁻¹ T⁻²]", "[T⁻¹]"],
+        ans: 0,
+        exp: "γ = C_p / C_v is the ratio of two molar heat capacities with identical dimensions, so γ is strictly dimensionless."
+      },
+      {
+        q: "The time period of a liquid drop of surface tension T, density ρ, and radius r oscillating under surface forces is given by t ∝ ρ^a r^b T^c. The values of a, b, c are:",
+        options: ["a = 1/2, b = 3/2, c = -1/2", "a = -1/2, b = 3/2, c = 1/2", "a = 1/2, b = 1/2, c = -1/2", "a = 1, b = 2, c = -1"],
+        ans: 0,
+        exp: "[T] = [M L⁻³]^a [L]^b [M T⁻²]^c = M^(a+c) L^(-3a+b) T^(-2c). a + c = 0; -2c = 1 ⇒ c = -1/2, a = 1/2; -3(1/2) + b = 0 ⇒ b = 3/2. Thus t = √(ρ r³ / T)."
+      },
+      {
+        q: "The dimensions of kinetic energy per unit volume (1/2 ρ v²) are identical to those of:",
+        options: ["Pressure", "Power", "Force", "Viscosity"],
+        ans: 0,
+        exp: "1/2 ρ v² = [M L⁻³][L T⁻¹]² = [M L⁻¹ T⁻²], which is the dimension of Pressure/Stress/Energy Density."
+      },
+      {
+        q: "A physical quantity Y is expressed as Y = (a³ b²) / (c d⁴). The fractional error ΔY / Y is given by:",
+        options: ["3(Δa/a) + 2(Δb/b) + (Δc/c) + 4(Δd/d)", "3(Δa/a) + 2(Δb/b) - (Δc/c) - 4(Δd/d)", "a³(Δa/a) + b²(Δb/b)", "(Δa/a) + (Δb/b) + (Δc/c) + (Δd/d)"],
+        ans: 0,
+        exp: "In fractional error analysis, uncertainties always add in quadrature or worst-case linear bounds: ΔY/Y = 3(Δa/a) + 2(Δb/b) + (Δc/c) + 4(Δd/d)."
+      },
+      {
+        q: "The measured mass of a body is 3.52 g, and its volume is 1.4 cm³. The density reported to proper significant figures is:",
+        options: ["2.5 g/cm³", "2.51 g/cm³", "2.514 g/cm³", "3.0 g/cm³"],
+        ans: 0,
+        exp: "Mass 3.52 g (3 sig figs) / Volume 1.4 cm³ (2 sig figs) = 2.51428... Rounded to the least number of significant figures (2 sig figs) gives 2.5 g/cm³."
+      },
+      {
+        q: "The value of 1 horse power (hp) in Watts is:",
+        options: ["746 W", "1000 W", "550 W", "735 W"],
+        ans: 0,
+        exp: "1 Imperial horsepower = 550 ft·lb/s = 745.6998 W ≈ 746 Watts."
+      },
+      {
+        q: "The dimensional formula of the universal gas constant divided by Avogadro's number (R / N_A) is identical to:",
+        options: ["Boltzmann Constant (k_B)", "Planck's Constant", "Stefan's Constant", "Rydberg Constant"],
+        ans: 0,
+        exp: "k_B = R / N_A. [k_B] = [M L² T⁻² K⁻¹], which is the Boltzmann constant."
+      }
     ]},
 
   /* ═══ CLASS 10 ═══ */
