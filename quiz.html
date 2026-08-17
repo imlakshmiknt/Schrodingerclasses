@@ -208,6 +208,22 @@
       outline: none;
     }
 
+    .class-section-heading {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .class-section-heading:first-of-type {
+      margin-top: 0.5rem;
+    }
+
     /* Selector Grid */
     .selector-grid {
       display: grid;
@@ -266,6 +282,7 @@
     .tag-class-12 { background: #fce7f3; color: #9d174d; }
     .tag-class-9  { background: #fef3c7; color: #92400e; }
     .tag-class-10 { background: #dcfce7; color: #166534; }
+    .tag-coming-soon { background: #f3f4f6; color: #6b7280; }
 
     .sel-card h4 {
       font-family: var(--display);
@@ -310,6 +327,16 @@
     .btn-start-quiz:hover {
       background: var(--gold);
       color: var(--ink);
+    }
+    .btn-coming-soon {
+      background: #e5e7eb;
+      color: #6b7280;
+      border: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: not-allowed;
     }
 
     /* ── EXAM AREA ── */
@@ -586,19 +613,19 @@
   <div class="hero-left">
     <div class="page-label">✦ PRACTICE & MASTER</div>
     <h1 class="page-title">Topic Quizzes</h1>
-    <p class="page-sub">JEE PYQ + Topic MCQs with smart explanations. Pick a topic and start your practice!</p>
+    <p class="page-sub">Topic-wise practice MCQs with instant explanations for Class 9 & 10. Higher classes coming soon!</p>
   </div>
   
   <div class="hero-stats-card">
     <div class="stat-item">
       <div class="stat-icon">🎯</div>
-      <div class="stat-num">2500+</div>
+      <div class="stat-num">500+</div>
       <div class="stat-lbl">Questions</div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">📖</div>
-      <div class="stat-num">50+</div>
-      <div class="stat-lbl">Topics</div>
+      <div class="stat-num">10</div>
+      <div class="stat-lbl">Active Topics</div>
     </div>
     <div class="stat-item">
       <div class="stat-icon">📈</div>
@@ -624,16 +651,17 @@
         <option value="all">All Classes</option>
         <option value="9">Class 9</option>
         <option value="10">Class 10</option>
-        <option value="11">Class 11</option>
-        <option value="12">Class 12</option>
+        <option value="11">Class 11 (Coming Soon)</option>
+        <option value="12">Class 12 (Coming Soon)</option>
       </select>
       <select class="filter-select">
-        <option>Sort by: Popular</option>
+        <option>Sort by: Chapter Order</option>
       </select>
     </div>
   </div>
 
-  <div class="selector-grid" id="selectorGrid"></div>
+  <!-- CONTAINER FOR DYNAMIC SECTION RENDERING -->
+  <div id="sectionsContainer"></div>
 </div>
 
 <!-- EXAM SECTION -->
@@ -723,78 +751,144 @@
 <script>
 // Topic Icon Maps
 const ICON_MAP = {
-  'kinematics': { icon: '📊', bg: '#eff6ff', color: '#2563eb' },
-  'motion-topic1': { icon: '🚗', bg: '#f0fdf4', color: '#16a34a' },
-  'motion-jee-foundation': { icon: '🏃', bg: '#fff7ed', color: '#ea580c' },
-  'newtons-laws': { icon: '⚖️', bg: '#f0f3ff', color: '#4f46e5' },
-  'electrostatics': { icon: '⚡', bg: '#ecfeff', color: '#0891b2' },
-  'optics': { icon: '🔍', bg: '#fdf2f8', color: '#db2777' },
-  'motion-class9': { icon: '⏱️', bg: '#f3e8ff', color: '#9333ea' },
-  'force-laws-class9': { icon: '🧲', bg: '#fefce8', color: '#ca8a04' }
+  'motion-c9': { icon: '🏃', bg: '#fff7ed', color: '#ea580c' },
+  'force-c9': { icon: '⚖️', bg: '#f0f3ff', color: '#4f46e5' },
+  'gravitation-c9': { icon: '🪐', bg: '#fdf4ff', color: '#c026d3' },
+  'work-energy-c9': { icon: '⚡', bg: '#ecfeff', color: '#0891b2' },
+  'sound-c9': { icon: '🎵', bg: '#fdf2f8', color: '#db2777' },
+  'light-c10': { icon: '💡', bg: '#fefce8', color: '#ca8a04' },
+  'eye-c10': { icon: '👁️', bg: '#eff6ff', color: '#2563eb' },
+  'electricity-c10': { icon: '🔌', bg: '#ecfdf5', color: '#059669' },
+  'magnetism-c10': { icon: '🧲', bg: '#f5f3ff', color: '#7c3aed' },
+  'c11-coming-soon': { icon: '⏳', bg: '#f3f4f6', color: '#6b7280' },
+  'c12-coming-soon': { icon: '⏳', bg: '#f3f4f6', color: '#6b7280' }
 };
 
+// FULL STRUCTURED QUIZ DATABASE
 const QUIZZES = [
+  /* ═════════ CLASS 9 ═════════ */
   {
-    id: 'kinematics', title: "Kinematics Basics", course: "11",
-    desc: "1D & 2D motion, graphs, projectile",
+    id: 'motion-c9',
+    title: "Chapter 1: Motion",
+    course: "9",
+    desc: "Distance, displacement, uniform motion, velocity-time graphs & equations of motion.",
     questions: [
-      { q: "A ball is thrown vertically upward with velocity 20 m/s. How high does it go? (g = 10 m/s²)", options: ["10 m","20 m","40 m","5 m"], ans: 1, src: "", explanation: "Using v² = u² - 2gh, at max height v=0. h = u²/2g = 400/20 = 20 m." },
-      { q: "The slope of a velocity-time graph gives:", options: ["Displacement","Speed","Acceleration","Distance"], ans: 2, src: "", explanation: "Slope of v-t graph = Δv/Δt = acceleration." },
-      { q: "A projectile is launched at 45° for maximum range. If initial speed is u, range R is:", options: ["u²/g","u²/2g","2u²/g","u/g"], ans: 0, src: "", explanation: "R = u²sin(2θ)/g. At θ=45°, sin90°=1. So R = u²/g." },
-      { q: "An object moves 4 m East and 3 m North. Its displacement magnitude is:", options: ["7 m","1 m","5 m","12 m"], ans: 2, src: "", explanation: "Displacement = √(4² + 3²) = √25 = 5 m." },
-      { q: "If a car decelerates from 20 m/s to rest in 4 seconds, the retardation is:", options: ["80 m/s²","5 m/s²","4 m/s²","10 m/s²"], ans: 1, src: "", explanation: "a = (v-u)/t = (0-20)/4 = -5 m/s². Retardation = 5 m/s²." }
+      { q: "A body moves along a circular path of radius R. The ratio of distance to displacement in half a revolution is:", options: ["π / 2", "2 / π", "π", "2"], ans: 0, src: "Class 9", explanation: "Distance = πR. Displacement = 2R (diameter). Ratio = πR / (2R) = π / 2." },
+      { q: "The slope of a velocity-time graph represents which physical quantity?", options: ["Acceleration", "Displacement", "Speed", "Force"], ans: 0, src: "Class 9", explanation: "Slope of v-t graph = Δv / Δt = acceleration." },
+      { q: "A car accelerates uniformly from rest at 2 m/s² for 5 seconds. The distance covered is:", options: ["25 m", "50 m", "10 m", "100 m"], ans: 0, src: "Class 9", explanation: "s = ut + 1/2 at² = 0 + 1/2(2)(25) = 25 m." },
+      { q: "Which of the following quantity is a vector?", options: ["Velocity", "Speed", "Distance", "Time"], ans: 0, src: "Class 9", explanation: "Velocity has both magnitude and direction, making it a vector quantity." }
     ]
   },
   {
-    id: 'motion-topic1', title: "Distance, Displacement & Uniform Motion", course: "11",
-    desc: "JEE PYQ: Uniform Motion, Displacement, Average Velocity",
+    id: 'force-c9',
+    title: "Chapter 2: Force & Laws of Motion",
+    course: "9",
+    desc: "Newton's laws of motion, inertia, momentum conservation, and impulse.",
     questions: [
-      { q: "A particle is moving with speed v = b√x along the positive x-axis. The speed of the particle at time t = τ is:", options: ["b²τ / 4","b²τ / 2","b²τ","b²τ / √2"], ans: 1, src: "JEE Main 2019", explanation: "v = b√x => dx/√x = b dt. Integrating gives x = b²t²/4, then v = dx/dt = b²t/2. At t = τ, v = b²τ/2." },
-      { q: "In 1.0 s, a particle goes from point A to point B moving in a semicircle of radius 1.0 m. The magnitude of average velocity is:", options: ["3.14 m/s","2.0 m/s","1.0 m/s","Zero"], ans: 1, src: "JEE 1999", explanation: "Displacement = 2r = 2.0 m. Time = 1.0 s. Avg Velocity = 2.0/1.0 = 2.0 m/s." }
+      { q: "The property of a body to resist change in its state of rest or uniform motion is:", options: ["Inertia", "Momentum", "Acceleration", "Velocity"], ans: 0, src: "Class 9", explanation: "Inertia is the inherent property that resists any change in the state of motion." },
+      { q: "A net force of 10 N acts on a mass of 2 kg. The acceleration produced is:", options: ["5 m/s²", "20 m/s²", "0.2 m/s²", "2 m/s²"], ans: 0, src: "Class 9", explanation: "a = F / m = 10 / 2 = 5 m/s²." },
+      { q: "Action and reaction forces according to Newton's third law act on:", options: ["Different bodies in opposite directions", "The same body in opposite directions", "Different bodies in same direction", "The same body in same direction"], ans: 0, src: "Class 9", explanation: "Action and reaction pairs act on two completely different interacting bodies simultaneously." },
+      { q: "The SI unit of linear momentum is:", options: ["kg·m/s", "kg·m/s²", "N·m", "Joule"], ans: 0, src: "Class 9", explanation: "Momentum p = m × v ⇒ units are kg × m/s = kg·m/s." }
     ]
   },
   {
-    id: 'motion-jee-foundation', title: "Motion — Full Chapter Practice", course: "9",
-    desc: "S Chand Foundation Guide — 50 MCQs on Motion, Kinematics & Projectiles",
+    id: 'gravitation-c9',
+    title: "Chapter 3: Gravitation",
+    course: "9",
+    desc: "Universal law of gravitation, free fall, acceleration due to gravity (g), mass & weight.",
     questions: [
-      { q: "When an object undergoes acceleration:", options: ["Its speed always increases","Its velocity always increases","It always falls towards earth","A force always acts on it"], ans: 3, src: "S Chand Foundation", explanation: "By Newton's second law, acceleration is always caused by a net force acting on the body." },
-      { q: "The acceleration of a moving body can be found from:", options: ["Area under v-t graph","Area under d-t graph","Slope of v-t graph","Slope of d-t graph"], ans: 2, src: "S Chand Foundation", explanation: "Acceleration = rate of change of velocity = slope of the v-t graph." }
+      { q: "If the distance between two masses is doubled, the gravitational force between them becomes:", options: ["1/4th", "1/2", "Double", "4 times"], ans: 0, src: "Class 9", explanation: "F ∝ 1 / r². Doubling distance (r → 2r) reduces force by 1/2² = 1/4th." },
+      { q: "The value of acceleration due to gravity (g) at the center of the Earth is:", options: ["Zero", "9.8 m/s²", "Infinite", "4.9 m/s²"], ans: 0, src: "Class 9", explanation: "At the center of Earth (depth d = R), g' = g(1 - R/R) = 0." },
+      { q: "An object weighs 60 N on Earth. Its weight on the surface of the Moon is approximately:", options: ["10 N", "60 N", "360 N", "6 N"], ans: 0, src: "Class 9", explanation: "Gravity on Moon is ~1/6th of Earth. W_moon = 60 / 6 = 10 N." }
     ]
   },
   {
-    id: 'newtons-laws', title: "Newton's Laws", course: "11",
-    desc: "Forces, friction, dynamics",
+    id: 'work-energy-c9',
+    title: "Chapter 4: Work and Energy",
+    course: "9",
+    desc: "Work done, kinetic energy, gravitational potential energy, power, and conservation of energy.",
     questions: [
-      { q: "A 5 kg object experiences a net force of 20 N. Its acceleration is:", options: ["100 m/s²","0.25 m/s²","4 m/s²","25 m/s²"], ans: 2, src: "", explanation: "F = ma => a = F/m = 20/5 = 4 m/s²." }
+      { q: "A porter carries a 50 kg luggage on his head and walks horizontally 10 m. The work done by gravity is:", options: ["Zero", "5000 J", "500 J", "50 J"], ans: 0, src: "Class 9", explanation: "Gravity acts downward while displacement is horizontal (θ = 90°). W = F d cos(90°) = 0." },
+      { q: "If the speed of a car is doubled, its kinetic energy increases by a factor of:", options: ["4", "2", "8", "√2"], ans: 0, src: "Class 9", explanation: "KE = 1/2 m v² ∝ v². When speed is doubled, KE quadruples (2² = 4)." },
+      { q: "The commercial unit of electrical energy is kilowatt-hour (kWh). 1 kWh is equal to:", options: ["3.6 × 10⁶ J", "3.6 × 10⁵ J", "1000 J", "3600 J"], ans: 0, src: "Class 9", explanation: "1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ Joules." }
     ]
   },
   {
-    id: 'electrostatics', title: "Electrostatics", course: "12",
-    desc: "Coulomb's law, field, potential",
+    id: 'sound-c9',
+    title: "Chapter 5: Sound",
+    course: "9",
+    desc: "Longitudinal waves, compression & rarefaction, speed of sound, echo, and SONAR.",
     questions: [
-      { q: "Coulomb's law: F ∝ q₁q₂/r². If distance is doubled, force becomes:", options: ["F/4","F/2","4F","2F"], ans: 0, src: "", explanation: "F ∝ 1/r². If r doubles, force becomes F/4." }
+      { q: "Sound waves in air are:", options: ["Longitudinal mechanical waves", "Transverse electromagnetic waves", "Transverse mechanical waves", "Stationary waves only"], ans: 0, src: "Class 9", explanation: "Sound travels through air as longitudinal compressions and rarefactions." },
+      { q: "The minimum distance between an observer and a flat wall to hear a distinct echo in air is approx:", options: ["17.2 m", "34.4 m", "10.0 m", "25.0 m"], ans: 0, src: "Class 9", explanation: "Persistence of hearing is 0.1 s. Minimum distance d = v t / 2 = 344 × 0.1 / 2 = 17.2 m." },
+      { q: "The audible range of sound frequencies for a healthy human ear is:", options: ["20 Hz to 20,000 Hz", "0 Hz to 20 Hz", "20 kHz to 200 kHz", "Above 20,000 Hz"], ans: 0, src: "Class 9", explanation: "Human hearing spans the sonic range from 20 Hz up to 20,000 Hz (20 kHz)." }
+    ]
+  },
+
+  /* ═════════ CLASS 10 ═════════ */
+  {
+    id: 'light-c10',
+    title: "Chapter 1: Light — Reflection & Refraction",
+    course: "10",
+    desc: "Spherical mirrors, Snell's law, refractive index, lens formula, and power of a lens.",
+    questions: [
+      { q: "A convex mirror of focal length 20 cm forms an image. For a real object, the image is ALWAYS:", options: ["Virtual, erect, and diminished", "Real, inverted, and magnified", "Virtual, inverted, and diminished", "Real, erect, and magnified"], ans: 0, src: "Class 10", explanation: "A convex mirror always forms a virtual, erect, and diminished image behind the mirror." },
+      { q: "The refractive index of glass is 1.5. The speed of light in glass is (c = 3 × 10⁸ m/s):", options: ["2.0 × 10⁸ m/s", "1.5 × 10⁸ m/s", "2.25 × 10⁸ m/s", "3.0 × 10⁸ m/s"], ans: 0, src: "Class 10", explanation: "v = c / n = (3 × 10⁸) / 1.5 = 2.0 × 10⁸ m/s." },
+      { q: "A lens has a focal length of -50 cm. Its optical power is:", options: ["-2.0 D", "+2.0 D", "-0.5 D", "-5.0 D"], ans: 0, src: "Class 10", explanation: "P = 1 / f(in meters) = 1 / (-0.50 m) = -2.0 Diopters." }
     ]
   },
   {
-    id: 'optics', title: "Ray Optics", course: "12",
-    desc: "Mirrors, lenses, refraction",
+    id: 'eye-c10',
+    title: "Chapter 2: Human Eye & Colourful World",
+    course: "10",
+    desc: "Accommodation, vision defects (myopia, hypermetropia), prism dispersion, and atmospheric scattering.",
     questions: [
-      { q: "The mirror formula is: 1/v + 1/u = ?", options: ["1/f","f","2/R","1/R"], ans: 0, src: "", explanation: "Mirror formula: 1/f = 1/v + 1/u." }
+      { q: "Myopia (near-sightedness) is corrected using spectacles equipped with a:", options: ["Concave lens", "Convex lens", "Bifocal lens", "Cylindrical lens"], ans: 0, src: "Class 10", explanation: "A concave (diverging) lens diverges incoming rays to shift the image back onto the retina." },
+      { q: "The clear blue color of the sky is caused by:", options: ["Rayleigh scattering (I ∝ 1/λ⁴)", "Dispersion of light", "Total internal reflection", "Atmospheric absorption"], ans: 0, src: "Class 10", explanation: "Short blue wavelengths scatter far more intensely than red in the atmosphere." },
+      { q: "The least distance of distinct vision for a normal young adult human eye is:", options: ["25 cm", "2.5 cm", "Infinity", "100 cm"], ans: 0, src: "Class 10", explanation: "The near point for a normal eye is conventionally 25 cm." }
     ]
   },
   {
-    id: 'motion-class9', title: "Motion", course: "9",
-    desc: "Distance, displacement, speed, velocity, acceleration",
+    id: 'electricity-c10',
+    title: "Chapter 3: Electricity",
+    course: "10",
+    desc: "Electric current, potential difference, Ohm's law, resistance combinations, and Joule's heating.",
     questions: [
-      { q: "The SI unit of speed is:", options: ["km/h","m/s","m/s²","cm/s"], ans: 1, src: "", explanation: "The SI unit of speed is m/s." }
+      { q: "If the length of a uniform wire is doubled by stretching, its resistance becomes:", options: ["4 times", "2 times", "Half", "1/4th"], ans: 0, src: "Class 10", explanation: "Volume is constant: length doubles (2L) ⇒ area halves (A/2) ⇒ R' = ρ(2L)/(A/2) = 4R." },
+      { q: "Three resistors of 2 Ω, 3 Ω, and 6 Ω are connected in parallel. The equivalent resistance is:", options: ["1.0 Ω", "11.0 Ω", "0.5 Ω", "1.5 Ω"], ans: 0, src: "Class 10", explanation: "1/R_eq = 1/2 + 1/3 + 1/6 = 6/6 = 1 ⇒ R_eq = 1.0 Ω." },
+      { q: "An electric bulb rated (220 V, 100 W) is operated on 110 V. The power consumed is:", options: ["25 W", "50 W", "75 W", "100 W"], ans: 0, src: "Class 10", explanation: "R = V² / P = (220)² / 100 = 484 Ω. At 110 V: P = V² / R = (110)² / 484 = 25 W." }
     ]
   },
   {
-    id: 'force-laws-class9', title: "Force and Laws of Motion", course: "9",
-    desc: "Newton's laws, momentum, inertia",
+    id: 'magnetism-c10',
+    title: "Chapter 4: Magnetic Effects of Current",
+    course: "10",
+    desc: "Magnetic field lines, right-hand thumb rule, solenoid, Fleming's left-hand rule, and domestic circuits.",
     questions: [
-      { q: "Momentum is the product of:", options: ["Mass and velocity","Mass and acceleration","Force and time","Force and distance"], ans: 0, src: "", explanation: "Momentum p = m × v." }
+      { q: "The direction of magnetic field around a straight current-carrying conductor is given by:", options: ["Right-Hand Thumb Rule", "Fleming's Left-Hand Rule", "Fleming's Right-Hand Rule", "Lenz's Law"], ans: 0, src: "Class 10", explanation: "Pointing the right thumb along current direction gives the curling direction of magnetic field lines." },
+      { q: "Inside a long current-carrying solenoid, the magnetic field is:", options: ["Uniform and parallel to the axis", "Zero", "Decreases towards center", "Increases towards ends"], ans: 0, src: "Class 10", explanation: "The magnetic field inside a long solenoid is strong and uniform." },
+      { q: "A safety fuse wire in domestic circuits must have:", options: ["High resistance and low melting point", "Low resistance and high melting point", "High resistance and high melting point", "Zero resistance"], ans: 0, src: "Class 10", explanation: "A fuse wire generates heat quickly (high R) and melts safely during overloads (low melting point)." }
     ]
+  },
+
+  /* ═════════ CLASS 11 (COMING SOON) ═════════ */
+  {
+    id: 'c11-coming-soon',
+    title: "Class 11 Physics (Full Syllabus)",
+    course: "11",
+    desc: "Kinematics, Newton's Laws, Work-Energy, Gravitation, Thermodynamics & Waves. Under active curation.",
+    isComingSoon: true,
+    questions: []
+  },
+
+  /* ═════════ CLASS 12 (COMING SOON) ═════════ */
+  {
+    id: 'c12-coming-soon',
+    title: "Class 12 Physics (Full Syllabus)",
+    course: "12",
+    desc: "Electrostatics, Current Electricity, Magnetism, Optics, Modern Physics & Semiconductor Devices. Under active curation.",
+    isComingSoon: true,
+    questions: []
   }
 ];
 
@@ -809,47 +903,98 @@ let timerInterval = null;
 let timeLeft = QUESTION_TIME;
 let dotStates = [];
 
-function buildSelector(filteredList = QUIZZES) {
-  const grid = document.getElementById('selectorGrid');
-  grid.innerHTML = filteredList.map(q => {
-    const iconData = ICON_MAP[q.id] || { icon: '📝', bg: '#f3f4f6', color: '#374151' };
-    return `
-      <div class="sel-card">
-        <div>
-          <div class="card-top">
-            <div class="card-icon-box" style="background:${iconData.bg}; color:${iconData.color};">
-              ${iconData.icon}
+function buildStructuredSections(filteredList = QUIZZES) {
+  const container = document.getElementById('sectionsContainer');
+  container.innerHTML = '';
+
+  const classGroups = [
+    { key: "9", title: "Class 9 Physics Quizzes" },
+    { key: "10", title: "Class 10 Physics Quizzes" },
+    { key: "11", title: "Class 11 Physics Quizzes" },
+    { key: "12", title: "Class 12 Physics Quizzes" }
+  ];
+
+  classGroups.forEach(group => {
+    const list = filteredList.filter(q => q.course === group.key);
+    if (list.length === 0) return;
+
+    const heading = document.createElement('div');
+    heading.className = 'class-section-heading';
+    heading.innerHTML = `<span>${group.title}</span> <span style="font-family:var(--mono); font-size:0.75rem; color:var(--muted); font-weight:600;">Class ${group.key}</span>`;
+    container.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'selector-grid';
+
+    list.forEach(q => {
+      const iconData = ICON_MAP[q.id] || { icon: '📝', bg: '#f3f4f6', color: '#374151' };
+      const card = document.createElement('div');
+      card.className = 'sel-card';
+
+      if (q.isComingSoon) {
+        card.innerHTML = `
+          <div>
+            <div class="card-top">
+              <div class="card-icon-box" style="background:${iconData.bg}; color:${iconData.color};">
+                ${iconData.icon}
+              </div>
+              <div class="card-details">
+                <span class="sel-card-tag tag-coming-soon">COMING SOON</span>
+                <h4>${q.title}</h4>
+              </div>
             </div>
-            <div class="card-details">
-              <span class="sel-card-tag tag-class-${q.course}">CLASS ${q.course}</span>
-              <h4>${q.title}</h4>
+            <p>${q.desc}</p>
+          </div>
+          <div class="card-bottom">
+            <div class="sel-meta">
+              <span>🚀 Launching Soon</span>
             </div>
+            <button class="btn-coming-soon" disabled>Coming Soon</button>
           </div>
-          <p>${q.desc}</p>
-        </div>
-        <div class="card-bottom">
-          <div class="sel-meta">
-            <span>📋 ${q.questions.length} Questions</span>
-            <span>⏱ 60s / question</span>
+        `;
+      } else {
+        card.innerHTML = `
+          <div>
+            <div class="card-top">
+              <div class="card-icon-box" style="background:${iconData.bg}; color:${iconData.color};">
+                ${iconData.icon}
+              </div>
+              <div class="card-details">
+                <span class="sel-card-tag tag-class-${q.course}">CLASS ${q.course}</span>
+                <h4>${q.title}</h4>
+              </div>
+            </div>
+            <p>${q.desc}</p>
           </div>
-          <button class="btn-start-quiz" onclick="startQuiz('${q.id}')">Start Quiz →</button>
-        </div>
-      </div>
-    `;
-  }).join('');
+          <div class="card-bottom">
+            <div class="sel-meta">
+              <span>📋 ${q.questions.length} Questions</span>
+              <span>⏱ 60s / Q</span>
+            </div>
+            <button class="btn-start-quiz" onclick="startQuiz('${q.id}')">Start Quiz →</button>
+          </div>
+        `;
+      }
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+  });
 }
 
 function filterQuizzes() {
   const val = document.getElementById('classFilter').value;
   if (val === 'all') {
-    buildSelector(QUIZZES);
+    buildStructuredSections(QUIZZES);
   } else {
-    buildSelector(QUIZZES.filter(q => q.course === val));
+    buildStructuredSections(QUIZZES.filter(q => q.course === val));
   }
 }
 
 function startQuiz(id) {
   currentQuiz = QUIZZES.find(q => q.id === id);
+  if (!currentQuiz || currentQuiz.isComingSoon || currentQuiz.questions.length === 0) return;
+
   currentQIdx = 0;
   score = 0;
   wrongCount = 0;
@@ -957,9 +1102,10 @@ function selectAnswer(selected) {
   const isCorrect = selected === q.ans;
 
   if (isCorrect) {
-    score++;
+    score += 4;
     dotStates[currentQIdx] = 'correct';
   } else {
+    score -= 1;
     wrongCount++;
     dotStates[currentQIdx] = 'wrong';
   }
@@ -972,7 +1118,7 @@ function selectAnswer(selected) {
   });
 
   document.getElementById('examScoreLive').textContent = `Score: ${score}`;
-  showResultBadge(isCorrect ? 'correct' : 'wrong', isCorrect ? '✓ Correct!' : '✗ Incorrect');
+  showResultBadge(isCorrect ? 'correct' : 'wrong', isCorrect ? '✓ Correct Answer (+4)' : `✗ Incorrect (-1). Answer was (${String.fromCharCode(65 + q.ans)})`);
   showExplanation(q.explanation);
   buildDots();
   document.getElementById('nextBtn').disabled = false;
@@ -1015,11 +1161,13 @@ function showScore() {
   document.getElementById('examSection').style.display = 'none';
 
   const total = currentQuiz.questions.length;
-  const pct = Math.round((score / total) * 100);
+  const maxScore = total * 4;
+  const correctCount = dotStates.filter(s => s === 'correct').length;
+  const pct = Math.max(0, Math.round((score / maxScore) * 100));
 
   document.getElementById('scoreBig').textContent = score;
-  document.getElementById('scoreOutOf').textContent = `out of ${total}`;
-  document.getElementById('statCorrect').textContent = score;
+  document.getElementById('scoreOutOf').textContent = `out of ${maxScore} max points`;
+  document.getElementById('statCorrect').textContent = correctCount;
   document.getElementById('statWrong').textContent = wrongCount;
   document.getElementById('statPct').textContent = pct + '%';
 
@@ -1039,9 +1187,10 @@ function backToSelector() {
   document.getElementById('scoreSection').classList.remove('show');
   document.getElementById('pageHeader').style.display = 'flex';
   document.getElementById('selectorSection').style.display = 'block';
+  buildStructuredSections();
 }
 
-buildSelector();
+buildStructuredSections();
 </script>
 </body>
 </html>
