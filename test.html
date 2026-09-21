@@ -1663,7 +1663,42 @@ const TESTS = [
         q: "A block of mass 5 kg rests on a table. A string tied to it passes over a pulley and carries a 3 kg mass. If μ_s = 0.4 between block and table, the acceleration of the system is (take g = 10 m/s²):",
         options: ["1.25 m/s²", "0 m/s²", "2.5 m/s²", "3.75 m/s²"],
         ans: 0,
-        exp: "Limiting static friction on 5 kg block = 0.4 × 5 × 10 = 20 N. Driving hanging force = 3 × 10 = 30 N. Since 30 N > 20 N, the system moves. Acceleration a = (30 - 20) / (5 + 3) = 10 / 8 = 1.25 m/s²."
+        exp: "Step 1: Identify the given quantities.\n\n" +
+    "Mass of the block on the table, M = 5 kg\n" +
+    "Mass of the hanging block, m = 3 kg\n" +
+    "Coefficient of static friction, μ_s = 0.4\n" +
+    "Acceleration due to gravity, g = 10 m/s²\n\n" +
+
+    "Step 2: Calculate the maximum static friction.\n\n" +
+    "The normal reaction on the 5 kg block is:\n" +
+    "N = Mg = 5 × 10 = 50 N\n\n" +
+    "Maximum static friction:\n" +
+    "f_s(max) = μ_s N\n" +
+    "f_s(max) = 0.4 × 50 = 20 N\n\n" +
+
+    "Step 3: Determine whether the system moves.\n\n" +
+    "The weight of the hanging block provides the driving force:\n" +
+    "W = mg = 3 × 10 = 30 N\n\n" +
+    "Since the hanging weight (30 N) is greater than the maximum static friction (20 N), the system cannot remain at rest. Therefore, the blocks start moving.\n\n" +
+
+    "Step 4: Calculate the acceleration.\n\n" +
+    "Once the system starts moving, the frictional force is assumed to be 20 N (using the limiting friction model given in the question).\n\n" +
+    "For the 3 kg hanging block (taking downward as positive):\n" +
+    "mg − T = ma ...(1)\n" +
+    "30 − T = 3a\n\n" +
+
+    "For the 5 kg block on the table (taking rightward as positive):\n" +
+    "T − f = Ma ...(2)\n" +
+    "T − 20 = 5a\n\n" +
+
+    "Adding equations (1) and (2):\n" +
+    "30 − 20 = 3a + 5a\n" +
+    "10 = 8a\n\n" +
+
+    "Therefore:\n" +
+    "a = 10/8 = 1.25 m/s²\n\n" +
+
+    "Final Answer: The acceleration of the system is 1.25 m/s² (Option 1)."
       },
       {
         q: "The linear momentum p of a body changes with time as p = a + b t², where a and b are positive constants. The force acting on the body is:",
