@@ -384,12 +384,13 @@
     .exam-timer.danger { background: rgba(239,68,68,0.3); border-color: rgba(239,68,68,0.6); }
 
     .exam-progress-strip {
-      position: fixed;
-      top: 100px;
-      left: 0; right: 0;
-      height: 3px;
-      background: rgba(0,0,0,0.05);
-      z-index: 91;
+  position: fixed;
+  top: calc(var(--nav-height) + 40px);
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.05);
+  z-index: 91;
     }
     .exam-progress-fill {
       height: 100%;
