@@ -791,6 +791,356 @@ const QUIZZES = [
       { q: "The slope of a velocity-time graph represents which physical quantity?", options: ["Acceleration", "Displacement", "Speed", "Force"], ans: 0, src: "Class 9", explanation: "Slope of v-t graph = Δv / Δt = acceleration." },
       { q: "A car accelerates uniformly from rest at 2 m/s² for 5 seconds. The distance covered is:", options: ["25 m", "50 m", "10 m", "100 m"], ans: 0, src: "Class 9", explanation: "s = ut + 1/2 at² = 0 + 1/2(2)(25) = 25 m." },
       { q: "Which of the following quantity is a vector?", options: ["Velocity", "Speed", "Distance", "Time"], ans: 0, src: "Class 9", explanation: "Velocity has both magnitude and direction, making it a vector quantity." }
+      { 
+        q: "A body moves along a circular path of radius R. The ratio of distance to displacement in half a revolution is:", 
+        options: ["π / 2", "2 / π", "π", "2"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Distance covered in half a revolution is the semi-circumference (πR). Displacement is the shortest straight-line distance, which is the diameter (2R). Therefore, Ratio = πR / 2R = π / 2." 
+      },
+      { 
+        q: "The slope of a velocity-time graph represents which physical quantity?", 
+        options: ["Acceleration", "Displacement", "Speed", "Force"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The slope of a line on a graph is the change in the y-axis divided by the change in the x-axis. For a velocity-time graph, this is Δv / Δt, which is the formula for acceleration." 
+      },
+      { 
+        q: "A car accelerates uniformly from rest at 2 m/s² for 5 seconds. The distance covered is:", 
+        options: ["25 m", "50 m", "10 m", "100 m"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Using the second equation of motion: s = ut + 1/2 at². Since it starts from rest, u = 0. Therefore, s = 0 + 1/2 × 2 × (5)² = 25 m." 
+      },
+      { 
+        q: "Which of the following physical quantities is a vector?", 
+        options: ["Velocity", "Speed", "Distance", "Time"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A vector quantity has both magnitude and a specific direction. Velocity specifies how fast an object is moving and in what direction, making it a vector." 
+      },
+      { 
+        q: "The device used to measure the distance traveled by a vehicle is called:", 
+        options: ["Odometer", "Speedometer", "Barometer", "Anemometer"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "An odometer is a mechanical or electronic device on a vehicle's dashboard that records the total distance the vehicle has traveled." 
+      },
+      { 
+        q: "The area under a velocity-time graph represents:", 
+        options: ["Displacement", "Acceleration", "Force", "Speed"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The area under the curve of a velocity-time graph gives the product of velocity and time (v × t), which is equal to the displacement of the object." 
+      },
+      { 
+        q: "The rate of change of velocity per unit time is known as:", 
+        options: ["Acceleration", "Speed", "Displacement", "Momentum"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Acceleration is defined mathematically as (Final Velocity - Initial Velocity) / Time, which is the rate at which velocity changes." 
+      },
+      { 
+        q: "The SI unit of retardation (negative acceleration) is:", 
+        options: ["m/s²", "m/s", "m²", "m/s³"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Retardation is just acceleration in the opposite direction of motion. Since it is still acceleration, its SI unit remains meters per second squared (m/s²)." 
+      },
+      { 
+        q: "A boy goes from point A to point B (3 km away) and returns to point A. His net displacement is:", 
+        options: ["0 km", "3 km", "6 km", "1.5 km"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Displacement is the shortest distance between the initial and final positions. Since the boy returns to his starting point, his initial and final positions are the same, making displacement 0." 
+      },
+      { 
+        q: "When an object is dropped from a height, its initial velocity (u) is:", 
+        options: ["0", "9.8 m/s", "10 m/s", "Equal to final velocity"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "When an object is just dropped (free fall), it starts from a state of rest. Therefore, its initial velocity (u) is always 0 m/s." 
+      },
+      { 
+        q: "What does the slope of a distance-time graph indicate?", 
+        options: ["Speed", "Acceleration", "Displacement", "Momentum"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The slope of a distance-time graph is calculated as change in distance divided by change in time (Δd / Δt), which is the definition of speed." 
+      },
+      { 
+        q: "If an object completes one full revolution in a circular path of radius r, its displacement is:", 
+        options: ["0", "2πr", "πr", "2r"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "After one complete revolution, the object returns exactly to its starting point. Since the initial and final positions are identical, the displacement is 0." 
+      },
+      { 
+        q: "Uniform circular motion is an example of:", 
+        options: ["Accelerated motion", "Constant velocity", "Non-accelerated motion", "Linear motion"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "In uniform circular motion, speed is constant, but the direction of motion changes continuously. Since velocity is a vector (speed + direction), changing direction means velocity is changing, which implies it is an accelerated motion." 
+      },
+      { 
+        q: "Which equation of motion does NOT involve time (t)?", 
+        options: ["v² - u² = 2as", "v = u + at", "s = ut + 1/2 at²", "None of the above"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The third equation of motion, v² - u² = 2as, relates final velocity, initial velocity, acceleration, and displacement, without requiring the time variable." 
+      },
+      { 
+        q: "A train starting from rest attains a velocity of 20 m/s in 10 seconds. Its acceleration is:", 
+        options: ["2 m/s²", "0.5 m/s²", "200 m/s²", "10 m/s²"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Using v = u + at. Here u = 0, v = 20, t = 10. Rearranging for a: a = (v - u) / t = (20 - 0) / 10 = 2 m/s²." 
+      },
+      { 
+        q: "An object is thrown vertically upwards. At its highest point, its velocity is:", 
+        options: ["Zero", "Maximum", "9.8 m/s", "Equal to initial velocity"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "As an object moves upward, gravity decelerates it until it momentarily stops at its peak height before falling back down. Thus, velocity at the highest point is zero." 
+      },
+      { 
+        q: "If a body covers equal distances in equal intervals of time, its motion is called:", 
+        options: ["Uniform motion", "Non-uniform motion", "Accelerated motion", "Retarded motion"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "By definition, uniform motion occurs when a body covers exactly the same distance in every equal time interval, meaning its speed remains constant." 
+      },
+      { 
+        q: "The ratio of displacement to distance for a moving object is:", 
+        options: ["Always ≤ 1", "Always = 1", "Always > 1", "Always < 1"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Displacement is the shortest straight-line path, while distance is the actual path. Displacement can be equal to distance (in straight-line motion) or less than it, so the ratio is always ≤ 1." 
+      },
+      { 
+        q: "To convert a speed from km/h to m/s, you multiply by:", 
+        options: ["5 / 18", "18 / 5", "1000", "3600"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "1 km = 1000 m and 1 hour = 3600 s. So, 1 km/h = 1000/3600 m/s, which simplifies exactly to the fraction 5/18." 
+      },
+      { 
+        q: "A car travels at 36 km/h. Its speed in m/s is:", 
+        options: ["10 m/s", "20 m/s", "5 m/s", "15 m/s"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Multiply the speed in km/h by 5/18. So, 36 × (5 / 18) = 2 × 5 = 10 m/s." 
+      },
+      { 
+        q: "A boy walks 4 m East and then 3 m North. His total distance and displacement are respectively:", 
+        options: ["7 m and 5 m", "5 m and 7 m", "7 m and 7 m", "5 m and 5 m"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Distance is the total path: 4 + 3 = 7 m. Displacement is the hypotenuse of the right triangle formed: √(4² + 3²) = √(16 + 9) = √25 = 5 m." 
+      },
+      { 
+        q: "If a velocity-time graph is a straight line parallel to the time axis, the body is in:", 
+        options: ["Uniform motion", "Uniform acceleration", "Rest", "Non-uniform motion"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A line parallel to the time axis means the velocity is not changing as time passes. Constant velocity indicates uniform motion (zero acceleration)." 
+      },
+      { 
+        q: "Which of the following can never be negative for a moving body?", 
+        options: ["Distance", "Displacement", "Velocity", "Acceleration"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Distance is a scalar quantity measuring the total path length covered. It is simply an accumulation of length and can never be negative, unlike vectors which can be negative based on direction." 
+      },
+      { 
+        q: "Average speed of a moving object is calculated as:", 
+        options: ["Total distance / Total time", "Initial speed + Final speed / 2", "Total displacement / Total time", "Displacement × Time"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Average speed is the ratio of the total distance traveled by an object to the total time taken for the journey." 
+      },
+      { 
+        q: "If a distance-time graph is a curved line, it indicates that the object is undergoing:", 
+        options: ["Non-uniform motion", "Uniform motion", "No motion (rest)", "Constant speed"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A curved distance-time graph means the slope (speed) is changing over time. Changing speed defines non-uniform motion." 
+      },
+      { 
+        q: "A body whose speed is constant:", 
+        options: ["Might be accelerated", "Must be accelerated", "Cannot be accelerated", "Has a constant velocity"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A body with constant speed can be accelerated if its direction of motion is changing, such as in uniform circular motion." 
+      },
+      { 
+        q: "The physical quantity that corresponds to the rate of change of displacement is:", 
+        options: ["Velocity", "Speed", "Acceleration", "Distance"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Velocity is defined as the displacement of an object per unit of time, or the rate of change of displacement." 
+      },
+      { 
+        q: "What does the area of a rectangle in a velocity-time graph represent?", 
+        options: ["Displacement in uniform motion", "Acceleration", "Retardation", "Speed"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The area under a v-t graph represents displacement. If the area is a rectangle, it implies velocity is constant (parallel to the time axis), representing uniform motion." 
+      },
+      { 
+        q: "The numerical ratio of average velocity to average speed is:", 
+        options: ["Always ≤ 1", "Always = 1", "Always > 1", "Always < 1"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Since average velocity relies on displacement and average speed relies on distance, and displacement is always ≤ distance, their ratio must also be ≤ 1." 
+      },
+      { 
+        q: "A car comes to a stop in 4 seconds after applying brakes. If the retardation is 2 m/s², the initial velocity was:", 
+        options: ["8 m/s", "2 m/s", "0 m/s", "16 m/s"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Using v = u + at. Here, v = 0 (stops), a = -2 m/s² (retardation), t = 4 s. 0 = u - 2(4) => 0 = u - 8 => u = 8 m/s." 
+      },
+      { 
+        q: "The device that displays the instantaneous speed of a vehicle is the:", 
+        options: ["Speedometer", "Odometer", "Tachometer", "Altimeter"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A speedometer is an instrument on a vehicle's dashboard that measures and displays its current, instantaneous speed." 
+      },
+      { 
+        q: "The equation s = ut + 1/2 at² is known as the:", 
+        options: ["Position-time relation", "Velocity-time relation", "Position-velocity relation", "Acceleration-time relation"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "This equation gives the position (displacement 's') of a body at any given time 't', hence it is called the position-time relation." 
+      },
+      { 
+        q: "If an object travels 20 m in 2 seconds and another 20 m in the next 2 seconds, its motion is:", 
+        options: ["Uniform", "Non-uniform", "Accelerated", "Retarded"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The object covers equal distances (20 m) in equal time intervals (2 s). This perfectly defines uniform motion." 
+      },
+      { 
+        q: "Which of the following is correct for a freely falling body?", 
+        options: ["Uniformly accelerated motion", "Uniform motion", "Non-uniformly accelerated motion", "Zero acceleration"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A freely falling body experiences a constant acceleration due to gravity (approx 9.8 m/s²). Constant acceleration means it is a uniformly accelerated motion." 
+      },
+      { 
+        q: "A motorcyclist drives from A to B with a uniform speed of 30 km/h and returns with 20 km/h. Find his average speed.", 
+        options: ["24 km/h", "25 km/h", "50 km/h", "10 km/h"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "For equal distances, Average Speed = (2 × v1 × v2) / (v1 + v2). So, (2 × 30 × 20) / (30 + 20) = 1200 / 50 = 24 km/h." 
+      },
+      { 
+        q: "If a body is moving with a constant velocity, its acceleration is:", 
+        options: ["Zero", "Constant but non-zero", "Increasing", "Decreasing"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Acceleration is the change in velocity over time. If velocity is constant, there is no change, meaning the acceleration is exactly zero." 
+      },
+      { 
+        q: "A stone is dropped from a cliff. What is its velocity after 2 seconds? (take g = 9.8 m/s²)", 
+        options: ["19.6 m/s", "9.8 m/s", "4.9 m/s", "39.2 m/s"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Using v = u + at. Initial velocity u = 0, a = 9.8 m/s², t = 2 s. v = 0 + (9.8 × 2) = 19.6 m/s." 
+      },
+      { 
+        q: "When an object moves along a straight line, which two quantities are equal in magnitude?", 
+        options: ["Distance and Displacement", "Speed and Acceleration", "Velocity and Acceleration", "Distance and Speed"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "If an object moves in a straight line without turning back, the total path length (distance) is identical to the shortest path (displacement)." 
+      },
+      { 
+        q: "The path of a projectile thrown at an angle (not purely vertical) under gravity is generally:", 
+        options: ["Curved (Parabolic)", "Straight line", "Circular", "Zig-zag"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A projectile experiences constant forward velocity and constant downward acceleration (gravity), resulting in a curved, parabolic path." 
+      },
+      { 
+        q: "In a distance-time graph, a straight line passing through the origin indicates:", 
+        options: ["Uniform speed", "Object at rest", "Uniform acceleration", "Non-uniform speed"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "A straight line implies the slope (which represents speed) is constant. Passing through the origin means it started from a reference point at time zero." 
+      },
+      { 
+        q: "Which equation represents the velocity-position relation?", 
+        options: ["v² - u² = 2as", "v = u + at", "s = ut + 1/2 at²", "s = (v+u)/2 * t"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The third equation of motion, v² - u² = 2as, relates final velocity (v), initial velocity (u), and position/displacement (s) without time." 
+      },
+      { 
+        q: "An athlete completes one round of a circular track of diameter 200m in 40s. His displacement at the end of 2 minutes 20s will be:", 
+        options: ["200 m", "0 m", "2200 m", "400 m"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Total time = 140s. Number of rounds = 140 / 40 = 3.5 rounds. After 3.5 rounds, he is directly opposite the starting point. Displacement = diameter = 200 m." 
+      },
+      { 
+        q: "In a velocity-time graph, the slope of a line inclined to the time axis with an acute angle represents:", 
+        options: ["Positive acceleration", "Negative acceleration", "Zero acceleration", "Constant velocity"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "An acute angle means a positive slope. Since the slope of a v-t graph represents acceleration, a positive slope means positive, uniform acceleration." 
+      },
+      { 
+        q: "A ball is thrown up with a velocity of 20 m/s. What is the maximum height it reaches? (take g = 10 m/s²)", 
+        options: ["20 m", "10 m", "40 m", "5 m"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "At max height, v = 0. Using v² - u² = 2as. 0 - (20)² = 2 × (-10) × s. -400 = -20s. Therefore, s = 400 / 20 = 20 m." 
+      },
+      { 
+        q: "If the displacement of an object is proportional to the square of time, then the object moves with:", 
+        options: ["Uniform acceleration", "Uniform velocity", "Increasing acceleration", "Decreasing acceleration"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "From s = ut + 1/2 at², if u = 0, s is proportional to t². This relationship holds true only when acceleration (a) is uniform (constant)." 
+      },
+      { 
+        q: "What does the area of a triangle in a velocity-time graph represent?", 
+        options: ["Displacement under uniform acceleration", "Constant speed", "Changing acceleration", "Force"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "The area under a v-t graph is displacement. A triangular area occurs when velocity increases uniformly from zero, representing uniform acceleration." 
+      },
+      { 
+        q: "An object travels 15 m in 3 seconds. What is its average speed?", 
+        options: ["5 m/s", "45 m/s", "12 m/s", "3 m/s"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Average speed = Total distance / Total time. Speed = 15 m / 3 s = 5 m/s." 
+      },
+      { 
+        q: "Which quantity remains constant in uniform circular motion?", 
+        options: ["Speed", "Velocity", "Acceleration", "Displacement"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "In uniform circular motion, the magnitude of the velocity (which is speed) remains constant, while the direction continually changes." 
+      },
+      { 
+        q: "A body moving with an initial velocity of 5 m/s accelerates at 2 m/s². What will be its velocity after 10 seconds?", 
+        options: ["25 m/s", "20 m/s", "50 m/s", "35 m/s"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Using the first equation of motion: v = u + at. Therefore, v = 5 + (2 × 10) = 5 + 20 = 25 m/s." 
+      },
+      { 
+        q: "Displacement is defined as the:", 
+        options: ["Shortest distance between initial and final position", "Total path length covered", "Speed multiplied by time", "Rate of change of distance"], 
+        ans: 0, 
+        src: "Class 9", 
+        explanation: "Displacement is a vector quantity defined geometrically as the straight-line, shortest distance from an object's starting point to its ending point." 
+      }
     ]
   },
   {
