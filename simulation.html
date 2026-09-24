@@ -32,6 +32,7 @@
 
     html { scroll-behavior: smooth; }
     body {
+      display: none;
       background: var(--bg);
       color: var(--ink);
       font-family: var(--body);
@@ -947,6 +948,33 @@ window.addEventListener('keydown', e => { if (e.key === 'Escape') closeSim(); })
 window.addEventListener('resize', () => { if (currentSim) RS(); });
 
 buildCards();
+</script>
+  <!-- FIREBASE AUTH GUARD -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
+    authDomain: "schrodinger-classes.firebaseapp.com",
+    projectId: "schrodinger-classes",
+    storageBucket: "schrodinger-classes.firebasestorage.app",
+    messagingSenderId: "753861944994",
+    appId: "1:753861944994:web:58b3aaf2eca87f4a7dd9fb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Not logged in -> Kick them to login.html
+      window.location.href = "login.html"; 
+    } else {
+      // Logged in -> Reveal the page
+      document.body.style.display = "block"; 
+    }
+  });
 </script>
 </body>
 </html>
