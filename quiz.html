@@ -31,6 +31,13 @@
       --mono: 'JetBrains Mono', monospace;
       --timer-warning: #f59e0b;
       --timer-danger: #ef4444;
+
+      /* Layout offsets for the fixed exam header stack (nav + topbar + progress strip).
+         Fallback values here; JS measures the real rendered heights and overwrites
+         these on load/resize/quiz-start so the stack never overlaps or gaps. */
+      --nav-h: 70px;
+      --topbar-h: 46px;
+      --progress-h: 3px;
     }
 
     html { scroll-behavior: smooth; }
@@ -340,32 +347,29 @@
     }
 
     /* ── EXAM AREA ── */
-#examSection {
-  display: none;
-  min-height: 100vh;
-  padding-top: 115px;
-}
-
-.exam-content {
-  padding: 2rem 0 4rem;
-  display: flex;
-  justify-content: center;
-}
+    #examSection {
+      display: none;
+      min-height: 100vh;
+      /* Reserve exactly as much space as the fixed nav + exam topbar + progress
+         strip actually take up, plus a little breathing room. These three
+         custom properties are kept in sync with the real DOM by syncExamOffsets(). */
+      padding-top: calc(var(--nav-h) + var(--topbar-h) + var(--progress-h) + 1.5rem);
+    }
 
     .exam-topbar {
-  position: fixed;
-  top: 94px ;
-  left: 0;
-  right: 0;
-  z-index: 90;
-  background: var(--accent);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.6rem 4rem;
-  font-family: var(--mono);
-  font-size: 0.75rem;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      z-index: 90;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 4rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
     }
     .exam-topbar-left { display: flex; align-items: center; gap: 2rem; }
     .exam-quiz-name { font-weight: 600; font-size: 0.8rem; }
@@ -390,13 +394,13 @@
     .exam-timer.danger { background: rgba(239,68,68,0.3); border-color: rgba(239,68,68,0.6); }
 
     .exam-progress-strip {
-  position: fixed;
-  top: 138;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(0,0,0,0.05);
-  z-index: 91;
+      position: fixed;
+      top: calc(var(--nav-h) + var(--topbar-h));
+      left: 0;
+      right: 0;
+      height: var(--progress-h);
+      background: rgba(0,0,0,0.05);
+      z-index: 91;
     }
     .exam-progress-fill {
       height: 100%;
@@ -405,7 +409,7 @@
     }
 
     .exam-content {
-      padding: 5rem 0 4rem;
+      padding: 1.5rem 0 4rem;
       display: flex;
       justify-content: center;
     }
@@ -526,7 +530,7 @@
     .result-badge.show { display: inline-block; }
     .result-badge.correct-badge { background: var(--green-bg); color: var(--green); }
     .result-badge.wrong-badge { background: var(--red-bg); color: var(--red); }
-    .result-badge.timeout-badge { background: #fffbeeb; color: var(--timer-warning); }
+    .result-badge.timeout-badge { background: #fffbeb; color: var(--timer-warning); }
 
     .sheet-footer {
       display: flex;
@@ -592,6 +596,7 @@
       .page-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 5.5rem 1.5rem 2rem; }
       #selectorSection { padding: 1.5rem; }
       .hero-stats-card { width: 100%; justify-content: space-around; }
+      .exam-topbar { padding: 0.6rem 1.5rem; flex-wrap: wrap; row-gap: 0.4rem; }
     }
   </style>
 </head>
@@ -912,6 +917,22 @@ let timerInterval = null;
 let timeLeft = QUESTION_TIME;
 let dotStates = [];
 
+// ── LAYOUT SYNC ──────────────────────────────────────────────────────────
+// Measures the real, currently-rendered heights of the fixed nav bar and the
+// exam topbar, then writes them into CSS custom properties. This is what
+// keeps the topbar / gold progress strip / question card from ever
+// overlapping each other, regardless of font-rendering differences across
+// browsers or screen sizes.
+function syncExamOffsets() {
+  const navEl = document.querySelector('nav');
+  const topbarEl = document.querySelector('.exam-topbar');
+  const navH = navEl ? navEl.offsetHeight : 70;
+  const topbarH = (topbarEl && topbarEl.offsetHeight) ? topbarEl.offsetHeight : 46;
+  document.documentElement.style.setProperty('--nav-h', navH + 'px');
+  document.documentElement.style.setProperty('--topbar-h', topbarH + 'px');
+}
+window.addEventListener('resize', syncExamOffsets);
+
 function buildStructuredSections(filteredList = QUIZZES) {
   const container = document.getElementById('sectionsContainer');
   container.innerHTML = '';
@@ -1018,6 +1039,10 @@ function startQuiz(id) {
 
   document.getElementById('examTitle').textContent = currentQuiz.title;
   document.getElementById('sheetTitle').textContent = currentQuiz.title;
+
+  // The exam topbar only has real layout once #examSection is display:block,
+  // so re-measure right after showing it (next paint) to lock in accurate offsets.
+  requestAnimationFrame(syncExamOffsets);
 
   renderQuestion();
 }
@@ -1200,6 +1225,7 @@ function backToSelector() {
 }
 
 buildStructuredSections();
+syncExamOffsets();
 </script>
 </body>
 </html>
