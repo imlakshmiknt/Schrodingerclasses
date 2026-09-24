@@ -8974,7 +8974,12 @@ function submitTest() {
   const maxScore = total * 4;
   const pct = Math.max(0, Math.round((score / maxScore) * 100));
   
-  saveProgress(activeTest.id, pct);
+  saveProgress(activeTest.id, pct); // Saves to local browser
+
+  // --- NEW: SEND SCORE TO FIRESTORE DATABASE ---
+  if (window.saveTestProgressToDB) {
+    window.saveTestProgressToDB(activeTest.id, activeTest.title, pct);
+  }
 
   let emoji = '💡', title = 'Keep Practicing!';
   if (pct >= 80) { emoji = '🏆'; title = 'Outstanding Performance!'; }
@@ -9022,10 +9027,12 @@ document.getElementById('totalTestsNum').textContent = TESTS.length;
 updateOverallBest();
 buildTestGrid();
 </script>
-  <!-- FIREBASE AUTH GUARD -->
+
+<!-- FIREBASE AUTH & DATABASE GUARD -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
@@ -9038,28 +9045,56 @@ buildTestGrid();
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // AUTOMATIC DATABASE WRITER
+  window.saveTestProgressToDB = async (testId, testTitle, scorePct) => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Automatically route the test score to the correct dashboard progress bar
+    let category = 'mechanics'; // Default
+    const id = testId.toLowerCase();
+    
+    if (id.includes('heat') || id.includes('thermo')) {
+      category = 'thermodynamics';
+    } else if (id.includes('electric') || id.includes('magnet') || id.includes('electro')) {
+      category = 'electrodynamics';
+    } else if (id.includes('light') || id.includes('optic') || id.includes('eye')) {
+      category = 'modernPhysics'; 
+    }
+
+    try {
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      
+      // Ensure we only save the highest score the student achieves
+      if (docSnap.exists()) {
+        const currentScore = docSnap.data()[category] || 0;
+        const bestScore = Math.max(currentScore, scorePct);
+
+        await updateDoc(userRef, {
+          [category]: bestScore,
+          recentActivityTitle: `Completed <strong>${testTitle} Test</strong>`,
+          recentActivitySub: `${category.toUpperCase()} • Score: ${scorePct}%`
+        });
+      }
+    } catch (error) {
+      console.error("Error saving score to database:", error);
+    }
+  };
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // Not logged in -> Kick them to login.html
       window.location.href = "login.html"; 
     } else {
-      // Logged in -> Reveal the page
       document.body.style.display = "block"; 
       
-      // --- UPDATE NAVBAR ---
       const navBtn = document.getElementById('navAuthBtn');
       if (navBtn) {
-        // Extract first name (or default to 'Student')
         const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Student';
-        
-        // Change button text to Welcome message
         navBtn.innerHTML = `👋 Welcome, ${firstName}`;
-        
-        // FIX: Remove the 'nav-cta' class so the text doesn't stay white
         navBtn.classList.remove('nav-cta');
-        
-        // Set the text to dark blue/black so it shows up on the white navbar
         navBtn.style.color = "#0b1f3a"; 
         navBtn.style.fontWeight = "700";
         navBtn.style.textDecoration = "none";
