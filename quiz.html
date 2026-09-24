@@ -618,7 +618,7 @@
   </div>
   <div class="nav-right">
     <span class="search-icon">🔍</span>
-    <a href="login.html" class="nav-cta">Login</a>
+    <a href="login.html" class="nav-cta" id="navAuthBtn">Login</a>
   </div>
 </nav>
 
@@ -4401,6 +4401,25 @@ syncExamOffsets();
     } else {
       // Logged in -> Reveal the page
       document.body.style.display = "block"; 
+      
+      // --- UPDATE NAVBAR ---
+      const navBtn = document.getElementById('navAuthBtn');
+      if (navBtn) {
+        // Extract first name (or default to 'Student')
+        const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Student';
+        
+        // Change button text to Welcome message
+        navBtn.innerHTML = `👋 Welcome, ${firstName}`;
+        
+        // FIX: Remove the 'nav-cta' class so the text doesn't stay white
+        navBtn.classList.remove('nav-cta');
+        
+        // Set the text to dark blue/black so it shows up on the white navbar
+        navBtn.style.color = "#0b1f3a"; 
+        navBtn.style.fontWeight = "700";
+        navBtn.style.textDecoration = "none";
+        navBtn.style.fontSize = "0.95rem";
+      }
     }
   });
 </script>
