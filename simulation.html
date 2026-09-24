@@ -975,6 +975,7 @@ buildCards();
       document.body.style.display = "block"; 
       
       // --- UPDATE NAVBAR ---
+      // --- UPDATE NAVBAR ---
       const navBtn = document.getElementById('navAuthBtn');
       if (navBtn) {
         // Extract first name (or default to 'Student')
@@ -983,11 +984,14 @@ buildCards();
         // Change button text to Welcome message
         navBtn.innerHTML = `👋 Welcome, ${firstName}`;
         
-        // Make it look like plain text instead of a solid button
-        navBtn.style.background = "transparent";
-        navBtn.style.color = "var(--ink)";
-        navBtn.style.boxShadow = "none";
-        navBtn.style.fontWeight = "600";
+        // FIX: Remove the 'nav-cta' class so the text doesn't stay white
+        navBtn.classList.remove('nav-cta');
+        
+        // Set the text to dark blue/black so it shows up on the white navbar
+        navBtn.style.color = "#0b1f3a"; 
+        navBtn.style.fontWeight = "700";
+        navBtn.style.textDecoration = "none";
+        navBtn.style.fontSize = "0.95rem";
       }
     }
   });
