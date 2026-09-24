@@ -316,7 +316,7 @@
     <a href="test.html">📝 Tests</a>
     <a href="simulation.html" class="active">👨‍🔬 Simulations</a>
   </div>
-  <a href="login.html" class="nav-cta">Login</a>
+  <a href="login.html" class="nav-cta" id="navAuthBtn">Login</a>
 </nav>
 
 <!-- PAGE HEADER HERO -->
@@ -966,13 +966,29 @@ buildCards();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, (user) => {
+ onAuthStateChanged(auth, (user) => {
     if (!user) {
       // Not logged in -> Kick them to login.html
       window.location.href = "login.html"; 
     } else {
       // Logged in -> Reveal the page
       document.body.style.display = "block"; 
+      
+      // --- UPDATE NAVBAR ---
+      const navBtn = document.getElementById('navAuthBtn');
+      if (navBtn) {
+        // Extract first name (or default to 'Student')
+        const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Student';
+        
+        // Change button text to Welcome message
+        navBtn.innerHTML = `👋 Welcome, ${firstName}`;
+        
+        // Make it look like plain text instead of a solid button
+        navBtn.style.background = "transparent";
+        navBtn.style.color = "var(--ink)";
+        navBtn.style.boxShadow = "none";
+        navBtn.style.fontWeight = "600";
+      }
     }
   });
 </script>
