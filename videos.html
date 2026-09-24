@@ -597,7 +597,7 @@
 <!-- MAIN -->
 <main>
 
-  <!-- ══════════════ CLASS 9 ══════════════ -->
+  <!-- CLASS 9 -->
   <div class="class-heading">
     <div class="class-num">09</div>
     <div>
@@ -811,7 +811,7 @@
     </div>
   </div>
 
-  <!-- ══════════════ CLASS 10 ══════════════ -->
+  <!-- CLASS 10 -->
   <div class="class-heading">
     <div class="class-num">10</div>
     <div>
@@ -992,7 +992,7 @@
     </div>
   </div>
 
-  <!-- ══════════════ CLASS 11 ══════════════ -->
+  <!-- CLASS 11 -->
   <div class="class-heading">
     <div class="class-num">11</div>
     <div>
@@ -1332,7 +1332,7 @@
     </div>
   </div>
 
-  <!-- ══════════════ CLASS 12 ══════════════ -->
+  <!-- CLASS 12 -->
   <div class="class-heading">
     <div class="class-num">12</div>
     <div>
@@ -1611,30 +1611,13 @@
       h.style.display = (num === course) ? 'flex' : 'none';
     });
   }
-
-  // Modal
-  function openVideo(id, title, sub) {
-    document.getElementById('modalIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalSub').textContent = sub;
-    document.getElementById('modalYtLink').href = `https://www.youtube.com/watch?v=${id}`;
-    document.getElementById('modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeVideo() {
-    document.getElementById('modal').classList.remove('open');
-    document.getElementById('modalIframe').src = '';
-    document.body.style.overflow = '';
-  }
-  function closeModal(e) {
-    if (e.target === document.getElementById('modal')) closeVideo();
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
 </script>
-  <!-- FIREBASE AUTH GUARD -->
+
+<!-- FIREBASE AUTH & DATABASE SCRIPT -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
@@ -1647,28 +1630,59 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
+  // AUTOMATIC VIDEO ACTIVITY RECORDER
+  window.openVideo = async (id, title, sub) => {
+    // 1. Open the video modal player
+    document.getElementById('modalIframe').src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalSub').textContent = sub;
+    document.getElementById('modalYtLink').href = `https://www.youtube.com/watch?v=${id}`;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // 2. Push activity to Firestore database
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          recentActivityTitle: `Watched <strong>${title}</strong>`,
+          recentActivitySub: `${sub} • Just now`
+        });
+      } catch (error) {
+        console.error("Error recording video activity:", error);
+      }
+    }
+  };
+
+  window.closeVideo = () => {
+    document.getElementById('modal').classList.remove('open');
+    document.getElementById('modalIframe').src = '';
+    document.body.style.overflow = '';
+  };
+
+  window.closeModal = (e) => {
+    if (e.target === document.getElementById('modal')) closeVideo();
+  };
+
+  document.addEventListener('keydown', e => { 
+    if (e.key === 'Escape') closeVideo(); 
+  });
+
+  // Auth Guard
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // Not logged in -> Kick them to login.html
       window.location.href = "login.html"; 
     } else {
-      // Logged in -> Reveal the page
       document.body.style.display = "block"; 
       
-      // --- UPDATE NAVBAR ---
       const navBtn = document.getElementById('navAuthBtn');
       if (navBtn) {
-        // Extract first name (or default to 'Student')
         const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Student';
-        
-        // Change button text to Welcome message
         navBtn.innerHTML = `👋 Welcome, ${firstName}`;
-        
-        // FIX: Remove the 'nav-cta' class so the text doesn't stay white
         navBtn.classList.remove('nav-cta');
-        
-        // Set the text to dark blue/black so it shows up on the white navbar
         navBtn.style.color = "#0b1f3a"; 
         navBtn.style.fontWeight = "700";
         navBtn.style.textDecoration = "none";
