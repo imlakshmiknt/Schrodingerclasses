@@ -12,344 +12,514 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-right: #f8fafc;
-      --bg-left: #040d1a;
+      --bg-main: #f3f4f6;
+      --bg-panel: #040d1a;
+      --bg-sidebar: #061121;
       --ink: #0f172a;
-      --ink-light: #475569;
+      --ink-light: #64748b;
       --accent: #0b1f3a;
-      --accent-hover: #163156;
       --gold: #b8892e;
       --gold-light: #ddb96a;
       --border: #e2e8f0;
-      --error: #ef4444;
       
       --font-display: 'Playfair Display', serif;
       --font-body: 'Inter', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
-      --shadow-hover: 0 10px 30px rgba(11, 31, 58, 0.08);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 15px rgba(0,0,0,0.03);
+      --shadow-hover: 0 10px 25px rgba(0,0,0,0.06);
     }
 
     body {
-      background: var(--bg-right);
-      color: var(--ink);
-      font-family: var(--font-body);
-      min-height: 100vh;
-      display: flex;
-      overflow-x: hidden;
-      transition: background-color 0.4s ease;
+      background: var(--bg-main); color: var(--ink);
+      font-family: var(--font-body); min-height: 100vh;
+      display: flex; overflow-x: hidden; transition: background-color 0.4s ease;
     }
 
-    /* ── AUTH LAYOUT (50/50 SPLIT) ── */
-    .auth-wrapper { display: flex; width: 100%; min-height: 100vh; }
+    /* ══════════════════════════════
+       AUTH LAYOUT (LOGIN SCREEN)
+    ══════════════════════════════ */
+    .auth-wrapper { display: flex; width: 100%; min-height: 100vh; background: white; }
     .left-panel {
-      flex: 1; background: linear-gradient(135deg, var(--bg-left) 0%, #0a192f 100%);
+      flex: 1; background: linear-gradient(135deg, var(--bg-panel) 0%, #0a192f 100%);
       padding: 4rem 5rem; display: flex; flex-direction: column; 
       justify-content: space-between; position: relative; overflow: hidden; color: white;
-      transition: all 0.4s ease;
     }
     .left-panel::before {
       content: ''; position: absolute; top: -10%; left: -10%;
       width: 60vw; height: 60vw; border-radius: 50%;
-      background: radial-gradient(circle, rgba(221, 185, 106, 0.08) 0%, transparent 60%);
-      pointer-events: none;
+      background: radial-gradient(circle, rgba(221, 185, 106, 0.08) 0%, transparent 60%); pointer-events: none;
     }
 
-    .brand-logo { text-decoration: none; display: inline-block; position: relative; z-index: 10; }
-    .logo-text { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: white; line-height: 1.1; letter-spacing: -0.02em; }
+    .brand-logo { text-decoration: none; display: flex; align-items: center; gap: 10px; position: relative; z-index: 10; }
+    .logo-icon { width: 32px; height: 32px; background: rgba(221, 185, 106, 0.15); border: 1px solid var(--gold-light); border-radius: 8px; display: flex; justify-content: center; align-items: center; color: var(--gold-light); font-size: 1.2rem; }
+    .logo-text { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; color: white; line-height: 1.1; }
     .logo-text span { color: var(--gold-light); }
-    .logo-tag { display: block; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 6px; }
 
     .brand-content { position: relative; z-index: 10; margin-top: 4rem; }
-    .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-light); font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
-    .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold-light); display: block; }
-    .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
-    .hero-title em { font-style: italic; color: var(--gold-light); font-weight: 700; }
-    .hero-desc { color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.6; max-width: 480px; font-weight: 300; }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-desc { color: rgba(255,255,255,0.7); font-size: 1.05rem; line-height: 1.6; max-width: 480px; }
     
-    .feature-list { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-    .feature-item { display: flex; align-items: center; gap: 1rem; color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 500; }
-    .feature-icon { width: 24px; height: 24px; border-radius: 6px; background: rgba(221,185,106,0.1); border: 1px solid rgba(221,185,106,0.3); display: flex; align-items: center; justify-content: center; color: var(--gold-light); }
+    .feature-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .feature-item { display: flex; align-items: center; gap: 1rem; color: rgba(255,255,255,0.9); font-size: 0.95rem; font-weight: 500; }
+    .feature-icon { width: 24px; height: 24px; border-radius: 6px; background: rgba(221,185,106,0.1); display: flex; align-items: center; justify-content: center; color: var(--gold-light); }
 
-    .brand-footer { position: relative; z-index: 10; margin-top: 4rem; }
-    .equation { font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.9); letter-spacing: 0.05em; margin-bottom: 1rem; font-weight: 500; }
-    .author-info { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-    .author-info strong { color: white; font-weight: 600; font-size: 0.9rem; }
+    .brand-footer { position: relative; z-index: 10; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+    .brand-footer strong { color: white; font-weight: 600; }
 
-    .right-panel { flex: 1; display: flex; flex-direction: column; position: relative; transition: all 0.4s ease; }
-    .top-nav { position: absolute; top: 2rem; right: 3rem; z-index: 20; }
-    .back-home { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--ink-light); font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
-    .back-home:hover { color: var(--accent); }
-
-    .panel-center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem; }
-    
-    /* AUTHENTICATION FORM */
-    .form-container { width: 100%; max-width: 420px; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .form-header { margin-bottom: 2.5rem; }
+    .right-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem; position: relative; }
+    .form-container { width: 100%; max-width: 420px; }
+    .form-header { margin-bottom: 2rem; }
     .form-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
-    .form-subtitle { color: var(--ink-light); font-size: 1rem; font-weight: 400; }
+    .form-subtitle { color: var(--ink-light); font-size: 0.95rem; }
     
-    .auth-toggle { display: flex; background: #e2e8f0; border-radius: 10px; padding: 4px; margin-bottom: 2.5rem; position: relative; }
-    .toggle-btn { flex: 1; text-align: center; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-light); cursor: pointer; border: none; background: transparent; position: relative; z-index: 2; transition: color 0.3s; }
+    .auth-toggle { display: flex; background: #f1f5f9; border-radius: 10px; padding: 4px; margin-bottom: 2rem; position: relative; }
+    .toggle-btn { flex: 1; padding: 0.75rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-light); text-align: center; cursor: pointer; border: none; background: none; position: relative; z-index: 2; }
     .toggle-btn.active { color: var(--ink); }
-    .toggle-pill { position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1; }
+    .toggle-pill { position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 8px; box-shadow: var(--shadow-sm); transition: transform 0.3s; z-index: 1; }
     .toggle-pill.register-mode { transform: translateX(100%); }
 
-    .input-group { position: relative; margin-bottom: 1.5rem; }
-    .input-field { width: 100%; padding: 1.2rem 1rem 0.8rem; background: white; border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); outline: none; transition: all 0.2s; }
-    .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(11,31,58,0.05); }
+    .input-group { position: relative; margin-bottom: 1.2rem; }
+    .input-field { width: 100%; padding: 1.2rem 1rem 0.8rem; background: white; border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); outline: none; transition: border-color 0.2s; }
+    .input-field:focus { border-color: var(--accent); }
     .floating-label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.95rem; pointer-events: none; transition: all 0.2s ease-out; background: white; padding: 0 0.2rem; }
     .input-field:focus ~ .floating-label, .input-field:not(:placeholder-shown) ~ .floating-label { top: 0; transform: translateY(-50%) scale(0.85); color: var(--accent); font-weight: 600; }
 
-    .btn-submit { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 10px; font-family: var(--font-body); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
-    .btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
-
-    .divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .btn-submit { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn-submit:hover { background: #163156; }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-    .btn-google { width: 100%; padding: 0.9rem; background: white; color: var(--ink); border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem; transition: all 0.2s; }
-    .btn-google:hover { border-color: #cbd5e1; background: #f1f5f9; }
+    .btn-google { width: 100%; padding: 0.9rem; background: white; border: 1.5px solid var(--border); border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+    .btn-google:hover { background: #f8fafc; }
 
     .form-section { display: none; }
-    .form-section.active { display: block; animation: fadeIn 0.4s ease; }
+    .form-section.active { display: block; animation: fadeIn 0.4s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .msg-box { padding: 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; margin-top: 1.5rem; display: none; background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
+    .msg-box { padding: 1rem; border-radius: 8px; font-size: 0.85rem; margin-top: 1rem; display: none; background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
 
     /* ══════════════════════════════
-       NEW FULL-WIDTH DASHBOARD 
+       FULL-WIDTH DASHBOARD 
     ══════════════════════════════ */
-    .dashboard-container { display: none; width: 100%; min-height: 100vh; flex-direction: column; background: #f4f7f9; }
+    .dashboard-container { display: none; width: 100%; height: 100vh; overflow: hidden; }
     
-    /* When user is logged in, body gets this class */
-    body.dashboard-mode .left-panel { display: none; }
-    body.dashboard-mode .right-panel { width: 100%; padding: 0; }
-    body.dashboard-mode .top-nav { display: none; }
-    body.dashboard-mode .panel-center { display: none; }
-    body.dashboard-mode .dashboard-container { display: flex; animation: fadeUp 0.6s ease both; }
+    /* Layout Switch Logic */
+    body.dashboard-mode .auth-wrapper { display: none; }
+    body.dashboard-mode .dashboard-container { display: flex; }
 
-    /* Dash Navbar */
-    .dash-nav {
+    /* Sidebar */
+    .sidebar { width: 260px; background: var(--bg-sidebar); color: white; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,0.05); }
+    .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    
+    .nav-menu { padding: 1.5rem 1rem; flex: 1; overflow-y: auto; }
+    .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem; color: #94a3b8; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 0.9rem; transition: all 0.2s; margin-bottom: 0.2rem; }
+    .nav-item:hover { color: white; background: rgba(255,255,255,0.05); }
+    .nav-item.active { color: var(--gold-light); background: rgba(221, 185, 106, 0.1); font-weight: 600; }
+    .nav-item svg { width: 18px; height: 18px; opacity: 0.8; }
+    
+    .nav-divider { margin: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .nav-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #475569; padding: 0 1rem; margin-bottom: 0.5rem; }
+
+    .sidebar-quote {
+      margin: 1rem; padding: 1.5rem; border-radius: 12px;
+      background: linear-gradient(rgba(6,17,33,0.85), rgba(6,17,33,0.95)), url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400&auto=format&fit=crop') center/cover;
+      border: 1px solid rgba(255,255,255,0.08); text-align: left;
+    }
+    .quote-text { font-family: var(--font-display); font-size: 0.95rem; font-style: italic; color: #e2e8f0; line-height: 1.5; margin-bottom: 0.5rem; transition: opacity 0.5s; }
+    .quote-author { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; color: var(--gold-light); transition: opacity 0.5s; }
+
+    /* Main Content Area */
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow-y: auto; background: var(--bg-main); }
+    
+    /* Topbar */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2.5rem; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .search-bar { display: flex; align-items: center; background: #f1f5f9; padding: 0.6rem 1rem; border-radius: 8px; width: 350px; border: 1px solid transparent; transition: border 0.2s; }
+    .search-bar:focus-within { border-color: var(--gold-light); background: white; }
+    .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 0.85rem; padding-left: 0.8rem; color: var(--ink); }
+    .search-bar svg { color: #94a3b8; }
+    
+    .topbar-right { display: flex; align-items: center; gap: 1.5rem; }
+    .icon-btn { background: none; border: none; color: #64748b; cursor: pointer; position: relative; }
+    .icon-btn:hover { color: var(--ink); }
+    .badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; }
+    
+    .user-profile { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 8px; transition: background 0.2s; border: 1px solid transparent; }
+    .user-profile:hover { background: #f8fafc; border-color: var(--border); }
+    .avatar { width: 36px; height: 36px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; }
+    .user-info { display: flex; flex-direction: column; }
+    .user-role { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .user-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+
+    /* Dashboard Content Padding */
+    .dash-content { padding: 2rem 2.5rem 4rem; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+    /* Hero Banner */
+    .hero-banner { 
+      background: radial-gradient(circle at 85% 50%, #1a0b2e 0%, var(--bg-panel) 60%);
+      border-radius: 16px; padding: 2.5rem 3rem; color: white;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 1.5rem 4rem; background: var(--bg-left); color: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 2rem; position: relative; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(11,31,58,0.15);
     }
-    .dash-nav .logo-text { font-size: 1.4rem; }
-    .dash-user-controls { display: flex; align-items: center; gap: 1.5rem; }
-    .dash-greeting { font-size: 0.95rem; color: rgba(255,255,255,0.8); font-weight: 500; }
-    .dash-greeting strong { color: white; }
-    .btn-logout {
-      background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.5rem 1.2rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
-      cursor: pointer; transition: all 0.2s;
+    .hero-banner::after {
+      content: 'iħ ∂Ψ/∂t = ĤΨ'; position: absolute; right: 3rem; font-family: var(--font-display);
+      font-size: 2.5rem; font-style: italic; color: rgba(255,255,255,0.05); pointer-events: none;
     }
-    .btn-logout:hover { background: white; color: var(--bg-left); }
+    .hero-text h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-light); margin-bottom: 0.5rem; }
+    .hero-text h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .hero-text p { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .btn-hero { background: var(--gold-light); color: var(--ink); padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
+    .btn-hero:hover { transform: translateX(4px); }
 
-    /* Dash Content */
-    .dash-main { flex: 1; padding: 4rem; max-width: 1200px; margin: 0 auto; width: 100%; }
-    .dash-page-title { font-family: var(--font-display); font-size: 2.8rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
-    .dash-page-sub { color: var(--ink-light); font-size: 1.1rem; margin-bottom: 3rem; font-weight: 400; }
-
-    .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-    .dash-card {
-      background: white; border: 1px solid var(--border); border-radius: 16px;
-      padding: 2.5rem 2rem; text-decoration: none; color: inherit;
-      display: flex; flex-direction: column; align-items: flex-start;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative; overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-    }
-    .dash-card::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-      background: var(--gold-light); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
-    }
-    .dash-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); border-color: transparent; }
-    .dash-card:hover::before { transform: scaleX(1); }
+    /* Modules Grid (4 Cards) */
+    .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+    .module-card { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: all 0.3s; display: flex; flex-direction: column; text-decoration: none; color: inherit; position: relative; }
+    .module-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
     
-    .card-icon { width: 52px; height: 52px; border-radius: 14px; background: #f0f4f8; color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; transition: background 0.3s; }
-    .dash-card:hover .card-icon { background: var(--accent); color: white; }
-    .card-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
-    .card-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.6; }
+    .mod-icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .mod-video .mod-icon-wrap { background: #eff6ff; color: #3b82f6; }
+    .mod-mock .mod-icon-wrap { background: #fff7ed; color: #f97316; }
+    .mod-quiz .mod-icon-wrap { background: #f0fdf4; color: #22c55e; }
+    .mod-lab .mod-icon-wrap { background: #faf5ff; color: #a855f7; }
+    
+    .mod-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; display: flex; justify-content: space-between; align-items: center; }
+    .mod-title svg { width: 16px; height: 16px; color: #cbd5e1; transition: transform 0.2s, color 0.2s; }
+    .module-card:hover .mod-title svg { transform: translateX(3px); color: var(--ink); }
+    .mod-desc { font-size: 0.82rem; color: var(--ink-light); line-height: 1.5; margin-bottom: 1.5rem; flex: 1; }
+    .mod-tags { display: flex; gap: 0.8rem; font-size: 0.7rem; color: #94a3b8; font-weight: 500; }
 
-    /* Physicist Quotes Section */
-    .quote-section {
-      text-align: center; padding: 3rem 2rem; margin-top: auto;
-      border-top: 1px solid var(--border); background: #ffffff;
-    }
-    .quote-box {
-      max-width: 700px; margin: 0 auto; height: 60px;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .physicist-quote {
-      font-family: var(--font-display); font-size: 1.25rem; font-style: italic;
-      color: var(--accent); font-weight: 600; line-height: 1.4;
-      opacity: 0; transform: translateY(15px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .physicist-quote.visible { opacity: 1; transform: translateY(0); }
-    .quote-author {
-      font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--gold); margin-top: 0.5rem;
-      opacity: 0; transition: opacity 0.8s ease; delay: 0.2s;
-    }
-    .physicist-quote.visible + .quote-author { opacity: 1; }
+    /* Bottom Section (3 Columns) */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+    .stat-panel { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .panel-header h3 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .panel-header a { font-size: 0.75rem; color: var(--ink-light); text-decoration: none; font-weight: 500; }
+    
+    /* Progress */
+    .progress-content { display: flex; align-items: center; gap: 2rem; }
+    .circle-wrap { width: 90px; height: 90px; border-radius: 50%; background: conic-gradient(var(--gold) 68%, #f1f5f9 0); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+    .circle-inner { width: 74px; height: 74px; background: white; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .circle-inner span { font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1; }
+    .circle-inner small { font-size: 0.6rem; color: var(--ink-light); }
+    
+    .bars-wrap { flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
+    .bar-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; font-weight: 500; color: var(--ink); }
+    .bar-bg { width: 50%; height: 6px; background: #f1f5f9; border-radius: 4px; margin: 0 0.5rem; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--gold-light); border-radius: 4px; }
 
-    @media (max-width: 1024px) {
-      .auth-wrapper { flex-direction: column; }
-      .left-panel { flex: none; min-height: 40vh; padding: 3rem 2rem; }
-      .top-nav { top: 1.5rem; right: 1.5rem; }
-      .panel-center { padding: 3rem 1.5rem; }
-      .dash-nav { padding: 1.5rem 2rem; }
-      .dash-main { padding: 3rem 2rem; }
+    /* Lists */
+    .task-list { display: flex; flex-direction: column; gap: 1rem; }
+    .task-item { display: flex; align-items: flex-start; gap: 1rem; cursor: pointer; padding: 0.4rem; border-radius: 8px; transition: background 0.2s; }
+    .task-item:hover { background: #f8fafc; }
+    .task-date { display: flex; flex-direction: column; align-items: center; background: #f1f5f9; padding: 0.4rem 0.6rem; border-radius: 8px; min-width: 45px; }
+    .task-date strong { font-size: 0.9rem; color: var(--accent); line-height: 1; }
+    .task-date small { font-size: 0.65rem; color: var(--ink-light); font-weight: 600; text-transform: uppercase; }
+    .task-info h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .task-info p { font-size: 0.75rem; color: var(--ink-light); }
+    
+    .activity-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .act-item { display: flex; gap: 0.8rem; }
+    .act-icon { color: #94a3b8; padding-top: 2px; }
+    .act-info h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .act-info h4 strong { font-weight: 600; color: var(--ink); }
+    .act-info p { font-size: 0.7rem; color: #94a3b8; }
+
+    @media (max-width: 1200px) {
+      .modules-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<div class="auth-wrapper">
-  
-  <!-- LEFT PANEL (Only visible during Login) -->
+<!-- AUTH WRAPPER (Shown when logged out) -->
+<div class="auth-wrapper" id="authWrapper">
   <div class="left-panel">
     <div class="brand-header">
       <a href="index.html" class="brand-logo">
+        <div class="logo-icon">⚛</div>
         <div class="logo-text">Schrödinger<span>Classes</span></div>
-        <div class="logo-tag">Student Portal</div>
       </a>
     </div>
-
     <div class="brand-content">
-      <div class="eyebrow">Academic Excellence</div>
       <h1 class="hero-title">Master Physics<br>with <em>Precision.</em></h1>
       <p class="hero-desc">Access an advanced ecosystem of video lectures, mock examinations, and interactive simulations tailored for Class 11, 12, JEE, and NEET preparation.</p>
-      
       <div class="feature-list">
-        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> High-definition video lectures & tutorials</div>
-        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> JEE & NEET strict-pattern mock tests</div>
-        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> Real-time quiz performance analytics</div>
-        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> Interactive laboratory simulations</div>
+        <div class="feature-item"><div class="feature-icon">✓</div> High-definition video lectures & tutorials</div>
+        <div class="feature-item"><div class="feature-icon">✓</div> JEE & NEET strict-pattern mock tests</div>
+        <div class="feature-item"><div class="feature-icon">✓</div> Real-time quiz performance analytics</div>
+        <div class="feature-item"><div class="feature-icon">✓</div> Interactive laboratory simulations</div>
       </div>
     </div>
-    
     <div class="brand-footer">
-      <div class="equation">iħ ∂Ψ/∂t = ĤΨ</div>
-      <div class="author-info"><strong>Lakshmi Kant Pandey</strong> — IIT Guwahati<br>Curriculum Designer for Advanced Physics</div>
+      <strong>Lakshmi Kant Pandey</strong> — IIT Guwahati Curriculum Designer
     </div>
   </div>
 
-  <!-- RIGHT PANEL (Auth Form OR Full Dashboard) -->
   <div class="right-panel">
-    
-    <nav class="top-nav">
-      <a href="index.html" class="back-home"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Return to Website</a>
-    </nav>
-
-    <!-- CENTERED AUTH FORM -->
-    <div class="panel-center" id="authBox">
-      <div class="form-container">
-        <div class="form-header">
-          <h2 class="form-title" id="formTitleText">Welcome back.</h2>
-          <p class="form-subtitle" id="formSubText">Enter your credentials to access your portal.</p>
-        </div>
-
-        <div class="auth-toggle">
-          <div class="toggle-pill" id="togglePill"></div>
-          <button class="toggle-btn active" id="btnModeLogin" onclick="setMode('login')">Sign In</button>
-          <button class="toggle-btn" id="btnModeRegister" onclick="setMode('register')">Create Account</button>
-        </div>
-
-        <!-- Login -->
-        <div class="form-section active" id="sectionLogin">
-          <div class="input-group">
-            <input type="email" id="loginEmail" class="input-field" placeholder=" " required />
-            <label class="floating-label">Email Address</label>
-          </div>
-          <div class="input-group">
-            <input type="password" id="loginPass" class="input-field" placeholder=" " required />
-            <label class="floating-label">Password</label>
-          </div>
-          <button class="btn-submit" id="submitLogin" onclick="executeLogin()">Sign In</button>
-        </div>
-
-        <!-- Register -->
-        <div class="form-section" id="sectionRegister">
-          <div class="input-group">
-            <input type="text" id="regName" class="input-field" placeholder=" " required />
-            <label class="floating-label">Full Name</label>
-          </div>
-          <div class="input-group">
-            <input type="email" id="regEmail" class="input-field" placeholder=" " required />
-            <label class="floating-label">Email Address</label>
-          </div>
-          <div class="input-group">
-            <input type="password" id="regPass" class="input-field" placeholder=" " required />
-            <label class="floating-label">Create Password (Min. 6 chars)</label>
-          </div>
-          <button class="btn-submit" id="submitRegister" onclick="executeRegister()">Create Account</button>
-        </div>
-
-        <div id="authMessage" class="msg-box"></div>
-        <div class="divider">Or continue with</div>
-        <button class="btn-google" onclick="executeGoogle()">
-          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg> Google
-        </button>
-      </div>
-    </div>
-
-    <!-- FULL WIDTH DASHBOARD (Only visible when logged in) -->
-    <div class="dashboard-container" id="dashBox">
-      
-      <!-- Dashboard Top Navbar -->
-      <div class="dash-nav">
-        <a href="index.html" class="brand-logo">
-          <div class="logo-text">Schrödinger<span>Classes</span></div>
-        </a>
-        <div class="dash-user-controls">
-          <div class="dash-greeting">Welcome, <strong id="displayUserName">Student</strong></div>
-          <button class="btn-logout" onclick="executeLogout()">Sign Out</button>
-        </div>
+    <div class="form-container">
+      <div class="form-header">
+        <h2 class="form-title" id="formTitleText">Welcome back.</h2>
+        <p class="form-subtitle" id="formSubText">Enter your credentials to access your portal.</p>
       </div>
 
-      <!-- Main Workspace Grid -->
-      <div class="dash-main">
-        <h2 class="dash-page-title">Your Workspace.</h2>
-        <p class="dash-page-sub">Pick up where you left off and continue your mastery.</p>
-
-        <div class="dash-grid">
-          <a href="videos.html" class="dash-card">
-            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-            <h3 class="card-title">Video Library</h3>
-            <p class="card-desc">Stream high-definition physics lectures and chapter-wise breakdowns.</p>
-          </a>
-          <a href="test.html" class="dash-card">
-            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
-            <h3 class="card-title">Mock Examinations</h3>
-            <p class="card-desc">Take full-length tests patterned strictly on JEE and NEET structures.</p>
-          </a>
-          <a href="quiz.html" class="dash-card">
-            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
-            <h3 class="card-title">Concept Quizzes</h3>
-            <p class="card-desc">Reinforce core topics with rapid-fire assessments and analytics.</p>
-          </a>
-          <a href="simulation.html" class="dash-card">
-            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg></div>
-            <h3 class="card-title">Virtual Laboratory</h3>
-            <p class="card-desc">Interact with dynamic physics simulations for deeper conceptual clarity.</p>
-          </a>
-        </div>
+      <div class="auth-toggle">
+        <div class="toggle-pill" id="togglePill"></div>
+        <button class="toggle-btn active" id="btnModeLogin" onclick="setMode('login')">Sign In</button>
+        <button class="toggle-btn" id="btnModeRegister" onclick="setMode('register')">Create Account</button>
       </div>
 
-      <!-- Animated Quotes Footer -->
-      <div class="quote-section">
-        <div class="quote-box">
-          <div id="physics-quote" class="physicist-quote">Loading wisdom...</div>
-          <div id="physics-author" class="quote-author"></div>
+      <!-- Login -->
+      <div class="form-section active" id="sectionLogin">
+        <div class="input-group">
+          <input type="email" id="loginEmail" class="input-field" placeholder=" " required />
+          <label class="floating-label">Email Address</label>
         </div>
+        <div class="input-group">
+          <input type="password" id="loginPass" class="input-field" placeholder=" " required />
+          <label class="floating-label">Password</label>
+        </div>
+        <button class="btn-submit" onclick="executeLogin()">Sign In</button>
       </div>
 
+      <!-- Register -->
+      <div class="form-section" id="sectionRegister">
+        <div class="input-group">
+          <input type="text" id="regName" class="input-field" placeholder=" " required />
+          <label class="floating-label">Full Name</label>
+        </div>
+        <div class="input-group">
+          <input type="email" id="regEmail" class="input-field" placeholder=" " required />
+          <label class="floating-label">Email Address</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="regPass" class="input-field" placeholder=" " required />
+          <label class="floating-label">Create Password (Min. 6 chars)</label>
+        </div>
+        <button class="btn-submit" onclick="executeRegister()">Create Account</button>
+      </div>
+
+      <div id="authMessage" class="msg-box"></div>
+      <div class="divider">Or continue with</div>
+      <button class="btn-google" onclick="executeGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg> Google
+      </button>
     </div>
   </div>
+</div>
+
+<!-- DASHBOARD (Shown when logged in) -->
+<div class="dashboard-container" id="dashBox">
+  
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">⚛</div>
+      <div class="logo-text" style="font-size: 1.1rem;">Schrödinger<span>Classes</span></div>
+    </div>
+    
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-item active">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home
+      </a>
+      <a href="videos.html" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Video Library
+      </a>
+      <a href="test.html" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Mock Examinations
+      </a>
+      <a href="quiz.html" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Concept Quizzes
+      </a>
+      <a href="simulation.html" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg> Virtual Laboratory
+      </a>
+      
+      <div class="nav-divider"></div>
+      <div class="nav-label">Analytics</div>
+      
+      <a href="#" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> My Progress
+      </a>
+      <a href="#" class="nav-item">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg> Bookmarks
+      </a>
+    </nav>
+    
+    <div class="sidebar-quote">
+      <div id="sideQuote" class="quote-text">"Physics is not just a subject, it is the language the universe uses to explain itself."</div>
+      <div id="sideAuthor" class="quote-author">— Lakshmi Kant</div>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <main class="main-wrapper">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Search lectures, topics, quizzes..." />
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="badge"></span>
+        </button>
+        <div class="user-profile" onclick="executeLogout()" title="Click to Sign Out">
+          <div class="avatar" id="userInitials">IK</div>
+          <div class="user-info">
+            <span class="user-role">Student Portal</span>
+            <span class="user-name" id="displayUserName">Welcome back</span>
+          </div>
+          <svg width="14" height="14" fill="none" stroke="#64748b" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </div>
+    </header>
+
+    <div class="dash-content">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h3>Welcome to</h3>
+          <h1>Schrödinger Classes</h1>
+          <p>Learn Physics. Think Deeper. Go Further.</p>
+          <button class="btn-hero">Continue Learning &rarr;</button>
+        </div>
+      </div>
+
+      <!-- 4 Core Modules -->
+      <div class="modules-grid">
+        <a href="videos.html" class="module-card mod-video">
+          <div class="mod-icon-wrap"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+          <div class="mod-title">Video Library <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+          <div class="mod-desc">Stream high-definition physics lectures and chapter-wise breakdowns.</div>
+          <div class="mod-tags"><span>500+ Lectures</span><span>|</span><span>HD Quality</span></div>
+        </a>
+        <a href="test.html" class="module-card mod-mock">
+          <div class="mod-icon-wrap"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+          <div class="mod-title">Mock Examinations <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+          <div class="mod-desc">Take full-length tests patterned strictly on JEE and NEET structures.</div>
+          <div class="mod-tags"><span>Topicwise</span><span>|</span><span>Full Syllabus</span></div>
+        </a>
+        <a href="quiz.html" class="module-card mod-quiz">
+          <div class="mod-icon-wrap"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+          <div class="mod-title">Concept Quizzes <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+          <div class="mod-desc">Reinforce core topics with rapid-fire assessments and analytics.</div>
+          <div class="mod-tags"><span>Instant Feedback</span><span>|</span><span>Detailed Solutions</span></div>
+        </a>
+        <a href="simulation.html" class="module-card mod-lab">
+          <div class="mod-icon-wrap"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg></div>
+          <div class="mod-title">Virtual Laboratory <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+          <div class="mod-desc">Interact with dynamic physics simulations for deeper conceptual clarity.</div>
+          <div class="mod-tags"><span>Simulations</span><span>|</span><span>Visual Learning</span></div>
+        </a>
+      </div>
+
+      <!-- Bottom 3 Columns -->
+      <div class="stats-grid">
+        
+        <!-- Progress -->
+        <div class="stat-panel">
+          <div class="panel-header">
+            <h3><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Your Progress</h3>
+            <a href="#">View Details &rarr;</a>
+          </div>
+          <div class="progress-content">
+            <div class="circle-wrap">
+              <div class="circle-inner"><span>68%</span><small>Overall</small></div>
+            </div>
+            <div class="bars-wrap">
+              <div class="bar-row">
+                <span style="width:100px;">Mechanics</span>
+                <div class="bar-bg"><div class="bar-fill" style="width: 78%;"></div></div>
+                <span>78%</span>
+              </div>
+              <div class="bar-row">
+                <span style="width:100px;">Electrodynamics</span>
+                <div class="bar-bg"><div class="bar-fill" style="width: 62%;"></div></div>
+                <span>62%</span>
+              </div>
+              <div class="bar-row">
+                <span style="width:100px;">Modern Physics</span>
+                <div class="bar-bg"><div class="bar-fill" style="width: 54%;"></div></div>
+                <span>54%</span>
+              </div>
+              <div class="bar-row">
+                <span style="width:100px;">Thermodynamics</span>
+                <div class="bar-bg"><div class="bar-fill" style="width: 71%;"></div></div>
+                <span>71%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming Tasks -->
+        <div class="stat-panel">
+          <div class="panel-header">
+            <h3><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Upcoming Tasks</h3>
+            <a href="#">View All &rarr;</a>
+          </div>
+          <div class="task-list">
+            <div class="task-item">
+              <div class="task-date"><strong>28</strong><small>Sep</small></div>
+              <div class="task-info">
+                <h4>Class 12 Mock Test</h4>
+                <p>10:00 AM • Full Syllabus (3 hours)</p>
+              </div>
+            </div>
+            <div class="task-item">
+              <div class="task-date"><strong>01</strong><small>Oct</small></div>
+              <div class="task-info">
+                <h4>Electrodynamics Quiz</h4>
+                <p>7:00 PM • 25 Conceptual MCQs</p>
+              </div>
+            </div>
+            <div class="task-item">
+              <div class="task-date"><strong>03</strong><small>Oct</small></div>
+              <div class="task-info">
+                <h4>Data Analysis Submission</h4>
+                <p>Geiger-Müller Lab Report Due</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="stat-panel">
+          <div class="panel-header">
+            <h3><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Recent Activity</h3>
+            <a href="#">View All &rarr;</a>
+          </div>
+          <div class="activity-list">
+            <div class="act-item">
+              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+              <div class="act-info">
+                <h4>Watched <strong>Gauss's Law</strong></h4>
+                <p>Electrodynamics • 45 min ago</p>
+              </div>
+            </div>
+            <div class="act-item">
+              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              <div class="act-info">
+                <h4>Completed <strong>10 MCQs</strong></h4>
+                <p>Current Electricity • 2 hours ago</p>
+              </div>
+            </div>
+            <div class="act-item">
+              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg></div>
+              <div class="act-info">
+                <h4>Explored <strong>SHM Simulation</strong></h4>
+                <p>Virtual Lab • 1 day ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
 </div>
 
 <script type="module">
@@ -370,7 +540,7 @@
   const provider = new GoogleAuthProvider();
   const msgBox = document.getElementById('authMessage');
 
-  // View Toggles
+  // Form View Toggles
   window.setMode = (mode) => {
     document.getElementById('btnModeLogin').classList.toggle('active', mode === 'login');
     document.getElementById('btnModeRegister').classList.toggle('active', mode === 'register');
@@ -384,7 +554,7 @@
 
   function displayError(msg) { msgBox.textContent = msg; msgBox.style.display = 'block'; }
 
-  // ── PHYSICIST QUOTES LOGIC ──
+  // ── PHYSICIST QUOTES (SIDEBAR) ──
   const quotes = [
     { text: `"I think I can safely say that nobody understands quantum mechanics."`, author: "Richard Feynman" },
     { text: `"Imagination is more important than knowledge. Knowledge is limited."`, author: "Albert Einstein" },
@@ -395,39 +565,41 @@
   let quoteIdx = 0;
   
   function cycleQuotes() {
-    const qText = document.getElementById('physics-quote');
-    const qAuthor = document.getElementById('physics-author');
+    const qText = document.getElementById('sideQuote');
+    const qAuthor = document.getElementById('sideAuthor');
     if (!qText || !qAuthor) return;
 
-    // Fade Out
-    qText.classList.remove('visible');
+    qText.style.opacity = '0';
+    qAuthor.style.opacity = '0';
     
     setTimeout(() => {
-      // Update Content
       qText.textContent = quotes[quoteIdx].text;
       qAuthor.textContent = `— ${quotes[quoteIdx].author}`;
       
-      // Fade In
-      qText.classList.add('visible');
+      qText.style.opacity = '1';
+      qAuthor.style.opacity = '1';
       
-      // Move to next quote
       quoteIdx = (quoteIdx + 1) % quotes.length;
-    }, 800); // Wait for fade out to complete before swapping text
+    }, 500); 
   }
 
-  // Auth State Guard
+  // Auth Guard & UI Setup
   onAuthStateChanged(auth, user => {
     if (user) {
-      // Switch layout to full dashboard
       document.body.classList.add('dashboard-mode');
-      const nameStr = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-      document.getElementById('displayUserName').textContent = nameStr;
       
-      // Start Quote Cycle
-      cycleQuotes(); // run immediately
-      setInterval(cycleQuotes, 5000); // then every 5 seconds
+      // Update Name & Initials
+      const fullName = user.displayName || user.email.split('@')[0];
+      const firstName = fullName.split(' ')[0];
+      document.getElementById('displayUserName').textContent = firstName;
+      
+      const initials = firstName.substring(0,2).toUpperCase();
+      document.getElementById('userInitials').textContent = initials;
+      
+      // Start Quote Cycle in Sidebar
+      cycleQuotes();
+      setInterval(cycleQuotes, 6000);
     } else {
-      // Show split login screen
       document.body.classList.remove('dashboard-mode');
     }
   });
