@@ -22,7 +22,6 @@
       --gold-light: #ddb96a;
       --border: #e2e8f0;
       --error: #ef4444;
-      --success: #10b981;
       
       --font-display: 'Playfair Display', serif;
       --font-body: 'Inter', sans-serif;
@@ -39,291 +38,179 @@
       min-height: 100vh;
       display: flex;
       overflow-x: hidden;
+      transition: background-color 0.4s ease;
     }
 
-    /* ── TRUE 50/50 SPLIT LAYOUT ── */
-    .auth-wrapper {
-      display: flex;
-      width: 100%;
-      min-height: 100vh;
-    }
-
-    /* ══════════════════════════════
-       LEFT PANEL - BRANDING (DARK)
-    ══════════════════════════════ */
+    /* ── AUTH LAYOUT (50/50 SPLIT) ── */
+    .auth-wrapper { display: flex; width: 100%; min-height: 100vh; }
     .left-panel {
-      flex: 1;
-      background: linear-gradient(135deg, var(--bg-left) 0%, #0a192f 100%);
-      padding: 4rem 5rem;
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between;
-      position: relative; 
-      overflow: hidden;
-      color: white;
+      flex: 1; background: linear-gradient(135deg, var(--bg-left) 0%, #0a192f 100%);
+      padding: 4rem 5rem; display: flex; flex-direction: column; 
+      justify-content: space-between; position: relative; overflow: hidden; color: white;
+      transition: all 0.4s ease;
     }
-    
-    /* Background Glow Effect */
     .left-panel::before {
-      content: '';
-      position: absolute;
-      top: -10%; left: -10%;
-      width: 60vw; height: 60vw;
-      border-radius: 50%;
+      content: ''; position: absolute; top: -10%; left: -10%;
+      width: 60vw; height: 60vw; border-radius: 50%;
       background: radial-gradient(circle, rgba(221, 185, 106, 0.08) 0%, transparent 60%);
       pointer-events: none;
     }
 
-    .brand-header {
-      position: relative;
-      z-index: 10;
-    }
-    .brand-logo { 
-      text-decoration: none; 
-      display: inline-block; 
-    }
-    .logo-text { 
-      font-family: var(--font-display); 
-      font-size: 1.75rem; 
-      font-weight: 800; 
-      color: white; 
-      line-height: 1.1; 
-      letter-spacing: -0.02em;
-    }
+    .brand-logo { text-decoration: none; display: inline-block; position: relative; z-index: 10; }
+    .logo-text { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: white; line-height: 1.1; letter-spacing: -0.02em; }
     .logo-text span { color: var(--gold-light); }
-    .logo-tag { 
-      display: block; 
-      font-family: var(--font-mono); 
-      font-size: 0.55rem; 
-      letter-spacing: 0.2em; 
-      text-transform: uppercase; 
-      color: rgba(255,255,255,0.4); 
-      margin-top: 6px; 
-    }
+    .logo-tag { display: block; font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 6px; }
 
     .brand-content { position: relative; z-index: 10; margin-top: 4rem; }
-    .eyebrow {
-      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--gold-light); font-weight: 600;
-      margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;
-    }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-light); font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
     .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold-light); display: block; }
-
-    .hero-title {
-      font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.8rem);
-      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-    }
+    .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
     .hero-title em { font-style: italic; color: var(--gold-light); font-weight: 700; }
-    
     .hero-desc { color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.6; max-width: 480px; font-weight: 300; }
-
+    
     .feature-list { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-    .feature-item {
-      display: flex; align-items: center; gap: 1rem;
-      color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 500;
-    }
-    .feature-icon {
-      width: 24px; height: 24px; border-radius: 6px;
-      background: rgba(221,185,106,0.1); border: 1px solid rgba(221,185,106,0.3);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--gold-light);
-    }
+    .feature-item { display: flex; align-items: center; gap: 1rem; color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 500; }
+    .feature-icon { width: 24px; height: 24px; border-radius: 6px; background: rgba(221,185,106,0.1); border: 1px solid rgba(221,185,106,0.3); display: flex; align-items: center; justify-content: center; color: var(--gold-light); }
 
     .brand-footer { position: relative; z-index: 10; margin-top: 4rem; }
-    .equation {
-      font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.9);
-      letter-spacing: 0.05em; margin-bottom: 1rem; font-weight: 500;
-    }
-    .wave-svg { width: 100%; max-width: 400px; height: 40px; display: block; margin-bottom: 1.5rem; }
-    .wave-path {
-      fill: none; stroke: var(--gold-light); stroke-width: 2; opacity: 0.8;
-      stroke-dasharray: 800; stroke-dashoffset: 800;
-      animation: drawWave 3s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.5s;
-    }
-    @keyframes drawWave { to { stroke-dashoffset: 0; } }
-    
-    .author-info {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6;
-    }
+    .equation { font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.9); letter-spacing: 0.05em; margin-bottom: 1rem; font-weight: 500; }
+    .author-info { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
     .author-info strong { color: white; font-weight: 600; font-size: 0.9rem; }
 
-    /* ══════════════════════════════
-       RIGHT PANEL - AUTH & DASHBOARD
-    ══════════════════════════════ */
-    .right-panel {
-      flex: 1;
-      display: flex; flex-direction: column;
-      position: relative;
-    }
-
-    /* Top Right "Back to Home" */
-    .top-nav {
-      position: absolute; top: 2rem; right: 3rem;
-      z-index: 20;
-    }
-    .back-home {
-      display: flex; align-items: center; gap: 0.5rem;
-      text-decoration: none; color: var(--ink-light);
-      font-size: 0.85rem; font-weight: 600;
-      transition: color 0.2s;
-    }
+    .right-panel { flex: 1; display: flex; flex-direction: column; position: relative; transition: all 0.4s ease; }
+    .top-nav { position: absolute; top: 2rem; right: 3rem; z-index: 20; }
+    .back-home { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--ink-light); font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
     .back-home:hover { color: var(--accent); }
 
-    .panel-center {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      padding: 3rem;
-    }
-
-    /* AUTH FORM */
-    .form-container { 
-      width: 100%; max-width: 420px; 
-      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; 
-    }
-    @keyframes fadeUp { 
-      from { opacity: 0; transform: translateY(20px); } 
-      to { opacity: 1; transform: translateY(0); } 
-    }
-
+    .panel-center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem; }
+    
+    /* AUTHENTICATION FORM */
+    .form-container { width: 100%; max-width: 420px; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .form-header { margin-bottom: 2.5rem; }
     .form-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
     .form-subtitle { color: var(--ink-light); font-size: 1rem; font-weight: 400; }
-
-    /* Custom Toggle Switch */
-    .auth-toggle {
-      display: flex; background: #e2e8f0; border-radius: 10px;
-      padding: 4px; margin-bottom: 2.5rem; position: relative;
-    }
-    .toggle-btn {
-      flex: 1; text-align: center; padding: 0.8rem;
-      font-size: 0.9rem; font-weight: 600; color: var(--ink-light);
-      cursor: pointer; border: none; background: transparent;
-      position: relative; z-index: 2; transition: color 0.3s;
-    }
+    
+    .auth-toggle { display: flex; background: #e2e8f0; border-radius: 10px; padding: 4px; margin-bottom: 2.5rem; position: relative; }
+    .toggle-btn { flex: 1; text-align: center; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-light); cursor: pointer; border: none; background: transparent; position: relative; z-index: 2; transition: color 0.3s; }
     .toggle-btn.active { color: var(--ink); }
-    .toggle-pill {
-      position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: calc(50% - 4px);
-      background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1;
-    }
+    .toggle-pill { position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1; }
     .toggle-pill.register-mode { transform: translateX(100%); }
 
-    /* Floating Label Inputs */
     .input-group { position: relative; margin-bottom: 1.5rem; }
-    .input-field {
-      width: 100%; padding: 1.2rem 1rem 0.8rem;
-      background: white; border: 1.5px solid var(--border);
-      border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem;
-      color: var(--ink); outline: none; transition: all 0.2s;
-    }
+    .input-field { width: 100%; padding: 1.2rem 1rem 0.8rem; background: white; border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); outline: none; transition: all 0.2s; }
     .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(11,31,58,0.05); }
-    
-    .floating-label {
-      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-      color: #94a3b8; font-size: 0.95rem; pointer-events: none;
-      transition: all 0.2s ease-out; background: white; padding: 0 0.2rem;
-    }
-    .input-field:focus ~ .floating-label,
-    .input-field:not(:placeholder-shown) ~ .floating-label {
-      top: 0; transform: translateY(-50%) scale(0.85);
-      color: var(--accent); font-weight: 600;
-    }
+    .floating-label { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.95rem; pointer-events: none; transition: all 0.2s ease-out; background: white; padding: 0 0.2rem; }
+    .input-field:focus ~ .floating-label, .input-field:not(:placeholder-shown) ~ .floating-label { top: 0; transform: translateY(-50%) scale(0.85); color: var(--accent); font-weight: 600; }
 
-    .btn-submit {
-      width: 100%; padding: 1rem; background: var(--accent); color: white;
-      border: none; border-radius: 10px; font-family: var(--font-body);
-      font-size: 1rem; font-weight: 600; cursor: pointer;
-      transition: all 0.2s; margin-top: 1rem;
-    }
+    .btn-submit { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 10px; font-family: var(--font-body); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
     .btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    .divider {
-      display: flex; align-items: center; gap: 1rem; margin: 2rem 0;
-      color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-    }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .btn-google {
-      width: 100%; padding: 0.9rem; background: white; color: var(--ink);
-      border: 1.5px solid var(--border); border-radius: 10px;
-      font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-      transition: all 0.2s;
-    }
+    .btn-google { width: 100%; padding: 0.9rem; background: white; color: var(--ink); border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem; transition: all 0.2s; }
     .btn-google:hover { border-color: #cbd5e1; background: #f1f5f9; }
 
     .form-section { display: none; }
     .form-section.active { display: block; animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    .msg-box { padding: 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; margin-top: 1.5rem; display: none; }
-    .msg-box.error { background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
+    .msg-box { padding: 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; margin-top: 1.5rem; display: none; background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
 
     /* ══════════════════════════════
-       DASHBOARD (AFTER LOGIN)
+       NEW FULL-WIDTH DASHBOARD 
     ══════════════════════════════ */
-    .dashboard-container { display: none; width: 100%; max-width: 800px; animation: fadeUp 0.5s ease both; }
+    .dashboard-container { display: none; width: 100%; min-height: 100vh; flex-direction: column; background: #f4f7f9; }
     
-    .dash-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+    /* When user is logged in, body gets this class */
+    body.dashboard-mode .left-panel { display: none; }
+    body.dashboard-mode .right-panel { width: 100%; padding: 0; }
+    body.dashboard-mode .top-nav { display: none; }
+    body.dashboard-mode .panel-center { display: none; }
+    body.dashboard-mode .dashboard-container { display: flex; animation: fadeUp 0.6s ease both; }
+
+    /* Dash Navbar */
+    .dash-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 4rem; background: var(--bg-left); color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-    .dash-greeting { font-size: 1rem; color: var(--ink-light); margin-bottom: 0.2rem; font-weight: 500; }
-    .dash-name { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
-    
+    .dash-nav .logo-text { font-size: 1.4rem; }
+    .dash-user-controls { display: flex; align-items: center; gap: 1.5rem; }
+    .dash-greeting { font-size: 0.95rem; color: rgba(255,255,255,0.8); font-weight: 500; }
+    .dash-greeting strong { color: white; }
     .btn-logout {
-      background: white; color: var(--ink); border: 1.5px solid var(--border);
-      padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.5rem 1.2rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s;
     }
-    .btn-logout:hover { border-color: var(--ink); }
+    .btn-logout:hover { background: white; color: var(--bg-left); }
 
-    .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    
+    /* Dash Content */
+    .dash-main { flex: 1; padding: 4rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .dash-page-title { font-family: var(--font-display); font-size: 2.8rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .dash-page-sub { color: var(--ink-light); font-size: 1.1rem; margin-bottom: 3rem; font-weight: 400; }
+
+    .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
     .dash-card {
       background: white; border: 1px solid var(--border); border-radius: 16px;
-      padding: 2rem; text-decoration: none; color: inherit;
+      padding: 2.5rem 2rem; text-decoration: none; color: inherit;
       display: flex; flex-direction: column; align-items: flex-start;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative; overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
     .dash-card::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-      background: var(--gold-light); transform: scaleX(0); transform-origin: left;
-      transition: transform 0.4s ease;
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--gold-light); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
     }
-    .dash-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: transparent; }
+    .dash-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); border-color: transparent; }
     .dash-card:hover::before { transform: scaleX(1); }
     
-    .card-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: #f1f5f9; color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.5rem; transition: background 0.3s;
-    }
+    .card-icon { width: 52px; height: 52px; border-radius: 14px; background: #f0f4f8; color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; transition: background 0.3s; }
     .dash-card:hover .card-icon { background: var(--accent); color: white; }
-    
-    .card-title { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
-    .card-desc { font-size: 0.9rem; color: var(--ink-light); line-height: 1.5; }
+    .card-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.95rem; color: var(--ink-light); line-height: 1.6; }
 
-    /* Responsive */
+    /* Physicist Quotes Section */
+    .quote-section {
+      text-align: center; padding: 3rem 2rem; margin-top: auto;
+      border-top: 1px solid var(--border); background: #ffffff;
+    }
+    .quote-box {
+      max-width: 700px; margin: 0 auto; height: 60px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .physicist-quote {
+      font-family: var(--font-display); font-size: 1.25rem; font-style: italic;
+      color: var(--accent); font-weight: 600; line-height: 1.4;
+      opacity: 0; transform: translateY(15px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .physicist-quote.visible { opacity: 1; transform: translateY(0); }
+    .quote-author {
+      font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--gold); margin-top: 0.5rem;
+      opacity: 0; transition: opacity 0.8s ease; delay: 0.2s;
+    }
+    .physicist-quote.visible + .quote-author { opacity: 1; }
+
     @media (max-width: 1024px) {
       .auth-wrapper { flex-direction: column; }
       .left-panel { flex: none; min-height: 40vh; padding: 3rem 2rem; }
-      .brand-content { margin-top: 2rem; }
       .top-nav { top: 1.5rem; right: 1.5rem; }
       .panel-center { padding: 3rem 1.5rem; }
-      .dash-grid { grid-template-columns: 1fr; }
+      .dash-nav { padding: 1.5rem 2rem; }
+      .dash-main { padding: 3rem 2rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="auth-wrapper">
-
-  <!-- LEFT PANEL (DARK BRANDING) -->
+  
+  <!-- LEFT PANEL (Only visible during Login) -->
   <div class="left-panel">
     <div class="brand-header">
       <a href="index.html" class="brand-logo">
@@ -336,52 +223,31 @@
       <div class="eyebrow">Academic Excellence</div>
       <h1 class="hero-title">Master Physics<br>with <em>Precision.</em></h1>
       <p class="hero-desc">Access an advanced ecosystem of video lectures, mock examinations, and interactive simulations tailored for Class 11, 12, JEE, and NEET preparation.</p>
-
+      
       <div class="feature-list">
-        <div class="feature-item">
-          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          High-definition video lectures & tutorials
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          JEE & NEET strict-pattern mock tests
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          Real-time quiz performance analytics
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          Interactive laboratory simulations
-        </div>
+        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> High-definition video lectures & tutorials</div>
+        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> JEE & NEET strict-pattern mock tests</div>
+        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> Real-time quiz performance analytics</div>
+        <div class="feature-item"><div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div> Interactive laboratory simulations</div>
       </div>
     </div>
-
+    
     <div class="brand-footer">
       <div class="equation">iħ ∂Ψ/∂t = ĤΨ</div>
-      <svg class="wave-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
-        <path class="wave-path" d="M0,20 C30,40 60,0 90,20 C120,40 150,0 180,20 C210,40 240,0 270,20 C300,40 330,0 360,20 L400,20"/>
-      </svg>
-      <div class="author-info">
-        <strong>Lakshmi Kant Pandey</strong> — IIT Guwahati<br>Curriculum Designer for Advanced Physics
-      </div>
+      <div class="author-info"><strong>Lakshmi Kant Pandey</strong> — IIT Guwahati<br>Curriculum Designer for Advanced Physics</div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL (INTERACTIVE AUTH & DASHBOARD) -->
+  <!-- RIGHT PANEL (Auth Form OR Full Dashboard) -->
   <div class="right-panel">
     
     <nav class="top-nav">
-      <a href="index.html" class="back-home">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Return to Website
-      </a>
+      <a href="index.html" class="back-home"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Return to Website</a>
     </nav>
 
-    <div class="panel-center">
-      
-      <!-- AUTHENTICATION FORM -->
-      <div class="form-container" id="authBox">
+    <!-- CENTERED AUTH FORM -->
+    <div class="panel-center" id="authBox">
+      <div class="form-container">
         <div class="form-header">
           <h2 class="form-title" id="formTitleText">Welcome back.</h2>
           <p class="form-subtitle" id="formSubText">Enter your credentials to access your portal.</p>
@@ -393,7 +259,7 @@
           <button class="toggle-btn" id="btnModeRegister" onclick="setMode('register')">Create Account</button>
         </div>
 
-        <!-- Login Fields -->
+        <!-- Login -->
         <div class="form-section active" id="sectionLogin">
           <div class="input-group">
             <input type="email" id="loginEmail" class="input-field" placeholder=" " required />
@@ -406,7 +272,7 @@
           <button class="btn-submit" id="submitLogin" onclick="executeLogin()">Sign In</button>
         </div>
 
-        <!-- Register Fields -->
+        <!-- Register -->
         <div class="form-section" id="sectionRegister">
           <div class="input-group">
             <input type="text" id="regName" class="input-field" placeholder=" " required />
@@ -424,61 +290,61 @@
         </div>
 
         <div id="authMessage" class="msg-box"></div>
-
         <div class="divider">Or continue with</div>
-        
         <button class="btn-google" onclick="executeGoogle()">
-          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>
-          Google
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg> Google
         </button>
       </div>
+    </div>
 
-      <!-- STUDENT DASHBOARD -->
-      <div class="dashboard-container" id="dashBox">
-        <div class="dash-header">
-          <div>
-            <p class="dash-greeting">Student Portal</p>
-            <h2 class="dash-name">Welcome, <span id="displayUserName">Student</span>.</h2>
-          </div>
+    <!-- FULL WIDTH DASHBOARD (Only visible when logged in) -->
+    <div class="dashboard-container" id="dashBox">
+      
+      <!-- Dashboard Top Navbar -->
+      <div class="dash-nav">
+        <a href="index.html" class="brand-logo">
+          <div class="logo-text">Schrödinger<span>Classes</span></div>
+        </a>
+        <div class="dash-user-controls">
+          <div class="dash-greeting">Welcome, <strong id="displayUserName">Student</strong></div>
           <button class="btn-logout" onclick="executeLogout()">Sign Out</button>
         </div>
+      </div>
+
+      <!-- Main Workspace Grid -->
+      <div class="dash-main">
+        <h2 class="dash-page-title">Your Workspace.</h2>
+        <p class="dash-page-sub">Pick up where you left off and continue your mastery.</p>
 
         <div class="dash-grid">
-          <!-- Video Lectures -->
           <a href="videos.html" class="dash-card">
-            <div class="card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            </div>
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
             <h3 class="card-title">Video Library</h3>
             <p class="card-desc">Stream high-definition physics lectures and chapter-wise breakdowns.</p>
           </a>
-
-          <!-- Mock Tests -->
           <a href="test.html" class="dash-card">
-            <div class="card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
             <h3 class="card-title">Mock Examinations</h3>
             <p class="card-desc">Take full-length tests patterned strictly on JEE and NEET structures.</p>
           </a>
-
-          <!-- Quizzes -->
           <a href="quiz.html" class="dash-card">
-            <div class="card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            </div>
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
             <h3 class="card-title">Concept Quizzes</h3>
             <p class="card-desc">Reinforce core topics with rapid-fire assessments and analytics.</p>
           </a>
-
-          <!-- Simulations -->
           <a href="simulation.html" class="dash-card">
-            <div class="card-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg>
-            </div>
+            <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg></div>
             <h3 class="card-title">Virtual Laboratory</h3>
             <p class="card-desc">Interact with dynamic physics simulations for deeper conceptual clarity.</p>
           </a>
+        </div>
+      </div>
+
+      <!-- Animated Quotes Footer -->
+      <div class="quote-section">
+        <div class="quote-box">
+          <div id="physics-quote" class="physicist-quote">Loading wisdom...</div>
+          <div id="physics-author" class="quote-author"></div>
         </div>
       </div>
 
@@ -486,13 +352,9 @@
   </div>
 </div>
 
-<!-- Firebase SDK Logic -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    signOut, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
@@ -506,97 +368,100 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
-
-  // UI Management
-  const authBox = document.getElementById('authBox');
-  const dashBox = document.getElementById('dashBox');
   const msgBox = document.getElementById('authMessage');
 
+  // View Toggles
   window.setMode = (mode) => {
     document.getElementById('btnModeLogin').classList.toggle('active', mode === 'login');
     document.getElementById('btnModeRegister').classList.toggle('active', mode === 'register');
     document.getElementById('togglePill').classList.toggle('register-mode', mode === 'register');
-    
     document.getElementById('sectionLogin').classList.toggle('active', mode === 'login');
     document.getElementById('sectionRegister').classList.toggle('active', mode === 'register');
-
     document.getElementById('formTitleText').textContent = mode === 'login' ? 'Welcome back.' : 'Create Account.';
     document.getElementById('formSubText').textContent = mode === 'login' ? 'Enter your credentials to access your portal.' : 'Set up your student profile in seconds.';
     msgBox.style.display = 'none';
   };
 
-  function displayError(msg) {
-    msgBox.textContent = msg;
-    msgBox.className = 'msg-box error';
-    msgBox.style.display = 'block';
+  function displayError(msg) { msgBox.textContent = msg; msgBox.style.display = 'block'; }
+
+  // ── PHYSICIST QUOTES LOGIC ──
+  const quotes = [
+    { text: `"I think I can safely say that nobody understands quantum mechanics."`, author: "Richard Feynman" },
+    { text: `"Imagination is more important than knowledge. Knowledge is limited."`, author: "Albert Einstein" },
+    { text: `"Nothing in life is to be feared, it is only to be understood."`, author: "Marie Curie" },
+    { text: `"In science there is only physics; all the rest is stamp collecting."`, author: "Ernest Rutherford" },
+    { text: `"An expert is a person who has made all the mistakes that can be made in a very narrow field."`, author: "Niels Bohr" }
+  ];
+  let quoteIdx = 0;
+  
+  function cycleQuotes() {
+    const qText = document.getElementById('physics-quote');
+    const qAuthor = document.getElementById('physics-author');
+    if (!qText || !qAuthor) return;
+
+    // Fade Out
+    qText.classList.remove('visible');
+    
+    setTimeout(() => {
+      // Update Content
+      qText.textContent = quotes[quoteIdx].text;
+      qAuthor.textContent = `— ${quotes[quoteIdx].author}`;
+      
+      // Fade In
+      qText.classList.add('visible');
+      
+      // Move to next quote
+      quoteIdx = (quoteIdx + 1) % quotes.length;
+    }, 800); // Wait for fade out to complete before swapping text
   }
 
-  function getReadableError(code) {
-    const errors = {
-      'auth/invalid-credential': 'Email or password is incorrect.',
-      'auth/email-already-in-use': 'This email is already registered. Please sign in.',
-      'auth/weak-password': 'Password must be at least 6 characters.',
-      'auth/too-many-requests': 'Too many attempts. Please try again later.'
-    };
-    return errors[code] || 'An unexpected error occurred. Please try again.';
-  }
-
-  // Auth State Observer
+  // Auth State Guard
   onAuthStateChanged(auth, user => {
     if (user) {
-      authBox.style.display = 'none';
-      dashBox.style.display = 'block';
+      // Switch layout to full dashboard
+      document.body.classList.add('dashboard-mode');
       const nameStr = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
       document.getElementById('displayUserName').textContent = nameStr;
+      
+      // Start Quote Cycle
+      cycleQuotes(); // run immediately
+      setInterval(cycleQuotes, 5000); // then every 5 seconds
     } else {
-      authBox.style.display = 'block';
-      dashBox.style.display = 'none';
+      // Show split login screen
+      document.body.classList.remove('dashboard-mode');
     }
   });
 
-  // Action Functions
+  // Auth Actions
   window.executeLogin = async () => {
     const email = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value;
-    const btn = document.getElementById('submitLogin');
-    
     if (!email || !pass) return displayError('Please fill in both fields.');
-    
-    btn.disabled = true; btn.textContent = 'Authenticating...';
-    try {
-      await signInWithEmailAndPassword(auth, email, pass);
-    } catch(err) {
-      displayError(getReadableError(err.code));
-      btn.disabled = false; btn.textContent = 'Sign In';
-    }
+    try { await signInWithEmailAndPassword(auth, email, pass); } 
+    catch(err) { displayError('Invalid email or password.'); }
   };
 
   window.executeRegister = async () => {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
-    const btn = document.getElementById('submitRegister');
-    
     if (!name || !email || !pass) return displayError('Please complete all fields.');
     if (pass.length < 6) return displayError('Password must be at least 6 characters.');
-
-    btn.disabled = true; btn.textContent = 'Creating...';
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       await updateProfile(cred.user, { displayName: name });
-      // UI updates automatically via onAuthStateChanged
-    } catch(err) {
-      displayError(getReadableError(err.code));
-      btn.disabled = false; btn.textContent = 'Create Account';
-    }
+    } catch(err) { displayError('Error creating account. Try another email.'); }
   };
 
   window.executeGoogle = async () => {
     try { await signInWithPopup(auth, provider); } 
-    catch(err) { console.error(err); displayError('Google sign-in was cancelled or failed.'); }
+    catch(err) { displayError('Google sign-in failed.'); }
   };
 
-  window.executeLogout = async () => { await signOut(auth); };
+  window.executeLogout = async () => { 
+    await signOut(auth); 
+    window.location.reload(); 
+  };
 </script>
 </body>
 </html>
