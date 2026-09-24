@@ -573,14 +573,34 @@ const CATALOG = [
   },
 
   // ================= CLASS 10 SIMULATIONS =================
-  {
-    id: 'laser_optics', group: 'class10', title: 'Laser Optics, Snell & TIR Lab', tag: 'Class 10',
-    desc: 'Interactive 360° rotating laser. Witness refraction, critical angle, and Total Internal Reflection with luminous bloom.',
-    params: { n1: 1.0, n2: 1.5, angleI: 40 },
+ {
+    id: 'laser_optics_pro', 
+    group: 'class10', 
+    title: 'Advanced Laser Optics: Fresnel & TIR', 
+    tag: 'Class 10 Pro',
+    desc: 'Pro-level simulation featuring exact Fresnel reflection/transmission intensities, wavelength-dependent beam coloring, partial reflection, and relative photon velocities.',
+    params: { n1: 1.0, n2: 1.5, angleI: 45, wavelength: 650 },
     controls: p => `
-      <div class="ctrl-group"><span class="ctrl-label">Medium 1 Refractive Index (n1)</span><div class="ctrl-value" id="p_n1">${p.n1}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n1}" oninput="p_n1.textContent=this.value;UP('n1',+this.value);"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Medium 2 Refractive Index (n2)</span><div class="ctrl-value" id="p_n2">${p.n2}</div><input type="range" min="1.0" max="2.4" step="0.1" value="${p.n2}" oninput="p_n2.textContent=this.value;UP('n2',+this.value);"/></div>
-      <div class="ctrl-group"><span class="ctrl-label">Laser Incident Angle i (°)</span><div class="ctrl-value" id="p_i">${p.angleI}°</div><input type="range" min="0" max="85" step="1" value="${p.angleI}" oninput="p_i.textContent=this.value+'°';UP('angleI',+this.value);"/></div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Medium 1 Refractive Index (n₁)</span>
+        <div class="ctrl-value" id="p_n1">${p.n1.toFixed(2)}</div>
+        <input type="range" min="1.0" max="3.0" step="0.05" value="${p.n1}" oninput="p_n1.textContent=parseFloat(this.value).toFixed(2);UP('n1',+this.value);"/>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Medium 2 Refractive Index (n₂)</span>
+        <div class="ctrl-value" id="p_n2">${p.n2.toFixed(2)}</div>
+        <input type="range" min="1.0" max="3.0" step="0.05" value="${p.n2}" oninput="p_n2.textContent=parseFloat(this.value).toFixed(2);UP('n2',+this.value);"/>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Laser Incident Angle (θ₁)</span>
+        <div class="ctrl-value" id="p_i">${p.angleI}°</div>
+        <input type="range" min="0" max="89" step="1" value="${p.angleI}" oninput="p_i.textContent=this.value+'°';UP('angleI',+this.value);"/>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Laser Wavelength (λ)</span>
+        <div class="ctrl-value" id="p_wl">${p.wavelength} nm</div>
+        <input type="range" min="380" max="750" step="10" value="${p.wavelength}" oninput="p_wl.textContent=this.value+' nm';UP('wavelength',+this.value);"/>
+      </div>
       <div class="data-box" id="simData">...</div>`,
     init: (cv, p) => {
       cv.onmousedown = (e) => { isDragging = true; };
@@ -590,70 +610,162 @@ const CATALOG = [
         const mx = e.clientX - rect.left, my = e.clientY - rect.top;
         const cx = cv.width / 2, cy = cv.height / 2;
         const rad = Math.atan2(cx - mx, cy - my);
-        p.angleI = Math.max(0, Math.min(85, Math.round(rad * 180 / Math.PI)));
+        p.angleI = Math.max(0, Math.min(89, Math.round(rad * 180 / Math.PI)));
+        
+        // Update slider visually if dragged via canvas
+        const slider = document.querySelector('input[value="'+p.angleI+'"]');
+        if(slider) { slider.value = p.angleI; document.getElementById('p_i').textContent = p.angleI + '°'; }
       };
       window.onmouseup = () => { isDragging = false; };
     },
-    loop: (cv, p) => {
+    loop: (cv, p, dt) => {
       const W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, C = cv.getContext('2d');
       drawLabGrid(C, W, H);
 
-      // Medium 1 (Top) & Medium 2 (Bottom)
-      C.fillStyle = 'rgba(56, 189, 248, 0.05)'; C.fillRect(0, 0, W, cy);
-      C.fillStyle = 'rgba(99, 102, 241, 0.15)'; C.fillRect(0, cy, W, cy);
+      // Convert Wavelength to HSL Hue (Approximation for visible spectrum 380nm - 750nm)
+      const hue = Math.max(0, Math.min(270, 270 - ((p.wavelength - 380) / (750 - 380)) * 270));
+      const laserColor = `hsl(${hue}, 100%, 50%)`;
+      const glowColor = `hsla(${hue}, 100%, 50%, 0.6)`;
+
+      // Identify Media
+      const getMediumName = (n) => {
+        if (n === 1.0) return 'Vacuum/Air';
+        if (n > 1.32 && n < 1.34) return 'Water';
+        if (n > 1.45 && n < 1.55) return 'Crown Glass';
+        if (n > 1.60 && n < 1.70) return 'Flint Glass';
+        if (n > 2.40 && n < 2.44) return 'Diamond';
+        return 'Custom Medium';
+      };
+
+      // Draw Media Backgrounds
+      C.fillStyle = `rgba(255, 255, 255, ${0.02 * p.n1})`; C.fillRect(0, 0, W, cy);
+      C.fillStyle = `rgba(56, 189, 248, ${0.08 * p.n2})`; C.fillRect(0, cy, W, cy);
       
-      // Interface Line
-      C.strokeStyle = '#94a3b8'; C.lineWidth = 1.5; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
+      // Interface Line & Labels
+      C.strokeStyle = '#cbd5e1'; C.lineWidth = 1; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
+      C.fillStyle = 'rgba(255,255,255,0.5)'; C.font = '12px monospace'; C.textAlign = 'left';
+      C.fillText(`${getMediumName(p.n1)} (n=${p.n1.toFixed(2)})`, 20, cy - 15);
+      C.fillText(`${getMediumName(p.n2)} (n=${p.n2.toFixed(2)})`, 20, cy + 25);
       
-      // Protractor Circle
-      C.strokeStyle = 'rgba(255, 255, 255, 0.15)'; C.lineWidth = 1;
-      C.beginPath(); C.arc(cx, cy, 140, 0, Math.PI*2); C.stroke();
-      for (let a = 0; a < 360; a += 10) {
+      // Normal Line & Protractor
+      C.strokeStyle = 'rgba(255,255,255,0.3)'; C.setLineDash([4, 4]);
+      C.beginPath(); C.moveTo(cx, 40); C.lineTo(cx, H - 40); C.stroke(); C.setLineDash([]);
+      
+      C.strokeStyle = 'rgba(255, 255, 255, 0.1)'; C.lineWidth = 1;
+      C.beginPath(); C.arc(cx, cy, 160, 0, Math.PI*2); C.stroke();
+      for (let a = 0; a < 360; a += 5) {
         const rad = (a * Math.PI) / 180;
-        C.beginPath(); C.moveTo(cx + 132 * Math.cos(rad), cy + 132 * Math.sin(rad));
-        C.lineTo(cx + 140 * Math.cos(rad), cy + 140 * Math.sin(rad)); C.stroke();
+        const isMajor = a % 15 === 0;
+        C.strokeStyle = isMajor ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.1)';
+        C.beginPath(); C.moveTo(cx + (isMajor ? 152 : 156) * Math.cos(rad), cy + (isMajor ? 152 : 156) * Math.sin(rad));
+        C.lineTo(cx + 160 * Math.cos(rad), cy + 160 * Math.sin(rad)); C.stroke();
       }
 
-      // Normal Line
-      C.strokeStyle = 'rgba(255,255,255,0.4)'; C.setLineDash([6, 6]);
-      C.beginPath(); C.moveTo(cx, 30); C.lineTo(cx, H - 30); C.stroke(); C.setLineDash([]);
-
+      // Physics Calculations
       const radI = (p.angleI * Math.PI) / 180;
       const sinR = (p.n1 / p.n2) * Math.sin(radI);
-      const isTIR = sinR > 1.0;
-
-      // Laser Pointer Housing
-      const lx = cx - 220 * Math.sin(radI);
-      const ly = cy - 220 * Math.cos(radI);
-      C.fillStyle = '#334155'; C.save();
-      C.translate(lx, ly); C.rotate(radI);
-      C.fillRect(-12, -20, 24, 40);
-      C.fillStyle = '#22c55e'; C.beginPath(); C.arc(0, 0, 4, 0, Math.PI*2); C.fill();
-      C.restore();
-
-      // Incident Ray (Bright Laser Glow)
-      C.strokeStyle = '#ef4444'; C.shadowColor = '#ef4444'; C.shadowBlur = 15;
-      C.lineWidth = 3.5; C.beginPath(); C.moveTo(lx, ly); C.lineTo(cx, cy); C.stroke(); C.shadowBlur = 0;
+      const isTIR = sinR >= 1.0;
+      let radR = 0, R = 1, T = 0;
 
       if (!isTIR) {
-        const radR = Math.asin(sinR);
-        const rx = cx + 220 * Math.sin(radR);
-        const ry = cy + 220 * Math.cos(radR);
-        C.strokeStyle = '#38bdf8'; C.shadowColor = '#38bdf8'; C.shadowBlur = 12;
-        C.beginPath(); C.moveTo(cx, cy); C.lineTo(rx, ry); C.stroke(); C.shadowBlur = 0;
-      } else {
-        // TIR Ray
-        const tx = cx + 220 * Math.sin(radI);
-        const ty = cy - 220 * Math.cos(radI);
-        C.strokeStyle = '#fbbf24'; C.shadowColor = '#fbbf24'; C.shadowBlur = 15;
-        C.beginPath(); C.moveTo(cx, cy); C.lineTo(tx, ty); C.stroke(); C.shadowBlur = 0;
+        radR = Math.asin(sinR);
+        // Fresnel Equations for unpolarized light
+        const cosI = Math.cos(radI);
+        const cosR = Math.cos(radR);
+        const Rs = Math.pow((p.n1 * cosI - p.n2 * cosR) / (p.n1 * cosI + p.n2 * cosR), 2);
+        const Rp = Math.pow((p.n1 * cosR - p.n2 * cosI) / (p.n1 * cosR + p.n2 * cosI), 2);
+        R = (Rs + Rp) / 2;
+        T = 1 - R;
       }
 
-      const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(1) + '°' : 'N/A';
+      const drawBeam = (angle, isDownward, intensity) => {
+        if (intensity < 0.001) return;
+        const dirY = isDownward ? 1 : -1;
+        const bx = cx + 250 * Math.sin(angle);
+        const by = cy + 250 * Math.cos(angle) * dirY;
+        
+        C.strokeStyle = glowColor; C.lineWidth = 6 * intensity; C.lineCap = 'round';
+        C.beginPath(); C.moveTo(cx, cy); C.lineTo(bx, by); C.stroke();
+        
+        C.strokeStyle = laserColor; C.lineWidth = 2; C.globalAlpha = Math.max(0.1, intensity);
+        C.beginPath(); C.moveTo(cx, cy); C.lineTo(bx, by); C.stroke(); C.globalAlpha = 1.0;
+
+        // Wave packet particles
+        if (isPlaying) {
+          const speed = isDownward ? (300 / p.n2) : (300 / p.n1);
+          const numParticles = Math.max(1, Math.round(5 * intensity));
+          C.fillStyle = 'white';
+          for (let i = 0; i < numParticles; i++) {
+            const offset = (globalTime * speed + i * (250 / numParticles)) % 250;
+            const px = cx + offset * Math.sin(angle);
+            const py = cy + offset * Math.cos(angle) * dirY;
+            if (offset > 15) { // Hide inside laser head
+              C.beginPath(); C.arc(px, py, 1.5, 0, Math.PI*2); C.fill();
+            }
+          }
+        }
+      };
+
+      // Laser Pointer Housing
+      const lx = cx - 250 * Math.sin(radI);
+      const ly = cy - 250 * Math.cos(radI);
+      
+      // Draw Incident Beam
+      drawBeam(radI, false, 1.0); // Invert drawing logic to shoot *from* laser *to* center
+      C.beginPath(); C.moveTo(lx, ly); C.lineTo(cx, cy); // Override path to originate from housing
+
+      // Draw Reflected Beam
+      drawBeam(radI, false, R); // Goes up (-Y)
+      // Mirror the reflection x-coordinate
+      const refX = cx + 250 * Math.sin(radI);
+      const refY = cy - 250 * Math.cos(radI);
+      C.strokeStyle = glowColor; C.lineWidth = 6 * R; C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke();
+      C.strokeStyle = laserColor; C.lineWidth = 2; C.globalAlpha = Math.max(0.1, R); C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke(); C.globalAlpha = 1.0;
+      
+      if (isPlaying && R > 0.001) {
+          const speed = 300 / p.n1;
+          const numParticles = Math.max(1, Math.round(5 * R));
+          C.fillStyle = 'white';
+          for (let i = 0; i < numParticles; i++) {
+            const offset = (globalTime * speed + i * (250 / numParticles)) % 250;
+            const px = cx + offset * Math.sin(radI);
+            const py = cy - offset * Math.cos(radI);
+            C.beginPath(); C.arc(px, py, 1.5, 0, Math.PI*2); C.fill();
+          }
+      }
+
+      // Draw Refracted Beam
+      if (!isTIR) {
+        drawBeam(radR, true, T); // Goes down (+Y)
+      }
+
+      // Draw Laser Head Graphic
+      C.save(); C.translate(lx, ly); C.rotate(-radI);
+      C.fillStyle = '#0f172a'; C.strokeStyle = '#475569'; C.lineWidth = 2;
+      C.fillRect(-14, 0, 28, 50); C.strokeRect(-14, 0, 28, 50);
+      C.fillStyle = laserColor; C.fillRect(-6, 45, 12, 5); // Glow tip
+      C.restore();
+
+      // Telemetry Data
+      const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(2) + '°' : 'None (n₁ ≤ n₂)';
       const d = document.getElementById('simData');
-      if (d) d.textContent = `Snell's Law: n₁ sin(i) = n₂ sin(r)\nAngle of Incidence: ${p.angleI}°\nAngle of Refraction: ${isTIR ? 'TIR (100% Reflection)' : (Math.asin(sinR)*180/Math.PI).toFixed(1) + '°'}\nCritical Angle θc: ${critAngle}\n\n💡 Tip: Drag laser around the center!`;
+      if (d) {
+        let text = `SCIENTIFIC TELEMETRY\n`;
+        text += `Incident Angle (θ₁): ${p.angleI.toFixed(1)}°\n`;
+        text += `Critical Angle (θc): ${critAngle}\n`;
+        if (isTIR) {
+          text += `Status: TOTAL INTERNAL REFLECTION\n`;
+          text += `Reflection Intensity: 100.0%\n`;
+          text += `Refraction Intensity: 0.0%`;
+        } else {
+          text += `Refraction Angle (θ₂): ${(radR * 180 / Math.PI).toFixed(2)}°\n`;
+          text += `Reflection Intensity (R): ${(R * 100).toFixed(1)}%\n`;
+          text += `Refraction Intensity (T): ${(T * 100).toFixed(1)}%`;
+        }
+        d.textContent = text;
+      }
     }
-  },
+  }
   {
     id: 'ohm_circuit_v2', group: 'class10', title: "Ohm's Law & Circuit Telemetry", tag: 'Class 10',
     desc: 'Watch real-time electron drift velocity, filament temperature glow, and live Voltmeter/Ammeter readings.',
