@@ -420,7 +420,9 @@
       <!-- Bottom 3 Columns -->
       <div class="stats-grid">
         
-        <!-- Progress -->
+        <!-- Bottom 3 Columns -->
+      <div class="stats-grid">
+        
         <!-- Progress -->
         <div class="stat-panel">
           <div class="panel-header">
@@ -453,29 +455,6 @@
                 <span id="val-thermo">0%</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Upcoming Tasks (Keep this as is for now, or update similarly later) -->
-        <div class="stat-panel">
-          <!-- ... keep your current upcoming tasks code ... -->
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="stat-panel">
-          <div class="panel-header">
-            <h3><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> Recent Activity</h3>
-            <a href="#">View All &rarr;</a>
-          </div>
-          <div class="activity-list">
-            <div class="act-item">
-              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-              <div class="act-info">
-                <h4 id="recent-title">Loading...</h4>
-                <p id="recent-sub">Please wait</p>
-              </div>
-            </div>
-            <!-- You can delete the other hardcoded act-items to keep it clean -->
           </div>
         </div>
 
@@ -520,36 +499,20 @@
             <div class="act-item">
               <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
               <div class="act-info">
-                <h4>Watched <strong>Gauss's Law</strong></h4>
-                <p>Electrodynamics • 45 min ago</p>
-              </div>
-            </div>
-            <div class="act-item">
-              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
-              <div class="act-info">
-                <h4>Completed <strong>10 MCQs</strong></h4>
-                <p>Current Electricity • 2 hours ago</p>
-              </div>
-            </div>
-            <div class="act-item">
-              <div class="act-icon"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg></div>
-              <div class="act-info">
-                <h4>Explored <strong>SHM Simulation</strong></h4>
-                <p>Virtual Lab • 1 day ago</p>
+                <h4 id="recent-title">Loading...</h4>
+                <p id="recent-sub">Please wait</p>
               </div>
             </div>
           </div>
         </div>
 
       </div>
-    </div>
-  </main>
-</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
     authDomain: "schrodinger-classes.firebaseapp.com",
@@ -561,7 +524,7 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app); // <-- Add this exact line
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
   const msgBox = document.getElementById('authMessage');
 
@@ -608,8 +571,7 @@
     }, 500); 
   }
 
-  // Auth Guard & UI Setup
-  // Auth Guard & UI Setup
+  // Auth Guard & Database Fetch
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       document.body.classList.add('dashboard-mode');
@@ -626,7 +588,7 @@
       cycleQuotes();
       setInterval(cycleQuotes, 6000);
 
-      // --- NEW: FETCH LIVE DATA FROM FIRESTORE ---
+      // Fetch Live Data from Firestore
       try {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
@@ -659,8 +621,17 @@
       document.body.classList.remove('dashboard-mode');
     }
   });
+
   // Auth Actions
- window.executeRegister = async () => {
+  window.executeLogin = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    if (!email || !pass) return displayError('Please fill in both fields.');
+    try { await signInWithEmailAndPassword(auth, email, pass); } 
+    catch(err) { displayError('Invalid email or password.'); }
+  };
+
+  window.executeRegister = async () => {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
@@ -669,11 +640,9 @@
     if (pass.length < 6) return displayError('Password must be at least 6 characters.');
     
     try {
-      // 1. Create the Auth account
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       await updateProfile(cred.user, { displayName: name });
       
-      // 2. Create the student's database profile with default stats
       await setDoc(doc(db, "users", cred.user.uid), {
         overall: 0,
         mechanics: 0,
@@ -692,11 +661,9 @@
   window.executeGoogle = async () => {
     try { 
       const result = await signInWithPopup(auth, provider); 
-      // Check if this is their first time logging in
       const isNewUser = result._tokenResponse?.isNewUser;
       
       if (isNewUser) {
-        // Create default database profile for new Google users
         await setDoc(doc(db, "users", result.user.uid), {
           overall: 0,
           mechanics: 0,
@@ -709,6 +676,11 @@
       }
     } 
     catch(err) { displayError('Google sign-in failed.'); }
+  };
+
+  window.executeLogout = async () => { 
+    await signOut(auth); 
+    window.location.reload(); 
   };
 </script>
 </body>
