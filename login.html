@@ -525,7 +525,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
     authDomain: "schrodinger-classes.firebaseapp.com",
@@ -537,6 +537,7 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app); // <-- Add this exact line
   const provider = new GoogleAuthProvider();
   const msgBox = document.getElementById('authMessage');
 
@@ -605,24 +606,55 @@
   });
 
   // Auth Actions
-  window.executeLogin = async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPass').value;
-    if (!email || !pass) return displayError('Please fill in both fields.');
-    try { await signInWithEmailAndPassword(auth, email, pass); } 
-    catch(err) { displayError('Invalid email or password.'); }
-  };
-
-  window.executeRegister = async () => {
+ window.executeRegister = async () => {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
+    
     if (!name || !email || !pass) return displayError('Please complete all fields.');
     if (pass.length < 6) return displayError('Password must be at least 6 characters.');
+    
     try {
+      // 1. Create the Auth account
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       await updateProfile(cred.user, { displayName: name });
-    } catch(err) { displayError('Error creating account. Try another email.'); }
+      
+      // 2. Create the student's database profile with default stats
+      await setDoc(doc(db, "users", cred.user.uid), {
+        overall: 0,
+        mechanics: 0,
+        electrodynamics: 0,
+        modernPhysics: 0,
+        thermodynamics: 0,
+        recentActivityTitle: "Joined Schrödinger Classes",
+        recentActivitySub: "Welcome to the portal!"
+      });
+      
+    } catch(err) { 
+      displayError('Error creating account. Try another email.'); 
+    }
+  };
+
+  window.executeGoogle = async () => {
+    try { 
+      const result = await signInWithPopup(auth, provider); 
+      // Check if this is their first time logging in
+      const isNewUser = result._tokenResponse?.isNewUser;
+      
+      if (isNewUser) {
+        // Create default database profile for new Google users
+        await setDoc(doc(db, "users", result.user.uid), {
+          overall: 0,
+          mechanics: 0,
+          electrodynamics: 0,
+          modernPhysics: 0,
+          thermodynamics: 0,
+          recentActivityTitle: "Joined Schrödinger Classes via Google",
+          recentActivitySub: "Welcome to the portal!"
+        });
+      }
+    } 
+    catch(err) { displayError('Google sign-in failed.'); }
   };
 
   window.executeGoogle = async () => {
