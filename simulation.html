@@ -573,7 +573,7 @@ const CATALOG = [
   },
 
   // ================= CLASS 10 SIMULATIONS =================
- {
+  {
     id: 'laser_optics_pro', 
     group: 'class10', 
     title: 'Advanced Laser Optics: Fresnel & TIR', 
@@ -612,7 +612,6 @@ const CATALOG = [
         const rad = Math.atan2(cx - mx, cy - my);
         p.angleI = Math.max(0, Math.min(89, Math.round(rad * 180 / Math.PI)));
         
-        // Update slider visually if dragged via canvas
         const slider = document.querySelector('input[value="'+p.angleI+'"]');
         if(slider) { slider.value = p.angleI; document.getElementById('p_i').textContent = p.angleI + '°'; }
       };
@@ -622,12 +621,18 @@ const CATALOG = [
       const W = cv.width, H = cv.height, cx = W / 2, cy = H / 2, C = cv.getContext('2d');
       drawLabGrid(C, W, H);
 
-      // Convert Wavelength to HSL Hue (Approximation for visible spectrum 380nm - 750nm)
-      const hue = Math.max(0, Math.min(270, 270 - ((p.wavelength - 380) / (750 - 380)) * 270));
+      // Accurate Wavelength to HSL Hue mapping
+      let hue = 0;
+      if (p.wavelength >= 620) hue = 0; // Red
+      else if (p.wavelength >= 590) hue = (620 - p.wavelength) * (30 / 30); // Orange
+      else if (p.wavelength >= 570) hue = 30 + (590 - p.wavelength) * (30 / 20); // Yellow
+      else if (p.wavelength >= 495) hue = 60 + (570 - p.wavelength) * (60 / 75); // Green
+      else if (p.wavelength >= 450) hue = 120 + (495 - p.wavelength) * (120 / 45); // Blue
+      else hue = 240 + (450 - p.wavelength) * (40 / 70); // Violet
+
       const laserColor = `hsl(${hue}, 100%, 50%)`;
       const glowColor = `hsla(${hue}, 100%, 50%, 0.6)`;
 
-      // Identify Media
       const getMediumName = (n) => {
         if (n === 1.0) return 'Vacuum/Air';
         if (n > 1.32 && n < 1.34) return 'Water';
@@ -637,17 +642,14 @@ const CATALOG = [
         return 'Custom Medium';
       };
 
-      // Draw Media Backgrounds
       C.fillStyle = `rgba(255, 255, 255, ${0.02 * p.n1})`; C.fillRect(0, 0, W, cy);
       C.fillStyle = `rgba(56, 189, 248, ${0.08 * p.n2})`; C.fillRect(0, cy, W, cy);
       
-      // Interface Line & Labels
       C.strokeStyle = '#cbd5e1'; C.lineWidth = 1; C.beginPath(); C.moveTo(0, cy); C.lineTo(W, cy); C.stroke();
       C.fillStyle = 'rgba(255,255,255,0.5)'; C.font = '12px monospace'; C.textAlign = 'left';
       C.fillText(`${getMediumName(p.n1)} (n=${p.n1.toFixed(2)})`, 20, cy - 15);
       C.fillText(`${getMediumName(p.n2)} (n=${p.n2.toFixed(2)})`, 20, cy + 25);
       
-      // Normal Line & Protractor
       C.strokeStyle = 'rgba(255,255,255,0.3)'; C.setLineDash([4, 4]);
       C.beginPath(); C.moveTo(cx, 40); C.lineTo(cx, H - 40); C.stroke(); C.setLineDash([]);
       
@@ -661,7 +663,6 @@ const CATALOG = [
         C.lineTo(cx + 160 * Math.cos(rad), cy + 160 * Math.sin(rad)); C.stroke();
       }
 
-      // Physics Calculations
       const radI = (p.angleI * Math.PI) / 180;
       const sinR = (p.n1 / p.n2) * Math.sin(radI);
       const isTIR = sinR >= 1.0;
@@ -669,7 +670,6 @@ const CATALOG = [
 
       if (!isTIR) {
         radR = Math.asin(sinR);
-        // Fresnel Equations for unpolarized light
         const cosI = Math.cos(radI);
         const cosR = Math.cos(radR);
         const Rs = Math.pow((p.n1 * cosI - p.n2 * cosR) / (p.n1 * cosI + p.n2 * cosR), 2);
@@ -690,7 +690,6 @@ const CATALOG = [
         C.strokeStyle = laserColor; C.lineWidth = 2; C.globalAlpha = Math.max(0.1, intensity);
         C.beginPath(); C.moveTo(cx, cy); C.lineTo(bx, by); C.stroke(); C.globalAlpha = 1.0;
 
-        // Wave packet particles
         if (isPlaying) {
           const speed = isDownward ? (300 / p.n2) : (300 / p.n1);
           const numParticles = Math.max(1, Math.round(5 * intensity));
@@ -699,24 +698,20 @@ const CATALOG = [
             const offset = (globalTime * speed + i * (250 / numParticles)) % 250;
             const px = cx + offset * Math.sin(angle);
             const py = cy + offset * Math.cos(angle) * dirY;
-            if (offset > 15) { // Hide inside laser head
+            if (offset > 15) { 
               C.beginPath(); C.arc(px, py, 1.5, 0, Math.PI*2); C.fill();
             }
           }
         }
       };
 
-      // Laser Pointer Housing
       const lx = cx - 250 * Math.sin(radI);
       const ly = cy - 250 * Math.cos(radI);
       
-      // Draw Incident Beam
-      drawBeam(radI, false, 1.0); // Invert drawing logic to shoot *from* laser *to* center
-      C.beginPath(); C.moveTo(lx, ly); C.lineTo(cx, cy); // Override path to originate from housing
+      drawBeam(radI, false, 1.0); 
+      C.beginPath(); C.moveTo(lx, ly); C.lineTo(cx, cy); 
 
-      // Draw Reflected Beam
-      drawBeam(radI, false, R); // Goes up (-Y)
-      // Mirror the reflection x-coordinate
+      drawBeam(radI, false, R); 
       const refX = cx + 250 * Math.sin(radI);
       const refY = cy - 250 * Math.cos(radI);
       C.strokeStyle = glowColor; C.lineWidth = 6 * R; C.beginPath(); C.moveTo(cx, cy); C.lineTo(refX, refY); C.stroke();
@@ -734,19 +729,16 @@ const CATALOG = [
           }
       }
 
-      // Draw Refracted Beam
       if (!isTIR) {
-        drawBeam(radR, true, T); // Goes down (+Y)
+        drawBeam(radR, true, T); 
       }
 
-      // Draw Laser Head Graphic
       C.save(); C.translate(lx, ly); C.rotate(-radI);
       C.fillStyle = '#0f172a'; C.strokeStyle = '#475569'; C.lineWidth = 2;
       C.fillRect(-14, 0, 28, 50); C.strokeRect(-14, 0, 28, 50);
-      C.fillStyle = laserColor; C.fillRect(-6, 45, 12, 5); // Glow tip
+      C.fillStyle = laserColor; C.fillRect(-6, 45, 12, 5); 
       C.restore();
 
-      // Telemetry Data
       const critAngle = p.n1 > p.n2 ? (Math.asin(p.n2 / p.n1) * 180 / Math.PI).toFixed(2) + '°' : 'None (n₁ ≤ n₂)';
       const d = document.getElementById('simData');
       if (d) {
