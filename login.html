@@ -612,6 +612,20 @@
           // Update Recent Activity
           document.getElementById('recent-title').innerHTML = data.recentActivityTitle;
           document.getElementById('recent-sub').textContent = data.recentActivitySub;
+        } else {
+          // Fallback: Create file if it doesn't exist yet for this account
+          await setDoc(userDocRef, {
+            overall: 0,
+            mechanics: 0,
+            electrodynamics: 0,
+            modernPhysics: 0,
+            thermodynamics: 0,
+            recentActivityTitle: "Joined Schrödinger Classes",
+            recentActivitySub: "Welcome to the portal!"
+          });
+          
+          document.getElementById('recent-title').innerHTML = "Joined Schrödinger Classes";
+          document.getElementById('recent-sub').textContent = "Welcome to the portal!";
         }
       } catch (error) {
         console.error("Error fetching student data:", error);
