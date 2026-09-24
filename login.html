@@ -3,35 +3,45 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login — Schrödinger Classes</title>
+  <title>Student Portal — Schrödinger Classes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-right: #f9fafb;
+      --bg-right: #f8fafc;
       --bg-left: #040d1a;
-      --ink: #111827;
-      --ink-light: #6b7280;
-      --primary-blue: #1d4ed8;
-      --primary-hover: #1e40af;
-      --border: #e5e7eb;
-      --font-sans: 'Inter', sans-serif;
+      --ink: #0f172a;
+      --ink-light: #475569;
+      --accent: #0b1f3a;
+      --accent-hover: #163156;
+      --gold: #b8892e;
+      --gold-light: #ddb96a;
+      --border: #e2e8f0;
+      --error: #ef4444;
+      --success: #10b981;
+      
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
+      --shadow-hover: 0 10px 30px rgba(11, 31, 58, 0.08);
     }
 
     body {
       background: var(--bg-right);
       color: var(--ink);
-      font-family: var(--font-sans);
+      font-family: var(--font-body);
       min-height: 100vh;
       display: flex;
       overflow-x: hidden;
     }
 
-    /* ── SPLIT LAYOUT ── */
+    /* ── TRUE 50/50 SPLIT LAYOUT ── */
     .auth-wrapper {
       display: flex;
       width: 100%;
@@ -39,7 +49,7 @@
     }
 
     /* ══════════════════════════════
-       LEFT PANEL - BRANDING
+       LEFT PANEL - BRANDING (DARK)
     ══════════════════════════════ */
     .left-panel {
       flex: 1;
@@ -52,233 +62,437 @@
       overflow: hidden;
       color: white;
     }
+    
+    /* Background Glow Effect */
     .left-panel::before {
-      content: ''; position: absolute; top: -10%; left: -10%;
-      width: 60vw; height: 60vw; border-radius: 50%;
+      content: '';
+      position: absolute;
+      top: -10%; left: -10%;
+      width: 60vw; height: 60vw;
+      border-radius: 50%;
       background: radial-gradient(circle, rgba(221, 185, 106, 0.08) 0%, transparent 60%);
       pointer-events: none;
     }
-    .brand-logo { text-decoration: none; display: inline-block; position: relative; z-index: 10; }
-    .logo-text { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 800; color: white; line-height: 1.1; }
-    .logo-text span { color: #ddb96a; }
-    .logo-tag { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 6px; }
+
+    .brand-header {
+      position: relative;
+      z-index: 10;
+    }
+    .brand-logo { 
+      text-decoration: none; 
+      display: inline-block; 
+    }
+    .logo-text { 
+      font-family: var(--font-display); 
+      font-size: 1.75rem; 
+      font-weight: 800; 
+      color: white; 
+      line-height: 1.1; 
+      letter-spacing: -0.02em;
+    }
+    .logo-text span { color: var(--gold-light); }
+    .logo-tag { 
+      display: block; 
+      font-family: var(--font-mono); 
+      font-size: 0.55rem; 
+      letter-spacing: 0.2em; 
+      text-transform: uppercase; 
+      color: rgba(255,255,255,0.4); 
+      margin-top: 6px; 
+    }
 
     .brand-content { position: relative; z-index: 10; margin-top: 4rem; }
-    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
-    .hero-title em { font-style: italic; color: #ddb96a; }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold-light); font-weight: 600;
+      margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold-light); display: block; }
+
+    .hero-title {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-light); font-weight: 700; }
     
+    .hero-desc { color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.6; max-width: 480px; font-weight: 300; }
+
     .feature-list { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-    .feature-item { display: flex; align-items: center; gap: 1rem; color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 500; }
-    .feature-icon { width: 24px; height: 24px; border-radius: 6px; background: rgba(221,185,106,0.1); border: 1px solid rgba(221,185,106,0.3); display: flex; align-items: center; justify-content: center; color: #ddb96a; }
+    .feature-item {
+      display: flex; align-items: center; gap: 1rem;
+      color: rgba(255,255,255,0.85); font-size: 0.95rem; font-weight: 500;
+    }
+    .feature-icon {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: rgba(221,185,106,0.1); border: 1px solid rgba(221,185,106,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-light);
+    }
 
     .brand-footer { position: relative; z-index: 10; margin-top: 4rem; }
-    .equation { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 1rem; }
-    .author-info { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-    .author-info strong { color: white; font-weight: 600; }
+    .equation {
+      font-family: var(--font-mono); font-size: 0.9rem; color: rgba(255,255,255,0.9);
+      letter-spacing: 0.05em; margin-bottom: 1rem; font-weight: 500;
+    }
+    .wave-svg { width: 100%; max-width: 400px; height: 40px; display: block; margin-bottom: 1.5rem; }
+    .wave-path {
+      fill: none; stroke: var(--gold-light); stroke-width: 2; opacity: 0.8;
+      stroke-dasharray: 800; stroke-dashoffset: 800;
+      animation: drawWave 3s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.5s;
+    }
+    @keyframes drawWave { to { stroke-dashoffset: 0; } }
+    
+    .author-info {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6;
+    }
+    .author-info strong { color: white; font-weight: 600; font-size: 0.9rem; }
 
     /* ══════════════════════════════
-       RIGHT PANEL - AUTH FORM
+       RIGHT PANEL - AUTH & DASHBOARD
     ══════════════════════════════ */
     .right-panel {
+      flex: 1;
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+
+    /* Top Right "Back to Home" */
+    .top-nav {
+      position: absolute; top: 2rem; right: 3rem;
+      z-index: 20;
+    }
+    .back-home {
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; color: var(--ink-light);
+      font-size: 0.85rem; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .back-home:hover { color: var(--accent); }
+
+    .panel-center {
       flex: 1; display: flex; align-items: center; justify-content: center;
-      padding: 3rem; position: relative;
+      padding: 3rem;
     }
 
-    .form-card {
-      width: 100%; max-width: 440px;
-      background: white; border-radius: 20px;
-      padding: 3rem 2.5rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
-      border: 1px solid rgba(229,231,235,0.5);
+    /* AUTH FORM */
+    .form-container { 
+      width: 100%; max-width: 420px; 
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; 
+    }
+    @keyframes fadeUp { 
+      from { opacity: 0; transform: translateY(20px); } 
+      to { opacity: 1; transform: translateY(0); } 
     }
 
-    .form-header { text-align: center; margin-bottom: 2rem; }
-    .form-title { font-size: 1.75rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; letter-spacing: -0.02em; }
-    .form-subtitle { color: var(--ink-light); font-size: 0.95rem; line-height: 1.5; padding: 0 1rem; }
+    .form-header { margin-bottom: 2.5rem; }
+    .form-title { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
+    .form-subtitle { color: var(--ink-light); font-size: 1rem; font-weight: 400; }
 
-    .input-group { position: relative; margin-bottom: 1rem; }
-    .input-icon {
-      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-      color: #9ca3af; pointer-events: none;
+    /* Custom Toggle Switch */
+    .auth-toggle {
+      display: flex; background: #e2e8f0; border-radius: 10px;
+      padding: 4px; margin-bottom: 2.5rem; position: relative;
     }
+    .toggle-btn {
+      flex: 1; text-align: center; padding: 0.8rem;
+      font-size: 0.9rem; font-weight: 600; color: var(--ink-light);
+      cursor: pointer; border: none; background: transparent;
+      position: relative; z-index: 2; transition: color 0.3s;
+    }
+    .toggle-btn.active { color: var(--ink); }
+    .toggle-pill {
+      position: absolute; top: 4px; left: 4px; height: calc(100% - 8px); width: calc(50% - 4px);
+      background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1;
+    }
+    .toggle-pill.register-mode { transform: translateX(100%); }
+
+    /* Floating Label Inputs */
+    .input-group { position: relative; margin-bottom: 1.5rem; }
     .input-field {
-      width: 100%; padding: 1rem 1rem 1rem 2.75rem;
-      background: white; border: 1px solid var(--border);
-      border-radius: 12px; font-family: var(--font-sans); font-size: 0.95rem;
-      color: var(--ink); outline: none; transition: border-color 0.2s;
+      width: 100%; padding: 1.2rem 1rem 0.8rem;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--ink); outline: none; transition: all 0.2s;
     }
-    .input-field::placeholder { color: #9ca3af; }
-    .input-field:focus { border-color: var(--primary-blue); }
-
-    .pwd-toggle {
-      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: #9ca3af; cursor: pointer;
+    .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(11,31,58,0.05); }
+    
+    .floating-label {
+      position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+      color: #94a3b8; font-size: 0.95rem; pointer-events: none;
+      transition: all 0.2s ease-out; background: white; padding: 0 0.2rem;
+    }
+    .input-field:focus ~ .floating-label,
+    .input-field:not(:placeholder-shown) ~ .floating-label {
+      top: 0; transform: translateY(-50%) scale(0.85);
+      color: var(--accent); font-weight: 600;
     }
 
-    .options-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1.5rem; font-size: 0.85rem;
-    }
-    .checkbox-wrap { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-light); font-weight: 500; cursor: pointer; }
-    .checkbox-wrap input { width: 16px; height: 16px; accent-color: var(--primary-blue); cursor: pointer; }
-    .forgot-link { color: var(--primary-blue); text-decoration: none; font-weight: 500; }
-    .forgot-link:hover { text-decoration: underline; }
-
-    .btn-primary {
-      width: 100%; padding: 1rem; background: var(--primary-blue); color: white;
-      border: none; border-radius: 50px; font-family: var(--font-sans);
+    .btn-submit {
+      width: 100%; padding: 1rem; background: var(--accent); color: white;
+      border: none; border-radius: 10px; font-family: var(--font-body);
       font-size: 1rem; font-weight: 600; cursor: pointer;
-      display: flex; justify-content: center; align-items: center; gap: 0.5rem;
-      transition: background 0.2s;
+      transition: all 0.2s; margin-top: 1rem;
     }
-    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-submit:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
     .divider {
-      display: flex; align-items: center; text-align: center; margin: 1.5rem 0;
-      color: #9ca3af; font-size: 0.85rem; font-weight: 500;
+      display: flex; align-items: center; gap: 1rem; margin: 2rem 0;
+      color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
     }
-    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border); }
-    .divider::before { margin-right: 1rem; } .divider::after { margin-left: 1rem; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
-    .btn-social {
-      padding: 0.75rem; background: white; color: var(--ink);
-      border: 1px solid var(--border); border-radius: 50px;
-      font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      transition: background 0.2s;
+    .btn-google {
+      width: 100%; padding: 0.9rem; background: white; color: var(--ink);
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+      transition: all 0.2s;
     }
-    .btn-social:hover { background: #f9fafb; }
+    .btn-google:hover { border-color: #cbd5e1; background: #f1f5f9; }
 
-    .toggle-text { text-align: center; font-size: 0.9rem; color: var(--ink-light); }
-    .toggle-text a { color: var(--primary-blue); font-weight: 600; text-decoration: none; cursor: pointer; }
-    .toggle-text a:hover { text-decoration: underline; }
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .msg-box { padding: 0.8rem; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-bottom: 1rem; display: none; background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+    .msg-box { padding: 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; margin-top: 1.5rem; display: none; }
+    .msg-box.error { background: #fef2f2; color: var(--error); border: 1px solid #fecaca; }
 
-    /* For toggling Register view */
-    .register-view { display: none; }
+    /* ══════════════════════════════
+       DASHBOARD (AFTER LOGIN)
+    ══════════════════════════════ */
+    .dashboard-container { display: none; width: 100%; max-width: 800px; animation: fadeUp 0.5s ease both; }
+    
+    .dash-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+    }
+    .dash-greeting { font-size: 1rem; color: var(--ink-light); margin-bottom: 0.2rem; font-weight: 500; }
+    .dash-name { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+    
+    .btn-logout {
+      background: white; color: var(--ink); border: 1.5px solid var(--border);
+      padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--ink); }
 
-    @media (max-width: 900px) {
+    .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    
+    .dash-card {
+      background: white; border: 1px solid var(--border); border-radius: 16px;
+      padding: 2rem; text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; align-items: flex-start;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden;
+    }
+    .dash-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+      background: var(--gold-light); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .dash-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: transparent; }
+    .dash-card:hover::before { transform: scaleX(1); }
+    
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #f1f5f9; color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem; transition: background 0.3s;
+    }
+    .dash-card:hover .card-icon { background: var(--accent); color: white; }
+    
+    .card-title { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; }
+    .card-desc { font-size: 0.9rem; color: var(--ink-light); line-height: 1.5; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
       .auth-wrapper { flex-direction: column; }
-      .left-panel { display: none; }
-      .right-panel { padding: 1.5rem; }
-      .form-card { padding: 2.5rem 1.5rem; }
+      .left-panel { flex: none; min-height: 40vh; padding: 3rem 2rem; }
+      .brand-content { margin-top: 2rem; }
+      .top-nav { top: 1.5rem; right: 1.5rem; }
+      .panel-center { padding: 3rem 1.5rem; }
+      .dash-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <div class="auth-wrapper">
-  <!-- LEFT PANEL -->
+
+  <!-- LEFT PANEL (DARK BRANDING) -->
   <div class="left-panel">
-    <a href="index.html" class="brand-logo">
-      <div class="logo-text">Schrödinger<span>Classes</span></div>
-      <div class="logo-tag">Student Portal</div>
-    </a>
+    <div class="brand-header">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-text">Schrödinger<span>Classes</span></div>
+        <div class="logo-tag">Student Portal</div>
+      </a>
+    </div>
+
     <div class="brand-content">
+      <div class="eyebrow">Academic Excellence</div>
       <h1 class="hero-title">Master Physics<br>with <em>Precision.</em></h1>
+      <p class="hero-desc">Access an advanced ecosystem of video lectures, mock examinations, and interactive simulations tailored for Class 11, 12, JEE, and NEET preparation.</p>
+
       <div class="feature-list">
-        <div class="feature-item"><div class="feature-icon">✓</div> High-definition video lectures & tutorials</div>
-        <div class="feature-item"><div class="feature-icon">✓</div> JEE & NEET strict-pattern mock tests</div>
-        <div class="feature-item"><div class="feature-icon">✓</div> Real-time quiz performance analytics</div>
-        <div class="feature-item"><div class="feature-icon">✓</div> Interactive laboratory simulations</div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          High-definition video lectures & tutorials
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          JEE & NEET strict-pattern mock tests
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          Real-time quiz performance analytics
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          Interactive laboratory simulations
+        </div>
       </div>
     </div>
+
     <div class="brand-footer">
       <div class="equation">iħ ∂Ψ/∂t = ĤΨ</div>
-      <div class="author-info"><strong>Lakshmi Kant Pandey</strong> — IIT Guwahati</div>
+      <svg class="wave-svg" viewBox="0 0 400 40" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,20 C30,40 60,0 90,20 C120,40 150,0 180,20 C210,40 240,0 270,20 C300,40 330,0 360,20 L400,20"/>
+      </svg>
+      <div class="author-info">
+        <strong>Lakshmi Kant Pandey</strong> — IIT Guwahati<br>Curriculum Designer for Advanced Physics
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
+  <!-- RIGHT PANEL (INTERACTIVE AUTH & DASHBOARD) -->
   <div class="right-panel">
     
-    <div class="form-card">
+    <nav class="top-nav">
+      <a href="index.html" class="back-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Return to Website
+      </a>
+    </nav>
+
+    <div class="panel-center">
       
-      <!-- LOGIN FORM -->
-      <div id="loginForm">
+      <!-- AUTHENTICATION FORM -->
+      <div class="form-container" id="authBox">
         <div class="form-header">
-          <h2 class="form-title">Welcome Back!</h2>
-          <p class="form-subtitle">Login to continue your learning journey with Schrödinger Classes.</p>
+          <h2 class="form-title" id="formTitleText">Welcome back.</h2>
+          <p class="form-subtitle" id="formSubText">Enter your credentials to access your portal.</p>
         </div>
 
-        <div id="loginMsg" class="msg-box"></div>
-
-        <div class="input-group">
-          <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          <input type="email" id="loginEmail" class="input-field" placeholder="Email address" />
+        <div class="auth-toggle">
+          <div class="toggle-pill" id="togglePill"></div>
+          <button class="toggle-btn active" id="btnModeLogin" onclick="setMode('login')">Sign In</button>
+          <button class="toggle-btn" id="btnModeRegister" onclick="setMode('register')">Create Account</button>
         </div>
+
+        <!-- Login Fields -->
+        <div class="form-section active" id="sectionLogin">
+          <div class="input-group">
+            <input type="email" id="loginEmail" class="input-field" placeholder=" " required />
+            <label class="floating-label">Email Address</label>
+          </div>
+          <div class="input-group">
+            <input type="password" id="loginPass" class="input-field" placeholder=" " required />
+            <label class="floating-label">Password</label>
+          </div>
+          <button class="btn-submit" id="submitLogin" onclick="executeLogin()">Sign In</button>
+        </div>
+
+        <!-- Register Fields -->
+        <div class="form-section" id="sectionRegister">
+          <div class="input-group">
+            <input type="text" id="regName" class="input-field" placeholder=" " required />
+            <label class="floating-label">Full Name</label>
+          </div>
+          <div class="input-group">
+            <input type="email" id="regEmail" class="input-field" placeholder=" " required />
+            <label class="floating-label">Email Address</label>
+          </div>
+          <div class="input-group">
+            <input type="password" id="regPass" class="input-field" placeholder=" " required />
+            <label class="floating-label">Create Password (Min. 6 chars)</label>
+          </div>
+          <button class="btn-submit" id="submitRegister" onclick="executeRegister()">Create Account</button>
+        </div>
+
+        <div id="authMessage" class="msg-box"></div>
+
+        <div class="divider">Or continue with</div>
         
-        <div class="input-group">
-          <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          <input type="password" id="loginPass" class="input-field" placeholder="Password" />
-          <button type="button" class="pwd-toggle" onclick="togglePwd('loginPass')">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
-          </button>
-        </div>
-
-        <div class="options-row">
-          <label class="checkbox-wrap">
-            <input type="checkbox" checked /> Remember me
-          </label>
-          <a href="#" class="forgot-link">Forgot Password?</a>
-        </div>
-
-        <button class="btn-primary" onclick="doLogin()">Login &rarr;</button>
-
-        <div class="divider">OR</div>
-
-        <div class="social-grid">
-          <button class="btn-social" onclick="doGoogle()">
-            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>
-            Google
-          </button>
-          <button class="btn-social">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="black"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"/></svg>
-            Apple
-          </button>
-        </div>
-
-        <div class="toggle-text">Don't have an account? <a onclick="toggleView('register')">Sign Up</a></div>
+        <button class="btn-google" onclick="executeGoogle()">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 29.9 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></svg>
+          Google
+        </button>
       </div>
 
-      <!-- REGISTER FORM -->
-      <div id="registerForm" class="register-view">
-        <div class="form-header">
-          <h2 class="form-title">Create Account</h2>
-          <p class="form-subtitle">Set up your student profile to get started.</p>
+      <!-- STUDENT DASHBOARD -->
+      <div class="dashboard-container" id="dashBox">
+        <div class="dash-header">
+          <div>
+            <p class="dash-greeting">Student Portal</p>
+            <h2 class="dash-name">Welcome, <span id="displayUserName">Student</span>.</h2>
+          </div>
+          <button class="btn-logout" onclick="executeLogout()">Sign Out</button>
         </div>
 
-        <div id="regMsg" class="msg-box"></div>
+        <div class="dash-grid">
+          <!-- Video Lectures -->
+          <a href="videos.html" class="dash-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+            <h3 class="card-title">Video Library</h3>
+            <p class="card-desc">Stream high-definition physics lectures and chapter-wise breakdowns.</p>
+          </a>
 
-        <div class="input-group">
-          <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-          <input type="text" id="regName" class="input-field" placeholder="Full Name" />
-        </div>
+          <!-- Mock Tests -->
+          <a href="test.html" class="dash-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3 class="card-title">Mock Examinations</h3>
+            <p class="card-desc">Take full-length tests patterned strictly on JEE and NEET structures.</p>
+          </a>
 
-        <div class="input-group">
-          <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          <input type="email" id="regEmail" class="input-field" placeholder="Email address" />
-        </div>
-        
-        <div class="input-group">
-          <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          <input type="password" id="regPass" class="input-field" placeholder="Password (Min. 6 chars)" />
-        </div>
+          <!-- Quizzes -->
+          <a href="quiz.html" class="dash-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h3 class="card-title">Concept Quizzes</h3>
+            <p class="card-desc">Reinforce core topics with rapid-fire assessments and analytics.</p>
+          </a>
 
-        <button class="btn-primary" onclick="doRegister()">Sign Up &rarr;</button>
-        <div class="divider">OR</div>
-        <div class="toggle-text">Already have an account? <a onclick="toggleView('login')">Login</a></div>
+          <!-- Simulations -->
+          <a href="simulation.html" class="dash-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H15M10 9H14M3 21H21M12 3V21M6 21C6 14.2 9.5 13 9.5 8.5C9.5 4.5 12 3 12 3S14.5 4.5 14.5 8.5C14.5 13 18 14.2 18 21"></path></svg>
+            </div>
+            <h3 class="card-title">Virtual Laboratory</h3>
+            <p class="card-desc">Interact with dynamic physics simulations for deeper conceptual clarity.</p>
+          </a>
+        </div>
       </div>
 
     </div>
   </div>
 </div>
 
+<!-- Firebase SDK Logic -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    signOut, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDEoABDJODhTt5_QAno68Z3pvc21mwG4Dg",
@@ -293,49 +507,96 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  window.toggleView = (view) => {
-    document.getElementById('loginForm').style.display = view === 'login' ? 'block' : 'none';
-    document.getElementById('registerForm').style.display = view === 'register' ? 'block' : 'none';
+  // UI Management
+  const authBox = document.getElementById('authBox');
+  const dashBox = document.getElementById('dashBox');
+  const msgBox = document.getElementById('authMessage');
+
+  window.setMode = (mode) => {
+    document.getElementById('btnModeLogin').classList.toggle('active', mode === 'login');
+    document.getElementById('btnModeRegister').classList.toggle('active', mode === 'register');
+    document.getElementById('togglePill').classList.toggle('register-mode', mode === 'register');
+    
+    document.getElementById('sectionLogin').classList.toggle('active', mode === 'login');
+    document.getElementById('sectionRegister').classList.toggle('active', mode === 'register');
+
+    document.getElementById('formTitleText').textContent = mode === 'login' ? 'Welcome back.' : 'Create Account.';
+    document.getElementById('formSubText').textContent = mode === 'login' ? 'Enter your credentials to access your portal.' : 'Set up your student profile in seconds.';
+    msgBox.style.display = 'none';
   };
 
-  window.togglePwd = (id) => {
-    const el = document.getElementById(id);
-    el.type = el.type === 'password' ? 'text' : 'password';
-  };
-
-  function showError(elId, msg) {
-    const el = document.getElementById(elId);
-    el.textContent = msg; el.style.display = 'block';
+  function displayError(msg) {
+    msgBox.textContent = msg;
+    msgBox.className = 'msg-box error';
+    msgBox.style.display = 'block';
   }
 
-  window.doLogin = async () => {
-    const email = document.getElementById('loginEmail').value;
+  function getReadableError(code) {
+    const errors = {
+      'auth/invalid-credential': 'Email or password is incorrect.',
+      'auth/email-already-in-use': 'This email is already registered. Please sign in.',
+      'auth/weak-password': 'Password must be at least 6 characters.',
+      'auth/too-many-requests': 'Too many attempts. Please try again later.'
+    };
+    return errors[code] || 'An unexpected error occurred. Please try again.';
+  }
+
+  // Auth State Observer
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      authBox.style.display = 'none';
+      dashBox.style.display = 'block';
+      const nameStr = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
+      document.getElementById('displayUserName').textContent = nameStr;
+    } else {
+      authBox.style.display = 'block';
+      dashBox.style.display = 'none';
+    }
+  });
+
+  // Action Functions
+  window.executeLogin = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
     const pass = document.getElementById('loginPass').value;
-    if(!email || !pass) return showError('loginMsg', 'Please fill all fields.');
+    const btn = document.getElementById('submitLogin');
+    
+    if (!email || !pass) return displayError('Please fill in both fields.');
+    
+    btn.disabled = true; btn.textContent = 'Authenticating...';
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-      window.location.href = "dashboard.html"; // Redirect immediately on success
-    } catch(e) { showError('loginMsg', 'Invalid email or password.'); }
+    } catch(err) {
+      displayError(getReadableError(err.code));
+      btn.disabled = false; btn.textContent = 'Sign In';
+    }
   };
 
-  window.doRegister = async () => {
-    const name = document.getElementById('regName').value;
-    const email = document.getElementById('regEmail').value;
+  window.executeRegister = async () => {
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
     const pass = document.getElementById('regPass').value;
-    if(!name || !email || !pass) return showError('regMsg', 'Please fill all fields.');
+    const btn = document.getElementById('submitRegister');
+    
+    if (!name || !email || !pass) return displayError('Please complete all fields.');
+    if (pass.length < 6) return displayError('Password must be at least 6 characters.');
+
+    btn.disabled = true; btn.textContent = 'Creating...';
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
       await updateProfile(cred.user, { displayName: name });
-      window.location.href = "dashboard.html"; // Redirect immediately on success
-    } catch(e) { showError('regMsg', 'Error creating account. Password must be 6+ chars.'); }
+      // UI updates automatically via onAuthStateChanged
+    } catch(err) {
+      displayError(getReadableError(err.code));
+      btn.disabled = false; btn.textContent = 'Create Account';
+    }
   };
 
-  window.doGoogle = async () => {
-    try { 
-      await signInWithPopup(auth, provider); 
-      window.location.href = "dashboard.html"; // Redirect immediately on success
-    } catch(e) { console.error(e); }
+  window.executeGoogle = async () => {
+    try { await signInWithPopup(auth, provider); } 
+    catch(err) { console.error(err); displayError('Google sign-in was cancelled or failed.'); }
   };
+
+  window.executeLogout = async () => { await signOut(auth); };
 </script>
 </body>
 </html>
