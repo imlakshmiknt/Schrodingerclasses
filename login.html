@@ -154,7 +154,7 @@
     /* Dashboard Content Padding */
     .dash-content { padding: 2rem 2.5rem 4rem; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-    /* Hero Banner */
+    /* Hero Banner with Founder Card */
     .hero-banner { 
       background: radial-gradient(circle at 85% 50%, #1a0b2e 0%, var(--bg-panel) 60%);
       border-radius: 16px; padding: 2.5rem 3rem; color: white;
@@ -162,15 +162,30 @@
       margin-bottom: 2rem; position: relative; overflow: hidden;
       box-shadow: 0 10px 30px rgba(11,31,58,0.15);
     }
-    .hero-banner::after {
-      content: 'iħ ∂Ψ/∂t = ĤΨ'; position: absolute; right: 3rem; font-family: var(--font-display);
-      font-size: 2.5rem; font-style: italic; color: rgba(255,255,255,0.05); pointer-events: none;
-    }
+    .hero-banner::after { display: none; }
     .hero-text h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold-light); margin-bottom: 0.5rem; }
     .hero-text h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .hero-text p { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin-bottom: 1.5rem; }
     .btn-hero { background: var(--gold-light); color: var(--ink); padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; }
     .btn-hero:hover { transform: translateX(4px); }
+
+    /* Founder Card Styling */
+    .founder-card {
+      display: flex; align-items: center; gap: 1.2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(221, 185, 106, 0.2);
+      padding: 1rem 1.2rem; border-radius: 12px;
+      backdrop-filter: blur(5px);
+    }
+    .founder-img {
+      width: 85px; height: 85px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 2px solid var(--gold-light);
+    }
+    .founder-info h4 { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.1rem; }
+    .founder-info span { font-size: 0.72rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono); }
+    .founder-info p { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 0.2rem; }
 
     /* Modules Grid (4 Cards) */
     .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
@@ -379,13 +394,21 @@
     </header>
 
     <div class="dash-content">
-      <!-- Hero Banner -->
+      <!-- Hero Banner with Founder Card -->
       <div class="hero-banner">
         <div class="hero-text">
           <h3>Welcome to</h3>
           <h1>Schrödinger Classes</h1>
           <p>Learn Physics. Think Deeper. Go Further.</p>
-          <button class="btn-hero">Continue Learning &rarr;</button>
+          <button class="btn-hero" onclick="window.location.href='test.html'">Continue Learning &rarr;</button>
+        </div>
+        <div class="founder-card">
+          <img src="founder.jpg" alt="Lakshmi Kant Pandey" class="founder-img" />
+          <div class="founder-info">
+            <h4>Lakshmi Kant Pandey</h4>
+            <span>Founder & Author</span>
+            <p>M.Sc. Physics, IIT Guwahati</p>
+          </div>
         </div>
       </div>
 
@@ -455,7 +478,6 @@
           </div>
         </div>
 
-        <!-- Upcoming Tasks -->
         <!-- Upcoming Tasks -->
         <div class="stat-panel">
           <div class="panel-header">
