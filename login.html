@@ -239,6 +239,54 @@
     .act-info h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.2rem; }
     .act-info h4 strong { font-weight: 600; color: var(--ink); }
     .act-info p { font-size: 0.7rem; color: #94a3b8; }
+    /* ── MOBILE RESPONSIVE FIXES ── */
+  @media (max-width: 768px) {
+    body.dashboard-mode .dashboard-container {
+      flex-direction: column;
+      overflow-y: auto;
+      height: auto;
+    }
+    .sidebar {
+      width: 100%;
+      height: auto;
+    }
+    .main-wrapper {
+      height: auto;
+      overflow-y: visible;
+    }
+    .modules-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .stats-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .hero-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+    .founder-card {
+      width: 100%;
+    }
+    .topbar {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .search-bar {
+      width: 100%;
+    }
+    .dash-content {
+      padding: 1rem;
+    }
+    .auth-wrapper {
+      flex-direction: column;
+    }
+    .left-panel, .right-panel {
+      padding: 2rem 1.5rem;
+    }
+  }
 
     @media (max-width: 1200px) {
       .modules-grid { grid-template-columns: repeat(2, 1fr); }
